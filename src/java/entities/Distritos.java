@@ -20,6 +20,7 @@ public class Distritos
     private String newParam = "";
     private String otroParametro="";
     private String abc="";
+    private String xyz="";
 
     /**
      * @return the idDep
