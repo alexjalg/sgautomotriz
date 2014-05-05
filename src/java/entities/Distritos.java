@@ -18,6 +18,7 @@ public class Distritos
     private String desDis="";
     private String desDis_f="";
     private String newParam = "";
+    private String otroParametro="";
 
     /**
      * @return the idDep
