@@ -1,0 +1,43 @@
+@CHARSET "ISO-8859-1";
+.overlay
+{
+    background: transparent;
+    background-image: -webkit-radial-gradient(50% 30%, circle cover, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.8));
+    background-image: -moz-radial-gradient(50% 30%, circle cover, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.8));
+    background-image: -ms-radial-gradient(50% 30%, circle cover, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.8));
+    background-image: -o-radial-gradient(50% 30%, circle cover, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.8));
+    background-image: radial-gradient(50% 30%, circle cover, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.8));
+    opacity: 0;
+    height: 100%;
+    left: 0;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: -1;
+}
+
+.load-container
+{
+    display: table;
+    width: 200px;
+    height: 100%;
+    margin: auto;
+    z-index: 2000;
+}
+
+.load-table
+{
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.ui-widget-overlay
+{
+    background: transparent !important;
+    background-image: -webkit-radial-gradient(50% 30%, circle cover, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.8));
+    background-image: -moz-radial-gradient(50% 30%, circle cover, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.8));
+    background-image: -ms-radial-gradient(50% 30%, circle cover, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.8));
+    background-image: -o-radial-gradient(50% 30%, circle cover, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.8));
+    background-image: radial-gradient(50% 30%, circle cover, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.8));
+    opacity: 1;
+}

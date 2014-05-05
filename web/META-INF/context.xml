@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context antiJARLocking="true" path="/sgautomotriz">    
+    <Resource name="jdbc/sgautomotriz"
+          auth="Container"
+          type="javax.sql.DataSource"
+          factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
+          maxActive="700"
+          maxIdle="70" 
+          maxWait="1000"
+          initialSize="100"
+          removeAbandoned="true"
+          username="root"
+          password="123456"
+          driverClassName="com.mysql.jdbc.Driver"
+          url="jdbc:mysql://cotizador.toyota.local:3306/sgautomotriz?noAccessToProcedureBodies=true&amp;autoReconnect=true" />
+</Context>
+

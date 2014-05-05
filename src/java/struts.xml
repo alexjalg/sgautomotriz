@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Fundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+	<constant name="struts.enable.DynamicMethodInvocation" value="false" />
+	<constant name="struts.devMode" value="true" />
+	<constant name="struts.ui.theme" value="simple" />
+	
+	<package name="default" namespace="/" extends="struts-default">
+		<default-action-ref name="index" />
+		
+		<global-results>
+			<result name="error">/error.jsp</result>
+		</global-results>
+		
+		<global-exception-mappings>
+			<exception-mapping result="error" exception="java.lang.Exception" />
+		</global-exception-mappings>
+	</package>
+	
+	<include file="inicio.xml" /> 
+        <include file="departamentos.xml" />
+        <include file="provincias.xml" />
+        <include file="distritos.xml" />
+        
+        <include file="tipoUsuario.xml" />
+        <include file="usuarios.xml" />
+        <include file="modulos.xml" />
+        <include file="opciones.xml" />
+        <include file="permisos.xml" />
+</struts>

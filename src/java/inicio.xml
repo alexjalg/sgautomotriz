@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+    <package name="inicio" namespace="/" extends="struts-default">
+        <result-types>
+            <result-type name="tiles" class="org.apache.struts2.views.tiles.TilesResult" />
+        </result-types>
+        
+        
+
+        <action name="*Login" method="{1}" class="actions.LoginAction">
+            <result name="success">/login/index.jsp</result>
+            <result name="verifica">/login/verifica.jsp</result>
+            <result name="salir">/login/salir.jsp</result>
+        </action>
+        
+        <action name="*Inicio" method="{1}" class="actions.InicioAction">
+            <result name="redirect">/redirect.jsp</result>
+            <result name="input" type="tiles">inicio</result>
+            <result name="success" type="tiles">inicio</result>
+        </action>
+        
+        <!-- Add actions here -->
+    </package>
+</struts>

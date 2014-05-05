@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE tiles-definitions PUBLIC 
+	"-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
+	"http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
+
+<tiles-definitions>
+    <definition name="baseLayout" template="/template/baseLayout.jsp">
+        <put-attribute name="title" value="Sistema de Gestión Automotriz" />
+        <put-attribute name="header" value="/template/header.jsp" />
+        <put-attribute name="body" value="/template/body.jsp" />	
+    </definition>
+
+
+    <definition name="inicio" extends="baseLayout">
+        <put-attribute name="body" value="/inicio.jsp" />
+    </definition>
+    
+    
+    <!-- USUARIOS -->
+    <definition name="mant-usuarios-index" extends="baseLayout">
+        <put-attribute name="body" value="/mantenimientos/usuarios/index.jsp" />
+    </definition>
+    <definition name="mant-usuarios-adicionar" extends="baseLayout">
+        <put-attribute name="body" value="/mantenimientos/usuarios/adicionar.jsp" />
+    </definition>
+    <definition name="mant-usuarios-imprimir" extends="baseLayout">
+        <put-attribute name="body" value="/mantenimientos/usuarios/imprimir.jsp" />
+    </definition>
+    
+    
+    <!-- DEPARTAMENTOS -->
+    <definition name="mant-departamentos-index" extends="baseLayout">
+        <put-attribute name="body" value="/mantenimientos/departamentos/index.jsp" />
+    </definition>
+    <definition name="mant-departamentos-adicionar" extends="baseLayout">
+        <put-attribute name="body" value="/mantenimientos/departamentos/adicionar.jsp" />
+    </definition>
+    
+    <!-- PROVINCIAS -->
+    <definition name="mant-provincias-index" extends="baseLayout">
+        <put-attribute name="body" value="/mantenimientos/provincias/index.jsp" />
+    </definition>
+    <definition name="mant-provincias-adicionar" extends="baseLayout">
+        <put-attribute name="body" value="/mantenimientos/provincias/adicionar.jsp" />
+    </definition>
+    
+    <!-- DISTRITOS -->
+    <definition name="mant-distritos-index" extends="baseLayout">
+        <put-attribute name="body" value="/mantenimientos/distritos/index.jsp" />
+    </definition>
+    <definition name="mant-distritos-adicionar" extends="baseLayout">
+        <put-attribute name="body" value="/mantenimientos/distritos/adicionar.jsp" />
+    </definition>
+    
+    
+    <!-- MODULOS -->
+    <definition name="mant-modulos-index" extends="baseLayout">
+        <put-attribute name="body" value="/mantenimientos/modulos/index.jsp" />
+    </definition>
+    <definition name="mant-modulos-adicionar" extends="baseLayout">
+        <put-attribute name="body" value="/mantenimientos/modulos/adicionar.jsp" />
+    </definition>
+    
+    <!-- OPCIONES -->
+    <definition name="mant-opciones-index" extends="baseLayout">
+        <put-attribute name="body" value="/mantenimientos/opciones/index.jsp" />
+    </definition>
+    <definition name="mant-opciones-adicionar" extends="baseLayout">
+        <put-attribute name="body" value="/mantenimientos/opciones/adicionar.jsp" />
+    </definition>
+    
+    <!-- TIPO DE USUARIO -->
+    <definition name="mant-tipusu-index" extends="baseLayout">
+        <put-attribute name="body" value="/mantenimientos/tipoUsuario/index.jsp" />
+    </definition>
+    <definition name="mant-tipusu-adicionar" extends="baseLayout">
+        <put-attribute name="body" value="/mantenimientos/tipoUsuario/adicionar.jsp" />
+    </definition>
+    
+    
+    <!-- PERMISOS -->
+    <definition name="mant-permisos-modulosIndex" extends="baseLayout">
+        <put-attribute name="body" value="/mantenimientos/permisos/modulosIndex.jsp" />
+    </definition>
+    <definition name="mant-permisos-modulosAdicionar" extends="baseLayout">
+        <put-attribute name="body" value="/mantenimientos/permisos/modulosAdicionar.jsp" />
+    </definition>
+    <definition name="mant-permisos-opcionesIndex" extends="baseLayout">
+        <put-attribute name="body" value="/mantenimientos/permisos/opcionesIndex.jsp" />
+    </definition>
+    <definition name="mant-permisos-opcionesAdicionar" extends="baseLayout">
+        <put-attribute name="body" value="/mantenimientos/permisos/opcionesAdicionar.jsp" />
+    </definition>
+    <definition name="mant-permisos-subopcionesIndex" extends="baseLayout">
+        <put-attribute name="body" value="/mantenimientos/permisos/subopcionesIndex.jsp" />
+    </definition>
+    <definition name="mant-permisos-subopcionesAdicionar" extends="baseLayout">
+        <put-attribute name="body" value="/mantenimientos/permisos/subopcionesAdicionar.jsp" />
+    </definition>
+</tiles-definitions>

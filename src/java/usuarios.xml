@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+    <package name="usuarios" namespace="/usuarios" extends="struts-default">
+        <result-types>
+            <result-type name="tiles" class="org.apache.struts2.views.tiles.TilesResult" />
+        </result-types>
+
+        <action name="*Usuario" method="{1}" class="actions.UsuariosAction">
+            <result name="success" type="tiles">mant-usuarios-index</result>
+            <result name="adicionar" type="tiles">mant-usuarios-adicionar</result>
+            <result name="grabar">/mantenimientos/usuarios/grabar.jsp</result>
+            <result name="actualizar">/mantenimientos/usuarios/grabar.jsp</result>
+            <result name="vrfSeleccion">/mantenimientos/usuarios/grabar.jsp</result>
+            <result name="eliminar">/mantenimientos/usuarios/eliminar.jsp</result>
+            <result name="actEstado">/mantenimientos/usuarios/grabar.jsp</result>
+            
+            <result name="imprimir">/mantenimientos/usuarios/imprimir.jsp</result>
+        </action>
+    </package>
+</struts>

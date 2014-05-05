@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+    <package name="distritos" namespace="/distritos" extends="struts-default">
+        <result-types>
+            <result-type name="tiles" class="org.apache.struts2.views.tiles.TilesResult" />
+        </result-types>
+
+        <action name="*Distrito" method="{1}" class="actions.DistritosAction">
+            <result name="success" type="tiles">mant-distritos-index</result>
+            <result name="adicionar" type="tiles">mant-distritos-adicionar</result>
+            <result name="grabar">/mantenimientos/distritos/grabar.jsp</result>
+            <result name="actualizar">/mantenimientos/distritos/grabar.jsp</result>
+            <result name="vrfSeleccion">/mantenimientos/distritos/grabar.jsp</result>
+            <result name="eliminar">/mantenimientos/distritos/eliminar.jsp</result>
+        </action>
+    </package>
+</struts>

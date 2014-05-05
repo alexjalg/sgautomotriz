@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+    <package name="permisos" namespace="/permisos" extends="struts-default">
+        <result-types>
+            <result-type name="tiles" class="org.apache.struts2.views.tiles.TilesResult" />
+        </result-types>
+
+        <action name="*Permisos" method="{1}" class="actions.PermisosAction">
+            <result name="success" type="tiles">/mantenimientos/permisos/index.jsp</result>
+            
+            <!-- MODULOS -->
+            <result name="modulosTipUsu" type="tiles">mant-permisos-modulosIndex</result>
+            <result name="adicionarModulo" type="tiles">mant-permisos-modulosAdicionar</result>
+            <result name="listModulos">/mantenimientos/permisos/listModulos.jsp</result>
+            <result name="grabarModulo">/mantenimientos/permisos/grabar.jsp</result>
+            <result name="actualizarModulo">/mantenimientos/permisos/grabar.jsp</result>
+            <result name="vrfSelecModulo">/mantenimientos/permisos/grabar.jsp</result>
+            <result name="eliminarModulo">/mantenimientos/permisos/modulosEliminar.jsp</result>
+            
+            <!-- OPCIONES -->
+            <result name="opcionesTipUsu" type="tiles">mant-permisos-opcionesIndex</result>
+            <result name="adicionarOpcion" type="tiles">mant-permisos-opcionesAdicionar</result>
+            <result name="listOpciones">/mantenimientos/permisos/listOpciones.jsp</result>
+            <result name="grabarOpcion">/mantenimientos/permisos/grabar.jsp</result>
+            <result name="actualizarOpcion">/mantenimientos/permisos/grabar.jsp</result>
+            <result name="vrfSelecOpcion">/mantenimientos/permisos/grabar.jsp</result>
+            <result name="eliminarOpcion">/mantenimientos/permisos/opcionesEliminar.jsp</result>
+            
+            <!-- SUB-OPCIONES -->
+            <result name="subopcionesTipUsu" type="tiles">mant-permisos-subopcionesIndex</result>
+            <result name="adicionarSubOpcion" type="tiles">mant-permisos-subopcionesAdicionar</result>
+            <result name="grabarSubOpcion">/mantenimientos/permisos/grabar.jsp</result>
+            <result name="actualizarSubOpcion">/mantenimientos/permisos/grabar.jsp</result>
+            <result name="vrfSelecSubOpcion">/mantenimientos/permisos/grabar.jsp</result>
+            <result name="eliminarSubOpcion">/mantenimientos/permisos/subopcionesEliminar.jsp</result>
+        </action>
+    </package>
+</struts>
