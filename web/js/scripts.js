@@ -3,7 +3,7 @@ $(document).ready(function() {
     var _h_ou = $('.ul-options-user').outerWidth();
     $('.ul-options-user').width(_h_ou+26);
     
-    $('html').click(function(e) {
+    $('html').mousedown(function(e) {
         hideMenu();
         hideOptUser();
 
@@ -54,8 +54,7 @@ $(document).ready(function() {
             hideOptGrilla();
         }
         catch (err)
-        {
-        }
+        {}
     });
 
     $('.ul-modulos li .ul-opciones li').hover(function() {
@@ -84,7 +83,7 @@ $(document).ready(function() {
         }
     });
     
-    $('.ul-modulos li .ul-opciones li a.opc, .ul-modulos li .ul-opciones li span.opc').mouseup(function(e) {
+    $('.ul-opciones li a.opc, .ul-modulos li .ul-opciones li span.opc').mouseup(function(e) {
         e.stopPropagation();
         hideOptUser();
         
