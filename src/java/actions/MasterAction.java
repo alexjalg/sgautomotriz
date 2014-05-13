@@ -24,7 +24,7 @@ public class MasterAction extends ActionSupport implements ServletRequestAware {
     protected HttpServletRequest servletRequest;
     //URL para los recursos, redireccionamientos y demas
     //protected String baseURL = "http://192.168.0.22:8080/sgautomotriz/";
-    protected String baseURL = "http://192.168.0.31:8090/sgautomotriz/";
+    protected String baseURL = "http://192.168.0.22:8080/sgautomotriz/";
     protected String urlRedirect = "";   //url a la cual se quiere redireccionar
     protected String inicioURL = baseURL+"Inicio";  //URL a la cual redireccionar si en la peticiona de pagina falta un parametro obligatorio
     protected String indErrParm = "";
