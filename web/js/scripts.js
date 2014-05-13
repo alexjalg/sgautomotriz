@@ -12,8 +12,8 @@ $(document).ready(function() {
         {
             hideOptGrilla();
         }
-        catch (err) {
-        }
+        catch (err) 
+        {}
     });
 
     $('.ul-modulos > li').click(function() {
@@ -34,8 +34,7 @@ $(document).ready(function() {
             hideOptGrilla();
         }
         catch (err)
-        {
-        }
+        {}
         
         if(!$(this).hasClass('menu-click'))
         {
