@@ -1,53 +1,52 @@
 /*
- * Action: Provincias
+ * Action: Marcas
  * Creado por: Angelo Ccoicca
- * Fecha de creación: 12-03-2014
+ * Fecha de creación: 16-05-2014
  * Modificado por                   Fecha de Modificación
  * - 
  * -
  */
-
 package actions;
 
 import com.opensymphony.xwork2.ModelDriven;
 import conexion.helper;
-import entities.Provincias;
+import entities.Marcas;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
-public class ProvinciasAction extends MasterAction implements ModelDriven<Provincias>
+public class MarcasAction extends MasterAction implements ModelDriven<Marcas>
 {
-    private Provincias modelo = new Provincias();
-    private ArrayList<Provincias> listProvincias = new ArrayList<Provincias>();
-    
+    private Marcas modelo = new Marcas();
+    private ArrayList<Marcas> listMarcas = new ArrayList<Marcas>();
+
     @Override
-    public Provincias getModel()
+    public Marcas getModel()
     {
-        tituloOpc = "Provincias";// cambiar por campo titulo cuando este lista la tabla de opciones
+        tituloOpc = "Marcas";
+        
         return modelo;
     }
     
-    private void cantProvinciasIndex()
+    private void cantMarcasIndex()
     {
         helper conex = null;
         ResultSet tabla = null;
         
-        try
+        try 
         {
             conex = new helper();
-            indError = conex.getErrorSQL().trim();
-
-            if(!indError.trim().equals(""))
+            indError += conex.getErrorSQL();
+            
+            if(!indError.equals(""))
             {
                 errores.add(indError);
             }
             else
             {
-                tabla = conex.executeDataSet("CALL usp_cantProvIndex(?,?)", 
-                        new Object[]{ modelo.getIdDep(),modelo.getDesProv_f().trim() });
-
+                tabla = conex.executeDataSet("CALL usp_cantMarcasIndex()", new Object[]{});
+                
                 indError = conex.getErrorSQL();
-
+                
                 if(!indError.equals(""))
                 {
                     errores.add(indError);
@@ -63,7 +62,7 @@ public class ProvinciasAction extends MasterAction implements ModelDriven<Provin
         }
         catch (Exception e) 
         {
-            indError = "error";
+            indError += "error";
             errores.add(e.getMessage());
         }
         finally
@@ -78,7 +77,7 @@ public class ProvinciasAction extends MasterAction implements ModelDriven<Provin
         }
     }
     
-    private void listProvinciasIndex()
+    private void listMarcasIndex()
     {
         helper conex = null;
         ResultSet tabla = null;
@@ -94,9 +93,8 @@ public class ProvinciasAction extends MasterAction implements ModelDriven<Provin
             }
             else
             {
-                tabla = conex.executeDataSet("CALL usp_listProvIndex(?,?,?,?)", 
-                        new Object[]{ modelo.getIdDep(),modelo.getDesProv_f().trim(),
-                            (getCurPag())*getRegPag(),getRegPag() });
+                tabla = conex.executeDataSet("CALL usp_listMarcasIndex(?,?)", 
+                        new Object[]{ getCurPag()*regPag,regPag });
 
                 indError = conex.getErrorSQL();
 
@@ -106,13 +104,13 @@ public class ProvinciasAction extends MasterAction implements ModelDriven<Provin
                 }
                 else
                 {
-                    Provincias obj;
+                    Marcas obj;
                     while(tabla.next())
                     {
-                        obj = new Provincias();
-                        obj.setIdPrvDep(tabla.getInt("idPrvDep"));
-                        obj.setDesProv(tabla.getString("desProv"));
-                        listProvincias.add(obj);
+                        obj = new Marcas();
+                        obj.setIdMar(tabla.getString("idMar"));
+                        obj.setDesMar(tabla.getString("desMar"));
+                        listMarcas.add(obj);
                     }
                 }
             }
@@ -137,92 +135,27 @@ public class ProvinciasAction extends MasterAction implements ModelDriven<Provin
     @Override
     public String execute()
     {
-        nivBandeja = 2;
+        nivBandeja = 1;
+        urlPaginacion = "marcas/Marca";
         
         varReturnProcess(0);
         if(!listVarReturn.isEmpty())
         {
             curPagVis = Integer.parseInt(listVarReturn.get(0).toString().trim());
-            modelo.setIdDep(Integer.parseInt(listVarReturn.get(1).toString().trim()));
-            modelo.setDesProv_f(listVarReturn.get(2).toString().trim());
         }
         
-        if(modelo.getIdDep()==0)
-        {
-            indErrParm = "error";
-        }
-        else
-        {
-            urlPaginacion = "provincias/Provincia";
-        
-            getDatosDepartamento();
-            
-            modelo.setDesProv_f(modelo.getDesProv_f().trim());
-
-            cantProvinciasIndex();
-            verifPag();
-            listProvinciasIndex();
-        }
+        cantMarcasIndex();
+        verifPag();
+        listMarcasIndex();
         
         return SUCCESS;
     }
     
-    private void getDatosDepartamento()
-    {
-        helper conex = null;
-        ResultSet tabla = null;
-        
-        try 
-        {
-            conex = new helper();
-            indError = conex.getErrorSQL();
-            
-            if(!indError.equals(""))
-            {
-                errores.add(indError);
-            }
-            else
-            {
-                tabla = conex.executeDataSet("CALL usp_getDatosDepartamento(?)", 
-                        new Object[]{ modelo.getIdDep() });
-
-                indError = conex.getErrorSQL();
-
-                if(!indError.equals(""))
-                {
-                    errores.add(indError);
-                }
-                else
-                {
-                    while(tabla.next())
-                    {
-                        modelo.setDesDep(tabla.getString("desDep"));
-                    }
-                }
-            }
-        }
-        catch (Exception e) 
-        {
-            indError = "error";
-            errores.add(e.getMessage());
-        }
-        finally
-        {
-            try 
-            {
-                tabla.close();
-                conex.returnConnect();
-            }
-            catch (Exception e) 
-            {}
-        }
-    }
-    
     public String adicionar()
     {
-        nivBandeja = 2;
+        nivBandeja = 1;
         
-        if((!opcion.trim().equals("A") && !opcion.trim().equals("M")) || modelo.getIdDep()==0)
+        if((!opcion.trim().equals("A") && !opcion.trim().equals("M")))
         {
             indErrParm = "error";
         }
@@ -230,29 +163,24 @@ public class ProvinciasAction extends MasterAction implements ModelDriven<Provin
         {
             varReturnProcess(1);
             
-            getDatosDepartamento();
-            
             if(opcion.equals("A"))
             {
-                formURL = baseURL+"provincias/grabarProvincia";
+                formURL = baseURL+"marcas/grabarMarca";
             }
 
             if(opcion.equals("M"))
             {
-                if(modelo.getIdDep()==0)
-                    indErrParm = "error";
-                else
-                {
-                    getDatosProvincia();
-                    formURL = baseURL+"provincias/actualizarProvincia";
-                }
+                
+                getDatosMarca();
+                formURL = baseURL+"marcas/actualizarMarca";
+                
             }
         }
         
         return "adicionar";
     }
     
-    private void getDatosProvincia()
+    public void getDatosMarca()
     {
         helper conex = null;
         ResultSet tabla = null;
@@ -268,9 +196,8 @@ public class ProvinciasAction extends MasterAction implements ModelDriven<Provin
             }
             else
             {
-                tabla = conex.executeDataSet("CALL usp_getDatosProvincia(?,?)", 
-                    new Object[]{ modelo.getIdDep(),modelo.getIdPrvDep() });
-
+                tabla = conex.executeDataSet("CALL usp_getDatosMarca(?)", 
+                        new Object[]{ modelo.getIdMar() });
                 indError = conex.getErrorSQL();
 
                 if(!indError.equals(""))
@@ -281,7 +208,8 @@ public class ProvinciasAction extends MasterAction implements ModelDriven<Provin
                 {
                     while(tabla.next())
                     {
-                        modelo.setDesProv(tabla.getString("desProv"));
+                        modelo.setIdMar(tabla.getString("idMar"));
+                        modelo.setDesMar(tabla.getString("desMar"));
                     }
                 }
             }
@@ -305,26 +233,38 @@ public class ProvinciasAction extends MasterAction implements ModelDriven<Provin
     
     public String grabar()
     {
-        modelo.setDesProv(modelo.getDesProv().trim());
+        modelo.setIdMar(modelo.getIdMar().trim());
+        modelo.setDesMar(modelo.getDesMar().trim());
+        
+        if(modelo.getIdMar().equals(""))
+        {
+            indError += "error";
+            errores.add("Ingrese el código de la marca");
+        }
+        
+        if(modelo.getDesMar().equals(""))
+        {
+            indError += "error";
+            errores.add("Ingrese el nombre de la marca");
+        }
         
         if(indError.equals(""))
         {
             helper conex = null;
-            ResultSet tabla = null;
             
             try 
             {
                 conex = new helper();
                 indError = conex.getErrorSQL();
-
+                
                 if(!indError.equals(""))
                 {
                     errores.add(indError);
                 }
                 else
                 {
-                    indError = conex.executeNonQuery("CALL usp_insProvincia(?,?)",
-                            new Object[]{ modelo.getIdDep(),modelo.getDesProv() });
+                    indError = conex.executeNonQuery("CALL usp_insMarca(?,?)", 
+                            new Object[]{ modelo.getIdMar(),modelo.getDesMar() });
 
                     if(!indError.equals(""))
                     {
@@ -348,32 +288,43 @@ public class ProvinciasAction extends MasterAction implements ModelDriven<Provin
     
     public String actualizar()
     {
-        modelo.setDesProv(modelo.getDesProv().trim());
+        modelo.setIdMar(modelo.getIdMar().trim());
+        modelo.setDesMar(modelo.getDesMar().trim());
+        
+        if(modelo.getIdMar().equals(""))
+        {
+            indError += "error";
+            errores.add("Ingrese el código de la marca");
+        }
+        
+        if(modelo.getDesMar().equals(""))
+        {
+            indError += "error";
+            errores.add("Ingrese el nombre de la marca");
+        }
         
         if(indError.equals(""))
         {
             helper conex = null;
-            ResultSet tabla = null;
             
-            try
+            try 
             {
                 conex = new helper();
                 indError = conex.getErrorSQL();
-
+                
                 if(!indError.equals(""))
                 {
                     errores.add(indError);
                 }
                 else
                 {
-                    indError = conex.executeNonQuery("CALL usp_updProvincia(?,?,?)",
-                            new Object[]{ modelo.getIdDep(), modelo.getIdPrvDep(), 
-                                modelo.getDesProv() });
+                    indError = conex.executeNonQuery("CALL usp_updMarca(?,?)", 
+                            new Object[]{ modelo.getIdMar(),modelo.getDesMar() });
 
                     if(!indError.equals(""))
                     {
                         errores.add(indError);
-                    }   
+                    }
                 }
             }
             catch (Exception e) 
@@ -397,21 +348,21 @@ public class ProvinciasAction extends MasterAction implements ModelDriven<Provin
             helper conex = null;
             ResultSet tabla = null;
             
-            try
+            try 
             {
                 conex = new helper();
                 indError = conex.getErrorSQL().trim();
-
+                
                 if(!indError.equals(""))
                 {
                     errores.add(indError);
                 }
                 else
                 {
-                    tabla = conex.executeDataSet("CALL usp_verifDependProv(?,?)", 
-                            new Object[]{ modelo.getIdDep(),modelo.getIdPrvDep() });
+                    tabla = conex.executeDataSet("CALL usp_verifDependMarca(?)", 
+                            new Object[]{ modelo.getIdMar() });
                     indError = conex.getErrorSQL();
-
+                    
                     if(!indError.equals(""))
                     {
                         errores.add(indError);
@@ -423,12 +374,12 @@ public class ProvinciasAction extends MasterAction implements ModelDriven<Provin
                         {
                             cant = tabla.getInt(1);
                         }
-
+                        
                         /* Si no tiene dependencias */
                         if(cant == 0)
                         {
-                            indError = conex.executeNonQuery("CALL usp_dltProvincia(?,?)",
-                                    new Object[]{ modelo.getIdDep(),modelo.getIdPrvDep() });
+                            indError = conex.executeNonQuery("CALL usp_dltMarca(?)",
+                                    new Object[]{ modelo.getIdMar() });
 
                             indError = indError.trim();
                             if(indError.trim().equals(""))
@@ -439,7 +390,7 @@ public class ProvinciasAction extends MasterAction implements ModelDriven<Provin
                         else /* si tiene dependencias */
                         {
                             indError = "error";
-                            errores.add("Existen registros dependientes de la provincia");
+                            errores.add("Existen registros dependientes de la marca");
                         }
                     }
                 }
@@ -466,7 +417,7 @@ public class ProvinciasAction extends MasterAction implements ModelDriven<Provin
     
     public String vrfSeleccion()
     {
-        if(modelo.getIdPrvDep()==0)
+        if(modelo.getIdMar().trim().equals(""))
         {
             indError = "error";
             errores.add("No ha seleccionado ningun registro");
@@ -478,22 +429,21 @@ public class ProvinciasAction extends MasterAction implements ModelDriven<Provin
     /**
      * @return the modelo
      */
-    public Provincias getModelo() {
+    public Marcas getModelo() {
         return modelo;
     }
 
     /**
      * @param modelo the modelo to set
      */
-    public void setModelo(Provincias modelo) {
+    public void setModelo(Marcas modelo) {
         this.modelo = modelo;
     }
 
     /**
-     * @return the listProvincias
+     * @return the listMarcas
      */
-    public ArrayList<Provincias> getListProvincias() {
-        return listProvincias;
+    public ArrayList<Marcas> getListMarcas() {
+        return listMarcas;
     }
-    
 }

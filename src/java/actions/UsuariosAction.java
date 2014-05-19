@@ -12,11 +12,16 @@ package actions;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ModelDriven;
 import conexion.helper;
+import entities.Concesionarios;
 import entities.Generos;
+import entities.Locales;
+import entities.TipoUsuario;
 import entities.Usuarios;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.print.PrintService;
 import javax.print.PrintServiceLookup;
 import utilities.Codificador;
@@ -25,16 +30,17 @@ public class UsuariosAction extends MasterAction implements ModelDriven<Usuarios
 {
     private Map<String, Object> sesion_sga = ActionContext.getContext().getSession();
     //Objeto usuario pricipal
-    private Usuarios usuario = new Usuarios();
+    private Usuarios modelo = new Usuarios();
     //Arreglo de objetos usuario, se utilizará para listar en grillas y/o combobox
     private ArrayList<Usuarios> listUsuarios = new ArrayList<Usuarios>();
-    
-    private ArrayList<Generos> listGeneros = new ArrayList<Generos>();
+    private ArrayList<Concesionarios> listConcesionarios = new ArrayList<Concesionarios>();
+    private ArrayList<Locales> listLocales = new ArrayList<Locales>();
+    private ArrayList<TipoUsuario> listTipoUsuario = new ArrayList<TipoUsuario>();
     
     public Usuarios getModel()
     {
         tituloOpc = "Usuarios";// cambiar por campo titulo cuando este lista la tabla de opciones
-        return usuario;
+        return modelo;
     }
     
     public String imprimir()
@@ -50,23 +56,26 @@ public class UsuariosAction extends MasterAction implements ModelDriven<Usuarios
     
     private void cantUsuariosIndex()
     {
-        usuario.setIdUsu_f(usuario.getIdUsu_f().trim());
-        usuario.setDesUsu_f(usuario.getDesUsu_f().trim());
+        modelo.setIdUsu_f(modelo.getIdUsu_f().trim());
+        modelo.setDesUsu_f(modelo.getDesUsu_f().trim());
         
-        helper conex = new helper();
-        indError = conex.getErrorSQL().trim();
-        if(!indError.equals(""))
+        helper conex = null;
+        ResultSet tabla = null;
+        
+        try
         {
-            errores.add(indError);
-        }
-        else
-        {
-            ResultSet tabla = null;
-            try 
+            conex = new helper();
+            indError = conex.getErrorSQL().trim();
+            
+            if(!indError.equals(""))
+            {
+                errores.add(indError);
+            }
+            else
             {
                 tabla = conex.executeDataSet("CALL usp_cantUsuariosIndex(?,?,?)", 
-                        new Object[]{ usuario.getIdUsu_f(),usuario.getDesUsu_f(),
-                            usuario.getEdoUsu_f() });
+                        new Object[]{ modelo.getIdUsu_f(),modelo.getDesUsu_f(),
+                            modelo.getEdoUsu_f() });
                 indError = conex.getErrorSQL();
                 if(!indError.equals(""))
                 {
@@ -78,52 +87,50 @@ public class UsuariosAction extends MasterAction implements ModelDriven<Usuarios
                     {
                         cantReg = tabla.getInt(1);
                     }
-                    
-                    if(cantReg==0)
-                        curPag = 0;
                 }
             }
+        }
+        catch (Exception e) 
+        {
+            indError = "error";
+            errores.add(e.getMessage());
+        }
+        finally
+        {
+            try 
+            {
+                tabla.close();
+                conex.returnConnect();
+            } 
             catch (Exception e) 
             {
                 indError = "error";
                 errores.add(e.getMessage());
-            }
-            finally
-            {
-                try 
-                {
-                    tabla.close();
-                    conex.returnConnect();
-                } 
-                catch (Exception e) 
-                {
-                    indError = "error";
-                    errores.add(e.getMessage());
-                }
             }
         }
     }
     
     private void listUsuariosIndex()
     {
-        usuario.setIdUsu_f(usuario.getIdUsu_f().trim());
-        usuario.setDesUsu_f(usuario.getDesUsu_f().trim());
+        modelo.setIdUsu_f(modelo.getIdUsu_f().trim());
+        modelo.setDesUsu_f(modelo.getDesUsu_f().trim());
         
-        helper conex = new helper();
-        indError = conex.getErrorSQL().trim();
-        if(!indError.equals(""))
+        helper conex = null;
+        ResultSet tabla = null;
+        
+        try
         {
-            errores.add(indError);
-        }
-        else
-        {
-            ResultSet tabla = null;
-
-            try 
+            conex = new helper();
+            indError = conex.getErrorSQL().trim();
+            if(!indError.equals(""))
+            {
+                errores.add(indError);
+            }
+            else
             {
                 tabla = conex.executeDataSet("CALL usp_listUsuariosIndex(?,?,?,?,?)", 
-                        new Object[]{ usuario.getIdUsu_f(),usuario.getDesUsu_f(),
-                            usuario.getEdoUsu_f(),getCurPag()*getRegPag(), getRegPag()});
+                        new Object[]{ modelo.getIdUsu_f(),modelo.getDesUsu_f(),
+                            modelo.getEdoUsu_f(),getCurPag()*getRegPag(), getRegPag()});
                 indError = conex.getErrorSQL().trim();
                 if(!indError.equals(""))
                 {
@@ -142,23 +149,23 @@ public class UsuariosAction extends MasterAction implements ModelDriven<Usuarios
                     }
                 }
             }
+        }
+        catch (Exception e) 
+        {
+            indError = "error";
+            errores.add(e.getMessage());
+        }
+        finally
+        {
+            try 
+            {
+                tabla.close();
+                conex.returnConnect();
+            }
             catch (Exception e) 
             {
                 indError = "error";
                 errores.add(e.getMessage());
-            }
-            finally
-            {
-                try 
-                {
-                    tabla.close();
-                    conex.returnConnect();
-                }
-                catch (Exception e) 
-                {
-                    indError = "error";
-                    errores.add(e.getMessage());
-                }
             }
         }
     }
@@ -167,7 +174,17 @@ public class UsuariosAction extends MasterAction implements ModelDriven<Usuarios
     public String execute()
     {
         urlPaginacion = "usuarios/Usuario";
+        
+        varReturnProcess(0);
+        if(!listVarReturn.isEmpty())
+        {
+            curPagVis = Integer.parseInt(listVarReturn.get(0).toString().trim());
+            modelo.setIdUsu_f(listVarReturn.get(1).toString().trim());
+            modelo.setDesUsu_f(listVarReturn.get(2).toString().trim());
+        }
+        
         cantUsuariosIndex();
+        verifPag();
         listUsuariosIndex();
         
         return SUCCESS;
@@ -175,26 +192,177 @@ public class UsuariosAction extends MasterAction implements ModelDriven<Usuarios
     
     private void populateForm()
     {
-        listGeneros.add(new Generos("M", "Masculino"));
-        listGeneros.add(new Generos("F", "Femenino"));
+        helper conex = null;
+        ResultSet tabla = null;
+        
+        try
+        {
+            conex = new helper();
+            indError = conex.getErrorSQL();
+
+            if(!indError.equals(""))
+            {
+                errores.add(indError);
+            }
+            else
+            {
+                tabla = conex.executeDataSet("CALL usp_listConcesionarios()", new Object[]{});
+
+                indError = conex.getErrorSQL();
+
+                if(!indError.equals(""))
+                {
+                    errores.add(indError);
+                }
+                else
+                {
+                    Concesionarios obj;
+                    while(tabla.next())
+                    {
+                        errores.add(tabla.getString("desCon"));
+                        obj = new Concesionarios();
+                        obj.setIdCon(tabla.getString("idCon"));
+                        obj.setDesCon(tabla.getString("desCon"));
+                        listConcesionarios.add(obj);
+                    }
+                }
+
+                tabla = null;
+                tabla = conex.executeDataSet("CALL usp_listLocalesConces(?)", 
+                        new Object[]{ modelo.getIdCon() });
+
+                indError = conex.getErrorSQL();
+
+                if(!indError.equals(""))
+                {
+                    errores.add(indError);
+                }
+                else
+                {
+                    Locales obj;
+                    while(tabla.next())
+                    {
+                        obj = new Locales();
+                        obj.setIdLocCon(tabla.getString("idLocCon"));
+                        obj.setDesLocCon(tabla.getString("desLocCon"));
+                        listLocales.add(obj);
+                    }
+                }
+
+                tabla = null;
+                tabla = conex.executeDataSet("CALL usp_listTipoUsuario()", new Object[]{});
+
+                indError = conex.getErrorSQL();
+
+                if(!indError.equals(""))
+                {
+                    errores.add(indError);
+                }
+                else
+                {
+                    TipoUsuario obj;
+                    while(tabla.next())
+                    {
+                        obj = new TipoUsuario();
+                        obj.setIdTipUsu(tabla.getString("idTipUsu"));
+                        obj.setDesTipUsu(tabla.getString("desTipUsu"));
+                        listTipoUsuario.add(obj);
+                    }
+                }
+            }
+        }
+        catch (Exception e) 
+        {
+            indError = "error";
+            errores.add(e.getMessage().trim());
+        }
+        finally
+        {
+            try 
+            {
+                tabla.close();
+                conex.returnConnect();
+            }
+            catch (Exception e) 
+            {}
+        }
+    }
+    
+    public String getLocales()
+    {
+        helper conex = null;
+        ResultSet tabla = null;
+        
+        try
+        {
+            conex = new helper();
+            indError = conex.getErrorSQL();
+
+            if(!indError.equals(""))
+            {
+                errores.add(indError);
+            }
+            else
+            {
+                tabla = conex.executeDataSet("CALL usp_listLocalesConces(?)",
+                            new Object[]{ modelo.getIdCon() });
+
+                indError = conex.getErrorSQL();
+
+                if(!indError.equals(""))
+                {
+                    errores.add(indError);
+                }
+                else
+                {
+                    Locales obj;
+                    while(tabla.next())
+                    {
+                        obj = new Locales();
+                        obj.setIdLocCon(tabla.getString("idLocCon"));
+                        obj.setDesLocCon(tabla.getString("desLocCon"));
+                        listLocales.add(obj);
+                    }
+                }
+            }
+        }
+        catch (Exception e) 
+        {
+            indError="error";
+            errores.add(e.getMessage());
+        }
+        finally
+        {
+            try 
+            {
+                tabla.close();
+                conex.returnConnect();
+            }
+            catch (Exception e) 
+            {}
+        }
+        
+        return "getLocales";
     }
     
     private void getDatosUsuario()
     {
-        helper conex = new helper();
-        indError = conex.getErrorSQL().trim();
-        if(!indError.equals(""))
+        helper conex = null;
+        ResultSet tabla = null;
+        
+        try
         {
-            errores.add(indError);
-        }
-        else
-        {
-            ResultSet tabla = null;
-
-            try 
+            conex = new helper();
+            indError = conex.getErrorSQL().trim();
+            
+            if(!indError.equals(""))
+            {
+                errores.add(indError);
+            }
+            else
             {
                 tabla = conex.executeDataSet("CALL usp_getDatosUsuario(?)", 
-                        new Object[]{ usuario.getIdUsu() });
+                        new Object[]{ modelo.getIdUsu() });
                 indError = conex.getErrorSQL().trim();
                 if(!indError.equals(""))
                 {
@@ -204,30 +372,32 @@ public class UsuariosAction extends MasterAction implements ModelDriven<Usuarios
                 {
                     while(tabla.next())
                     {
-                        usuario.setIdUsu(tabla.getString("idUsu"));
-                        usuario.setDesApeUsu(tabla.getString("desApeUsu"));
-                        usuario.setDesNomUsu(tabla.getString("desNomUsu"));
-                        usuario.setOtrGenUsu(tabla.getString("otrGenUsu"));
+                        modelo.setIdUsu(tabla.getString("idUsu"));
+                        modelo.setDesApeUsu(tabla.getString("desApeUsu"));
+                        modelo.setDesNomUsu(tabla.getString("desNomUsu"));
+                        modelo.setIdTipUsu(tabla.getInt("idTipUsu"));
+                        modelo.setIdCon(tabla.getInt("idCon"));
+                        modelo.setIdLocCon(tabla.getInt("idLocCon"));
                     }
                 }
+            }
+        }
+        catch (Exception e) 
+        {
+            indError = "error";
+            errores.add(e.getMessage());
+        }
+        finally
+        {
+            try 
+            {
+                tabla.close();
+                conex.returnConnect();
             }
             catch (Exception e) 
             {
                 indError = "error";
                 errores.add(e.getMessage());
-            }
-            finally
-            {
-                try 
-                {
-                    tabla.close();
-                    conex.returnConnect();
-                }
-                catch (Exception e) 
-                {
-                    indError = "error";
-                    errores.add(e.getMessage());
-                }
             }
         }
     }
@@ -240,6 +410,8 @@ public class UsuariosAction extends MasterAction implements ModelDriven<Usuarios
         }
         else
         {
+            varReturnProcess(1);
+            
             if(opcion.equals("A"))
             {
                 formURL = baseURL+"usuarios/grabarUsuario";
@@ -247,7 +419,7 @@ public class UsuariosAction extends MasterAction implements ModelDriven<Usuarios
 
             if(opcion.equals("M"))
             {
-                if(usuario.getIdUsu().trim().equals(""))
+                if(modelo.getIdUsu().trim().equals(""))
                     indErrParm = "error";
                 else
                 {
@@ -264,81 +436,102 @@ public class UsuariosAction extends MasterAction implements ModelDriven<Usuarios
     
     public String grabar()
     {
-        usuario.setIdUsu(usuario.getIdUsu().trim());
-        usuario.setDesNomUsu(usuario.getDesNomUsu().trim());
-        usuario.setDesApeUsu(usuario.getDesApeUsu().trim());
-        usuario.setOtrPwdUsu(usuario.getOtrPwdUsu().trim());
+        modelo.setIdUsu(modelo.getIdUsu().trim());
+        modelo.setDesNomUsu(modelo.getDesNomUsu().trim());
+        modelo.setDesApeUsu(modelo.getDesApeUsu().trim());
+        modelo.setOtrClaUsu(modelo.getOtrClaUsu().trim());
         
-        if(usuario.getIdUsu().equals(""))
+        if(modelo.getIdUsu().equals(""))
         {
             indError = "error";
             errores.add("Ingrese el número de DNI");
         }
         else
         {
-            if(usuario.getIdUsu().length()!=8)
+            if(modelo.getIdUsu().length()!=8)
             {
                 indError = "error";
                 errores.add("El DNI ingresado no es válido");
             }
         }
         
-        if(usuario.getDesApeUsu().equals(""))
+        if(modelo.getDesApeUsu().equals(""))
         {
             indError = "error";
             errores.add("Ingrese los apellidos");
         }
         
-        if(usuario.getDesNomUsu().equals(""))
+        if(modelo.getDesNomUsu().equals(""))
         {
             indError = "error";
             errores.add("Ingrese los nombres ");
         }
         
-        if(usuario.getOtrPwdUsu().equals(""))
+        if(modelo.getIdTipUsu()==0)
+        {
+            indError = "error";
+            errores.add("Seleccione el tipo de usuario");
+        }
+        
+        if(modelo.getOtrClaUsu().equals(""))
         {
             indError = "error";
             errores.add("Debe ingresar la contraseña");
         }
         
+        if(modelo.getIdCon()==0)
+        {
+            indError="error";
+            errores.add("Seleccione un concesionario");
+        }
+        
+        if(modelo.getIdLocCon()==0 && modelo.getIdCon()!=0)
+        {
+            indError="error";
+            errores.add("Seleccione un local");
+        }
+        
         if(indError.equals(""))
         {
-            helper conex = new helper();
+            helper conex = null;
             
-            indError = conex.getErrorSQL().trim();
-            if(!indError.equals(""))
+            try
             {
-                errores.add(indError);
-            }
-            else
-            {
-                String pwd = "";
-                try 
+                conex = new helper();
+                indError = conex.getErrorSQL().trim();
+
+                if(!indError.equals(""))
                 {
-                    byte[] md5_bytes = Codificador.getEncoded(usuario.getOtrPwdUsu(), "md5").getBytes();
+                    errores.add(indError);
+                }
+                else
+                {
+                    String pwd = "";
+
+                    byte[] md5_bytes = Codificador.getEncoded(modelo.getOtrClaUsu(), "md5").getBytes();
                     for (byte b : md5_bytes)
                     {
                         pwd += Integer.toHexString(Integer.parseInt(Byte.toString((byte) ((b & 0x0F0) >> 4)))).toString();
                     }
 
-                    indError = conex.executeNonQuery("CALL usp_insUsuario(?,?,?,?,?)", 
-                            new Object[]{ usuario.getIdUsu(),usuario.getDesApeUsu(),usuario.getDesNomUsu(),
-                                pwd,usuario.getOtrGenUsu()});
-                    indError = indError.trim();
+                    indError = conex.executeNonQuery("CALL usp_insUsuario(?,?,?,?,?,?,?)", 
+                            new Object[]{ modelo.getIdUsu(),modelo.getDesApeUsu(),modelo.getDesNomUsu(),modelo.getIdTipUsu(),
+                                pwd,modelo.getIdCon(),modelo.getIdLocCon() });
+                    
                     if(!indError.trim().equals(""))
                     {
                         errores.add(indError);
                     }
                 }
-                catch (Exception e) 
-                {
-                    indError = "error";
-                    errores.add(e.getMessage());
-                }
-                finally
-                {
-                    conex.returnConnect();
-                }
+            }
+            catch (Exception e) 
+            {
+                indError = "error";
+                errores.add(e.getMessage());
+            }
+            finally
+            {
+                conex.returnConnect();
             }
         }
         
@@ -347,65 +540,85 @@ public class UsuariosAction extends MasterAction implements ModelDriven<Usuarios
     
     public String actualizar()
     {
-        usuario.setIdUsu(usuario.getIdUsu().trim());
-        usuario.setDesNomUsu(usuario.getDesNomUsu().trim());
-        usuario.setDesApeUsu(usuario.getDesApeUsu().trim());
-        usuario.setOtrPwdUsu(usuario.getOtrPwdUsu().trim());
+        modelo.setIdUsu(modelo.getIdUsu().trim());
+        modelo.setDesNomUsu(modelo.getDesNomUsu().trim());
+        modelo.setDesApeUsu(modelo.getDesApeUsu().trim());
+        modelo.setOtrClaUsu(modelo.getOtrClaUsu().trim());
         
-        if(usuario.getDesApeUsu().equals(""))
+        if(modelo.getDesApeUsu().equals(""))
         {
             indError = "error";
             errores.add("Ingrese los apellidos");
         }
         
-        if(usuario.getDesNomUsu().equals(""))
+        if(modelo.getDesNomUsu().equals(""))
         {
             indError = "error";
             errores.add("Ingrese los nombres ");
         }
         
+        if(modelo.getIdTipUsu()==0)
+        {
+            indError = "error";
+            errores.add("Seleccione el tipo de usuario");
+        }
+        
+        if(modelo.getIdCon()==0)
+        {
+            indError="error";
+            errores.add("Seleccione un concesionario");
+        }
+        
+        if(modelo.getIdLocCon()==0 && modelo.getIdCon()!=0)
+        {
+            indError="error";
+            errores.add("Seleccione un local");
+        }
+        
         if(indError.equals(""))
         {
-            helper conex = new helper();
+            helper conex = null;
             
-            indError = conex.getErrorSQL().trim();
-            if(!indError.equals(""))
+            try
             {
-                errores.add(indError);
-            }
-            else
-            {
-                String pwd = "";
-                try 
+                conex = new helper();
+                indError = conex.getErrorSQL().trim();
+
+                if(!indError.equals(""))
                 {
-                    if(!usuario.getOtrPwdUsu().equals(""))
+                    errores.add(indError);
+                }
+                else
+                {
+                    String pwd = "";
+
+                    if(!modelo.getOtrClaUsu().equals(""))
                     {
-                        byte[] md5_bytes = Codificador.getEncoded(usuario.getOtrPwdUsu(), "md5").getBytes();
+                        byte[] md5_bytes = Codificador.getEncoded(modelo.getOtrClaUsu(), "md5").getBytes();
                         for (byte b : md5_bytes)
                         {
                             pwd += Integer.toHexString(Integer.parseInt(Byte.toString((byte) ((b & 0x0F0) >> 4)))).toString();
                         }
                     }
 
-                    indError = conex.executeNonQuery("CALL usp_updUsuario(?,?,?,?,?)", 
-                            new Object[]{ usuario.getIdUsu(),usuario.getDesApeUsu(),usuario.getDesNomUsu(),
-                                pwd,usuario.getOtrGenUsu()});
+                    indError = conex.executeNonQuery("CALL usp_updUsuario(?,?,?,?,?,?,?)", 
+                            new Object[]{ modelo.getIdUsu(),modelo.getDesApeUsu(),modelo.getDesNomUsu(),modelo.getIdTipUsu(),
+                                pwd,modelo.getIdCon(),modelo.getIdLocCon() });
 
-                    indError = indError.trim();
                     if(!indError.trim().equals(""))
                     {
                         errores.add(indError);
                     }
                 }
-                catch (Exception e) 
-                {
-                    indError = "error";
-                    errores.add(e.getMessage());
-                }
-                finally
-                {
-                    conex.returnConnect();
-                }
+            }
+            catch (Exception e) 
+            {
+                indError = "error";
+                errores.add(e.getMessage());
+            }
+            finally
+            {
+                conex.returnConnect();
             }
         }
         
@@ -414,39 +627,40 @@ public class UsuariosAction extends MasterAction implements ModelDriven<Usuarios
     
     public String actEstado()
     {
-        usuario.setIdUsu(usuario.getIdUsu().trim());
+        modelo.setIdUsu(modelo.getIdUsu().trim());
         
         if(indError.equals(""))
         {
-            helper conex = new helper();
+            helper conex = null;
             
-            indError = conex.getErrorSQL().trim();
-            if(!indError.equals(""))
+            try
             {
-                errores.add(indError);
-            }
-            else
-            {
-                try 
+                conex = new helper();
+                indError = conex.getErrorSQL().trim();
+
+                if(!indError.equals(""))
+                {
+                    errores.add(indError);
+                }
+                else
                 {
                     indError = conex.executeNonQuery("CALL usp_updEdoUsuario(?,?)", 
-                            new Object[]{ usuario.getIdUsu(),usuario.getEdoUsu() });
-                    
-                    indError = indError.trim();
+                            new Object[]{ modelo.getIdUsu(),modelo.getEdoUsu() });
+
                     if(!indError.trim().equals(""))
                     {
                         errores.add(indError);
                     }
                 }
-                catch (Exception e) 
-                {
-                    indError = "error";
-                    errores.add(e.getMessage());
-                }
-                finally
-                {
-                    conex.returnConnect();
-                }
+            }
+            catch (Exception e) 
+            {
+                indError = "error";
+                errores.add(e.getMessage());
+            }
+            finally
+            {
+                conex.returnConnect();
             }
         }
         
@@ -455,39 +669,40 @@ public class UsuariosAction extends MasterAction implements ModelDriven<Usuarios
     
     public String eliminar()
     {
-        usuario.setIdUsu(usuario.getIdUsu().trim());
+        modelo.setIdUsu(modelo.getIdUsu().trim());
         
         if(opcion.trim().equals("E"))
         {
-            helper conex = new helper();
+            helper conex = null;
+            
+            try
+            {
+                conex = new helper();
+                indError = conex.getErrorSQL().trim();
 
-            indError = conex.getErrorSQL().trim();
-            if(!indError.equals(""))
-            {
-                errores.add(indError);
-            }
-            else
-            {
-                try 
+                if(!indError.equals(""))
+                {
+                    errores.add(indError);
+                }
+                else
                 {
                     indError = conex.executeNonQuery("CALL usp_dltUsuario(?)", 
-                            new Object[]{ usuario.getIdUsu() });
-
-                    indError = indError.trim();
+                            new Object[]{ modelo.getIdUsu() });
+                    
                     if(indError.trim().equals(""))
                     {
                         errores.add(indError);
                     }
                 }
-                catch (Exception e) 
-                {
-                    indError = "error";
-                    errores.add(e.getMessage());
-                }
-                finally
-                {
-                    conex.returnConnect();
-                }
+            }
+            catch (Exception e) 
+            {
+                indError = "error";
+                errores.add(e.getMessage());
+            }
+            finally
+            {
+                conex.returnConnect();
             }
         }
         
@@ -496,8 +711,8 @@ public class UsuariosAction extends MasterAction implements ModelDriven<Usuarios
     
     public String vrfSeleccion()
     {
-        usuario.setIdUsu(usuario.getIdUsu());
-        if(usuario.getIdUsu().equals(""))
+        modelo.setIdUsu(modelo.getIdUsu());
+        if(modelo.getIdUsu().equals(""))
         {
             indError = "error";
             errores.add("No ha seleccionado ningun registro");
@@ -506,18 +721,160 @@ public class UsuariosAction extends MasterAction implements ModelDriven<Usuarios
         return "vrfSeleccion";
     }
     
+    public String updPassword()
+    {
+        if(!opcion.equals("F"))
+        {
+            if(modelo.getOtrClaUsu().trim().equals(""))
+            {
+                errores.add("Ingrese la contraseña actual");
+                indError += "error";
+            }
+            if(modelo.getOtrNueClaUsu().trim().equals(""))
+            {
+                errores.add("Ingrese la nueva contraseña");
+                indError += "error";
+            }
+            if(modelo.getOtrNueClaUsu2().trim().equals(""))
+            {
+                errores.add("Confirme la nueva contraseña");
+                indError += "error";
+            }
+            
+            if(indError.trim().equals(""))
+            {
+                helper conex = null;
+                ResultSet tabla = null;
+            
+                try
+                {
+                    conex = new helper();
+                    
+                    String clave="";
+                    byte [] md5_bytes_cla = Codificador.getEncoded(modelo.getOtrClaUsu().trim(), "md5").getBytes();
+                    for(byte b: md5_bytes_cla) 
+                    {
+                        clave += Integer.toHexString(Integer.parseInt(Byte.toString((byte)((b & 0x0F0) >> 4)))).toString();
+                    }
+
+                    tabla = null;
+                    tabla = conex.executeDataSet("CALL usp_verifUsuarioPassword(?,?)", 
+                            new Object[]{ sesion_sga.get("ses_idusu"),clave });
+                    while(tabla.next())
+                    {
+                        if(tabla.getInt(1)==0)
+                        {
+                            errores.add("La contraseña actual no es correcta");
+                            indError += "error";
+                        }
+                    }
+                    
+                    if(modelo.getOtrNueClaUsu().trim().length()<8 || modelo.getOtrNueClaUsu2().trim().length()<8)
+                    {
+                        errores.add("La nueva contraseña debe tener al menos 8 caracteres");
+                        indError += "error";
+                    }
+                    else
+                    {
+                        Pattern pat = null;
+                        Matcher mat = null;
+                        pat = Pattern.compile("^[a-z0-9]{8,}$");
+
+                        mat = pat.matcher(modelo.getOtrNueClaUsu().trim());
+                        if (!mat.find()) 
+                        {
+                            errores.add("La nueva contraseña ingresada no es válida");
+                            indError += "error";
+                        }
+                    }
+                    
+                    if(indError.trim().equals(""))
+                    {   
+                        if(!modelo.getOtrNueClaUsu().trim().equals(modelo.getOtrNueClaUsu2().trim()))
+                        {
+                            errores.add("La nueva contraseña ingresada no es correcta");
+                            indError += "error";
+                        }
+
+                        if(indError.trim().equals(""))
+                        {
+                            String clavechg="";
+                            byte [] md5_bytes_chg = Codificador.getEncoded(modelo.getOtrNueClaUsu().trim(), "md5").getBytes();
+                            for(byte b: md5_bytes_chg) 
+                            {
+                                clavechg += Integer.toHexString(Integer.parseInt(Byte.toString((byte)((b & 0x0F0) >> 4)))).toString();
+                            }
+
+                            tabla = null;
+                            tabla = conex.executeDataSet("CALL usp_verifUltPassUsu(?,?)", 
+                                    new Object[]{ sesion_sga.get("ses_idusu"),clavechg });
+                            int indicador=0;
+                            while(tabla.next())
+                            {
+                                indicador = tabla.getInt(1);
+                            }
+
+                            if(indicador==0)
+                            {
+                                indError += conex.executeNonQuery("CALL usp_updPasswordUsuario(?,?)", 
+                                        new Object[]{ sesion_sga.get("ses_idusu"),clavechg });
+
+                                if(!indError.trim().equals(""))
+                                {
+                                    errores.add(indError);
+                                }
+                            }
+                            else
+                            {
+                                //errores.add("No puede utilizar una contraseña que haya registrado antes");
+                                errores.add("La contraseña no puede ser igual a las 3 últimas");
+                                indError += "error";
+                            }
+                        }
+                    }
+                }
+                catch(Exception ex)
+                {
+                    errores.add(ex.getMessage());
+                    indError += "error";
+                }
+                finally
+                {
+                    try 
+                    {
+                        tabla.close();
+                        conex.returnConnect();
+                    } 
+                    catch (Exception e) 
+                    {}
+                }
+            }
+        }
+        
+        return "updPassword";
+    }
+    
+    public String updVarSesionCaducCla()
+    {
+        sesion_sga.put("ses_indclares", "");
+        sesion_sga.put("ses_indmencad", "");
+        sesion_sga.put("ses_candiacad", 0);
+        
+        return "updVarSesionCaducCla";
+    }
+    
     /**
      * @return the usuario
      */
-    public Usuarios getUsuario() {
-        return usuario;
+    public Usuarios getModelo() {
+        return modelo;
     }
 
     /**
      * @param usuario the usuario to set
      */
-    public void setUsuario(Usuarios usuario) {
-        this.usuario = usuario;
+    public void setModelo(Usuarios modelo) {
+        this.modelo = modelo;
     }
 
     /**
@@ -528,9 +885,23 @@ public class UsuariosAction extends MasterAction implements ModelDriven<Usuarios
     }
 
     /**
-     * @return the listGeneros
+     * @return the listConcesionarios
      */
-    public ArrayList<Generos> getListGeneros() {
-        return listGeneros;
+    public ArrayList<Concesionarios> getListConcesionarios() {
+        return listConcesionarios;
+    }
+
+    /**
+     * @return the listLocales
+     */
+    public ArrayList<Locales> getListLocales() {
+        return listLocales;
+    }
+
+    /**
+     * @return the listTipoUsuario
+     */
+    public ArrayList<TipoUsuario> getListTipoUsuario() {
+        return listTipoUsuario;
     }
 }

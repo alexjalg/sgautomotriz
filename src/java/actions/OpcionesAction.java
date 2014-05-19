@@ -30,24 +30,25 @@ public class OpcionesAction extends MasterAction implements ModelDriven<Opciones
     
     private void cantOpcionesIndex()
     {
-        helper conex = new helper();
-        indError = conex.getErrorSQL();
-        
-        if(!indError.equals(""))
-        {
-            errores.add(indError);
-        }
-        else
-        {
-            ResultSet tabla = null;
+        helper conex = null;
+        ResultSet tabla = null;    
             
-            try 
+        try
+        {
+            conex = new helper();
+            indError = conex.getErrorSQL();
+
+            if(!indError.equals(""))
+            {
+                errores.add(indError);
+            }
+            else
             {
                 tabla = conex.executeDataSet("CALL usp_cantOpcionesIndex(?)", 
                         new Object[]{ modelo.getDesOpc_f() });
-                
+
                 indError = conex.getErrorSQL();
-                
+
                 if(!indError.equals(""))
                 {
                     errores.add(indError);
@@ -60,44 +61,45 @@ public class OpcionesAction extends MasterAction implements ModelDriven<Opciones
                     }
                 }
             }
+        }
+        catch (Exception e) 
+        {
+            indError = "error";
+            errores.add(e.getMessage());
+        }
+        finally
+        {
+            try 
+            {
+                tabla.close();
+                conex.returnConnect();
+            }
             catch (Exception e) 
-            {
-                indError = "error";
-                errores.add(e.getMessage());
-            }
-            finally
-            {
-                try 
-                {
-                    tabla.close();
-                    conex.returnConnect();
-                }
-                catch (Exception e) 
-                {}
-            }
+            {}
         }
     }
     
     private void listOpcionesIndex()
     {
-        helper conex = new helper();
-        indError = conex.getErrorSQL();
+        helper conex = null;
+        ResultSet tabla = null;
         
-        if(!indError.equals(""))
+        try
         {
-            errores.add(indError);
-        }
-        else
-        {
-            ResultSet tabla = null;
-            
-            try 
+            conex = new helper();
+            indError = conex.getErrorSQL();
+
+            if(!indError.equals(""))
+            {
+                errores.add(indError);
+            }
+            else
             {
                 tabla = conex.executeDataSet("CALL usp_listOpcionesIndex(?,?,?)", 
                         new Object[]{ modelo.getDesOpc_f(),getCurPag()*getRegPag(),getRegPag() });
-                
+
                 indError = conex.getErrorSQL();
-                
+
                 if(!indError.equals(""))
                 {
                     errores.add(indError);
@@ -115,29 +117,37 @@ public class OpcionesAction extends MasterAction implements ModelDriven<Opciones
                     }
                 }
             }
+        }
+        catch (Exception e) 
+        {
+            indError = "error";
+            errores.add(e.getMessage());
+        }
+        finally
+        {
+            try 
+            {
+                tabla.close();
+                conex.returnConnect();
+            }
             catch (Exception e) 
-            {
-                indError = "error";
-                errores.add(e.getMessage());
-            }
-            finally
-            {
-                try 
-                {
-                    tabla.close();
-                    conex.returnConnect();
-                }
-                catch (Exception e) 
-                {}
-            }
+            {}
         }
     }
     
     @Override
     public String execute()
     {
-        modelo.setDesOpc_f(modelo.getDesOpc_f().trim());
         urlPaginacion = "opciones/Opcion";
+        
+        modelo.setDesOpc_f(modelo.getDesOpc_f().trim());
+        
+        varReturnProcess(0);
+        if(!listVarReturn.isEmpty())
+        {
+            curPagVis = Integer.parseInt(listVarReturn.get(0).toString().trim());
+            modelo.setDesOpc_f(listVarReturn.get(1).toString().trim());
+        }
         
         cantOpcionesIndex();
         verifPag();
@@ -154,6 +164,8 @@ public class OpcionesAction extends MasterAction implements ModelDriven<Opciones
         }
         else
         {
+            varReturnProcess(1);
+            
             if(opcion.equals("A"))
             {
                 formURL = baseURL+"opciones/grabarOpcion";
@@ -173,23 +185,24 @@ public class OpcionesAction extends MasterAction implements ModelDriven<Opciones
     
     public void getDatosOpcion()
     {
-        helper conex = new helper();
-        indError = conex.getErrorSQL();
+        helper conex = null;
+        ResultSet tabla = null;
         
-        if(!indError.equals(""))
+        try
         {
-            errores.add(indError);
-        }
-        else
-        {
-            ResultSet tabla = null;
-            
-            try 
+            conex = new helper();
+            indError = conex.getErrorSQL();
+
+            if(!indError.equals(""))
+            {
+                errores.add(indError);
+            }
+            else
             {
                 tabla = conex.executeDataSet("CALL usp_getDatosOpcion(?)", 
                         new Object[]{ modelo.getIdOpc() });
                 indError = conex.getErrorSQL();
-                
+
                 if(!indError.equals(""))
                 {
                     errores.add(indError);
@@ -204,21 +217,21 @@ public class OpcionesAction extends MasterAction implements ModelDriven<Opciones
                     }
                 }
             }
+        }
+        catch (Exception e) 
+        {
+            indError = "error";
+            errores.add(e.getMessage());
+        }
+        finally
+        {
+            try 
+            {
+                tabla.close();
+                conex.returnConnect();
+            }
             catch (Exception e) 
-            {
-                indError = "error";
-                errores.add(e.getMessage());
-            }
-            finally
-            {
-                try 
-                {
-                    tabla.close();
-                    conex.returnConnect();
-                }
-                catch (Exception e) 
-                {}
-            }
+            {}
         }
     }
     
@@ -227,23 +240,28 @@ public class OpcionesAction extends MasterAction implements ModelDriven<Opciones
         modelo.setDesModu(modelo.getDesModu().trim());
         modelo.setDesUrlOpc(modelo.getDesUrlOpc().trim());
         
-        helper conex = new helper();
-        indError = conex.getErrorSQL();
-        
-        if(!indError.equals(""))
+        if(indError.equals(""))
         {
-            errores.add(indError);
-        }
-        else
-        {
-            try 
+            helper conex = null;
+            
+            try
             {
-                indError = conex.executeNonQuery("CALL usp_insOpcion(?,?)", 
-                        new Object[]{ modelo.getDesOpc(),modelo.getDesUrlOpc() });
-                
+                conex = new helper();
+                indError = conex.getErrorSQL();
+
                 if(!indError.equals(""))
                 {
                     errores.add(indError);
+                }
+                else
+                {
+                    indError = conex.executeNonQuery("CALL usp_insOpcion(?,?)", 
+                            new Object[]{ modelo.getDesOpc(),modelo.getDesUrlOpc() });
+
+                    if(!indError.equals(""))
+                    {
+                        errores.add(indError);
+                    }
                 }
             }
             catch (Exception e) 
@@ -265,25 +283,29 @@ public class OpcionesAction extends MasterAction implements ModelDriven<Opciones
         modelo.setDesModu(modelo.getDesModu().trim());
         modelo.setDesUrlOpc(modelo.getDesUrlOpc());
         
-        helper conex = new helper();
-        
-        indError = conex.getErrorSQL();
-        
-        if(!indError.equals(""))
+        if(indError.equals(""))
         {
-            errores.add(indError);
-        }
-        else
-        {
-            try 
+            helper conex = null;
+            
+            try
             {
-                indError = conex.executeNonQuery("CALL usp_updOpcion(?,?,?)",
-                        new Object[]{ Integer.parseInt(modelo.getIdOpc()),modelo.getDesOpc(),
-                            modelo.getDesUrlOpc() });
-                
+                conex = new helper();
+                indError = conex.getErrorSQL();
+
                 if(!indError.equals(""))
                 {
                     errores.add(indError);
+                }
+                else
+                {
+                    indError = conex.executeNonQuery("CALL usp_updOpcion(?,?,?)",
+                            new Object[]{ Integer.parseInt(modelo.getIdOpc()),modelo.getDesOpc(),
+                                modelo.getDesUrlOpc() });
+
+                    if(!indError.equals(""))
+                    {
+                        errores.add(indError);
+                    }
                 }
             }
             catch (Exception e) 
@@ -304,22 +326,24 @@ public class OpcionesAction extends MasterAction implements ModelDriven<Opciones
     {
         if(opcion.trim().equals("E"))
         {
-            helper conex = new helper();
-
-            indError = conex.getErrorSQL().trim();
-            if(!indError.equals(""))
+            helper conex = null;
+            ResultSet tabla = null;
+            
+            try
             {
-                errores.add(indError);
-            }
-            else
-            {
-                ResultSet tabla = null;
-                try 
+                conex = new helper();
+                indError = conex.getErrorSQL().trim();
+                
+                if(!indError.equals(""))
+                {
+                    errores.add(indError);
+                }
+                else
                 {
                     tabla = conex.executeDataSet("CALL usp_verifDependOpcion(?)", 
                             new Object[]{ Integer.parseInt(modelo.getIdOpc()) });
                     indError = conex.getErrorSQL();
-                    
+
                     if(!indError.equals(""))
                     {
                         errores.add(indError);
@@ -331,7 +355,7 @@ public class OpcionesAction extends MasterAction implements ModelDriven<Opciones
                         {
                             cant = tabla.getInt(1);
                         }
-                        
+
                         /* Si no tiene dependencias */
                         if(cant == 0)
                         {
@@ -351,21 +375,21 @@ public class OpcionesAction extends MasterAction implements ModelDriven<Opciones
                         }
                     }
                 }
+            }
+            catch (Exception e) 
+            {
+                indError = "error";
+                errores.add(e.getMessage());
+            }
+            finally
+            {
+                try 
+                {
+                    tabla.close();
+                    conex.returnConnect();
+                }
                 catch (Exception e) 
-                {
-                    indError = "error";
-                    errores.add(e.getMessage());
-                }
-                finally
-                {
-                    try 
-                    {
-                        tabla.close();
-                        conex.returnConnect();
-                    }
-                    catch (Exception e) 
-                    {}
-                }
+                {}
             }
         }
         

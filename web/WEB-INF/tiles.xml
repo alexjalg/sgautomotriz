@@ -11,11 +11,9 @@
         <put-attribute name="body" value="/template/body.jsp" />	
     </definition>
 
-
     <definition name="inicio" extends="baseLayout">
         <put-attribute name="body" value="/inicio.jsp" />
     </definition>
-    
     
     <!-- USUARIOS -->
     <definition name="mant-usuarios-index" extends="baseLayout">
@@ -97,5 +95,31 @@
     </definition>
     <definition name="mant-permisos-subopcionesAdicionar" extends="baseLayout">
         <put-attribute name="body" value="/mantenimientos/permisos/subopcionesAdicionar.jsp" />
+    </definition>
+    
+    
+    <!--  CONCESIONARIOS  -->
+    <definition name="mant-concesionarios-index" extends="baseLayout">
+        <put-attribute name="body" value="/mantenimientos/concesionarios/index.jsp" />
+    </definition>
+    <definition name="mant-concesionarios-adicionar" extends="baseLayout">
+        <put-attribute name="body" value="/mantenimientos/concesionarios/adicionar.jsp" />
+    </definition>
+    
+    <!--  LOCALES  -->
+    <definition name="mant-locales-index" extends="baseLayout">
+        <put-attribute name="body" value="/mantenimientos/locales/index.jsp" />
+    </definition>
+    <definition name="mant-locales-adicionar" extends="baseLayout">
+        <put-attribute name="body" value="/mantenimientos/locales/adicionar.jsp" />
+    </definition>
+    
+    
+    <!--  MARCAS  -->
+    <definition name="mant-marcas-index" extends="baseLayout">
+        <put-attribute name="body" value="/mantenimientos/marcas/index.jsp" />
+    </definition>
+    <definition name="mant-marcas-adicionar" extends="baseLayout">
+        <put-attribute name="body" value="/mantenimientos/marcas/adicionar.jsp" />
     </definition>
 </tiles-definitions>

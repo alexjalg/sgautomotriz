@@ -30,8 +30,7 @@
 </div>
 <div class="d-content-grilla" style="min-width: 890px;">
     <form id="frm_princ" method="POST" action="<s:property value="baseURL" /><s:property value="urlPaginacion" />">
-    <s:hidden name="opcion" id="opcion_h1" />
-    <s:hidden name="backURL" id="backURL_h1" />
+    <s:property value="datosOblig" escape="false" />
 
     <s:hidden name="curPagVis" id="curPag_f" />
     
@@ -116,7 +115,10 @@
         $('#btn-add').click(function(){
             $('#opcion_h1').val('A');
             var href = $(location).attr('href');
-            $('#backURL_h1').val(href);
+            
+            var _varret = $('#nivBandeja_f').val()+'%'+href+'%'+$('#mtu_h1').val()+'%'+$('#mmo_h1').val()+'%'+$('#mop_h1').val()+'%'+$('#mni_h1').val()+'%'+$('#mod_h1').val()+'%'+$('#curPag_f').val()+'%'+$('#desOpc_f').val()+'|';
+            $('#varReturn_f').val($('#varReturn_f').val()+_varret);
+            
             $('#frm_princ').attr('action','<s:property value="baseURL" /><s:url namespace="opciones" includeContext="false" action="adicionarOpcion" />');
             $('#frm_princ').submit();
         });
@@ -137,7 +139,10 @@
                     {
                         $('#opcion_h1').val('M');
                         var href = $(location).attr('href');
-                        $('#backURL_h1').val(href);
+                        
+                        var _varret = $('#nivBandeja_f').val()+'%'+href+'%'+$('#mtu_h1').val()+'%'+$('#mmo_h1').val()+'%'+$('#mop_h1').val()+'%'+$('#mni_h1').val()+'%'+$('#mod_h1').val()+'%'+$('#curPag_f').val()+'%'+$('#desOpc_f').val()+'|';
+                        $('#varReturn_f').val($('#varReturn_f').val()+_varret);
+                        
                         $('#frm_princ').attr('action','<s:property value="baseURL" /><s:url namespace="opciones" includeContext="false" action="adicionarOpcion" />');
                         $('#frm_princ').submit();
                     }

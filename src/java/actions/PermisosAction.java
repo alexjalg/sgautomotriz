@@ -6,7 +6,6 @@
  * - 
  * -
  */
-
 package actions;
 
 import com.opensymphony.xwork2.ModelDriven;
@@ -37,24 +36,25 @@ public class PermisosAction extends MasterAction implements ModelDriven<Permisos
     
     private void cantModuTipUsuIndex()
     {
-        helper conex = new helper();
-        indError += conex.getErrorSQL();
+        helper conex = null;
+        ResultSet tabla = null;
         
-        if(!indError.equals(""))
+        try
         {
-            errores.add(indError);
-        }
-        else
-        {
-            ResultSet tabla = null;
-            
-            try 
+            conex = new helper();
+            indError += conex.getErrorSQL();
+
+            if(!indError.equals(""))
+            {
+                errores.add(indError);
+            }
+            else
             {
                 tabla = conex.executeDataSet("CALL usp_cantModuTipUsuIndex(?)",
                         new Object[]{ Integer.parseInt(modelo.getIdTipUsu()) });
-                
+
                 indError += conex.getErrorSQL();
-                
+
                 if(!indError.equals(""))
                 {
                     errores.add(indError);
@@ -67,45 +67,46 @@ public class PermisosAction extends MasterAction implements ModelDriven<Permisos
                     }
                 }
             }
+        }
+        catch (Exception e) 
+        {
+            indError += "error";
+            errores.add(e.getMessage());
+        }
+        finally
+        {
+            try 
+            {
+                tabla.close();
+                conex.returnConnect();
+            }
             catch (Exception e) 
-            {
-                indError += "error";
-                errores.add(e.getMessage());
-            }
-            finally
-            {
-                try 
-                {
-                    tabla.close();
-                    conex.returnConnect();
-                }
-                catch (Exception e) 
-                {}
-            }
+            {}
         }
     }
     
     private void listModuTipUsuIndex()
     {
-        helper conex = new helper();
-        indError += conex.getErrorSQL();
-        
-        if(!indError.equals(""))
+        helper conex = null;
+        ResultSet tabla = null;
+    
+        try
         {
-            errores.add(indError);
-        }
-        else
-        {
-            ResultSet tabla = null;
-            
-            try 
+            conex = new helper();
+            indError += conex.getErrorSQL();
+
+            if(!indError.equals(""))
+            {
+                errores.add(indError);
+            }
+            else
             {
                 tabla = conex.executeDataSet("CALL usp_listModuTipUsuIndex(?,?,?)", 
                         new Object[]{ Integer.parseInt(modelo.getIdTipUsu()),
                             getCurPag()*getRegPag(),getRegPag() });
-                
+
                 indError += conex.getErrorSQL();
-                
+
                 if(!indError.equals(""))
                 {
                     errores.add(indError);
@@ -124,21 +125,21 @@ public class PermisosAction extends MasterAction implements ModelDriven<Permisos
                     }
                 }
             }
+        }
+        catch (Exception e) 
+        {
+            indError += "error";
+            errores.add(e.getMessage());
+        }
+        finally
+        {
+            try 
+            {
+                tabla.close();
+                conex.returnConnect();
+            }
             catch (Exception e) 
-            {
-                indError += "error";
-                errores.add(e.getMessage());
-            }
-            finally
-            {
-                try 
-                {
-                    tabla.close();
-                    conex.returnConnect();
-                }
-                catch (Exception e) 
-                {}
-            }
+            {}
         }
     }
     
@@ -156,23 +157,24 @@ public class PermisosAction extends MasterAction implements ModelDriven<Permisos
             modelo.setIdTipUsu(listVarReturn.get(1).toString().trim());
         }
         
-        helper conex = new helper();
-        indError += conex.getErrorSQL();
+        helper conex = null;
+        ResultSet tabla = null;
         
-        if(!indError.equals(""))
+        try
         {
-            errores.add(indError);
-        }
-        else
-        {
-            ResultSet tabla = null;
-            
-            try 
+            conex = new helper();
+            indError += conex.getErrorSQL();
+
+            if(!indError.equals(""))
+            {
+                errores.add(indError);
+            }
+            else
             {
                 tabla = conex.executeDataSet("CALL usp_getDatosTipoUsuario(?)", 
                         new Object[]{ modelo.getIdTipUsu() });
                 indError += conex.getErrorSQL();
-                
+
                 if(!indError.equals(""))
                 {
                     errores.add(indError);
@@ -185,21 +187,21 @@ public class PermisosAction extends MasterAction implements ModelDriven<Permisos
                     }
                 }
             }
+        }
+        catch (Exception e) 
+        {
+            indError += "error";
+            errores.add(e.getMessage());
+        }
+        finally
+        {
+            try 
+            {
+                tabla.close();
+                conex.returnConnect();
+            }
             catch (Exception e) 
-            {
-                indError += "error";
-                errores.add(e.getMessage());
-            }
-            finally
-            {
-                try 
-                {
-                    tabla.close();
-                    conex.returnConnect();
-                }
-                catch (Exception e) 
-                {}
-            }
+            {}
         }
         
         cantModuTipUsuIndex();
@@ -228,17 +230,19 @@ public class PermisosAction extends MasterAction implements ModelDriven<Permisos
         }
         else
         {
-            helper conex = new helper();
-            indError += conex.getErrorSQL();
+            helper conex = null;
+            ResultSet tabla = null;
             
-            if(!indError.equals(""))
+            try
             {
-                errores.add(indError);
-            }
-            else
-            {
-                ResultSet tabla = null;
-                try 
+                conex = new helper();
+                indError += conex.getErrorSQL();
+
+                if(!indError.equals(""))
+                {
+                    errores.add(indError);
+                }
+                else
                 {
                     tabla = conex.executeDataSet("CALL usp_getDatosTipoUsuario(?)", 
                             new Object[]{ modelo.getIdTipUsu() });
@@ -256,21 +260,21 @@ public class PermisosAction extends MasterAction implements ModelDriven<Permisos
                         }
                     }
                 }
+            }
+            catch (Exception e) 
+            {
+                indError += "error";
+                errores.add(e.getMessage());
+            }
+            finally
+            {
+                try 
+                {
+                    tabla.close();
+                    conex.returnConnect();
+                }
                 catch (Exception e) 
-                {
-                    indError += "error";
-                    errores.add(e.getMessage());
-                }
-                finally
-                {
-                    try 
-                    {
-                        tabla.close();
-                        conex.returnConnect();
-                    }
-                    catch (Exception e) 
-                    {}
-                }
+                {}
             }
             
             if(opcion.equals("A"))
@@ -292,24 +296,25 @@ public class PermisosAction extends MasterAction implements ModelDriven<Permisos
     
     public void getDatosModuloTipUsu()
     {
-        helper conex = new helper();
-        indError = conex.getErrorSQL();
+        helper conex = null;
+        ResultSet tabla = null;
         
-        if(!indError.equals(""))
+        try
         {
-            errores.add(indError);
-        }
-        else
-        {
-            ResultSet tabla = null;
-            
-            try 
+            conex = new helper();
+            indError = conex.getErrorSQL();
+
+            if(!indError.equals(""))
+            {
+                errores.add(indError);
+            }
+            else
             {
                 tabla = conex.executeDataSet("CALL usp_getDatosModuTipUsu(?,?)", 
                         new Object[]{ Integer.parseInt(modelo.getIdTipUsu()),
                             Integer.parseInt(modelo.getIdModu()) });
                 indError = conex.getErrorSQL();
-                
+
                 if(!indError.equals(""))
                 {
                     errores.add(indError);
@@ -323,43 +328,44 @@ public class PermisosAction extends MasterAction implements ModelDriven<Permisos
                     }
                 }
             }
+        }
+        catch (Exception e) 
+        {
+            indError = "error";
+            errores.add(e.getMessage());
+        }
+        finally
+        {
+            try 
+            {
+                tabla.close();
+                conex.returnConnect();
+            }
             catch (Exception e) 
-            {
-                indError = "error";
-                errores.add(e.getMessage());
-            }
-            finally
-            {
-                try 
-                {
-                    tabla.close();
-                    conex.returnConnect();
-                }
-                catch (Exception e) 
-                {}
-            }
+            {}
         }
     }
     
     private void cantModulosIndex()
     {
-        helper conex = new helper();
-        indError = conex.getErrorSQL();
+        helper conex = null;
+        ResultSet tabla = null;
         
-        if(!indError.equals(""))
+        try
         {
-            errores.add(indError);
-        }
-        else
-        {
-            ResultSet tabla = null;
-            
-            try 
+            conex = new helper();
+            indError = conex.getErrorSQL();
+
+            if(!indError.equals(""))
+            {
+                errores.add(indError);
+            }
+            else
             {
                 tabla = conex.executeDataSet("CALL usp_cantModulosIndex()", new Object[]{});
-                
+
                 indError = conex.getErrorSQL();
-                
+
                 if(!indError.equals(""))
                 {
                     errores.add(indError);
@@ -372,44 +378,45 @@ public class PermisosAction extends MasterAction implements ModelDriven<Permisos
                     }
                 }
             }
+        }
+        catch (Exception e) 
+        {
+            indError = "error";
+            errores.add(e.getMessage());
+        }
+        finally
+        {
+            try 
+            {
+                tabla.close();
+                conex.returnConnect();
+            }
             catch (Exception e) 
-            {
-                indError = "error";
-                errores.add(e.getMessage());
-            }
-            finally
-            {
-                try 
-                {
-                    tabla.close();
-                    conex.returnConnect();
-                }
-                catch (Exception e) 
-                {}
-            }
+            {}
         }
     }
     
     private void listModulosIndex()
     {
-        helper conex = new helper();
-        indError = conex.getErrorSQL();
+        helper conex = null;
+        ResultSet tabla = null;
         
-        if(!indError.equals(""))
+        try
         {
-            errores.add(indError);
-        }
-        else
-        {
-            ResultSet tabla = null;
-            
-            try 
+            conex = new helper();
+            indError = conex.getErrorSQL();
+
+            if(!indError.equals(""))
+            {
+                errores.add(indError);
+            }
+            else
             {
                 tabla = conex.executeDataSet("CALL usp_listModulosIndex(?,?)", 
                         new Object[]{ getCurPag()*regPag,regPag });
-                
+
                 indError = conex.getErrorSQL();
-                
+
                 if(!indError.equals(""))
                 {
                     errores.add(indError);
@@ -426,21 +433,21 @@ public class PermisosAction extends MasterAction implements ModelDriven<Permisos
                     }
                 }
             }
+        }
+        catch (Exception e) 
+        {
+            indError = "error";
+            errores.add(e.getMessage());
+        }
+        finally
+        {
+            try 
+            {
+                tabla.close();
+                conex.returnConnect();
+            }
             catch (Exception e) 
-            {
-                indError = "error";
-                errores.add(e.getMessage());
-            }
-            finally
-            {
-                try 
-                {
-                    tabla.close();
-                    conex.returnConnect();
-                }
-                catch (Exception e) 
-                {}
-            }
+            {}
         }
     }
     
@@ -484,24 +491,25 @@ public class PermisosAction extends MasterAction implements ModelDriven<Permisos
         
         if(indError.equals(""))
         {
-            helper conex = new helper();
-            indError += conex.getErrorSQL();
+            helper conex = null;
+            ResultSet tabla = null;
+            
+            try
+            {
+                conex = new helper();
+                indError += conex.getErrorSQL();
 
-            if(!indError.equals(""))
-            {
-                errores.add(indError);
-            }
-            else
-            {
-                ResultSet tabla = null;
-                
-                try 
+                if(!indError.equals(""))
+                {
+                    errores.add(indError);
+                }
+                else
                 {
                     tabla = conex.executeDataSet("CALL usp_verifExistsModuTipUsu(?,?)", 
                             new Object[]{ Integer.parseInt(modelo.getIdTipUsu()),
                                 Integer.parseInt(modelo.getIdModu()) });
                     indError += conex.getErrorSQL();
-                    
+
                     if(!indError.equals(""))
                     {
                         errores.add(indError);
@@ -513,7 +521,7 @@ public class PermisosAction extends MasterAction implements ModelDriven<Permisos
                         {
                             cont = tabla.getInt(1);
                         }   
-                        
+
                         if(cont>0)
                         {
                             indError += "error";
@@ -533,15 +541,21 @@ public class PermisosAction extends MasterAction implements ModelDriven<Permisos
                         }
                     }
                 }
-                catch (Exception e) 
+            }
+            catch (Exception e) 
+            {
+                indError += "error";
+                errores.add(e.getMessage());
+            }
+            finally
+            {
+                try 
                 {
-                    indError += "error";
-                    errores.add(e.getMessage());
-                }
-                finally
-                {
+                    tabla.close();
                     conex.returnConnect();
                 }
+                catch (Exception e) 
+                {}
             }
         }
         
@@ -570,17 +584,19 @@ public class PermisosAction extends MasterAction implements ModelDriven<Permisos
         
         if(indError.equals(""))
         {
-            helper conex = new helper();
-            indError += conex.getErrorSQL();
-
-            if(!indError.equals(""))
+            helper conex = null;
+                    
+            try
             {
-                errores.add(indError);
-            }
-            else
-            {   
-                try 
-                {                    
+                conex = new helper();
+                indError += conex.getErrorSQL();
+
+                if(!indError.equals(""))
+                {
+                    errores.add(indError);
+                }
+                else
+                {                   
                     indError += conex.executeNonQuery("CALL usp_updModuTipUsu(?,?,?)", 
                             new Object[]{ Integer.parseInt(modelo.getIdTipUsu()),
                                 Integer.parseInt(modelo.getIdModu()),
@@ -591,15 +607,15 @@ public class PermisosAction extends MasterAction implements ModelDriven<Permisos
                         errores.add(indError);
                     }
                 }
-                catch (Exception e) 
-                {
-                    indError += "error";
-                    errores.add(e.getMessage());
-                }
-                finally
-                {
-                    conex.returnConnect();
-                }
+            }
+            catch (Exception e) 
+            {
+                indError += "error";
+                errores.add(e.getMessage());
+            }
+            finally
+            {
+                conex.returnConnect();
             }
         }
         
@@ -610,23 +626,25 @@ public class PermisosAction extends MasterAction implements ModelDriven<Permisos
     {
         if(opcion.trim().equals("E"))
         {
-            helper conex = new helper();
-
-            indError = conex.getErrorSQL().trim();
-            if(!indError.equals(""))
+            helper conex = null;
+            ResultSet tabla = null;
+            
+            try
             {
-                errores.add(indError);
-            }
-            else
-            {
-                ResultSet tabla = null;
-                try 
+                conex = new helper();
+                indError = conex.getErrorSQL().trim();
+                
+                if(!indError.equals(""))
+                {
+                    errores.add(indError);
+                }
+                else
                 {
                     tabla = conex.executeDataSet("CALL usp_verifDependModuTipUsu(?,?)", 
                             new Object[]{ Integer.parseInt(modelo.getIdTipUsu()),
                                 Integer.parseInt(modelo.getIdModu()) });
                     indError = conex.getErrorSQL();
-                    
+
                     if(!indError.equals(""))
                     {
                         errores.add(indError);
@@ -638,7 +656,7 @@ public class PermisosAction extends MasterAction implements ModelDriven<Permisos
                         {
                             cant = tabla.getInt(1);
                         }
-                        
+
                         /* Si no tiene dependencias */
                         if(cant == 0)
                         {
@@ -659,21 +677,21 @@ public class PermisosAction extends MasterAction implements ModelDriven<Permisos
                         }
                     }
                 }
+            }
+            catch (Exception e) 
+            {
+                indError = "error";
+                errores.add(e.getMessage());
+            }
+            finally
+            {
+                try 
+                {
+                    tabla.close();
+                    conex.returnConnect();
+                }
                 catch (Exception e) 
-                {
-                    indError = "error";
-                    errores.add(e.getMessage());
-                }
-                finally
-                {
-                    try 
-                    {
-                        tabla.close();
-                        conex.returnConnect();
-                    }
-                    catch (Exception e) 
-                    {}
-                }
+                {}
             }
         }
         
@@ -694,26 +712,27 @@ public class PermisosAction extends MasterAction implements ModelDriven<Permisos
     
     /*OPCIONES POR MODULO Y TIPO DE USUARIO*/
     private void cantOpcionesTipUsuIndex()
-    {
-        helper conex = new helper();
-        indError += conex.getErrorSQL();
+    {   
+        helper conex = null;
+        ResultSet tabla = null;
         
-        if(!indError.equals(""))
+        try
         {
-            errores.add(indError);
-        }
-        else
-        {
-            ResultSet tabla = null;
-            
-            try 
+            conex = new helper();
+            indError += conex.getErrorSQL();
+
+            if(!indError.equals(""))
+            {
+                errores.add(indError);
+            }
+            else
             {
                 tabla = conex.executeDataSet("CALL usp_cantOpcTipUsuIndex(?,?,?,?)",
                         new Object[]{ Integer.parseInt(modelo.getIdTipUsu()),
                             Integer.parseInt(modelo.getIdModu()),1,0 });
-                
+
                 indError += conex.getErrorSQL();
-                
+
                 if(!indError.equals(""))
                 {
                     errores.add(indError);
@@ -726,45 +745,46 @@ public class PermisosAction extends MasterAction implements ModelDriven<Permisos
                     }
                 }
             }
+        }
+        catch (Exception e) 
+        {
+            indError += "error";
+            errores.add(e.getMessage());
+        }
+        finally
+        {
+            try 
+            {
+                tabla.close();
+                conex.returnConnect();
+            }
             catch (Exception e) 
-            {
-                indError += "error";
-                errores.add(e.getMessage());
-            }
-            finally
-            {
-                try 
-                {
-                    tabla.close();
-                    conex.returnConnect();
-                }
-                catch (Exception e) 
-                {}
-            }
+            {}
         }
     }
     
     private void listOpcionesTipUsuIndex()
     {
-        helper conex = new helper();
-        indError += conex.getErrorSQL();
+        helper conex = null;
+        ResultSet tabla = null;
         
-        if(!indError.equals(""))
+        try
         {
-            errores.add(indError);
-        }
-        else
-        {
-            ResultSet tabla = null;
-            
-            try 
+            conex = new helper();
+            indError += conex.getErrorSQL();
+
+            if(!indError.equals(""))
+            {
+                errores.add(indError);
+            }
+            else
             {
                 tabla = conex.executeDataSet("CALL usp_listOpcTipUsuIndex(?,?,?,?,?,?)", 
                         new Object[]{ Integer.parseInt(modelo.getIdTipUsu()),Integer.parseInt(modelo.getIdModu()),
                             1,0,getCurPag()*getRegPag(),getRegPag() });
-                
+
                 indError += conex.getErrorSQL();
-                
+
                 if(!indError.equals(""))
                 {
                     errores.add(indError);
@@ -783,21 +803,21 @@ public class PermisosAction extends MasterAction implements ModelDriven<Permisos
                     }
                 }
             }
+        }
+        catch (Exception e) 
+        {
+            indError += "error";
+            errores.add(e.getMessage());
+        }
+        finally
+        {
+            try 
+            {
+                tabla.close();
+                conex.returnConnect();
+            }
             catch (Exception e) 
-            {
-                indError += "error";
-                errores.add(e.getMessage());
-            }
-            finally
-            {
-                try 
-                {
-                    tabla.close();
-                    conex.returnConnect();
-                }
-                catch (Exception e) 
-                {}
-            }
+            {}
         }
     }
     
@@ -816,23 +836,24 @@ public class PermisosAction extends MasterAction implements ModelDriven<Permisos
             modelo.setIdModu(listVarReturn.get(2).toString().trim());
         }
         
-        helper conex = new helper();
-        indError += conex.getErrorSQL();
+        helper conex = null;
+        ResultSet tabla = null;
         
-        if(!indError.equals(""))
+        try
         {
-            errores.add(indError);
-        }
-        else
-        {
-            ResultSet tabla = null;
-            
-            try 
+            conex = new helper();
+            indError += conex.getErrorSQL();
+
+            if(!indError.equals(""))
+            {
+                errores.add(indError);
+            }
+            else
             {
                 tabla = conex.executeDataSet("CALL usp_getDatosTipoUsuario(?)", 
                         new Object[]{ modelo.getIdTipUsu() });
                 indError += conex.getErrorSQL();
-                
+
                 if(!indError.equals(""))
                 {
                     errores.add(indError);
@@ -843,12 +864,12 @@ public class PermisosAction extends MasterAction implements ModelDriven<Permisos
                     {
                         modelo.setDesTipUsu(tabla.getString("desTipUsu"));
                     }
-                    
+
                     tabla = null;
                     tabla = conex.executeDataSet("CALL usp_getDatosModulo(?)", 
                             new Object[]{ modelo.getIdModu() });
                     indError += conex.getErrorSQL();
-                    
+
                     if(!indError.equals(""))
                     {
                         errores.add(indError);
@@ -862,21 +883,21 @@ public class PermisosAction extends MasterAction implements ModelDriven<Permisos
                     }
                 }
             }
+        }
+        catch (Exception e) 
+        {
+            indError += "error";
+            errores.add(e.getMessage());
+        }
+        finally
+        {
+            try 
+            {
+                tabla.close();
+                conex.returnConnect();
+            }
             catch (Exception e) 
-            {
-                indError += "error";
-                errores.add(e.getMessage());
-            }
-            finally
-            {
-                try 
-                {
-                    tabla.close();
-                    conex.returnConnect();
-                }
-                catch (Exception e) 
-                {}
-            }
+            {}
         }
         
         cantOpcionesTipUsuIndex();
@@ -907,17 +928,19 @@ public class PermisosAction extends MasterAction implements ModelDriven<Permisos
         }
         else
         {
-            helper conex = new helper();
-            indError += conex.getErrorSQL();
+            helper conex = null;
+            ResultSet tabla = null;
             
-            if(!indError.equals(""))
+            try
             {
-                errores.add(indError);
-            }
-            else
-            {
-                ResultSet tabla = null;
-                try 
+                conex = new helper();
+                indError += conex.getErrorSQL();
+
+                if(!indError.equals(""))
+                {
+                    errores.add(indError);
+                }
+                else
                 {
                     tabla = conex.executeDataSet("CALL usp_getDatosTipoUsuario(?)", 
                             new Object[]{ modelo.getIdTipUsu() });
@@ -933,7 +956,7 @@ public class PermisosAction extends MasterAction implements ModelDriven<Permisos
                         {
                             modelo.setDesTipUsu(tabla.getString("desTipUsu"));
                         }
-                        
+
                         tabla = null;
                         tabla = conex.executeDataSet("CALL usp_getDatosModulo(?)", 
                                 new Object[]{ modelo.getIdModu() });
@@ -952,21 +975,21 @@ public class PermisosAction extends MasterAction implements ModelDriven<Permisos
                         }
                     }
                 }
+            }
+            catch (Exception e) 
+            {
+                indError += "error";
+                errores.add(e.getMessage());
+            }
+            finally
+            {
+                try 
+                {
+                    tabla.close();
+                    conex.returnConnect();
+                }
                 catch (Exception e) 
-                {
-                    indError += "error";
-                    errores.add(e.getMessage());
-                }
-                finally
-                {
-                    try 
-                    {
-                        tabla.close();
-                        conex.returnConnect();
-                    }
-                    catch (Exception e) 
-                    {}
-                }
+                {}
             }
             
             if(opcion.equals("A"))
@@ -988,25 +1011,26 @@ public class PermisosAction extends MasterAction implements ModelDriven<Permisos
     
     public void getDatosOpcionTipUsu()
     {
-        helper conex = new helper();
-        indError = conex.getErrorSQL();
+        helper conex = null;
+        ResultSet tabla = null;
         
-        if(!indError.equals(""))
+        try
         {
-            errores.add(indError);
-        }
-        else
-        {
-            ResultSet tabla = null;
-            
-            try 
+            conex = new helper();
+            indError = conex.getErrorSQL();
+
+            if(!indError.equals(""))
+            {
+                errores.add(indError);
+            }
+            else
             {
                 tabla = conex.executeDataSet("CALL usp_getDatosOpcTipUsu(?,?,?,?,?)", 
                         new Object[]{ Integer.parseInt(modelo.getIdTipUsu()),
                             Integer.parseInt(modelo.getIdModu()),
                             Integer.parseInt(modelo.getIdOpc1()),1,0 });
                 indError = conex.getErrorSQL();
-                
+
                 if(!indError.equals(""))
                 {
                     errores.add(indError);
@@ -1021,44 +1045,45 @@ public class PermisosAction extends MasterAction implements ModelDriven<Permisos
                     }
                 }
             }
+        }
+        catch (Exception e) 
+        {
+            indError = "error";
+            errores.add(e.getMessage());
+        }
+        finally
+        {
+            try 
+            {
+                tabla.close();
+                conex.returnConnect();
+            }
             catch (Exception e) 
-            {
-                indError = "error";
-                errores.add(e.getMessage());
-            }
-            finally
-            {
-                try 
-                {
-                    tabla.close();
-                    conex.returnConnect();
-                }
-                catch (Exception e) 
-                {}
-            }
+            {}
         }
     }
     
     private void cantOpcionesIndex()
     {
-        helper conex = new helper();
-        indError = conex.getErrorSQL();
+        helper conex = null;
+        ResultSet tabla = null;
         
-        if(!indError.equals(""))
+        try
         {
-            errores.add(indError);
-        }
-        else
-        {
-            ResultSet tabla = null;
-            
-            try 
+            conex = new helper();
+            indError = conex.getErrorSQL();
+
+            if(!indError.equals(""))
+            {
+                errores.add(indError);
+            }
+            else
             {
                 tabla = conex.executeDataSet("CALL usp_cantOpcionesIndex(?)", 
                         new Object[]{ modeloOpcion.getDesOpc_f() });
-                
+
                 indError = conex.getErrorSQL();
-                
+
                 if(!indError.equals(""))
                 {
                     errores.add(indError);
@@ -1071,44 +1096,45 @@ public class PermisosAction extends MasterAction implements ModelDriven<Permisos
                     }
                 }
             }
+        }
+        catch (Exception e) 
+        {
+            indError = "error";
+            errores.add(e.getMessage());
+        }
+        finally
+        {
+            try 
+            {
+                tabla.close();
+                conex.returnConnect();
+            }
             catch (Exception e) 
-            {
-                indError = "error";
-                errores.add(e.getMessage());
-            }
-            finally
-            {
-                try 
-                {
-                    tabla.close();
-                    conex.returnConnect();
-                }
-                catch (Exception e) 
-                {}
-            }
+            {}
         }
     }
     
     private void listOpcionesIndex()
     {
-        helper conex = new helper();
-        indError = conex.getErrorSQL();
+        helper conex = null;
+        ResultSet tabla = null;
         
-        if(!indError.equals(""))
+        try
         {
-            errores.add(indError);
-        }
-        else
-        {
-            ResultSet tabla = null;
-            
-            try 
+            conex = new helper();
+            indError = conex.getErrorSQL();
+
+            if(!indError.equals(""))
+            {
+                errores.add(indError);
+            }
+            else
             {
                 tabla = conex.executeDataSet("CALL usp_listOpcionesIndex(?,?,?)", 
                         new Object[]{ modeloOpcion.getDesOpc_f(),getCurPag()*regPag,regPag });
-                
+
                 indError = conex.getErrorSQL();
-                
+
                 if(!indError.equals(""))
                 {
                     errores.add(indError);
@@ -1125,21 +1151,21 @@ public class PermisosAction extends MasterAction implements ModelDriven<Permisos
                     }
                 }
             }
+        }
+        catch (Exception e) 
+        {
+            indError = "error";
+            errores.add(e.getMessage());
+        }
+        finally
+        {
+            try 
+            {
+                tabla.close();
+                conex.returnConnect();
+            }
             catch (Exception e) 
-            {
-                indError = "error";
-                errores.add(e.getMessage());
-            }
-            finally
-            {
-                try 
-                {
-                    tabla.close();
-                    conex.returnConnect();
-                }
-                catch (Exception e) 
-                {}
-            }
+            {}
         }
     }
     
@@ -1191,25 +1217,26 @@ public class PermisosAction extends MasterAction implements ModelDriven<Permisos
         
         if(indError.equals(""))
         {
-            helper conex = new helper();
-            indError += conex.getErrorSQL();
+            helper conex = null;
+            ResultSet tabla = null;
+            
+            try
+            {
+                conex = new helper();
+                indError += conex.getErrorSQL();
 
-            if(!indError.equals(""))
-            {
-                errores.add(indError);
-            }
-            else
-            {
-                ResultSet tabla = null;
-                
-                try 
+                if(!indError.equals(""))
+                {
+                    errores.add(indError);
+                }
+                else
                 {
                     tabla = conex.executeDataSet("CALL usp_verifExistsOpcTipUsu(?,?,?,?,?)", 
                             new Object[]{ Integer.parseInt(modelo.getIdTipUsu()),
                                 Integer.parseInt(modelo.getIdModu()),
                                 Integer.parseInt(modelo.getIdOpc1()),1,0 });
                     indError += conex.getErrorSQL();
-                    
+
                     if(!indError.equals(""))
                     {
                         errores.add(indError);
@@ -1221,7 +1248,7 @@ public class PermisosAction extends MasterAction implements ModelDriven<Permisos
                         {
                             cont = tabla.getInt(1);
                         }   
-                        
+
                         if(cont>0)
                         {
                             indError += "error";
@@ -1243,15 +1270,21 @@ public class PermisosAction extends MasterAction implements ModelDriven<Permisos
                         }
                     }
                 }
-                catch (Exception e) 
+            }
+            catch (Exception e) 
+            {
+                indError += "error";
+                errores.add(e.getMessage());
+            }
+            finally
+            {
+                try 
                 {
-                    indError += "error";
-                    errores.add(e.getMessage());
-                }
-                finally
-                {
+                    tabla.close();
                     conex.returnConnect();
                 }
+                catch (Exception e) 
+                {}
             }
         }
         
@@ -1288,17 +1321,19 @@ public class PermisosAction extends MasterAction implements ModelDriven<Permisos
         
         if(indError.equals(""))
         {
-            helper conex = new helper();
-            indError += conex.getErrorSQL();
-
-            if(!indError.equals(""))
+            helper conex = null;
+            
+            try
             {
-                errores.add(indError);
-            }
-            else
-            {   
-                try 
-                {                    
+                conex = new helper();
+                indError += conex.getErrorSQL();
+
+                if(!indError.equals(""))
+                {
+                    errores.add(indError);
+                }
+                else
+                {                  
                     indError += conex.executeNonQuery("CALL usp_updOpcTipUsu(?,?,?,?,?,?,?)", 
                             new Object[]{ Integer.parseInt(modelo.getIdTipUsu()),
                                         Integer.parseInt(modelo.getIdModu()),
@@ -1311,15 +1346,15 @@ public class PermisosAction extends MasterAction implements ModelDriven<Permisos
                         errores.add(indError);
                     }
                 }
-                catch (Exception e) 
-                {
-                    indError += "error";
-                    errores.add(e.getMessage());
-                }
-                finally
-                {
-                    conex.returnConnect();
-                }
+            }
+            catch (Exception e) 
+            {
+                indError += "error";
+                errores.add(e.getMessage());
+            }
+            finally
+            {
+                conex.returnConnect();
             }
         }
         
@@ -1330,24 +1365,26 @@ public class PermisosAction extends MasterAction implements ModelDriven<Permisos
     {
         if(opcion.trim().equals("E"))
         {
-            helper conex = new helper();
+            helper conex = null;
+            ResultSet tabla = null;
+            
+            try
+            {
+                conex = new helper();
+                indError = conex.getErrorSQL().trim();
 
-            indError = conex.getErrorSQL().trim();
-            if(!indError.equals(""))
-            {
-                errores.add(indError);
-            }
-            else
-            {
-                ResultSet tabla = null;
-                try 
+                if(!indError.equals(""))
+                {
+                    errores.add(indError);
+                }
+                else
                 {
                     tabla = conex.executeDataSet("CALL usp_verifDependOpcTipUsu(?,?,?)", 
                             new Object[]{ Integer.parseInt(modelo.getIdTipUsu()),
                                 Integer.parseInt(modelo.getIdModu()),
                                 Integer.parseInt(modelo.getIdOpc1()) });
                     indError = conex.getErrorSQL();
-                    
+
                     if(!indError.equals(""))
                     {
                         errores.add(indError);
@@ -1359,7 +1396,7 @@ public class PermisosAction extends MasterAction implements ModelDriven<Permisos
                         {
                             cant = tabla.getInt(1);
                         }
-                        
+
                         /* Si no tiene dependencias */
                         if(cant == 0)
                         {
@@ -1381,21 +1418,21 @@ public class PermisosAction extends MasterAction implements ModelDriven<Permisos
                         }
                     }
                 }
+            }
+            catch (Exception e) 
+            {
+                indError = "error";
+                errores.add(e.getMessage());
+            }
+            finally
+            {
+                try 
+                {
+                    tabla.close();
+                    conex.returnConnect();
+                }
                 catch (Exception e) 
-                {
-                    indError = "error";
-                    errores.add(e.getMessage());
-                }
-                finally
-                {
-                    try 
-                    {
-                        tabla.close();
-                        conex.returnConnect();
-                    }
-                    catch (Exception e) 
-                    {}
-                }
+                {}
             }
         }
         
@@ -1416,25 +1453,26 @@ public class PermisosAction extends MasterAction implements ModelDriven<Permisos
     /*SUB-OPCIONES POR MODULO Y TIPO DE USUARIO*/
     private void cantSubOpcionesTipUsuIndex()
     {
-        helper conex = new helper();
-        indError += conex.getErrorSQL();
+        helper conex = null;
+        ResultSet tabla = null;
         
-        if(!indError.equals(""))
+        try
         {
-            errores.add(indError);
-        }
-        else
-        {
-            ResultSet tabla = null;
-            
-            try 
+            conex = new helper();
+            indError += conex.getErrorSQL();
+
+            if(!indError.equals(""))
+            {
+                errores.add(indError);
+            }
+            else
             {
                 tabla = conex.executeDataSet("CALL usp_cantOpcTipUsuIndex(?,?,?,?)",
                         new Object[]{ Integer.parseInt(modelo.getIdTipUsu()),
                             Integer.parseInt(modelo.getIdModu()),2,modelo.getIdOpc1() });
-                
+
                 indError += conex.getErrorSQL();
-                
+
                 if(!indError.equals(""))
                 {
                     errores.add(indError);
@@ -1447,45 +1485,46 @@ public class PermisosAction extends MasterAction implements ModelDriven<Permisos
                     }
                 }
             }
+        }
+        catch (Exception e) 
+        {
+            indError += "error";
+            errores.add(e.getMessage());
+        }
+        finally
+        {
+            try 
+            {
+                tabla.close();
+                conex.returnConnect();
+            }
             catch (Exception e) 
-            {
-                indError += "error";
-                errores.add(e.getMessage());
-            }
-            finally
-            {
-                try 
-                {
-                    tabla.close();
-                    conex.returnConnect();
-                }
-                catch (Exception e) 
-                {}
-            }
+            {}
         }
     }
     
     private void listSubOpcionesTipUsuIndex()
     {
-        helper conex = new helper();
-        indError += conex.getErrorSQL();
+        helper conex = null;
+        ResultSet tabla = null;
         
-        if(!indError.equals(""))
+        try
         {
-            errores.add(indError);
-        }
-        else
-        {
-            ResultSet tabla = null;
-            
-            try 
+            conex = new helper();
+            indError += conex.getErrorSQL();
+
+            if(!indError.equals(""))
+            {
+                errores.add(indError);
+            }
+            else
             {
                 tabla = conex.executeDataSet("CALL usp_listOpcTipUsuIndex(?,?,?,?,?,?)", 
                         new Object[]{ Integer.parseInt(modelo.getIdTipUsu()),Integer.parseInt(modelo.getIdModu()),
                             2,modelo.getIdOpc1(),getCurPag()*getRegPag(),getRegPag() });
-                
+
                 indError += conex.getErrorSQL();
-                
+
                 if(!indError.equals(""))
                 {
                     errores.add(indError);
@@ -1504,21 +1543,21 @@ public class PermisosAction extends MasterAction implements ModelDriven<Permisos
                     }
                 }
             }
+        }
+        catch (Exception e) 
+        {
+            indError += "error";
+            errores.add(e.getMessage());
+        }
+        finally
+        {
+            try 
+            {
+                tabla.close();
+                conex.returnConnect();
+            }
             catch (Exception e) 
-            {
-                indError += "error";
-                errores.add(e.getMessage());
-            }
-            finally
-            {
-                try 
-                {
-                    tabla.close();
-                    conex.returnConnect();
-                }
-                catch (Exception e) 
-                {}
-            }
+            {}
         }
     }
     
@@ -1538,23 +1577,24 @@ public class PermisosAction extends MasterAction implements ModelDriven<Permisos
             modelo.setIdOpc1(listVarReturn.get(3).toString().trim());
         }
         
-        helper conex = new helper();
-        indError += conex.getErrorSQL();
+        helper conex = null;
+        ResultSet tabla = null;
         
-        if(!indError.equals(""))
+        try
         {
-            errores.add(indError);
-        }
-        else
-        {
-            ResultSet tabla = null;
-            
-            try 
+            conex = new helper();
+            indError += conex.getErrorSQL();
+
+            if(!indError.equals(""))
+            {
+                errores.add(indError);
+            }
+            else
             {
                 tabla = conex.executeDataSet("CALL usp_getDatosTipoUsuario(?)", 
                         new Object[]{ modelo.getIdTipUsu() });
                 indError += conex.getErrorSQL();
-                
+
                 if(!indError.equals(""))
                 {
                     errores.add(indError);
@@ -1565,12 +1605,12 @@ public class PermisosAction extends MasterAction implements ModelDriven<Permisos
                     {
                         modelo.setDesTipUsu(tabla.getString("desTipUsu"));
                     }
-                    
+
                     tabla = null;
                     tabla = conex.executeDataSet("CALL usp_getDatosModulo(?)", 
                             new Object[]{ modelo.getIdModu() });
                     indError += conex.getErrorSQL();
-                    
+
                     if(!indError.equals(""))
                     {
                         errores.add(indError);
@@ -1581,12 +1621,12 @@ public class PermisosAction extends MasterAction implements ModelDriven<Permisos
                         {
                             modelo.setDesModu(tabla.getString("desModu"));
                         }
-                        
+
                         tabla = null;
                         tabla = conex.executeDataSet("CALL usp_getDatosOpcion(?)", 
                                 new Object[]{ modelo.getIdOpc1() });
                         indError += conex.getErrorSQL();
-                        
+
                         if(!indError.equals(""))
                         {
                             errores.add(indError);
@@ -1601,21 +1641,21 @@ public class PermisosAction extends MasterAction implements ModelDriven<Permisos
                     }
                 }
             }
+        }
+        catch (Exception e) 
+        {
+            indError += "error";
+            errores.add(e.getMessage());
+        }
+        finally
+        {
+            try 
+            {
+                tabla.close();
+                conex.returnConnect();
+            }
             catch (Exception e) 
-            {
-                indError += "error";
-                errores.add(e.getMessage());
-            }
-            finally
-            {
-                try 
-                {
-                    tabla.close();
-                    conex.returnConnect();
-                }
-                catch (Exception e) 
-                {}
-            }
+            {}
         }
         
         cantSubOpcionesTipUsuIndex();
@@ -1647,17 +1687,19 @@ public class PermisosAction extends MasterAction implements ModelDriven<Permisos
         }
         else
         {
-            helper conex = new helper();
-            indError += conex.getErrorSQL();
-            
-            if(!indError.equals(""))
+            helper conex = null;
+            ResultSet tabla = null;
+
+            try
             {
-                errores.add(indError);
-            }
-            else
-            {
-                ResultSet tabla = null;
-                try 
+                conex = new helper();
+                indError += conex.getErrorSQL();
+
+                if(!indError.equals(""))
+                {
+                    errores.add(indError);
+                }
+                else
                 {
                     tabla = conex.executeDataSet("CALL usp_getDatosTipoUsuario(?)", 
                             new Object[]{ modelo.getIdTipUsu() });
@@ -1673,7 +1715,7 @@ public class PermisosAction extends MasterAction implements ModelDriven<Permisos
                         {
                             modelo.setDesTipUsu(tabla.getString("desTipUsu"));
                         }
-                        
+
                         tabla = null;
                         tabla = conex.executeDataSet("CALL usp_getDatosModulo(?)", 
                                 new Object[]{ modelo.getIdModu() });
@@ -1689,7 +1731,7 @@ public class PermisosAction extends MasterAction implements ModelDriven<Permisos
                             {
                                 modelo.setDesModu(tabla.getString("desModu"));
                             }
-                            
+
                             tabla = null;
                             tabla = conex.executeDataSet("CALL usp_getDatosOpcion(?)", 
                                     new Object[]{ modelo.getIdOpc1() });
@@ -1709,21 +1751,21 @@ public class PermisosAction extends MasterAction implements ModelDriven<Permisos
                         }
                     }
                 }
+            }
+            catch (Exception e) 
+            {
+                indError += "error";
+                errores.add(e.getMessage());
+            }
+            finally
+            {
+                try 
+                {
+                    tabla.close();
+                    conex.returnConnect();
+                }
                 catch (Exception e) 
-                {
-                    indError += "error";
-                    errores.add(e.getMessage());
-                }
-                finally
-                {
-                    try 
-                    {
-                        tabla.close();
-                        conex.returnConnect();
-                    }
-                    catch (Exception e) 
-                    {}
-                }
+                {}
             }
             
             if(opcion.equals("A"))
@@ -1745,18 +1787,19 @@ public class PermisosAction extends MasterAction implements ModelDriven<Permisos
     
     private void getDatosSubOpcionTipUsu()
     {
-        helper conex = new helper();
-        indError = conex.getErrorSQL();
-        
-        if(!indError.equals(""))
+        helper conex = null;
+        ResultSet tabla = null;
+
+        try
         {
-            errores.add(indError);
-        }
-        else
-        {
-            ResultSet tabla = null;
-            
-            try 
+            conex = new helper();
+            indError = conex.getErrorSQL();
+
+            if(!indError.equals(""))
+            {
+                errores.add(indError);
+            }
+            else
             {
                 tabla = conex.executeDataSet("CALL usp_getDatosOpcTipUsu(?,?,?,?,?)", 
                         new Object[]{ Integer.parseInt(modelo.getIdTipUsu()),
@@ -1764,7 +1807,7 @@ public class PermisosAction extends MasterAction implements ModelDriven<Permisos
                             Integer.parseInt(modelo.getIdOpc2()),2,
                             Integer.parseInt(modelo.getIdOpc1()) });
                 indError = conex.getErrorSQL();
-                
+
                 if(!indError.equals(""))
                 {
                     errores.add(indError);
@@ -1779,21 +1822,21 @@ public class PermisosAction extends MasterAction implements ModelDriven<Permisos
                     }
                 }
             }
+        }
+        catch (Exception e) 
+        {
+            indError = "error";
+            errores.add(e.getMessage());
+        }
+        finally
+        {
+            try 
+            {
+                tabla.close();
+                conex.returnConnect();
+            }
             catch (Exception e) 
-            {
-                indError = "error";
-                errores.add(e.getMessage());
-            }
-            finally
-            {
-                try 
-                {
-                    tabla.close();
-                    conex.returnConnect();
-                }
-                catch (Exception e) 
-                {}
-            }
+            {}
         }
     }
     
@@ -1834,18 +1877,19 @@ public class PermisosAction extends MasterAction implements ModelDriven<Permisos
         
         if(indError.equals(""))
         {
-            helper conex = new helper();
-            indError += conex.getErrorSQL();
+            helper conex = null;
+            ResultSet tabla = null;
+            
+            try
+            {
+                conex = new helper();
+                indError += conex.getErrorSQL();
 
-            if(!indError.equals(""))
-            {
-                errores.add(indError);
-            }
-            else
-            {
-                ResultSet tabla = null;
-                
-                try 
+                if(!indError.equals(""))
+                {
+                    errores.add(indError);
+                }
+                else
                 {
                     tabla = conex.executeDataSet("CALL usp_verifExistsOpcTipUsu(?,?,?,?,?)", 
                             new Object[]{ Integer.parseInt(modelo.getIdTipUsu()),
@@ -1853,7 +1897,7 @@ public class PermisosAction extends MasterAction implements ModelDriven<Permisos
                                 Integer.parseInt(modelo.getIdOpc2()),2,
                                 Integer.parseInt(modelo.getIdOpc1()) });
                     indError += conex.getErrorSQL();
-                    
+
                     if(!indError.equals(""))
                     {
                         errores.add(indError);
@@ -1865,7 +1909,7 @@ public class PermisosAction extends MasterAction implements ModelDriven<Permisos
                         {
                             cont = tabla.getInt(1);
                         }   
-                        
+
                         if(cont>0)
                         {
                             indError += "error";
@@ -1888,15 +1932,15 @@ public class PermisosAction extends MasterAction implements ModelDriven<Permisos
                         }
                     }
                 }
-                catch (Exception e) 
-                {
-                    indError += "error";
-                    errores.add(e.getMessage());
-                }
-                finally
-                {
-                    conex.returnConnect();
-                }
+            }
+            catch (Exception e) 
+            {
+                indError += "error";
+                errores.add(e.getMessage());
+            }
+            finally
+            {
+                conex.returnConnect();
             }
         }
         
@@ -1934,17 +1978,19 @@ public class PermisosAction extends MasterAction implements ModelDriven<Permisos
         
         if(indError.equals(""))
         {
-            helper conex = new helper();
-            indError += conex.getErrorSQL();
-
-            if(!indError.equals(""))
+            helper conex = null;
+            
+            try
             {
-                errores.add(indError);
-            }
-            else
-            {   
-                try 
-                {                    
+                conex = new helper();
+                indError += conex.getErrorSQL();
+
+                if(!indError.equals(""))
+                {
+                    errores.add(indError);
+                }
+                else
+                {                      
                     indError += conex.executeNonQuery("CALL usp_updOpcTipUsu(?,?,?,?,?,?,?)", 
                             new Object[]{ Integer.parseInt(modelo.getIdTipUsu()),
                                         Integer.parseInt(modelo.getIdModu()),
@@ -1958,15 +2004,15 @@ public class PermisosAction extends MasterAction implements ModelDriven<Permisos
                         errores.add(indError);
                     }
                 }
-                catch (Exception e) 
-                {
-                    indError += "error";
-                    errores.add(e.getMessage());
-                }
-                finally
-                {
-                    conex.returnConnect();
-                }
+            }
+            catch (Exception e) 
+            {
+                indError += "error";
+                errores.add(e.getMessage());
+            }
+            finally
+            {
+                conex.returnConnect();
             }
         }
         
@@ -1977,16 +2023,18 @@ public class PermisosAction extends MasterAction implements ModelDriven<Permisos
     {
         if(opcion.trim().equals("E"))
         {
-            helper conex = new helper();
-
-            indError = conex.getErrorSQL().trim();
-            if(!indError.equals(""))
+            helper conex = null;
+            
+            try
             {
-                errores.add(indError);
-            }
-            else
-            {
-                try 
+                conex = new helper();
+                indError = conex.getErrorSQL().trim();
+                
+                if(!indError.equals(""))
+                {
+                    errores.add(indError);
+                }
+                else
                 {
                     indError = conex.executeNonQuery("CALL usp_dltOpcTipUsu(?,?,?,?,?)",
                             new Object[]{ Integer.parseInt(modelo.getIdTipUsu()),
@@ -2000,15 +2048,15 @@ public class PermisosAction extends MasterAction implements ModelDriven<Permisos
                         errores.add(indError);
                     }
                 }
-                catch (Exception e) 
-                {
-                    indError = "error";
-                    errores.add(e.getMessage());
-                }
-                finally
-                {
-                    conex.returnConnect();
-                }
+            }
+            catch (Exception e) 
+            {
+                indError = "error";
+                errores.add(e.getMessage());
+            }
+            finally
+            {
+                conex.returnConnect();
             }
         }
         

@@ -13,19 +13,14 @@
 </div>
             
 <form method="POST" id="frm_usuario_back" action="<s:property value="backURL" />">
-    <s:hidden name="opcion" id="opcion_h1" value="" />
-    
-    <s:hidden name="curPag" />
-    <s:hidden name="idUsu_f" />
-    <s:hidden name="desUsu_f" />
-    <s:hidden name="edoUsu_f" />
+    <s:hidden name="varReturn" id="varReturn_f" />
 </form>
         
 <div class="d-content-form">
     <s:form id="frm_usuario" action='javascript:void(0)' theme="simple">
         <table border="0" cellpadding="0" cellspacing="0" class="table-form">
             <tr>
-                <td style="width: 80px;">
+                <td style="width: 90px;">
                     DNI<s:if test='%{opcion=="A"}'><span class="required">*</span></s:if>
                 </td>
                 <td style="">
@@ -51,34 +46,35 @@
                 </td>
             </tr>
             <tr>
+                <td>Tipo de Usuario</td>
+                <td>
+                    <s:select name="idTipUsu" id="idTipUsu" list="listTipoUsuario" listKey="idTipUsu" listValue="desTipUsu" 
+                              headerKey="0" headerValue="-Seleccione-" cssClass="element-form" 
+                              cssStyle="min-width: 170px; max-width: 170px;" onkeypress="return event.keyCode!=13" /> 
+                </td>
+            </tr>
+            <tr>
                 <td>Contraseña<s:if test='%{opcion=="A"}'><span class="required">*</span></s:if></td>
                 <td>
                     <s:password name="otrPwdUsu" cssClass="element-form" cssStyle="width:150px;" />
                 </td>
             </tr>
             <tr>
-                <td>Género</td>
+                <td>Concesionario</td>
                 <td>
-                    <div class="radio">  
-                        <s:radio name="otrGenUsu" list="listGeneros" listKey="idGen" listValue="desGen" cssClass="lbl-radio" 
-                                 onkeypress="return event.keyCode!=13" /> 
-                    </div> 	
+                    <s:select name="idCon" id="idCon" list="listConcesionarios" listKey="idCon" listValue="desCon" 
+                              headerKey="0" headerValue="-Seleccione-" cssClass="element-form" 
+                              cssStyle="min-width: 170px; max-width: 170px;" onkeypress="return event.keyCode!=13" /> 
                 </td>
             </tr>
-            <!--<tr>
-                <td>etiqueta 08</td>
-                <td>
-                    <div class="checkbox">
-                        <input id="check1" type="checkbox" name="check" value="check1">
-                        <label class="lbl-checkbox" for="check1">Checkbox No. 1</label>
-                        <input id="check2" type="checkbox" name="check" value="check2">
-                        <label class="lbl-checkbox" for="check2">Checkbox No. 2</label>
-
-                        <input id="check3" type="checkbox" name="check" value="check3">
-                        <label class="lbl-checkbox" for="check3">Checkbox No. 1</label>
-                    </div>
+            <tr>
+                <td>Locales</td>
+                <td class="td-locales">
+                    <s:select name="idLocCon" id="idLocCon" list="listLocales" listKey="idLocCon" listValue="desLocCon" 
+                              headerKey="0" headerValue="-Seleccione-" cssClass="element-form" 
+                              cssStyle="min-width: 170px; max-width: 170px;" onkeypress="return event.keyCode!=13" /> 
                 </td>
-            </tr>-->
+            </tr>
             <tr>
                 <td></td>
                 <td style="padding-top: 10px;">
@@ -92,7 +88,6 @@
     </s:form>
 </div>
 <div id="DIVgrabar" title="<s:property value="titleDialog" />" class="alerta"></div>
-                    
                     
 <script type="text/javascript">
     $(document).ready(function(){
@@ -116,6 +111,18 @@
             open: function(event, ui) { $(".ui-dialog-titlebar-close").hide(); },
             draggable: false,
             resizable: false
+        });
+        
+        $('#idCon').change(function(){
+            $.post(
+                '<s:property value="baseURL" /><s:url includeContext="false" namespace="usuarios" action="getLocalesUsuario" />',
+                {
+                    idCon:$('#idCon').val()
+                },
+                function(resultado){
+                    $('.td-locales').html(resultado);
+                }
+            );
         });
         
         $('a.back').click(function(){

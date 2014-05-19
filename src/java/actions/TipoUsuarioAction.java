@@ -32,23 +32,24 @@ public class TipoUsuarioAction extends MasterAction implements ModelDriven<TipoU
     
     private void cantTipoUsuarioIndex()
     {
-        helper conex = new helper();
-        indError = conex.getErrorSQL();
+        helper conex = null;
+        ResultSet tabla = null;
         
-        if(!indError.equals(""))
+        try
         {
-            errores.add(indError);
-        }
-        else
-        {
-            ResultSet tabla = null;
-            
-            try 
+            conex = new helper();
+            indError = conex.getErrorSQL();
+
+            if(!indError.equals(""))
+            {
+                errores.add(indError);
+            }
+            else
             {
                 tabla = conex.executeDataSet("CALL usp_cantTipoUsuarioIndex()",new Object[]{});
-                
+
                 indError = conex.getErrorSQL();
-                
+
                 if(!indError.equals(""))
                 {
                     errores.add(indError);
@@ -61,44 +62,45 @@ public class TipoUsuarioAction extends MasterAction implements ModelDriven<TipoU
                     }
                 }
             }
+        }
+        catch (Exception e) 
+        {
+            indError = "error";
+            errores.add(e.getMessage());
+        }
+        finally
+        {
+            try 
+            {
+                tabla.close();
+                conex.returnConnect();
+            }
             catch (Exception e) 
-            {
-                indError = "error";
-                errores.add(e.getMessage());
-            }
-            finally
-            {
-                try 
-                {
-                    tabla.close();
-                    conex.returnConnect();
-                }
-                catch (Exception e) 
-                {}
-            }
+            {}
         }
     }
     
     private void listTipoUsuarioIndex()
     {
-        helper conex = new helper();
-        indError = conex.getErrorSQL();
+        helper conex = null;
+        ResultSet tabla = null;
         
-        if(!indError.equals(""))
+        try
         {
-            errores.add(indError);
-        }
-        else
-        {
-            ResultSet tabla = null;
-            
-            try 
+            conex = new helper();
+            indError = conex.getErrorSQL();
+
+            if(!indError.equals(""))
+            {
+                errores.add(indError);
+            }
+            else
             {
                 tabla = conex.executeDataSet("CALL usp_listTipoUsuarioIndex(?,?)", 
                         new Object[]{ getCurPag()*getRegPag(),getRegPag() });
-                
+
                 indError = conex.getErrorSQL();
-                
+
                 if(!indError.equals(""))
                 {
                     errores.add(indError);
@@ -115,21 +117,21 @@ public class TipoUsuarioAction extends MasterAction implements ModelDriven<TipoU
                     }
                 }
             }
+        }
+        catch (Exception e) 
+        {
+            indError = "error";
+            errores.add(e.getMessage());
+        }
+        finally
+        {
+            try 
+            {
+                tabla.close();
+                conex.returnConnect();
+            }
             catch (Exception e) 
-            {
-                indError = "error";
-                errores.add(e.getMessage());
-            }
-            finally
-            {
-                try 
-                {
-                    tabla.close();
-                    conex.returnConnect();
-                }
-                catch (Exception e) 
-                {}
-            }
+            {}
         }
     }
     
@@ -182,23 +184,24 @@ public class TipoUsuarioAction extends MasterAction implements ModelDriven<TipoU
     
     public void getDatosTipoUsuario()
     {
-        helper conex = new helper();
-        indError = conex.getErrorSQL();
+        helper conex = null;
+        ResultSet tabla = null;
         
-        if(!indError.equals(""))
+        try
         {
-            errores.add(indError);
-        }
-        else
-        {
-            ResultSet tabla = null;
-            
-            try 
+            conex = new helper();
+            indError = conex.getErrorSQL();
+
+            if(!indError.equals(""))
+            {
+                errores.add(indError);
+            }
+            else
             {
                 tabla = conex.executeDataSet("CALL usp_getDatosTipoUsuario(?)", 
                         new Object[]{ modelo.getIdTipUsu() });
                 indError = conex.getErrorSQL();
-                
+
                 if(!indError.equals(""))
                 {
                     errores.add(indError);
@@ -212,21 +215,21 @@ public class TipoUsuarioAction extends MasterAction implements ModelDriven<TipoU
                     }
                 }
             }
+        }
+        catch (Exception e) 
+        {
+            indError = "error";
+            errores.add(e.getMessage());
+        }
+        finally
+        {
+            try 
+            {
+                tabla.close();
+                conex.returnConnect();
+            }
             catch (Exception e) 
-            {
-                indError = "error";
-                errores.add(e.getMessage());
-            }
-            finally
-            {
-                try 
-                {
-                    tabla.close();
-                    conex.returnConnect();
-                }
-                catch (Exception e) 
-                {}
-            }
+            {}
         }
     }
     
@@ -234,23 +237,28 @@ public class TipoUsuarioAction extends MasterAction implements ModelDriven<TipoU
     {
         modelo.setDesTipUsu(modelo.getDesTipUsu().trim());
         
-        helper conex = new helper();
-        indError = conex.getErrorSQL();
-        
-        if(!indError.equals(""))
+        if(indError.equals(""))
         {
-            errores.add(indError);
-        }
-        else
-        {
-            try 
+            helper conex = null;
+            
+            try
             {
-                indError = conex.executeNonQuery("CALL usp_insTipoUsuario(?)", 
-                        new Object[]{ modelo.getDesTipUsu() });
-                
+                conex = new helper();
+                indError = conex.getErrorSQL();
+
                 if(!indError.equals(""))
                 {
                     errores.add(indError);
+                }
+                else
+                {
+                    indError = conex.executeNonQuery("CALL usp_insTipoUsuario(?)", 
+                            new Object[]{ modelo.getDesTipUsu() });
+
+                    if(!indError.equals(""))
+                    {
+                        errores.add(indError);
+                    }
                 }
             }
             catch (Exception e) 
@@ -271,24 +279,28 @@ public class TipoUsuarioAction extends MasterAction implements ModelDriven<TipoU
     {
         modelo.setDesTipUsu(modelo.getDesTipUsu().trim());
         
-        helper conex = new helper();
-        
-        indError = conex.getErrorSQL();
-        
-        if(!indError.equals(""))
+        if(indError.equals(""))
         {
-            errores.add(indError);
-        }
-        else
-        {
-            try 
+            helper conex = null;
+            
+            try
             {
-                indError = conex.executeNonQuery("CALL usp_updTipoUsuario(?,?)",
-                        new Object[]{ Integer.parseInt(modelo.getIdTipUsu()),modelo.getDesTipUsu() });
-                
+                conex = new helper();
+                indError = conex.getErrorSQL();
+
                 if(!indError.equals(""))
                 {
                     errores.add(indError);
+                }
+                else
+                {
+                    indError = conex.executeNonQuery("CALL usp_updTipoUsuario(?,?)",
+                            new Object[]{ Integer.parseInt(modelo.getIdTipUsu()),modelo.getDesTipUsu() });
+
+                    if(!indError.equals(""))
+                    {
+                        errores.add(indError);
+                    }
                 }
             }
             catch (Exception e) 
@@ -309,22 +321,24 @@ public class TipoUsuarioAction extends MasterAction implements ModelDriven<TipoU
     {
         if(opcion.trim().equals("E"))
         {
-            helper conex = new helper();
+            helper conex = null;
+            ResultSet tabla = null;
+            
+            try
+            {
+                conex = new helper();
+                indError = conex.getErrorSQL().trim();
 
-            indError = conex.getErrorSQL().trim();
-            if(!indError.equals(""))
-            {
-                errores.add(indError);
-            }
-            else
-            {
-                ResultSet tabla = null;
-                try 
+                if(!indError.equals(""))
+                {
+                    errores.add(indError);
+                }
+                else
                 {
                     tabla = conex.executeDataSet("CALL usp_verifDependTipoUsuario(?)", 
                             new Object[]{ Integer.parseInt(modelo.getIdTipUsu()) });
                     indError = conex.getErrorSQL();
-                    
+
                     if(!indError.equals(""))
                     {
                         errores.add(indError);
@@ -336,7 +350,7 @@ public class TipoUsuarioAction extends MasterAction implements ModelDriven<TipoU
                         {
                             cant = tabla.getInt(1);
                         }
-                        
+
                         /* Si no tiene dependencias */
                         if(cant == 0)
                         {
@@ -356,21 +370,21 @@ public class TipoUsuarioAction extends MasterAction implements ModelDriven<TipoU
                         }
                     }
                 }
+            }
+            catch (Exception e) 
+            {
+                indError = "error";
+                errores.add(e.getMessage());
+            }
+            finally
+            {
+                try 
+                {
+                    tabla.close();
+                    conex.returnConnect();
+                }
                 catch (Exception e) 
-                {
-                    indError = "error";
-                    errores.add(e.getMessage());
-                }
-                finally
-                {
-                    try 
-                    {
-                        tabla.close();
-                        conex.returnConnect();
-                    }
-                    catch (Exception e) 
-                    {}
-                }
+                {}
             }
         }
         

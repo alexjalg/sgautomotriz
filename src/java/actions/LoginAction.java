@@ -44,7 +44,7 @@ public class LoginAction extends MasterAction implements ModelDriven<Usuarios> {
 
     public String verifica() 
     {
-        if (getUsuario().getIdUsu().trim().equals("") || getUsuario().getOtrPwdUsu().trim().equals("")) 
+        if (getUsuario().getIdUsu().trim().equals("") || getUsuario().getOtrClaUsu().trim().equals("")) 
         {
             indError = "";
         }
@@ -61,12 +61,12 @@ public class LoginAction extends MasterAction implements ModelDriven<Usuarios> {
             {
                 usuario.setIdUsu(usuario.getIdUsu().trim());
                 
-                byte[] md5_bytes = Codificador.getEncoded(usuario.getOtrPwdUsu(), "md5").getBytes();
+                byte[] md5_bytes = Codificador.getEncoded(usuario.getOtrClaUsu(), "md5").getBytes();
                 for (byte b : md5_bytes)
                 {
                     clave += Integer.toHexString(Integer.parseInt(Byte.toString((byte) ((b & 0x0F0) >> 4)))).toString();
                 }
-
+                
                 conex = new helper();
 
                 if (!conex.getErrorSQL().trim().equals(""))
@@ -95,13 +95,9 @@ public class LoginAction extends MasterAction implements ModelDriven<Usuarios> {
                         {
                             sesion_sga.put("ses_estado", "A");
                             
-                            /*Date fechaAct = new Date();
-                            SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
-                            String fechaStr = sdf1.format(fechaAct);*/
-                            
                             tabla = null;
                             tabla = conex.executeDataSet("CALL usp_getDatosUsuLogin(?)",
-                                    new Object[]{ getUsuario().getIdUsu().trim() });
+                                    new Object[]{ usuario.getIdUsu().trim() });
                             
                             while(tabla.next())
                             {
@@ -109,6 +105,13 @@ public class LoginAction extends MasterAction implements ModelDriven<Usuarios> {
                                 sesion_sga.put("ses_desusu",tabla.getString("desUsu"));
                                 sesion_sga.put("ses_idtipusu", tabla.getInt("idTipUsu"));
                                 sesion_sga.put("ses_destipusu", tabla.getString("desTipUsu"));
+                                sesion_sga.put("ses_idcon", tabla.getInt("idCon"));
+                                sesion_sga.put("ses_descon", tabla.getString("desCon"));
+                                sesion_sga.put("ses_idloccon", tabla.getString("idLocCon"));
+                                sesion_sga.put("ses_desloccon", tabla.getString("desLocCon"));
+                                sesion_sga.put("ses_indclares", tabla.getString("indClaRes"));
+                                sesion_sga.put("ses_indmencad", tabla.getString("indMenCadCla"));
+                                sesion_sga.put("ses_candiacad", tabla.getInt("diasCadCla"));
 
                                 getModuOpcPerfil();
                                 sesion_sga.put("ses_listmodumaster", listModuMaster);
@@ -138,6 +141,7 @@ public class LoginAction extends MasterAction implements ModelDriven<Usuarios> {
                 {}
             }
         }
+        
         return "verifica";
     }
     

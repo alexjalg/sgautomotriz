@@ -12,24 +12,18 @@
     </div>
 </div>
             
-<form method="POST" id="frm_opcion_back" action="<s:property value="backURL" />">
+<form method="POST" id="frm_concesionario_back" action="<s:property value="backURL" />">
     <s:hidden name="varReturn" id="varReturn_f" />
 </form>
         
 <div class="d-content-form">
-    <s:form id="frm_opcion" action='javascript:void(0)' theme="simple">
-        <s:hidden name="idOpc" />
+    <s:form id="frm_concesionario" action='javascript:void(0)' theme="simple">
+        <s:hidden name="idCon" />
         <table border="0" cellpadding="0" cellspacing="0" class="table-form">
             <tr>
-                <td style="width: 50px;">Opción<span class="required">*</span></td>
+                <td style="width: 50px;">Concesionario<span class="required">*</span></td>
                 <td>
-                    <s:textfield name="desOpc" cssClass="element-form" cssStyle="width:350px;" maxLength="60" />
-                </td>
-            </tr>
-            <tr>
-                <td style="width: 50px;">URL<span class="required">*</span></td>
-                <td>
-                    <s:textfield name="desUrlOpc" cssClass="element-form" cssStyle="width:400px;" maxLength="60" />
+                    <s:textfield name="desCon" cssClass="element-form" cssStyle="width:300px;" maxLength="40" />
                 </td>
             </tr>
             <tr>
@@ -72,16 +66,20 @@
         });
         
         $('a.back').click(function(){
-            $('#frm_opcion_back').submit();
+            $('#frm_concesionario_back').submit();
         });
         
         $('#btn_grabar').click(function(){
             post(
                 '<s:property value="formURL" />',
-                $('#frm_opcion').serialize(),
+                $('#frm_concesionario').serialize(),
                 function(resultado){
                     resultado = $.trim(resultado);
                     var _error = resultado.indexOf("error");
+                    
+                    if(_error == -1)
+                        _error = resultado.indexOf('exception');
+                    
                     if(_error != -1)
                     {
                         $('#DIVgrabar').html(resultado);
@@ -89,7 +87,7 @@
                     }
                     else
                     {
-                        $('#frm_opcion_back').submit();
+                        $('#frm_concesionario_back').submit();
                     }
                 },
                 1

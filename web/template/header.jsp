@@ -34,7 +34,7 @@
 </ul>
 <div class="d-datos-user ui-state-default">
     <span class="ui-icon ui-icon-person"></span> 
-    <span class="name-user">Juan Angelo Ccoicca Rodas</span>
+    <span class="name-user"><s:property value="#session.ses_desusu" /></span>
     <div class="d-option-user">
         <span class="ui-icon ui-icon-triangle-1-s option-user-icon"></span>
         
@@ -45,6 +45,7 @@
                     <span class="text-option-user">
                         Cambiar&nbsp;contraseña
                     </span>
+                    <input type="hidden" value="<s:property value="baseURL" /><s:url includeContext="false" namespace="usuarios" action="updPasswordUsuario" />" />
                 </div>
             </li>
             <li>

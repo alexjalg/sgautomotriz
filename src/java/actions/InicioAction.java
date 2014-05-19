@@ -32,11 +32,10 @@ public class InicioAction extends MasterAction
         else
         {
             if(sesion_sga.get("ses_estado").toString().equals("A"))
-                    urlRedirect = baseURL+"Inicio";
+                urlRedirect = baseURL+"Inicio";
             else
-                    urlRedirect = baseURL+"Login";
+                urlRedirect = baseURL+"Login";
         }
-
 
         return "redirect";
     }

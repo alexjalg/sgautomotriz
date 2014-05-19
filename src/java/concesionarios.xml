@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+    <package name="concesionarios" namespace="/concesionarios" extends="struts-default">
+        <result-types>
+            <result-type name="tiles" class="org.apache.struts2.views.tiles.TilesResult" />
+        </result-types>
+
+        <action name="*Concesionario" method="{1}" class="actions.ConcesionariosAction">
+            <result name="success" type="tiles">mant-concesionarios-index</result>
+            <result name="adicionar" type="tiles">mant-concesionarios-adicionar</result>
+            <result name="grabar">/mantenimientos/concesionarios/grabar.jsp</result>
+            <result name="actualizar">/mantenimientos/concesionarios/grabar.jsp</result>
+            <result name="vrfSeleccion">/mantenimientos/concesionarios/grabar.jsp</result>
+            <result name="eliminar">/mantenimientos/concesionarios/eliminar.jsp</result>
+        </action>
+    </package>
+</struts>

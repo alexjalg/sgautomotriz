@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+    <package name="locales" namespace="/locales" extends="struts-default">
+        <result-types>
+            <result-type name="tiles" class="org.apache.struts2.views.tiles.TilesResult" />
+        </result-types>
+
+        <action name="*Local" method="{1}" class="actions.LocalesAction">
+            <result name="success" type="tiles">mant-locales-index</result>
+            <result name="adicionar" type="tiles">mant-locales-adicionar</result>
+            <result name="grabar">/mantenimientos/locales/grabar.jsp</result>
+            <result name="actualizar">/mantenimientos/locales/grabar.jsp</result>
+            <result name="vrfSeleccion">/mantenimientos/locales/grabar.jsp</result>
+            <result name="eliminar">/mantenimientos/locales/eliminar.jsp</result>
+            <result name="getProvincias">/mantenimientos/locales/getProvincias.jsp</result>
+            <result name="getDistritos">/mantenimientos/locales/getDistritos.jsp</result>
+        </action>
+    </package>
+</struts>

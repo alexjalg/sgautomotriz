@@ -12,24 +12,23 @@
     </div>
 </div>
             
-<form method="POST" id="frm_opcion_back" action="<s:property value="backURL" />">
+<form method="POST" id="frm_marca_back" action="<s:property value="backURL" />">
     <s:hidden name="varReturn" id="varReturn_f" />
 </form>
         
 <div class="d-content-form">
-    <s:form id="frm_opcion" action='javascript:void(0)' theme="simple">
-        <s:hidden name="idOpc" />
+    <s:form id="frm_marca" action='javascript:void(0)' theme="simple">
         <table border="0" cellpadding="0" cellspacing="0" class="table-form">
             <tr>
-                <td style="width: 50px;">Opción<span class="required">*</span></td>
+                <td style="width: 50px;">Código<span class="required">*</span></td>
                 <td>
-                    <s:textfield name="desOpc" cssClass="element-form" cssStyle="width:350px;" maxLength="60" />
+                    <s:textfield name="idMar" cssClass="element-form" cssStyle="width:40px;" maxLength="3" />
                 </td>
             </tr>
             <tr>
-                <td style="width: 50px;">URL<span class="required">*</span></td>
+                <td style="width: 50px;">Marca<span class="required">*</span></td>
                 <td>
-                    <s:textfield name="desUrlOpc" cssClass="element-form" cssStyle="width:400px;" maxLength="60" />
+                    <s:textfield name="desMar" cssClass="element-form" cssStyle="width:180px;" maxLength="20" />
                 </td>
             </tr>
             <tr>
@@ -72,16 +71,20 @@
         });
         
         $('a.back').click(function(){
-            $('#frm_opcion_back').submit();
+            $('#frm_marca_back').submit();
         });
         
         $('#btn_grabar').click(function(){
             post(
                 '<s:property value="formURL" />',
-                $('#frm_opcion').serialize(),
+                $('#frm_marca').serialize(),
                 function(resultado){
                     resultado = $.trim(resultado);
                     var _error = resultado.indexOf("error");
+                    
+                    if(_error == -1)
+                        _error = resultado.indexOf('exception');
+                    
                     if(_error != -1)
                     {
                         $('#DIVgrabar').html(resultado);
@@ -89,7 +92,7 @@
                     }
                     else
                     {
-                        $('#frm_opcion_back').submit();
+                        $('#frm_marca_back').submit();
                     }
                 },
                 1

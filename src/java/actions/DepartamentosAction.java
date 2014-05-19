@@ -29,24 +29,25 @@ public class DepartamentosAction extends MasterAction implements ModelDriven<Dep
     
     private void cantDptosIndex()
     {
-        helper conex = new helper();
-        indError = conex.getErrorSQL().trim();
+        helper conex = null;
+        ResultSet tabla = null;
         
-        if(!indError.trim().equals(""))
+        try
         {
-            errores.add(indError);
-        }
-        else
-        {
-            ResultSet tabla = null;
-            
-            try 
+            conex = new helper();
+            indError = conex.getErrorSQL().trim();
+
+            if(!indError.trim().equals(""))
+            {
+                errores.add(indError);
+            }
+            else
             {
                 tabla = conex.executeDataSet("CALL usp_cantDptosIndex(?)", 
                         new Object[]{ modelo.getDesDep_f().trim() });
-                
+
                 indError = conex.getErrorSQL();
-                
+
                 if(!indError.equals(""))
                 {
                     errores.add(indError);
@@ -59,44 +60,45 @@ public class DepartamentosAction extends MasterAction implements ModelDriven<Dep
                     }
                 }
             }
+        }
+        catch (Exception e) 
+        {
+            indError = "error";
+            errores.add(e.getMessage());
+        }
+        finally
+        {
+            try 
+            {
+                tabla.close();
+                conex.returnConnect();
+            }
             catch (Exception e) 
-            {
-                indError = "error";
-                errores.add(e.getMessage());
-            }
-            finally
-            {
-                try 
-                {
-                    tabla.close();
-                    conex.returnConnect();
-                }
-                catch (Exception e) 
-                {}
-            }
+            {}
         }
     }
     
     private void listDptosIndex()
     {
-        helper conex = new helper();
-        indError = conex.getErrorSQL();
+        helper conex = null;
+        ResultSet tabla = null;
         
-        if(!indError.equals(""))
+        try
         {
-            errores.add(indError);
-        }
-        else
-        {
-            ResultSet tabla = null;
-            
-            try 
+            conex = new helper();
+            indError = conex.getErrorSQL();
+
+            if(!indError.equals(""))
+            {
+                errores.add(indError);
+            }
+            else
             {
                 tabla = conex.executeDataSet("CALL usp_listDptosIndex(?,?,?)", 
                         new Object[]{ modelo.getDesDep_f().trim(),(getCurPag())*getRegPag(),getRegPag() });
-                
+
                 indError = conex.getErrorSQL();
-                
+
                 if(!indError.equals(""))
                 {
                     errores.add(indError);
@@ -114,21 +116,21 @@ public class DepartamentosAction extends MasterAction implements ModelDriven<Dep
                     }
                 }
             }
+        }
+        catch (Exception e) 
+        {
+            indError = "error";
+            errores.add(e.getMessage());
+        }
+        finally
+        {
+            try 
+            {
+                tabla.close();
+                conex.returnConnect();
+            }
             catch (Exception e) 
-            {
-                indError = "error";
-                errores.add(e.getMessage());
-            }
-            finally
-            {
-                try 
-                {
-                    tabla.close();
-                    conex.returnConnect();
-                }
-                catch (Exception e) 
-                {}
-            }
+            {}
         }
     }
     
@@ -190,24 +192,25 @@ public class DepartamentosAction extends MasterAction implements ModelDriven<Dep
     
     private void getDatosDepartamento()
     {
-        helper conex = new helper();
+        helper conex = null;
+        ResultSet tabla = null;
         
-        indError = conex.getErrorSQL();
-        
-        if(!indError.equals(""))
+        try 
         {
-            errores.add(indError);
-        }
-        else
-        {
-            ResultSet tabla = null;
-            try 
+            conex = new helper();
+            indError = conex.getErrorSQL();
+
+            if(!indError.equals(""))
+            {
+                errores.add(indError);
+            }
+            else
             {
                 tabla = conex.executeDataSet("CALL usp_getDatosDepartamento(?)", 
                     new Object[]{ modelo.getIdDep() });
-                
+
                 indError = conex.getErrorSQL();
-                
+
                 if(!indError.equals(""))
                 {
                     errores.add(indError);
@@ -221,21 +224,21 @@ public class DepartamentosAction extends MasterAction implements ModelDriven<Dep
                     }
                 }
             }
+        }
+        catch (Exception e) 
+        {
+            indError = "error";
+            errores.add(e.getMessage());
+        }
+        finally
+        {
+            try 
+            {
+                tabla.close();
+                conex.returnConnect();
+            }
             catch (Exception e) 
-            {
-                indError = "error";
-                errores.add(e.getMessage());
-            }
-            finally
-            {
-                try 
-                {
-                    tabla.close();
-                    conex.returnConnect();
-                }
-                catch (Exception e) 
-                {}
-            }
+            {}
         }
     }
     
@@ -244,24 +247,28 @@ public class DepartamentosAction extends MasterAction implements ModelDriven<Dep
         modelo.setDesDep(modelo.getDesDep().trim());
         modelo.setCodTel(modelo.getCodTel().trim());
         
-        helper conex = new helper();
-        
-        indError = conex.getErrorSQL();
-        
-        if(!indError.equals(""))
+        if(indError.equals(""))
         {
-            errores.add(indError);
-        }
-        else
-        {
+            helper conex = null;
+            
             try 
             {
-                indError = conex.executeNonQuery("CALL usp_insDepartamento(?,?)",
-                        new Object[]{ modelo.getDesDep(),modelo.getCodTel() });
-                
+                conex = new helper();
+                indError = conex.getErrorSQL();
+
                 if(!indError.equals(""))
                 {
                     errores.add(indError);
+                }
+                else
+                {
+                    indError = conex.executeNonQuery("CALL usp_insDepartamento(?,?)",
+                            new Object[]{ modelo.getDesDep(),modelo.getCodTel() });
+
+                    if(!indError.equals(""))
+                    {
+                        errores.add(indError);
+                    }
                 }
             }
             catch (Exception e) 
@@ -283,24 +290,28 @@ public class DepartamentosAction extends MasterAction implements ModelDriven<Dep
         modelo.setDesDep(modelo.getDesDep().trim());
         modelo.setCodTel(modelo.getCodTel().trim());
         
-        helper conex = new helper();
-        
-        indError = conex.getErrorSQL();
-        
-        if(!indError.equals(""))
+        if(indError.equals(""))
         {
-            errores.add(indError);
-        }
-        else
-        {
-            try 
+            helper conex = null;
+            
+            try
             {
-                indError = conex.executeNonQuery("CALL usp_updDepartamento(?,?,?)",
-                        new Object[]{ modelo.getIdDep(), modelo.getDesDep(), modelo.getCodTel() });
-                
+                conex = new helper();
+                indError = conex.getErrorSQL();
+
                 if(!indError.equals(""))
                 {
                     errores.add(indError);
+                }
+                else
+                {
+                    indError = conex.executeNonQuery("CALL usp_updDepartamento(?,?,?)",
+                            new Object[]{ modelo.getIdDep(), modelo.getDesDep(), modelo.getCodTel() });
+
+                    if(!indError.equals(""))
+                    {
+                        errores.add(indError);
+                    }
                 }
             }
             catch (Exception e) 

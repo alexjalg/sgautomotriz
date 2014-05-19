@@ -41,7 +41,7 @@
                                     </tr>-->
                                     <tr>
                                         <td>
-                                            <input type="password" name="otrPwdUsu" id="otrPwdUsu" class="element-form" style="" />
+                                            <input type="password" name="otrClaUsu" id="otrClaUsu" class="element-form" style="" />
                                         </td>
                                     </tr>
                                     <tr>
@@ -87,7 +87,7 @@
             $('#DIVverif').dialog({
                 autoOpen: false,
                 width: 340,
-                height: 150,
+                height: 200,
                 modal: true,
                 closeOnEscape: false,
                 buttons:
@@ -106,9 +106,9 @@
 	 
 	    $('#idUsu').val('Usuario');
             $('#idUsu').addClass('focus');
-            $('#otrPwdUsu').val('Contraseña');
-            $('#otrPwdUsu').attr('type','text');
-            $('#otrPwdUsu').addClass('focus');
+            $('#otrClaUsu').val('Contraseña');
+            $('#otrClaUsu').attr('type','text');
+            $('#otrClaUsu').addClass('focus');
 	   
 	    $('#idUsu').bind('focus',function(){
 	        if($(this).val()=='Usuario'){
@@ -122,10 +122,10 @@
 	        }
 	    });
             
-            $('#otrPwdUsu').bind('focus',function(){
+            $('#otrClaUsu').bind('focus',function(){
 	        if($(this).val()=='Contraseña'){
                     $(this).removeClass('focus');
-                    $('#otrPwdUsu').attr('type','password');
+                    $('#otrClaUsu').attr('type','password');
 	            $(this).val('');
 	        }
 	    }).bind('blur',function(){
@@ -136,7 +136,7 @@
 	        }
 	    });
         
-            $('#idUsu, #otrPwdUsu').keyup(function(e){
+            $('#idUsu, #otrClaUsu').keyup(function(e){
                 if(e.which == 13) 
                 {
                     $('#btn-login').click();
@@ -145,7 +145,7 @@
             
             
             $('#btn-login').click(function() {
-                if($.trim($('#idUsu').val())!='' && $.trim($('#otrPwdUsu').val())!='')
+                if($.trim($('#idUsu').val())!='' && $.trim($('#otrClaUsu').val())!='')
                 {
                     var _datos = $('#frm-login').serialize();
                     post(
@@ -161,7 +161,6 @@
                             {
                                 $('#DIVverif').html(resultado);
                                 $('#DIVverif').dialog('open');
-                                //$('.login-error').html(resultado);
                             }
                         },
                         1

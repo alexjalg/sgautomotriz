@@ -6,7 +6,6 @@
  * - 
  * -
  */
-
 package actions;
 
 import com.opensymphony.xwork2.ModelDriven;
@@ -29,25 +28,26 @@ public class DistritosAction extends MasterAction implements ModelDriven<Distrit
     
     private void cantDistritosIndex()
     {
-        helper conex = new helper();
-        indError = conex.getErrorSQL().trim();
-        
-        if(!indError.trim().equals(""))
+        helper conex = null;
+        ResultSet tabla = null;
+                
+        try 
         {
-            errores.add(indError);
-        }
-        else
-        {
-            ResultSet tabla = null;
-            
-            try 
+            conex = new helper();
+            indError = conex.getErrorSQL().trim();
+
+            if(!indError.trim().equals(""))
+            {
+                errores.add(indError);
+            }
+            else
             {
                 tabla = conex.executeDataSet("CALL usp_cantDistIndex(?,?,?)", 
                         new Object[]{ modelo.getIdDep(),modelo.getIdPrvDep(),
                             modelo.getDesDis_f().trim() });
-                
+
                 indError = conex.getErrorSQL();
-                
+
                 if(!indError.equals(""))
                 {
                     errores.add(indError);
@@ -60,45 +60,46 @@ public class DistritosAction extends MasterAction implements ModelDriven<Distrit
                     }
                 }
             }
+        }
+        catch (Exception e) 
+        {
+            indError = "error";
+            errores.add(e.getMessage());
+        }
+        finally
+        {
+            try 
+            {
+                tabla.close();
+                conex.returnConnect();
+            }
             catch (Exception e) 
-            {
-                indError = "error";
-                errores.add(e.getMessage());
-            }
-            finally
-            {
-                try 
-                {
-                    tabla.close();
-                    conex.returnConnect();
-                }
-                catch (Exception e) 
-                {}
-            }
+            {}
         }
     }
     
     private void listDistritosIndex()
     {
-        helper conex = new helper();
-        indError = conex.getErrorSQL();
+        helper conex = null;
+        ResultSet tabla = null;
         
-        if(!indError.equals(""))
+        try
         {
-            errores.add(indError);
-        }
-        else
-        {
-            ResultSet tabla = null;
-            
-            try 
+            conex = new helper();
+            indError = conex.getErrorSQL();
+
+            if(!indError.equals(""))
+            {
+                errores.add(indError);
+            }
+            else
             {
                 tabla = conex.executeDataSet("CALL usp_listDistIndex(?,?,?,?,?)", 
                         new Object[]{ modelo.getIdDep(),modelo.getIdPrvDep(),modelo.getDesDis_f().trim(),
                             (getCurPag())*getRegPag(),getRegPag() });
-                
+
                 indError = conex.getErrorSQL();
-                
+
                 if(!indError.equals(""))
                 {
                     errores.add(indError);
@@ -115,21 +116,21 @@ public class DistritosAction extends MasterAction implements ModelDriven<Distrit
                     }
                 }
             }
+        }
+        catch (Exception e) 
+        {
+            indError = "error";
+            errores.add(e.getMessage());
+        }
+        finally
+        {
+            try 
+            {
+                tabla.close();
+                conex.returnConnect();
+            }
             catch (Exception e) 
-            {
-                indError = "error";
-                errores.add(e.getMessage());
-            }
-            finally
-            {
-                try 
-                {
-                    tabla.close();
-                    conex.returnConnect();
-                }
-                catch (Exception e) 
-                {}
-            }
+            {}
         }
     }
     
@@ -154,25 +155,26 @@ public class DistritosAction extends MasterAction implements ModelDriven<Distrit
         else
         {
             urlPaginacion = "distritos/Distrito";
-        
-            helper conex = new helper();
-            indError = conex.getErrorSQL();
+
+            helper conex = null;
+            ResultSet tabla = null;
             
-            if(!indError.equals(""))
+            try
             {
-                errores.add(indError);
-            }
-            else
-            {
-                ResultSet tabla = null;
-                
-                try 
+                conex = new helper();
+                indError = conex.getErrorSQL();
+
+                if(!indError.equals(""))
+                {
+                    errores.add(indError);
+                }
+                else
                 {
                     tabla = conex.executeDataSet("CALL usp_getDatosProvincia(?,?)", 
                             new Object[]{ modelo.getIdDep(),modelo.getIdPrvDep() });
-                    
+
                     indError = conex.getErrorSQL();
-                    
+
                     if(!indError.equals(""))
                     {
                         errores.add(indError);
@@ -186,25 +188,25 @@ public class DistritosAction extends MasterAction implements ModelDriven<Distrit
                         }
                     }
                 }
-                catch (Exception e) 
-                {
-                    indError = "error";
-                    errores.add(e.getMessage());
-                }
-                finally
-                {
-                    try 
-                    {
-                        tabla.close();
-                        conex.returnConnect();
-                    }
-                    catch (Exception e) 
-                    {}
-                }
             }
-        
-            modelo.setDesDis_f(modelo.getDesDis_f().trim());
+            catch (Exception e) 
+            {
+                indError = "error";
+                errores.add(e.getMessage());
+            }
+            finally
+            {
+                try 
+                {
+                    tabla.close();
+                    conex.returnConnect();
+                }
+                catch (Exception e) 
+                {}
+            }
 
+            modelo.setDesDis_f(modelo.getDesDis_f().trim());
+            
             cantDistritosIndex();
             verifPag();
             listDistritosIndex();
@@ -225,24 +227,25 @@ public class DistritosAction extends MasterAction implements ModelDriven<Distrit
         }
         else
         {
-            helper conex = new helper();
-            indError = conex.getErrorSQL();
+            helper conex = null;
+            ResultSet tabla = null;
             
-            if(!indError.equals(""))
+            try
             {
-                errores.add(indError);
-            }
-            else
-            {
-                ResultSet tabla = null;
-                
-                try 
+                conex = new helper();
+                indError = conex.getErrorSQL();
+
+                if(!indError.equals(""))
+                {
+                    errores.add(indError);
+                }
+                else
                 {
                     tabla = conex.executeDataSet("CALL usp_getDatosProvincia(?,?)", 
                             new Object[]{ modelo.getIdDep(),modelo.getIdPrvDep() });
-                    
+
                     indError = conex.getErrorSQL();
-                    
+
                     if(!indError.equals(""))
                     {
                         errores.add(indError);
@@ -256,21 +259,21 @@ public class DistritosAction extends MasterAction implements ModelDriven<Distrit
                         }
                     }
                 }
+            }
+            catch (Exception e) 
+            {
+                indError = "error";
+                errores.add(e.getMessage());
+            }
+            finally
+            {
+                try 
+                {
+                    tabla.close();
+                    conex.returnConnect();
+                }
                 catch (Exception e) 
-                {
-                    indError = "error";
-                    errores.add(e.getMessage());
-                }
-                finally
-                {
-                    try 
-                    {
-                        tabla.close();
-                        conex.returnConnect();
-                    }
-                    catch (Exception e) 
-                    {}
-                }
+                {}
             }
             
             if(opcion.equals("A"))
@@ -295,24 +298,25 @@ public class DistritosAction extends MasterAction implements ModelDriven<Distrit
     
     private void getDatosDistrito()
     {
-        helper conex = new helper();
+        helper conex = null;
+        ResultSet tabla = null;
         
-        indError = conex.getErrorSQL();
-        
-        if(!indError.equals(""))
+        try
         {
-            errores.add(indError);
-        }
-        else
-        {
-            ResultSet tabla = null;
-            try 
+            conex = new helper();
+            indError = conex.getErrorSQL();
+
+            if(!indError.equals(""))
+            {
+                errores.add(indError);
+            }
+            else
             {
                 tabla = conex.executeDataSet("CALL usp_getDatosDistrito(?,?,?)", 
                     new Object[]{ modelo.getIdDep(),modelo.getIdPrvDep(),modelo.getIdDisPrv() });
-                
+
                 indError = conex.getErrorSQL();
-                
+
                 if(!indError.equals(""))
                 {
                     errores.add(indError);
@@ -325,21 +329,21 @@ public class DistritosAction extends MasterAction implements ModelDriven<Distrit
                     }
                 }
             }
+        }
+        catch (Exception e) 
+        {
+            indError = "error";
+            errores.add(e.getMessage());
+        }
+        finally
+        {
+            try 
+            {
+                tabla.close();
+                conex.returnConnect();
+            }
             catch (Exception e) 
-            {
-                indError = "error";
-                errores.add(e.getMessage());
-            }
-            finally
-            {
-                try 
-                {
-                    tabla.close();
-                    conex.returnConnect();
-                }
-                catch (Exception e) 
-                {}
-            }
+            {}
         }
     }
     
@@ -347,24 +351,28 @@ public class DistritosAction extends MasterAction implements ModelDriven<Distrit
     {
         modelo.setDesProv(modelo.getDesProv().trim());
         
-        helper conex = new helper();
-        
-        indError = conex.getErrorSQL();
-        
-        if(!indError.equals(""))
+        if(indError.equals(""))
         {
-            errores.add(indError);
-        }
-        else
-        {
-            try 
+            helper conex = null;
+            
+            try
             {
-                indError = conex.executeNonQuery("CALL usp_insDistrito(?,?,?)",
-                        new Object[]{ modelo.getIdDep(),modelo.getIdPrvDep(),modelo.getDesDis() });
-                
+                conex = new helper();
+                indError = conex.getErrorSQL();
+
                 if(!indError.equals(""))
                 {
                     errores.add(indError);
+                }
+                else
+                {
+                    indError = conex.executeNonQuery("CALL usp_insDistrito(?,?,?)",
+                            new Object[]{ modelo.getIdDep(),modelo.getIdPrvDep(),modelo.getDesDis() });
+
+                    if(!indError.equals(""))
+                    {
+                        errores.add(indError);
+                    }
                 }
             }
             catch (Exception e) 
@@ -385,25 +393,29 @@ public class DistritosAction extends MasterAction implements ModelDriven<Distrit
     {
         modelo.setDesProv(modelo.getDesProv().trim());
         
-        helper conex = new helper();
-        
-        indError = conex.getErrorSQL();
-        
-        if(!indError.equals(""))
+        if(indError.equals(""))
         {
-            errores.add(indError);
-        }
-        else
-        {
-            try 
+            helper conex = null;
+            
+            try
             {
-                indError = conex.executeNonQuery("CALL usp_updDistrito(?,?,?,?)",
-                        new Object[]{ modelo.getIdDep(), modelo.getIdPrvDep(), modelo.getIdDisPrv(),
-                            modelo.getDesDis() });
-                
+                conex = new helper();
+                indError = conex.getErrorSQL();
+
                 if(!indError.equals(""))
                 {
                     errores.add(indError);
+                }
+                else
+                {
+                    indError = conex.executeNonQuery("CALL usp_updDistrito(?,?,?,?)",
+                            new Object[]{ modelo.getIdDep(), modelo.getIdPrvDep(), modelo.getIdDisPrv(),
+                                modelo.getDesDis() });
+
+                    if(!indError.equals(""))
+                    {
+                        errores.add(indError);
+                    }
                 }
             }
             catch (Exception e) 
@@ -424,16 +436,18 @@ public class DistritosAction extends MasterAction implements ModelDriven<Distrit
     {
         if(opcion.trim().equals("E"))
         {
-            helper conex = new helper();
+            helper conex = null;
+            
+            try
+            {
+                conex = new helper();
+                indError = conex.getErrorSQL().trim();
 
-            indError = conex.getErrorSQL().trim();
-            if(!indError.equals(""))
-            {
-                errores.add(indError);
-            }
-            else
-            {
-                try 
+                if(!indError.equals(""))
+                {
+                    errores.add(indError);
+                }
+                else
                 {
                     indError = conex.executeNonQuery("CALL usp_dltDistrito(?,?,?)",
                             new Object[]{ modelo.getIdDep(),modelo.getIdPrvDep(),modelo.getIdDisPrv() });
@@ -444,15 +458,15 @@ public class DistritosAction extends MasterAction implements ModelDriven<Distrit
                         errores.add(indError);
                     }
                 }
-                catch (Exception e) 
-                {
-                    indError = "error";
-                    errores.add(e.getMessage());
-                }
-                finally
-                {
-                    conex.returnConnect();
-                }
+            }
+            catch (Exception e) 
+            {
+                indError = "error";
+                errores.add(e.getMessage());
+            }
+            finally
+            {
+                conex.returnConnect();
             }
         }
         

@@ -176,6 +176,22 @@ $(document).ready(function() {
     
     
     /*Funciones para controlar las opciones del usuario*/
+    $('#chg-pwd').click(function(){
+        var _url = $(this).children('input').val();
+        post(
+            _url,
+            {
+                opcion:'F'
+            },
+            function(resultado)
+            {
+                $('#DIVchgPwd').html(resultado);
+                $('#DIVchgPwd').dialog('open');
+            },
+            2
+        );
+    });
+    
     $('#close-session').click(function(){
         var _url = $(this).children('input').val();
         post(
@@ -282,7 +298,6 @@ function post(url,datos,funcion,indAjax)
         $('.overlay').css({'z-index':'50'});
     }
     
-    
     $('.overlay').animate({'opacity':'1'},250,'swing',function(){
         $.post(
             url,
@@ -290,6 +305,9 @@ function post(url,datos,funcion,indAjax)
             function(resultado){
                 resultado = $.trim(resultado);
                 var _error_gen = resultado.indexOf("error");
+                
+                if(_error_gen<0)
+                    _error_gen = resultado.indexOf("exception");
 
                 var opac = 1;
                 if(indAjax==1 || indAjax==4)

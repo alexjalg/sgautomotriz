@@ -103,7 +103,10 @@
         $('#btn-add').click(function() {
             $('#opcion_h1').val('A');
             var href = $(location).attr('href');
-            $('#backURL_h1').val(href);
+            
+            var _varret = $('#nivBandeja_f').val()+'%'+href+'%'+$('#mtu_h1').val()+'%'+$('#mmo_h1').val()+'%'+$('#mop_h1').val()+'%'+$('#mni_h1').val()+'%'+$('#mod_h1').val()+'%'+$('#curPag_f').val()+'|';
+            $('#varReturn_f').val($('#varReturn_f').val()+_varret);
+            
             $('#frm_princ').attr('action','<s:property value="baseURL" /><s:url namespace="modulos" includeContext="false" action="adicionarModulo" />');
             $('#frm_princ').submit();
         });
@@ -124,7 +127,10 @@
                     {
                         $('#opcion_h1').val('M');
                         var href = $(location).attr('href');
-                        $('#backURL_h1').val(href);
+                        
+                        var _varret = $('#nivBandeja_f').val()+'%'+href+'%'+$('#mtu_h1').val()+'%'+$('#mmo_h1').val()+'%'+$('#mop_h1').val()+'%'+$('#mni_h1').val()+'%'+$('#mod_h1').val()+'%'+$('#curPag_f').val()+'|';
+                        $('#varReturn_f').val($('#varReturn_f').val()+_varret);
+                        
                         $('#frm_princ').attr('action','<s:property value="baseURL" /><s:url namespace="modulos" includeContext="false" action="adicionarModulo" />');
                         $('#frm_princ').submit();
                     }

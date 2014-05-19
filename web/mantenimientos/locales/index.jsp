@@ -6,16 +6,28 @@
         <s:property value="tituloOpc" />
         <div class="d-subtitle-header"></div>
     </div>
-    <!--<div class="d-subheader">
+    <div class="d-subheader">
         <div class="d-back">
             <a href="javascript:void(0)" class="back">Volver</a>
+            <form id="frm_back" action="<s:property value="backURL" />" method="post">
+                <s:hidden name="varReturn" />
+            </form>
         </div>
-    </div>-->
+    </div>
+    <div class="d-header-labels">
+        <table>
+            <tr>
+                <td class="lbl-concept">Concesionario: </td>
+                <td class="lbl-value"><span><s:property value="desCon" /><span></td>
+            </tr>
+        </table>
+    </div>
 </div>
-
         
 <!-- modelo de grilla -->
 <div class="d-buttons-grid">
+<s:if test='%{perm=="M" || perm=="V"}'>
+    <s:if test='%{perm=="M"}'>
     <button id="btn-add">
         Adicionar
     </button>
@@ -25,9 +37,12 @@
     <button id="btn-delete">
         Eliminar
     </button>
+    </s:if>
+</s:if>
 </div>
 <div class="d-content-grilla" style="min-width: 660px;">
     <form id="frm_princ" method="POST" action="<s:property value="baseURL" /><s:property value="urlPaginacion" />">
+    <s:hidden name="idCon" id="idCon_h1" />
     <s:property value="datosOblig" escape="false" />
 
     <s:hidden name="curPagVis" id="curPag_f" />
@@ -40,46 +55,33 @@
             <table border="0" cellpadding="0" cellspacing="0" style="">
                 <tr class="tr-head">
                     <td style="width: 24px;"></td>
-                    <td style="width:90px; text-align: center; <s:if test='%{idUsu_f!=""}'> background-color: #B5CCED; </s:if>">
-                        DNI
-                    </td>
-                    <td style="<s:if test='%{desUsu_f!=""}'> background-color: #B5CCED; </s:if>">
-                        Apellidos y Nombres
-                    </td>
-                    <td style="width:54px; text-align: center;">
-                        Activo
-                    </td>
+                    <td style="width: 50px;">Código</td>
+                    <td style="">Local</td>
+                    <td style="width: 140px; text-align: center;">RUC</td>
                 </tr>
                 <tr class="tr-head">
                     <td style="width: 24px;"></td>
-                    <td style="width:90px; text-align: center; <s:if test='%{idUsu_f!=""}'> background-color: #B5CCED; </s:if>">
-                        <s:textfield name="idUsu_f" cssClass="element-form-grid" cssStyle="width: 80px;" />
-                    </td>
-                    <td style="<s:if test='%{desUsu_f!=""}'> background-color: #B5CCED; </s:if>">
-                        <s:textfield name="desUsu_f" cssClass="element-form-grid" cssStyle="width: 400px;" />
-                    </td>
-                    <td style="width:54px; text-align: center;">
-                        
-                    </td>
+                    <td style="width: 40px;"></td>
+                    <td style=""></td>
+                    <td style="width: 140px;"></td>
                 </tr>
             </table>
         </div>
         <div class="d-content-grilla-body">
             <table border="0" cellpadding="0" cellspacing="0" style="">
-                <s:iterator value="listUsuarios">
+                <s:iterator value="listLocales">
                 <tr>
                     <td style="width: 24px;">
-                        <input type="radio" name="idUsu" id="rbt_idUsu" value="<s:property value="idUsu" />" class="select_rec" />
+                        <input type="radio" name="idLocCon" id="rbt_idLocCon" value="<s:property value="idLocCon" />" class="select_rec" />
                     </td>
-                    <td style="width:90px; text-align: center;">
-                        <s:property value="idUsu" />
+                    <td style="width: 50px;">
+                        <s:property value="idLocCon" />
                     </td>
                     <td style="">
-                        <s:property value="desUsu" />
+                        <s:property value="desLocCon" />
                     </td>
-                    <td style="width:54px; text-align: center;">
-                        <input type="checkbox" id="chk_edousu" <s:if test='%{edoUsu=="A"}'> checked="checked" class="chk_edousu check_grid_on" </s:if><s:else> class="chk_edousu" </s:else> />
-                        <input type="hidden" value="<s:property value="idUsu" />" />
+                    <td style="width:140px; text-align: center;">
+                        <s:property value="numRuc" />
                     </td>
                 </tr>
                 </s:iterator>
@@ -95,9 +97,6 @@
     </form>
 </div>
 <div id="DIVeliminar" title="<s:property value="titleDialog" />" class="alerta"></div>
-<s:iterator value="errores">
-    <s:property /><br /> 
-</s:iterator>
         
 <script type="text/javascript">
     $(document).ready(function() {
@@ -107,6 +106,8 @@
         $('#btn-add').button();
         $('#btn-edit').button();
         $('#btn-delete').button();
+        
+        $('#btn_search').css('visibility','hidden');
     
         $('#DIVeliminar').dialog({
             autoOpen: false,
@@ -118,31 +119,21 @@
             draggable: false,
             resizable: false
         });
-    
-        $('.rb_usu').click(function(){
-            if(!$(this).hasClass('radio_grid_on'))
-            {
-                $('.rb_usu').removeClass('radio_grid_on');
-                $(this).addClass('radio_grid_on');
-                $('#idUsu_h1').val($(this).next().val());
-            }
-        });
 
-        $('#btn-add').click(function() {
-            $('#idUsu_h1').val('');
+        $('#btn-add').click(function(){
             $('#opcion_h1').val('A');
             var href = $(location).attr('href');
             
-            var _varret = $('#nivBandeja_f').val()+'%'+href+'%'+$('#mtu_h1').val()+'%'+$('#mmo_h1').val()+'%'+$('#mop_h1').val()+'%'+$('#mni_h1').val()+'%'+$('#mod_h1').val()+'%'+$('#curPag_f').val()+'%'+$('#idUsu_f').val()+'%'+$('#desUsu_f').val()+'|';
+            var _varret = $('#nivBandeja_f').val()+'%'+href+'%'+$('#mtu_h1').val()+'%'+$('#mmo_h1').val()+'%'+$('#mop_h1').val()+'%'+$('#mni_h1').val()+'%'+$('#mod_h1').val()+'%'+$('#curPag_f').val()+'%'+$('#idCon_h1').val()+'|';
             $('#varReturn_f').val($('#varReturn_f').val()+_varret);
             
-            $('#frm_princ').attr('action','<s:property value="baseURL" /><s:url namespace="usuarios" includeContext="false" action="adicionarUsuario" />');
+            $('#frm_princ').attr('action','<s:property value="baseURL" /><s:url namespace="locales" includeContext="false" action="adicionarLocal" />');
             $('#frm_princ').submit();
         });
         
         $('#btn-edit').click(function() {
             post(
-                '<s:property value="baseURL" /><s:url namespace="usuarios" includeContext="false" action="vrfSeleccionUsuario" />',
+                '<s:property value="baseURL" /><s:url namespace="locales" includeContext="false" action="vrfSeleccionLocal" />',
                 $('#frm_princ').serialize(),
                 function(resultado){
                     resultado = $.trim(resultado);
@@ -157,10 +148,10 @@
                         $('#opcion_h1').val('M');
                         var href = $(location).attr('href');
                         
-                        var _varret = $('#nivBandeja_f').val()+'%'+href+'%'+$('#mtu_h1').val()+'%'+$('#mmo_h1').val()+'%'+$('#mop_h1').val()+'%'+$('#mni_h1').val()+'%'+$('#mod_h1').val()+'%'+$('#curPag_f').val()+'%'+$('#idUsu_f').val()+'%'+$('#desUsu_f').val()+'|';
+                        var _varret = $('#nivBandeja_f').val()+'%'+href+'%'+$('#mtu_h1').val()+'%'+$('#mmo_h1').val()+'%'+$('#mop_h1').val()+'%'+$('#mni_h1').val()+'%'+$('#mod_h1').val()+'%'+$('#curPag_f').val()+'%'+$('#idCon_h1').val()+'|';
                         $('#varReturn_f').val($('#varReturn_f').val()+_varret);
                         
-                        $('#frm_princ').attr('action','<s:property value="baseURL" /><s:url namespace="usuarios" includeContext="false" action="adicionarUsuario" />');
+                        $('#frm_princ').attr('action','<s:property value="baseURL" /><s:url namespace="locales" includeContext="false" action="adicionarLocal" />');
                         $('#frm_princ').submit();
                     }
                 },
@@ -170,8 +161,8 @@
         
         $('#btn-delete').click(function(){
             post(
-                '<s:property value="baseURL" /><s:url namespace="usuarios" includeContext="false" action="vrfSeleccionUsuario" />',
-                $('#frm_usu_princ').serialize(),
+                '<s:property value="baseURL" /><s:url namespace="locales" includeContext="false" action="vrfSeleccionLocal" />',
+                $('#frm_princ').serialize(),
                 function(resultado){
                     resultado = $.trim(resultado);
                     var _error = resultado.indexOf("error");
@@ -184,8 +175,8 @@
                     {
                         $('#opcion_h1').val('C');
                         post(
-                            '<s:property value="baseURL" /><s:url namespace="usuarios" includeContext="false" action="eliminarUsuario" />',
-                            $('#frm_usu_princ').serialize(),
+                            '<s:property value="baseURL" /><s:url namespace="locales" includeContext="false" action="eliminarLocal" />',
+                            $('#frm_princ').serialize(),
                             function(resultado1)
                             {
                                 resultado1 = $.trim(resultado1);
@@ -200,10 +191,11 @@
                                     $('#DIVeliminar').dialog({
                                         buttons:{
                                             "Confirmar":function(){
+                                                $('#DIVeliminar').dialog('close');
                                                 $('#opcion_h1').val('E');
                                                 post(
-                                                    '<s:property value="baseURL" /><s:url namespace="usuarios" includeContext="false" action="eliminarUsuario" />',
-                                                    $('#frm_usu_princ').serialize(),
+                                                    '<s:property value="baseURL" /><s:url namespace="locales" includeContext="false" action="eliminarLocal" />',
+                                                    $('#frm_princ').serialize(),
                                                     function(resultado2)
                                                     {
                                                         resultado2 = $.trim(resultado2);
@@ -211,12 +203,21 @@
                                                         if(_error2 != -1)
                                                         {
                                                             $('#DIVeliminar').html(resultado2);
+                                                            $('#DIVeliminar').dialog({
+                                                                buttons:{
+                                                                    "Aceptar":function(){
+                                                                        $('#DIVeliminar').dialog('close');
+                                                                        hideOverlay(function(){});
+                                                                    }
+                                                                }
+                                                            });
                                                             $('#DIVeliminar').dialog('open');
                                                         }
                                                         else
                                                         {
-                                                            $('#frm_usu_princ').attr('action','<s:property value="baseURL" /><s:url namespace="usuarios" includeContext="false" action="Usuario" />');
-                                                            $('#frm_usu_princ').submit();
+                                                            $('#DIVeliminar').dialog('close');
+                                                            $('#frm_princ').attr('action','<s:property value="baseURL" /><s:url namespace="locales" includeContext="false" action="Local" />');
+                                                            $('#frm_princ').submit();
                                                         }
                                                     },
                                                     4
@@ -224,9 +225,7 @@
                                             },
                                             "Cancelar":function(){
                                                 $('#DIVeliminar').dialog("close");
-                                                $('.overlay').animate({'opacity':'0'},250,'swing',function(){
-                                                   $('.overlay').css({'z-index':'-1'}); 
-                                                });
+                                                hideOverlay(function(){});
                                             }
                                         }
                                     });
@@ -242,66 +241,17 @@
             );
         });
         
-        $('.chk_edousu').click(function(){
-            var _edo = 'A';
-            var _chk = $(this);
-            var _idusu = $(this).next().val();
-            
-            if($(this).hasClass('check_grid_on'))
-                _edo = 'D';
-            
-            if($(this).hasClass('check_grid_on'))
-                $(this).removeClass('check_grid_on');
-            else
-                $(this).addClass('check_grid_on');
-            
-            post(
-                '<s:property value="baseURL" /><s:url namespace="usuarios" includeContext="false" action="actEstadoUsuario" />',
-                {
-                    idUsu:_idusu,
-                    edoUsu:_edo
-                },
-                function(resultado){
-                    resultado = $.trim(resultado);
-                    var _error = resultado.indexOf("error");
-                    if(_error<0)
-                        _error = resultado.indexOf("exception");
-                    
-                    if(_error != -1)
-                    {
-                        $('#DIVeliminar').html(resultado);
-                        $('#DIVeliminar').dialog({
-                            buttons:{
-                                "Aceptar":function(){
-                                    $('#DIVeliminar').dialog("close");
-                                    $('.overlay').animate({'opacity':'0'},250,'swing',function(){
-                                       $('.overlay').css({'z-index':'-1'}); 
-                                    });
-                                }
-                            }
-                        });
-                        
-                        displayOverlay(function(){
-                            $('#DIVeliminar').dialog('open');
-                            
-                            if($(_chk).hasClass('check_grid_on'))
-                            {
-                                $(_chk).removeClass('check_grid_on');
-                                $(_chk).prop('checked',false);
-                            }
-                            else
-                            {
-                                $(_chk).addClass('check_grid_on');
-                                $(_chk).prop('checked',true);
-                            }
-                        });
-                    }
-                },
-                1
-            );
+        $('.d-back a').click(function(){
+            $('#frm_back').submit();
         });
     });
     
     //Redimensionar el alto del contenedor de grilla si fuese necesario
     resizeContGrilla(<s:property value="regPag" />);    
+
+    function hideOptGrilla()
+    {
+        $('.boton-bandeja-click').removeClass('boton-bandeja-click');
+        $('#d-filtros-float').css('display', 'none');
+    }
 </script>

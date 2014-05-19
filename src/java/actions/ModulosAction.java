@@ -29,23 +29,24 @@ public class ModulosAction extends MasterAction implements ModelDriven<Modulos>
     
     private void cantModulosIndex()
     {
-        helper conex = new helper();
-        indError = conex.getErrorSQL();
+        helper conex = null;
+        ResultSet tabla = null;
         
-        if(!indError.equals(""))
+        try
         {
-            errores.add(indError);
-        }
-        else
-        {
-            ResultSet tabla = null;
-            
-            try 
+            conex = new helper();
+            indError = conex.getErrorSQL();
+
+            if(!indError.equals(""))
+            {
+                errores.add(indError);
+            }
+            else
             {
                 tabla = conex.executeDataSet("CALL usp_cantModulosIndex()", new Object[]{});
-                
+
                 indError = conex.getErrorSQL();
-                
+
                 if(!indError.equals(""))
                 {
                     errores.add(indError);
@@ -58,44 +59,45 @@ public class ModulosAction extends MasterAction implements ModelDriven<Modulos>
                     }
                 }
             }
+        }
+        catch (Exception e) 
+        {
+            indError = "error";
+            errores.add(e.getMessage());
+        }
+        finally
+        {
+            try 
+            {
+                tabla.close();
+                conex.returnConnect();
+            }
             catch (Exception e) 
-            {
-                indError = "error";
-                errores.add(e.getMessage());
-            }
-            finally
-            {
-                try 
-                {
-                    tabla.close();
-                    conex.returnConnect();
-                }
-                catch (Exception e) 
-                {}
-            }
+            {}
         }
     }
     
     private void listModulosIndex()
     {
-        helper conex = new helper();
-        indError = conex.getErrorSQL();
+        helper conex = null;
+        ResultSet tabla = null;
         
-        if(!indError.equals(""))
+        try
         {
-            errores.add(indError);
-        }
-        else
-        {
-            ResultSet tabla = null;
-            
-            try 
+            conex = new helper();
+            indError = conex.getErrorSQL();
+
+            if(!indError.equals(""))
+            {
+                errores.add(indError);
+            }
+            else
             {
                 tabla = conex.executeDataSet("CALL usp_listModulosIndex(?,?)", 
                         new Object[]{ getCurPag()*getRegPag(),getRegPag() });
-                
+
                 indError = conex.getErrorSQL();
-                
+
                 if(!indError.equals(""))
                 {
                     errores.add(indError);
@@ -112,21 +114,21 @@ public class ModulosAction extends MasterAction implements ModelDriven<Modulos>
                     }
                 }
             }
+        }
+        catch (Exception e) 
+        {
+            indError = "error";
+            errores.add(e.getMessage());
+        }
+        finally
+        {
+            try 
+            {
+                tabla.close();
+                conex.returnConnect();
+            }
             catch (Exception e) 
-            {
-                indError = "error";
-                errores.add(e.getMessage());
-            }
-            finally
-            {
-                try 
-                {
-                    tabla.close();
-                    conex.returnConnect();
-                }
-                catch (Exception e) 
-                {}
-            }
+            {}
         }
     }
     
@@ -134,6 +136,12 @@ public class ModulosAction extends MasterAction implements ModelDriven<Modulos>
     public String execute()
     {
         urlPaginacion = "modulos/Modulo";
+        
+        varReturnProcess(0);
+        if(!listVarReturn.isEmpty())
+        {
+            curPagVis = Integer.parseInt(listVarReturn.get(0).toString().trim());
+        }
         
         cantModulosIndex();
         verifPag();
@@ -150,6 +158,8 @@ public class ModulosAction extends MasterAction implements ModelDriven<Modulos>
         }
         else
         {
+            varReturnProcess(1);
+            
             if(opcion.equals("A"))
             {
                 formURL = baseURL+"modulos/grabarModulo";
@@ -169,23 +179,24 @@ public class ModulosAction extends MasterAction implements ModelDriven<Modulos>
     
     public void getDatosModulo()
     {
-        helper conex = new helper();
-        indError = conex.getErrorSQL();
+        helper conex = null;
+        ResultSet tabla = null;
         
-        if(!indError.equals(""))
+        try
         {
-            errores.add(indError);
-        }
-        else
-        {
-            ResultSet tabla = null;
-            
-            try 
+            conex = new helper();
+            indError = conex.getErrorSQL();
+
+            if(!indError.equals(""))
+            {
+                errores.add(indError);
+            }
+            else
             {
                 tabla = conex.executeDataSet("CALL usp_getDatosModulo(?)", 
                         new Object[]{ modelo.getIdModu() });
                 indError = conex.getErrorSQL();
-                
+
                 if(!indError.equals(""))
                 {
                     errores.add(indError);
@@ -199,21 +210,21 @@ public class ModulosAction extends MasterAction implements ModelDriven<Modulos>
                     }
                 }
             }
+        } 
+        catch (Exception e) 
+        {
+            indError = "error";
+            errores.add(e.getMessage());
+        }
+        finally
+        {
+            try 
+            {
+                tabla.close();
+                conex.returnConnect();
+            }
             catch (Exception e) 
-            {
-                indError = "error";
-                errores.add(e.getMessage());
-            }
-            finally
-            {
-                try 
-                {
-                    tabla.close();
-                    conex.returnConnect();
-                }
-                catch (Exception e) 
-                {}
-            }
+            {}
         }
     }
     
@@ -221,23 +232,28 @@ public class ModulosAction extends MasterAction implements ModelDriven<Modulos>
     {
         modelo.setDesModu(modelo.getDesModu().trim());
         
-        helper conex = new helper();
-        indError = conex.getErrorSQL();
-        
-        if(!indError.equals(""))
+        if(indError.equals(""))
         {
-            errores.add(indError);
-        }
-        else
-        {
-            try 
+            helper conex = null;
+            
+            try
             {
-                indError = conex.executeNonQuery("CALL usp_insModulo(?)", 
-                        new Object[]{ modelo.getDesModu() });
-                
+                conex = new helper();
+                indError = conex.getErrorSQL();
+
                 if(!indError.equals(""))
                 {
                     errores.add(indError);
+                }
+                else
+                {
+                    indError = conex.executeNonQuery("CALL usp_insModulo(?)", 
+                            new Object[]{ modelo.getDesModu() });
+
+                    if(!indError.equals(""))
+                    {
+                        errores.add(indError);
+                    }
                 }
             }
             catch (Exception e) 
@@ -258,24 +274,28 @@ public class ModulosAction extends MasterAction implements ModelDriven<Modulos>
     {
         modelo.setDesModu(modelo.getDesModu().trim());
         
-        helper conex = new helper();
-        
-        indError = conex.getErrorSQL();
-        
-        if(!indError.equals(""))
+        if(indError.equals(""))
         {
-            errores.add(indError);
-        }
-        else
-        {
-            try 
+            helper  conex = null;
+            
+            try
             {
-                indError = conex.executeNonQuery("CALL usp_updModulo(?,?)",
-                        new Object[]{ Integer.parseInt(modelo.getIdModu()),modelo.getDesModu() });
-                
+                conex = new helper();
+                indError = conex.getErrorSQL();
+
                 if(!indError.equals(""))
                 {
                     errores.add(indError);
+                }
+                else
+                {
+                    indError = conex.executeNonQuery("CALL usp_updModulo(?,?)",
+                            new Object[]{ Integer.parseInt(modelo.getIdModu()),modelo.getDesModu() });
+
+                    if(!indError.equals(""))
+                    {
+                        errores.add(indError);
+                    }
                 }
             }
             catch (Exception e) 
@@ -296,22 +316,24 @@ public class ModulosAction extends MasterAction implements ModelDriven<Modulos>
     {
         if(opcion.trim().equals("E"))
         {
-            helper conex = new helper();
+            helper conex = null;
+            ResultSet tabla = null;
+            
+            try
+            {
+                conex = new helper();
+                indError = conex.getErrorSQL().trim();
 
-            indError = conex.getErrorSQL().trim();
-            if(!indError.equals(""))
-            {
-                errores.add(indError);
-            }
-            else
-            {
-                ResultSet tabla = null;
-                try 
+                if(!indError.equals(""))
+                {
+                    errores.add(indError);
+                }
+                else
                 {
                     tabla = conex.executeDataSet("CALL usp_verifDependModulo(?)", 
                             new Object[]{ Integer.parseInt(modelo.getIdModu()) });
                     indError = conex.getErrorSQL();
-                    
+
                     if(!indError.equals(""))
                     {
                         errores.add(indError);
@@ -323,7 +345,7 @@ public class ModulosAction extends MasterAction implements ModelDriven<Modulos>
                         {
                             cant = tabla.getInt(1);
                         }
-                        
+
                         /* Si no tiene dependencias */
                         if(cant == 0)
                         {
@@ -343,21 +365,21 @@ public class ModulosAction extends MasterAction implements ModelDriven<Modulos>
                         }
                     }
                 }
+            }
+            catch (Exception e) 
+            {
+                indError = "error";
+                errores.add(e.getMessage());
+            }
+            finally
+            {
+                try 
+                {
+                    tabla.close();
+                    conex.returnConnect();
+                }
                 catch (Exception e) 
-                {
-                    indError = "error";
-                    errores.add(e.getMessage());
-                }
-                finally
-                {
-                    try 
-                    {
-                        tabla.close();
-                        conex.returnConnect();
-                    }
-                    catch (Exception e) 
-                    {}
-                }
+                {}
             }
         }
         

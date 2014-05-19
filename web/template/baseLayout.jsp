@@ -48,6 +48,9 @@
             </div>
                     
             <div id="DIVverif" title="<s:property value="titleDialog" />" class="alerta"></div>
+            <div id="DIVchgPwd" title="<s:property value="titleDialog" />" class="alerta"></div>
+            <div id="DIVupdDtsPer" title="<s:property value="titleDialog" />" class="alerta"></div>
+            <div id="DIVerroresGen" title="<s:property value="titleDialog" />" class="alerta"></div>
         </body>
     </html>
 
@@ -55,7 +58,7 @@
         $('#DIVverif').dialog({
             autoOpen: false,
             width: 340,
-            height: 150,
+            height: 180,
             modal: true,
             closeOnEscape: false,
             buttons:
@@ -67,6 +70,128 @@
                     });
                 }
             },
+            open: function(event, ui) { $(".ui-dialog-titlebar-close").hide(); },
+            draggable: false,
+            resizable: false
+        });
+        
+        $('#DIVchgPwd').dialog({
+            autoOpen: false,
+            width: 366,
+            height: 220,
+            modal: true,
+            closeOnEscape: false,
+            open: function(event, ui) { $(".ui-dialog-titlebar-close").hide(); },
+            draggable: false,
+            resizable: false,
+            buttons:{
+                "Aceptar":function(){
+                    $('#DIVchgPwd').dialog('close');
+                    $('#opcion_h2').val('G');
+                    
+                    post(
+                        '<s:property value="baseURL" /><s:url includeContext="false" namespace="usuarios" action="updPasswordUsuario" />',
+                        $('#frmUpdPassword').serialize(),
+                        function(resultado){
+                            var _error = resultado.indexOf('error');
+                            
+                            if(_error != -1)
+                            {
+                                $('#DIVerroresGen').dialog({
+                                    buttons:{
+                                        "Aceptar":function(){
+                                            $('#DIVerroresGen').dialog('close');
+                                            $('#DIVerroresGen').html('');
+                                            $('#otrClaUsu').val('');
+                                            $('#otrNueClaUsu').val('');
+                                            $('#otrNueClaUsu2').val('');
+                                            $('#DIVchgPwd').dialog('open');
+                                        }
+                                    }
+                                });
+                                $('#DIVerroresGen').html(resultado);
+                                $('#DIVerroresGen').dialog('open');
+                            }
+                            else
+                            {   
+                                $('#DIVchgPwd').dialog('close');
+                                
+                                post(
+                                    '<s:property value="baseURL" /><s:url includeContext="false" namespace="usuarios" action="updVarSesionCaducClaUsuario" />',
+                                    {},
+                                    function(resultado){
+                                        location.href = $(location).attr('href');
+                                    },
+                                    4
+                                );
+                            }
+                        },
+                        3
+                    );
+                },
+                "Cancelar":function(){
+                    <s:if test='%{#session.ses_indclares=="R" || #session.ses_indmencad=="V"}'>
+                    $.post(
+                        '<s:property value="baseURL" /><s:url includeContext="false" namespace="/" action="salirLogin" />',
+                        {},
+                        function(resultado){
+                            location.href = $(location).attr('href');
+                        }
+                    ); 
+                    </s:if>
+                    <s:else>
+                        $('#DIVchgPwd').dialog('close');
+                        hideOverlay(null);
+                    </s:else>
+                }
+            }
+        });
+        
+        //Si la contraseña del usuario ha caducado, se mostrará un popup con un formulario
+        //el cual le permitirá cambiar su contraseña, si no cambiase su contraseña y simplemente 
+        //cerrara el popup, la aplicacion terminará su sesión y lo redireccionará a la pagina 
+        //de acceso a la aplicación
+        <s:if test='%{#session.ses_indmencad=="V"}'>
+        post(
+            '<s:property value="baseURL" /><s:url includeContext="false" namespace="usuarios" action="updPasswordUsuario" />',
+            {
+                opcion:'F'
+            },
+            function(resultado)
+            {
+                $('#DIVchgPwd').html(resultado);
+                $('#DIVchgPwd').dialog('open');
+            },
+            2
+        );
+        </s:if>
+        
+        $('#DIVupdDtsPer').dialog({
+            autoOpen: false,
+            width: 340,
+            height: 200,
+            modal: true,
+            closeOnEscape: false,
+            buttons:
+            {
+                "Aceptar":function(){
+                    $('#DIVverif').dialog("close");
+                    $('.overlay').animate({'opacity':'0'},250,'swing',function(){
+                        $('.overlay').css({'z-index':'-1'});
+                    });
+                }
+            },
+            open: function(event, ui) { $(".ui-dialog-titlebar-close").hide(); },
+            draggable: false,
+            resizable: false
+        });
+        
+        $('#DIVerroresGen').dialog({
+            autoOpen: false,
+            width: 340,
+            height: 200,
+            modal: true,
+            closeOnEscape: false,
             open: function(event, ui) { $(".ui-dialog-titlebar-close").hide(); },
             draggable: false,
             resizable: false
