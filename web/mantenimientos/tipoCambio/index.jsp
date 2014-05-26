@@ -6,50 +6,27 @@
         <s:property value="tituloOpc" />
         <div class="d-subtitle-header"></div>
     </div>
-    <div class="d-subheader">
-        <div class="d-back">
-            <a href="javascript:void(0)" class="back">Volver</a>
-            <form id="frm_back" action="<s:property value="backURL" />" method="post">
-                <s:hidden name="varReturn" id="varReturn_f" />
-            </form>
-        </div>
-    </div>
-    <div class="d-header-labels">
-        <table>
-            <tr>
-                <td>
-                    <table>
-                        <tr>
-                            <td class="lbl-concept">Departamento: </td>
-                            <td class="lbl-value"><span><s:property value="desDep" /><span></td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-        </table>
-    </div>
 </div>
         
 <!-- modelo de grilla -->
 <div class="d-buttons-grid">
-    <button id="btn-add">
-        Adicionar
-    </button>
-    <button id="btn-edit">
-        Modificar
-    </button>
-    <button id="btn-delete">
-        Eliminar
-    </button>
-    <button id="btn-distritos">
-        Distritos
-    </button>
+    <s:if test='%{perm=="M" || perm=="V"}'>
+        <s:if test='%{perm=="M"}'>
+        <button id="btn-add">
+            Adicionar
+        </button>
+        <button id="btn-edit">
+            Modificar
+        </button>
+        <button id="btn-delete">
+            Eliminar
+        </button>
+        </s:if>
+    </s:if>
 </div>
-<div class="d-content-grilla" style="min-width: 660px;">
+<div class="d-content-grilla" style="min-width: 860px;">
     <form id="frm_princ" method="POST" action="<s:property value="baseURL" /><s:property value="urlPaginacion" />">
-    <s:hidden name="idDep" id="idDep_h1" />
-    <s:hidden name="opcion" id="opcion_h1" />
-    <s:hidden name="backURL" id="backURL_h1" />
+    <s:property value="datosOblig" escape="false" />
 
     <s:hidden name="curPagVis" id="curPag_f" />
     
@@ -59,29 +36,43 @@
     <div class="d-grilla" style="overflow: hidden;">
         <div class="d-content-grilla-head" style="">
             <table border="0" cellpadding="0" cellspacing="0" style="">
-                <tr class="color-grilla-head tr-head">
+                <tr class="tr-head">
                     <td style="width: 24px;"></td>
-                    <td style="<s:if test='%{desDis_f!=""}'> background-color: #B5CCED; </s:if>">
-                        Distrito
+                    <td style="width:130px; text-align: center;">
+                        Fecha
+                    </td>
+                    <td style="width: 550px; text-align: center;">
+                        Interno
+                    </td>
+                    <td style="text-align: center;">
+                        Legal
                     </td>
                 </tr>
-                <tr class="color-grilla-head tr-head">
-                    <td style="width: 24px;"></td>
-                    <td style="<s:if test='%{desDis_f!=""}'> background-color: #B5CCED; </s:if>">
-                        <s:textfield name="desDis_f" cssClass="element-form-grid" cssStyle="width: 400px;" />
-                    </td>
+                <tr class="tr-head">
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
                 </tr>
             </table>
         </div>
         <div class="d-content-grilla-body">
             <table border="0" cellpadding="0" cellspacing="0" style="">
-                <s:iterator value="listDistritos">
+                <s:iterator value="listTipoCambio">
                 <tr>
                     <td style="width: 24px;">
-                        <input type="radio" name="idDisPrv" id="rbt_idDisPrv" value="<s:property value="idDisPrv" />" class="select_rec" />
+                        <s:if test='%{indMod=="M"}'>
+                            <input type="radio" name="fecTipCam" id="rbt_fecTipCam" value="<s:property value="fecTipCam" />" class="select_rec" />
+                        </s:if>
                     </td>
-                    <td style="">
-                        <s:property value="desDis" />
+                    <td style="width:130px; text-align: center;">
+                        <s:property value="fecTipCam" />
+                    </td>
+                    <td style="width: 550px; text-align: center;">
+                        <s:property value="impTipCamInt" />
+                    </td>
+                    <td style="text-align: center;">
+                        <s:property value="impTipCamLeg" />
                     </td>
                 </tr>
                 </s:iterator>
@@ -106,6 +97,8 @@
         $('#btn-add').button();
         $('#btn-edit').button();
         $('#btn-delete').button();
+        
+        $('#btn_search').css('visibility','hidden');
     
         $('#DIVeliminar').dialog({
             autoOpen: false,
@@ -118,17 +111,20 @@
             resizable: false
         });
 
-        $('#btn-add').click(function(){
+        $('#btn-add').click(function() {
             $('#opcion_h1').val('A');
             var href = $(location).attr('href');
-            $('#backURL_h1').val(href);
-            $('#frm_princ').attr('action','<s:property value="baseURL" /><s:url namespace="distritos" includeContext="false" action="adicionarDistrito" />');
+            
+            var _varret = $('#nivBandeja_f').val()+'%'+href+'%'+$('#mtu_h1').val()+'%'+$('#mmo_h1').val()+'%'+$('#mop_h1').val()+'%'+$('#mni_h1').val()+'%'+$('#mod_h1').val()+'%'+$('#curPag_f').val()+'|';
+            $('#varReturn_f').val($('#varReturn_f').val()+_varret);
+            
+            $('#frm_princ').attr('action','<s:property value="baseURL" /><s:url namespace="tipoCambio" includeContext="false" action="adicionarTipoCambio" />');
             $('#frm_princ').submit();
         });
         
         $('#btn-edit').click(function() {
             post(
-                '<s:property value="baseURL" /><s:url namespace="provincias" includeContext="false" action="vrfSeleccionProvincia" />',
+                '<s:property value="baseURL" /><s:url namespace="tipoCambio" includeContext="false" action="vrfSeleccionTipoCambio" />',
                 $('#frm_princ').serialize(),
                 function(resultado){
                     resultado = $.trim(resultado);
@@ -142,8 +138,11 @@
                     {
                         $('#opcion_h1').val('M');
                         var href = $(location).attr('href');
-                        $('#backURL_h1').val(href);
-                        $('#frm_princ').attr('action','<s:property value="baseURL" /><s:url namespace="provincias" includeContext="false" action="adicionarProvincia" />');
+                        
+                        var _varret = $('#nivBandeja_f').val()+'%'+href+'%'+$('#mtu_h1').val()+'%'+$('#mmo_h1').val()+'%'+$('#mop_h1').val()+'%'+$('#mni_h1').val()+'%'+$('#mod_h1').val()+'%'+$('#curPag_f').val()+'|';
+                        $('#varReturn_f').val($('#varReturn_f').val()+_varret);
+                        
+                        $('#frm_princ').attr('action','<s:property value="baseURL" /><s:url namespace="tipoCambio" includeContext="false" action="adicionarTipoCambio" />');
                         $('#frm_princ').submit();
                     }
                 },
@@ -153,7 +152,7 @@
         
         $('#btn-delete').click(function(){
             post(
-                '<s:property value="baseURL" /><s:url namespace="provincias" includeContext="false" action="vrfSeleccionProvincia" />',
+                '<s:property value="baseURL" /><s:url namespace="tipoCambio" includeContext="false" action="vrfSeleccionTipoCambio" />',
                 $('#frm_princ').serialize(),
                 function(resultado){
                     resultado = $.trim(resultado);
@@ -167,7 +166,7 @@
                     {
                         $('#opcion_h1').val('C');
                         post(
-                            '<s:property value="baseURL" /><s:url namespace="provincias" includeContext="false" action="eliminarProvincia" />',
+                            '<s:property value="baseURL" /><s:url namespace="tipoCambio" includeContext="false" action="eliminarTipoCambio" />',
                             $('#frm_princ').serialize(),
                             function(resultado1)
                             {
@@ -186,7 +185,7 @@
                                                 $('#DIVeliminar').dialog('close');
                                                 $('#opcion_h1').val('E');
                                                 post(
-                                                    '<s:property value="baseURL" /><s:url namespace="provincias" includeContext="false" action="eliminarProvincia" />',
+                                                    '<s:property value="baseURL" /><s:url namespace="tipoCambio" includeContext="false" action="eliminarTipoCambio" />',
                                                     $('#frm_princ').serialize(),
                                                     function(resultado2)
                                                     {
@@ -208,7 +207,7 @@
                                                         else
                                                         {
                                                             $('#DIVeliminar').dialog('close');
-                                                            $('#frm_princ').attr('action','<s:property value="baseURL" /><s:url namespace="provincias" includeContext="false" action="Provincia" />');
+                                                            $('#frm_princ').attr('action','<s:property value="baseURL" /><s:url namespace="tipoCambio" includeContext="false" action="TipoCambio" />');
                                                             $('#frm_princ').submit();
                                                         }
                                                     },
@@ -232,18 +231,8 @@
                 2
             );
         });
-        
-        $('.d-back a').click(function(){
-            $('#frm_back').submit();
-        });
     });
     
     //Redimensionar el alto del contenedor de grilla si fuese necesario
     resizeContGrilla(<s:property value="regPag" />);    
-
-    function hideOptGrilla()
-    {
-        $('.boton-bandeja-click').removeClass('boton-bandeja-click');
-        $('#d-filtros-float').css('display', 'none');
-    }
 </script>

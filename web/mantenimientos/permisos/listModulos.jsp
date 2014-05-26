@@ -48,29 +48,9 @@
         
 <script type="text/javascript">
     $(document).ready(function() {
-        /*Paginacion de grilla*/
+        /*Paginacion de grilla popup*/
         <s:property value="jsPaginacionPopUp" escape="false" />;
-        $('#btn_search_pu').css('display','none');        
-                
-        $('#prev_pag_pu').click(function(){
-            $.post(
-                $('#frm_princ_pu').attr('action'),
-                $('#frm_princ_pu').serialize(),
-                function(resultado){
-                    $('#DIVmodulos').html(resultado);
-                }
-            );
-        });
-        
-        $('#next_pag_pu').click(function(){
-            $.post(
-                $('#frm_princ_pu').attr('action'),
-                $('#frm_princ_pu').serialize(),
-                function(resultado){
-                    $('#DIVmodulos').html(resultado);
-                }
-            );
-        });
+        $('#btn_search_pu').css('display','none');
     });
     
     //Redimensionar el alto del contenedor de grilla si fuese necesario

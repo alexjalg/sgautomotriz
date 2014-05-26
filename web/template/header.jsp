@@ -35,7 +35,7 @@
 <div class="d-datos-user ui-state-default">
     <span class="ui-icon ui-icon-person"></span> 
     <span class="name-user"><s:property value="#session.ses_desusu" /></span>
-    <div class="d-option-user">
+    <div id="d-option-user">
         <span class="ui-icon ui-icon-triangle-1-s option-user-icon"></span>
         
         <ul class="ul-options-user">

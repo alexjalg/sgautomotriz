@@ -8,35 +8,43 @@
     <div class="d-subheader">
         <div class="d-back">
             <a href="javascript:void(0)" class="back">Volver</a>
+            <form method="POST" id="frm_modelo_back" action="<s:property value="backURL" />">
+                <s:hidden name="varReturn" id="varReturn_f" />
+            </form>
         </div>
     </div>
+    <div class="d-header-labels">
+        <table>
+            <tr>
+                <td class="lbl-concept">Marca: </td>
+                <td class="lbl-value"><span><s:property value="desMar" /><span></td>
+            </tr>
+        </table>
+    </div>
 </div>
-            
-<form method="POST" id="frm_marca_back" action="<s:property value="backURL" />">
-    <s:hidden name="varReturn" id="varReturn_f" />
-</form>
         
 <div class="d-content-form">
-    <s:form id="frm_marca" action='javascript:void(0)' theme="simple">
+    <s:form id="frm_modelo" action='javascript:void(0)' theme="simple">
+        <s:hidden name="idMar" />
         <table border="0" cellpadding="0" cellspacing="0" class="table-form">
             <tr>
-                <td style="width: 50px;">
+                <td style="width: 60px;">
                     Código<s:if test='%{opcion=="A"}'><span class="required">*</span></s:if>
                 </td>
                 <td style="">
                     <s:if test='%{opcion=="A"}'>
-                        <s:textfield name="idMar" cssClass="element-form" cssStyle="width:40px;" maxlength="3" />
+                        <s:textfield name="idModMar" cssClass="element-form" cssStyle="width:40px;" maxlength="4" />
                     </s:if>
                     <s:elseif test='%{opcion=="M"}'>
-                        <s:textfield name="idMar" disabled="true" cssClass="element-form" cssStyle="width:40px;" />
-                        <s:hidden name="idMar" />
+                        <s:textfield name="idModMar" disabled="true" cssClass="element-form" cssStyle="width:40px;" />
+                        <s:hidden name="idModMar" />
                     </s:elseif>
                 </td>
             </tr>
             <tr>
-                <td style="width: 50px;">Marca<span class="required">*</span></td>
+                <td style="width: 60px;">Modelo<span class="required">*</span></td>
                 <td>
-                    <s:textfield name="desMar" cssClass="element-form" cssStyle="width:180px;" maxLength="20" />
+                    <s:textfield name="desModMar" cssClass="element-form" cssStyle="width:350px;" maxLength="40" />
                 </td>
             </tr>
             <tr>
@@ -79,20 +87,16 @@
         });
         
         $('a.back').click(function(){
-            $('#frm_marca_back').submit();
+            $('#frm_modelo_back').submit();
         });
         
         $('#btn_grabar').click(function(){
             post(
                 '<s:property value="formURL" />',
-                $('#frm_marca').serialize(),
+                $('#frm_modelo').serialize(),
                 function(resultado){
                     resultado = $.trim(resultado);
                     var _error = resultado.indexOf("error");
-                    
-                    if(_error == -1)
-                        _error = resultado.indexOf('exception');
-                    
                     if(_error != -1)
                     {
                         $('#DIVgrabar').html(resultado);
@@ -100,20 +104,11 @@
                     }
                     else
                     {
-                        $('#frm_marca_back').submit();
+                        $('#frm_modelo_back').submit();
                     }
                 },
                 1
             );
         });
     });
-    
-    function abrir_ventana(url)
-    {	
-        //var opc = "location=0,directories=0,titlebar=0,toolbar=0,location=1,status=0,menubar=0,scrollbars=1,width=" + screen.availWidth + ",height=" + screen.availHeight;
-        var opc = "location=0,directories=0,titlebar=0,toolbar=0,location=1,status=0,menubar=0,scrollbars=1,width=300,height=150";
-        mywindow = window.open(url, "", opc);
-        mywindow.moveTo(100, 100);
-        setTimeout('mywindow.close()',7000);
-    }
 </script>

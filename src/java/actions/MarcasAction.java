@@ -180,7 +180,7 @@ public class MarcasAction extends MasterAction implements ModelDriven<Marcas>
         return "adicionar";
     }
     
-    public void getDatosMarca()
+    private void getDatosMarca()
     {
         helper conex = null;
         ResultSet tabla = null;
@@ -251,11 +251,12 @@ public class MarcasAction extends MasterAction implements ModelDriven<Marcas>
         if(indError.equals(""))
         {
             helper conex = null;
+            ResultSet tabla = null;
             
             try 
             {
                 conex = new helper();
-                indError = conex.getErrorSQL();
+                indError += conex.getErrorSQL();
                 
                 if(!indError.equals(""))
                 {
@@ -263,12 +264,38 @@ public class MarcasAction extends MasterAction implements ModelDriven<Marcas>
                 }
                 else
                 {
-                    indError = conex.executeNonQuery("CALL usp_insMarca(?,?)", 
-                            new Object[]{ modelo.getIdMar(),modelo.getDesMar() });
-
+                    tabla = conex.executeDataSet("CALL usp_verifExistMarca(?)", 
+                            new Object[]{ modelo.getIdMar() });
+                    
+                    indError += conex.getErrorSQL();
+                    
                     if(!indError.equals(""))
                     {
                         errores.add(indError);
+                    }
+                    else
+                    {
+                        int cont = 0;
+                        while(tabla.next())
+                        {
+                            cont = tabla.getInt(1);
+                        }
+                        
+                        if(cont>0)
+                        {
+                            indError += "error";
+                            errores.add("Ya existe una marca con el código ingresado");
+                        }
+                        else
+                        {
+                            indError += conex.executeNonQuery("CALL usp_insMarca(?,?)",
+                                        new Object[]{ modelo.getIdMar(),modelo.getDesMar() });
+
+                            if(!indError.equals(""))
+                            {
+                                errores.add(indError);
+                            }
+                        }
                     }
                 }
             }
@@ -279,7 +306,13 @@ public class MarcasAction extends MasterAction implements ModelDriven<Marcas>
             }
             finally
             {
-                conex.returnConnect();
+                try 
+                {
+                    tabla.close();
+                    conex.returnConnect();  
+                }
+                catch (Exception e) 
+                {}
             }
         }
         
@@ -290,12 +323,6 @@ public class MarcasAction extends MasterAction implements ModelDriven<Marcas>
     {
         modelo.setIdMar(modelo.getIdMar().trim());
         modelo.setDesMar(modelo.getDesMar().trim());
-        
-        if(modelo.getIdMar().equals(""))
-        {
-            indError += "error";
-            errores.add("Ingrese el código de la marca");
-        }
         
         if(modelo.getDesMar().equals(""))
         {

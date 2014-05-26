@@ -103,13 +103,9 @@ $(document).ready(function() {
         $(this).addClass('menu-click-opc');
     });
 
-
-    $('.d-more-opt-float').click(function(e) {
-        e.stopPropagation();
-    });
     
     /* Mostrar y ocultar las opciones del usuario */
-    $('.option-user-icon').click(function(e){
+    $('.option-user-icon').mousedown(function(e){
         e.stopPropagation();
         hideMenu();
         
@@ -121,7 +117,7 @@ $(document).ready(function() {
         else
         {
             $(this).parent().addClass('menu-click');
-            $('.ul-options-user').css('display','block');
+            $('.ul-options-user').css('display','block');   
         }
     });
     
@@ -157,6 +153,7 @@ $(document).ready(function() {
     
     $('.elem-option-user').mouseup(function(e) {
         e.stopPropagation();
+        hideOptUser();
         hideMenu();
     });
     
@@ -170,6 +167,7 @@ $(document).ready(function() {
     
     $('body').delegate('.d-content-grilla-body table tr','click',function(){
         $('.d-content-grilla-body table tr').removeClass("selected-tr");
+        $('.d-content-grilla-body table tr').find('td:first-child').find('.select_rec').prop('checked',false);
         $(this).find('td:first-child').find('.select_rec').prop('checked',true);
         $(this).addClass("selected-tr");
     });  
@@ -364,7 +362,7 @@ function isNumberKey(evt)  //Numeros con punto decimal
 {
     var charCode = (evt.which) ? evt.which : window.event.keyCode;
     
-    if((charCode >= 48 && charCode <= 57) || charCode===46 || charCode===8 || charCode===0)
+    if((charCode >= 48 && charCode <= 57) || charCode==46 || charCode==8 || charCode==0)
         return true;
     
     return false;
@@ -374,7 +372,7 @@ function isNumberIntegerKey(evt) //Solo numeros (entero)
 {
     var charCode = (evt.which) ? evt.which : window.event.keyCode;
     
-    if((charCode >= 48 && charCode <= 57) || charCode===8  || charCode===0)
+    if((charCode >= 48 && charCode <= 57) || charCode==8  || charCode==0)
         return true;
     
     return false;

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+    <package name="modelos" namespace="/modelos" extends="struts-default">
+        <result-types>
+            <result-type name="tiles" class="org.apache.struts2.views.tiles.TilesResult" />
+        </result-types>
+
+        <action name="*Modelo" method="{1}" class="actions.ModelosAction">
+            <result name="success" type="tiles">mant-modelos-index</result>
+            <result name="adicionar" type="tiles">mant-modelos-adicionar</result>
+            <result name="grabar">/mantenimientos/modelos/grabar.jsp</result>
+            <result name="actualizar">/mantenimientos/modelos/grabar.jsp</result>
+            <result name="vrfSeleccion">/mantenimientos/modelos/grabar.jsp</result>
+            <result name="eliminar">/mantenimientos/modelos/eliminar.jsp</result>
+        </action>
+    </package>
+</struts>

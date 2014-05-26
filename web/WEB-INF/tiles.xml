@@ -122,4 +122,39 @@
     <definition name="mant-marcas-adicionar" extends="baseLayout">
         <put-attribute name="body" value="/mantenimientos/marcas/adicionar.jsp" />
     </definition>
+    
+    <!--  MODELOS  -->
+    <definition name="mant-modelos-index" extends="baseLayout">
+        <put-attribute name="body" value="/mantenimientos/modelos/index.jsp" />
+    </definition>
+    <definition name="mant-modelos-adicionar" extends="baseLayout">
+        <put-attribute name="body" value="/mantenimientos/modelos/adicionar.jsp" />
+    </definition>
+    
+    <!--  AQUI VA LO RELACIONADO A VERSIONES  -->
+    
+    <!--  COLORES  -->
+    <definition name="mant-colores-index" extends="baseLayout">
+        <put-attribute name="body" value="/mantenimientos/colores/index.jsp" />
+    </definition>
+    <definition name="mant-colores-adicionar" extends="baseLayout">
+        <put-attribute name="body" value="/mantenimientos/colores/adicionar.jsp" />
+    </definition>
+    
+    <!--  COLORES POR MODELO  -->
+    <definition name="mant-coloresMod-index" extends="baseLayout">
+        <put-attribute name="body" value="/mantenimientos/coloresMod/index.jsp" />
+    </definition>
+    <definition name="mant-coloresMod-adicionar" extends="baseLayout">
+        <put-attribute name="body" value="/mantenimientos/coloresMod/adicionar.jsp" />
+    </definition>
+    
+    
+    <!--  TIPO DE COLORES  -->
+    <definition name="mant-tipoCambio-index" extends="baseLayout">
+        <put-attribute name="body" value="/mantenimientos/tipoCambio/index.jsp" />
+    </definition>
+    <definition name="mant-tipoCambio-adicionar" extends="baseLayout">
+        <put-attribute name="body" value="/mantenimientos/tipoCambio/adicionar.jsp" />
+    </definition>
 </tiles-definitions>

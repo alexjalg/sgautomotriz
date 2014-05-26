@@ -12,31 +12,34 @@
     </div>
 </div>
             
-<form method="POST" id="frm_marca_back" action="<s:property value="backURL" />">
+<form method="POST" id="frm_tipoCambio_back" action="<s:property value="backURL" />">
     <s:hidden name="varReturn" id="varReturn_f" />
 </form>
         
 <div class="d-content-form">
-    <s:form id="frm_marca" action='javascript:void(0)' theme="simple">
+    <s:form id="frm_tipoCambio" action='javascript:void(0)' theme="simple">
         <table border="0" cellpadding="0" cellspacing="0" class="table-form">
             <tr>
-                <td style="width: 50px;">
-                    Código<s:if test='%{opcion=="A"}'><span class="required">*</span></s:if>
+                <td style="width: 140px;">
+                    Fecha
                 </td>
                 <td style="">
-                    <s:if test='%{opcion=="A"}'>
-                        <s:textfield name="idMar" cssClass="element-form" cssStyle="width:40px;" maxlength="3" />
-                    </s:if>
-                    <s:elseif test='%{opcion=="M"}'>
-                        <s:textfield name="idMar" disabled="true" cssClass="element-form" cssStyle="width:40px;" />
-                        <s:hidden name="idMar" />
-                    </s:elseif>
+                    <s:hidden name="fecTipCam" />
+                    <s:textfield name="fecTipCam" id="fecTipCam" disabled="true" cssClass="element-form" cssStyle="width:80px;" />
                 </td>
             </tr>
             <tr>
-                <td style="width: 50px;">Marca<span class="required">*</span></td>
+                <td style="width: 50px;">Tipo de Cambio Interno<span class="required">*</span></td>
                 <td>
-                    <s:textfield name="desMar" cssClass="element-form" cssStyle="width:180px;" maxLength="20" />
+                    <s:textfield name="impTipCamInt" cssClass="element-form" cssStyle="width:60px;" maxLength="7"
+                                 onkeypress="return isNumberKey(event)" />
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 50px;">Tipo de Cambio Legal<span class="required">*</span></td>
+                <td>
+                    <s:textfield name="impTipCamLeg" cssClass="element-form" cssStyle="width:60px;" maxLength="7" 
+                                 onkeypress="return isNumberKey(event)" />
                 </td>
             </tr>
             <tr>
@@ -51,12 +54,21 @@
         </table>
     </s:form>
 </div>
-<div id="DIVgrabar" title="<s:property value="titleDialog" />" class="alerta"></div>
-                    
+<div id="DIVgrabar" title="<s:property value="titleDialog" />" class="alerta"></div>  
                     
 <script type="text/javascript">
     $(document).ready(function(){
         $('#btn_grabar').button();
+        
+        $('#fecTipCam').datepicker('destroy').datepicker({
+            monthNames: ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"], 
+            monthNamesShort: ["Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"],
+            dayNamesMin: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"],
+            firstDay: 1,
+            inline:true,
+            dateFormat: "dd-mm-yy"
+        });
+        $("#fecTipCam").datepicker("option", "showAnim", "drop");
     
         $('#DIVgrabar').dialog({
             autoOpen: false,
@@ -79,13 +91,13 @@
         });
         
         $('a.back').click(function(){
-            $('#frm_marca_back').submit();
+            $('#frm_tipoCambio_back').submit();
         });
         
         $('#btn_grabar').click(function(){
             post(
                 '<s:property value="formURL" />',
-                $('#frm_marca').serialize(),
+                $('#frm_tipoCambio').serialize(),
                 function(resultado){
                     resultado = $.trim(resultado);
                     var _error = resultado.indexOf("error");
@@ -100,20 +112,11 @@
                     }
                     else
                     {
-                        $('#frm_marca_back').submit();
+                        $('#frm_tipoCambio_back').submit();
                     }
                 },
                 1
             );
         });
     });
-    
-    function abrir_ventana(url)
-    {	
-        //var opc = "location=0,directories=0,titlebar=0,toolbar=0,location=1,status=0,menubar=0,scrollbars=1,width=" + screen.availWidth + ",height=" + screen.availHeight;
-        var opc = "location=0,directories=0,titlebar=0,toolbar=0,location=1,status=0,menubar=0,scrollbars=1,width=300,height=150";
-        mywindow = window.open(url, "", opc);
-        mywindow.moveTo(100, 100);
-        setTimeout('mywindow.close()',7000);
-    }
 </script>

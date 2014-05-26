@@ -455,6 +455,7 @@ public class PermisosAction extends MasterAction implements ModelDriven<Permisos
     {
         regPag = 13;
         urlPaginacion = "permisos/listModulosPermisos";
+        divPopUp = "DIVopciones";
         
         cantModulosIndex();
         verifPag();
@@ -1173,6 +1174,7 @@ public class PermisosAction extends MasterAction implements ModelDriven<Permisos
     {
         regPag = 13;
         urlPaginacion = "permisos/listOpcionesPermisos";
+        divPopUp = "DIVopciones";
         
         cantOpcionesIndex();
         verifPag();

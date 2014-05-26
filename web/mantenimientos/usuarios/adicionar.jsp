@@ -25,7 +25,7 @@
                 </td>
                 <td style="">
                     <s:if test='%{opcion=="A"}'>
-                        <s:textfield name="idUsu" cssClass="element-form" cssStyle="width:100px;" />
+                        <s:textfield name="idUsu" cssClass="element-form" cssStyle="width:100px;" maxLength="10" />
                     </s:if>
                     <s:elseif test='%{opcion=="M"}'>
                         <s:textfield name="idUsu" disabled="true" cssClass="element-form" cssStyle="width:100px;" />

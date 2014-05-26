@@ -12,12 +12,12 @@
     </div>
 </div>
             
-<form method="POST" id="frm_marca_back" action="<s:property value="backURL" />">
+<form method="POST" id="frm_color_back" action="<s:property value="backURL" />">
     <s:hidden name="varReturn" id="varReturn_f" />
 </form>
         
 <div class="d-content-form">
-    <s:form id="frm_marca" action='javascript:void(0)' theme="simple">
+    <s:form id="frm_color" action='javascript:void(0)' theme="simple">
         <table border="0" cellpadding="0" cellspacing="0" class="table-form">
             <tr>
                 <td style="width: 50px;">
@@ -25,18 +25,18 @@
                 </td>
                 <td style="">
                     <s:if test='%{opcion=="A"}'>
-                        <s:textfield name="idMar" cssClass="element-form" cssStyle="width:40px;" maxlength="3" />
+                        <s:textfield name="idCol" cssClass="element-form" cssStyle="width:40px;" maxlength="3" />
                     </s:if>
                     <s:elseif test='%{opcion=="M"}'>
-                        <s:textfield name="idMar" disabled="true" cssClass="element-form" cssStyle="width:40px;" />
-                        <s:hidden name="idMar" />
+                        <s:textfield name="idCol" disabled="true" cssClass="element-form" cssStyle="width:40px;" />
+                        <s:hidden name="idCol" />
                     </s:elseif>
                 </td>
             </tr>
             <tr>
-                <td style="width: 50px;">Marca<span class="required">*</span></td>
+                <td style="width: 50px;">Color<span class="required">*</span></td>
                 <td>
-                    <s:textfield name="desMar" cssClass="element-form" cssStyle="width:180px;" maxLength="20" />
+                    <s:textfield name="desCol" cssClass="element-form" cssStyle="width:350px;" maxLength="50" />
                 </td>
             </tr>
             <tr>
@@ -79,13 +79,13 @@
         });
         
         $('a.back').click(function(){
-            $('#frm_marca_back').submit();
+            $('#frm_color_back').submit();
         });
         
         $('#btn_grabar').click(function(){
             post(
                 '<s:property value="formURL" />',
-                $('#frm_marca').serialize(),
+                $('#frm_color').serialize(),
                 function(resultado){
                     resultado = $.trim(resultado);
                     var _error = resultado.indexOf("error");
@@ -100,7 +100,7 @@
                     }
                     else
                     {
-                        $('#frm_marca_back').submit();
+                        $('#frm_color_back').submit();
                     }
                 },
                 1

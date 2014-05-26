@@ -13,31 +13,31 @@
                 <tr class="tr-head">
                     <td style="width: 24px;"></td>
                     <td style="width: 40px; text-align: center;">Cod.</td>
-                    <td style="<s:if test='%{modeloOpcion.desOpc_f!=""}'> background-color: #B5CCED; </s:if>">
-                        Opción
+                    <td style="<s:if test='%{modeloColor.desCol_f!=""}'> background-color: #B5CCED; </s:if>">
+                        Color
                     </td>
                 </tr>
                 <tr class="tr-head">
                     <td></td>
                     <td></td>
-                    <td style="<s:if test='%{modeloOpcion.desOpc_f!=""}'> background-color: #B5CCED; </s:if>">
-                        <s:textfield name="modeloOpcion.desOpc_f" cssClass="element-form-grid" cssStyle="width: 200px;" maxLength="60" />
+                    <td style="<s:if test='%{modeloColor.desCol_f!=""}'> background-color: #B5CCED; </s:if>">
+                        <s:textfield name="modeloColor.desCol_f" cssClass="element-form-grid" cssStyle="width: 200px;" maxLength="50" />
                     </td>
                 </tr>
             </table>
         </div>
         <div class="d-content-grilla-body d-content-grilla-body-popup">
             <table border="0" cellpadding="0" cellspacing="0" style="">
-                <s:iterator value="listOpciones">
+                <s:iterator value="listColores">
                 <tr>
                     <td style="width: 24px;">
-                        <input type="radio" name="idOpc" id="rbt_idOpc" value="<s:property value="idOpc" />" class="select_rec" />
+                        <input type="radio" name="idCol" id="rbt_idCol" value="<s:property value="idCol" />" class="select_rec" />
                     </td>
                     <td style="width: 40px; text-align: center;">
-                        <s:property value="idOpc" />
+                        <s:property value="idCol" />
                     </td>
                     <td style="">
-                        <s:property value="desOpc" />
+                        <s:property value="desCol" />
                     </td>
                 </tr>
                 </s:iterator>

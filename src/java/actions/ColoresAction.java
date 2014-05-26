@@ -1,52 +1,52 @@
 /*
- * Action: Provincias
+ * Action: Colores
  * Creado por: Angelo Ccoicca
- * Fecha de creación: 12-03-2014
+ * Fecha de creación: 19-05-2014
  * Modificado por                   Fecha de Modificación
  * - 
  * -
  */
-
 package actions;
 
 import com.opensymphony.xwork2.ModelDriven;
 import conexion.helper;
-import entities.Provincias;
+import entities.Colores;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
-public class ProvinciasAction extends MasterAction implements ModelDriven<Provincias>
+public class ColoresAction extends MasterAction implements ModelDriven<Colores>
 {
-    private Provincias modelo = new Provincias();
-    private ArrayList<Provincias> listProvincias = new ArrayList<Provincias>();
+    private Colores modelo = new Colores();
+    private ArrayList<Colores> listColores = new ArrayList<Colores>();
     
     @Override
-    public Provincias getModel()
+    public Colores getModel()
     {
-        tituloOpc = "Provincias";// cambiar por campo titulo cuando este lista la tabla de opciones
+        tituloOpc = "Colores";
+        
         return modelo;
     }
     
-    private void cantProvinciasIndex()
+    private void cantColoresIndex()
     {
         helper conex = null;
         ResultSet tabla = null;
         
-        try
+        try 
         {
             conex = new helper();
-            indError = conex.getErrorSQL().trim();
-
-            if(!indError.trim().equals(""))
+            indError += conex.getErrorSQL();
+        
+            if(!indError.equals(""))
             {
                 errores.add(indError);
             }
             else
             {
-                tabla = conex.executeDataSet("CALL usp_cantProvIndex(?,?)", 
-                        new Object[]{ modelo.getIdDep(),modelo.getDesProv_f().trim() });
+                tabla = conex.executeDataSet("CALL usp_cantColoresIndex(?)", 
+                        new Object[]{ modelo.getDesCol_f() });
 
-                indError = conex.getErrorSQL();
+                indError += conex.getErrorSQL();
 
                 if(!indError.equals(""))
                 {
@@ -63,7 +63,7 @@ public class ProvinciasAction extends MasterAction implements ModelDriven<Provin
         }
         catch (Exception e) 
         {
-            indError = "error";
+            indError += "error";
             errores.add(e.getMessage());
         }
         finally
@@ -78,15 +78,15 @@ public class ProvinciasAction extends MasterAction implements ModelDriven<Provin
         }
     }
     
-    private void listProvinciasIndex()
+    private void listColoresIndex()
     {
         helper conex = null;
         ResultSet tabla = null;
         
-        try
+        try 
         {
             conex = new helper();
-            indError = conex.getErrorSQL();
+            indError += conex.getErrorSQL();
 
             if(!indError.equals(""))
             {
@@ -94,11 +94,10 @@ public class ProvinciasAction extends MasterAction implements ModelDriven<Provin
             }
             else
             {
-                tabla = conex.executeDataSet("CALL usp_listProvIndex(?,?,?,?)", 
-                        new Object[]{ modelo.getIdDep(),modelo.getDesProv_f().trim(),
-                            (getCurPag())*getRegPag(),getRegPag() });
+                tabla = conex.executeDataSet("CALL usp_listColoresIndex(?,?,?)", 
+                        new Object[]{ modelo.getDesCol_f(),getCurPag()*regPag,regPag });
 
-                indError = conex.getErrorSQL();
+                indError += conex.getErrorSQL();
 
                 if(!indError.equals(""))
                 {
@@ -106,20 +105,20 @@ public class ProvinciasAction extends MasterAction implements ModelDriven<Provin
                 }
                 else
                 {
-                    Provincias obj;
+                    Colores obj;
                     while(tabla.next())
                     {
-                        obj = new Provincias();
-                        obj.setIdPrvDep(tabla.getInt("idPrvDep"));
-                        obj.setDesProv(tabla.getString("desProv"));
-                        listProvincias.add(obj);
+                        obj = new Colores();
+                        obj.setIdCol(tabla.getString("idCol"));
+                        obj.setDesCol(tabla.getString("desCol"));
+                        listColores.add(obj);
                     }
                 }
             }
         }
         catch (Exception e) 
         {
-            indError = "error";
+            indError += "error";
             errores.add(e.getMessage());
         }
         finally
@@ -137,99 +136,26 @@ public class ProvinciasAction extends MasterAction implements ModelDriven<Provin
     @Override
     public String execute()
     {
-        nivBandeja = 2;
+        urlPaginacion = "colores/Color";
         
-        if(modelo.getIdDep()==0)
+        varReturnProcess(0);
+        if(!listVarReturn.isEmpty())
         {
-            indErrParm = "error";
+            curPagVis = Integer.parseInt(listVarReturn.get(0).toString().trim());
         }
-        else
-        {
-            varReturnProcess(0);
-            if(!listVarReturn.isEmpty())
-            {
-                curPagVis = Integer.parseInt(listVarReturn.get(0).toString().trim());
-                modelo.setIdDep(Integer.parseInt(listVarReturn.get(1).toString().trim()));
-                modelo.setDesProv_f(listVarReturn.get(2).toString().trim());
-            }
-
-            if(modelo.getIdDep()==0)
-            {
-                indErrParm = "error";
-            }
-            else
-            {
-                urlPaginacion = "provincias/Provincia";
-
-                getDatosDepartamento();
-
-                modelo.setDesProv_f(modelo.getDesProv_f().trim());
-
-                cantProvinciasIndex();
-                verifPag();
-                listProvinciasIndex();
-            }
-        }
+        
+        cantColoresIndex();
+        verifPag();
+        listColoresIndex();
         
         return SUCCESS;
     }
     
-    private void getDatosDepartamento()
-    {
-        helper conex = null;
-        ResultSet tabla = null;
-        
-        try 
-        {
-            conex = new helper();
-            indError = conex.getErrorSQL();
-            
-            if(!indError.equals(""))
-            {
-                errores.add(indError);
-            }
-            else
-            {
-                tabla = conex.executeDataSet("CALL usp_getDatosDepartamento(?)", 
-                        new Object[]{ modelo.getIdDep() });
-
-                indError = conex.getErrorSQL();
-
-                if(!indError.equals(""))
-                {
-                    errores.add(indError);
-                }
-                else
-                {
-                    while(tabla.next())
-                    {
-                        modelo.setDesDep(tabla.getString("desDep"));
-                    }
-                }
-            }
-        }
-        catch (Exception e) 
-        {
-            indError = "error";
-            errores.add(e.getMessage());
-        }
-        finally
-        {
-            try 
-            {
-                tabla.close();
-                conex.returnConnect();
-            }
-            catch (Exception e) 
-            {}
-        }
-    }
-    
     public String adicionar()
     {
-        nivBandeja = 2;
+        nivBandeja = 1;
         
-        if((!opcion.trim().equals("A") && !opcion.trim().equals("M")) || modelo.getIdDep()==0)
+        if((!opcion.trim().equals("A") && !opcion.trim().equals("M")))
         {
             indErrParm = "error";
         }
@@ -237,37 +163,32 @@ public class ProvinciasAction extends MasterAction implements ModelDriven<Provin
         {
             varReturnProcess(1);
             
-            getDatosDepartamento();
-            
             if(opcion.equals("A"))
             {
-                formURL = baseURL+"provincias/grabarProvincia";
+                formURL = baseURL+"colores/grabarColor";
             }
 
             if(opcion.equals("M"))
             {
-                if(modelo.getIdDep()==0)
-                    indErrParm = "error";
-                else
-                {
-                    getDatosProvincia();
-                    formURL = baseURL+"provincias/actualizarProvincia";
-                }
+                
+                getDatosColor();
+                formURL = baseURL+"colores/actualizarColor";
+                
             }
         }
         
         return "adicionar";
     }
     
-    private void getDatosProvincia()
+    public void getDatosColor()
     {
         helper conex = null;
         ResultSet tabla = null;
         
-        try
+        try 
         {
             conex = new helper();
-            indError = conex.getErrorSQL();
+            indError += conex.getErrorSQL();
 
             if(!indError.equals(""))
             {
@@ -275,10 +196,9 @@ public class ProvinciasAction extends MasterAction implements ModelDriven<Provin
             }
             else
             {
-                tabla = conex.executeDataSet("CALL usp_getDatosProvincia(?,?)", 
-                    new Object[]{ modelo.getIdDep(),modelo.getIdPrvDep() });
-
-                indError = conex.getErrorSQL();
+                tabla = conex.executeDataSet("CALL usp_getDatosColor(?)", 
+                        new Object[]{ modelo.getIdCol() });
+                indError += conex.getErrorSQL();
 
                 if(!indError.equals(""))
                 {
@@ -288,14 +208,15 @@ public class ProvinciasAction extends MasterAction implements ModelDriven<Provin
                 {
                     while(tabla.next())
                     {
-                        modelo.setDesProv(tabla.getString("desProv"));
+                        modelo.setIdCol(tabla.getString("idCol"));
+                        modelo.setDesCol(tabla.getString("desCol"));
                     }
                 }
             }
         }
         catch (Exception e) 
         {
-            indError = "error";
+            indError += "error";
             errores.add(e.getMessage());
         }
         finally
@@ -312,50 +233,20 @@ public class ProvinciasAction extends MasterAction implements ModelDriven<Provin
     
     public String grabar()
     {
-        modelo.setDesProv(modelo.getDesProv().trim());
+        modelo.setIdCol(modelo.getIdCol().trim());
+        modelo.setDesCol(modelo.getDesCol().trim());
         
-        if(indError.equals(""))
+        if(modelo.getIdCol().equals(""))
         {
-            helper conex = null;
-            ResultSet tabla = null;
-            
-            try 
-            {
-                conex = new helper();
-                indError = conex.getErrorSQL();
-
-                if(!indError.equals(""))
-                {
-                    errores.add(indError);
-                }
-                else
-                {
-                    indError = conex.executeNonQuery("CALL usp_insProvincia(?,?)",
-                            new Object[]{ modelo.getIdDep(),modelo.getDesProv() });
-
-                    if(!indError.equals(""))
-                    {
-                        errores.add(indError);
-                    }
-                }
-            }
-            catch (Exception e) 
-            {
-                indError = "error";
-                errores.add(e.getMessage());
-            }
-            finally
-            {
-                conex.returnConnect();
-            }
+            indError += "error";
+            errores.add("Ingrese el código del color");
         }
         
-        return "grabar";
-    }
-    
-    public String actualizar()
-    {
-        modelo.setDesProv(modelo.getDesProv().trim());
+        if(modelo.getDesCol().equals(""))
+        {
+            indError += "error";
+            errores.add("Ingrese el nombre del color");
+        }
         
         if(indError.equals(""))
         {
@@ -373,19 +264,93 @@ public class ProvinciasAction extends MasterAction implements ModelDriven<Provin
                 }
                 else
                 {
-                    indError = conex.executeNonQuery("CALL usp_updProvincia(?,?,?)",
-                            new Object[]{ modelo.getIdDep(), modelo.getIdPrvDep(), 
-                                modelo.getDesProv() });
-
+                    tabla = conex.executeDataSet("CALL usp_verifExistColor(?)", 
+                            new Object[]{ modelo.getIdCol() });
+                    
+                    indError += conex.getErrorSQL();
+                    
                     if(!indError.equals(""))
                     {
                         errores.add(indError);
-                    }   
+                    }
+                    else
+                    {
+                        int cont=0;
+                        while(tabla.next())
+                        {
+                            cont = tabla.getInt(1);
+                        }
+                        
+                        if(cont>0)
+                        {
+                            indError += "error";
+                            errores.add("Ya existe un color con el código ingresado");
+                        }
+                        else
+                        {
+                            indError = conex.executeNonQuery("CALL usp_insColor(?,?)", 
+                                    new Object[]{ modelo.getIdCol(),modelo.getDesCol() });
+
+                            if(!indError.equals(""))
+                            {
+                                errores.add(indError);
+                            }
+                        }
+                    }
                 }
             }
             catch (Exception e) 
             {
-                indError = "error";
+                indError += "error";
+                errores.add(e.getMessage());
+            }
+            finally
+            {
+                conex.returnConnect();
+            }
+        }
+        
+        return "grabar";
+    }
+    
+    public String actualizar()
+    {
+        modelo.setIdCol(modelo.getIdCol().trim());
+        modelo.setDesCol(modelo.getDesCol().trim());
+        
+        if(modelo.getDesCol().equals(""))
+        {
+            indError += "error";
+            errores.add("Ingrese el nombre del color");
+        }
+        
+        if(indError.equals(""))
+        {
+            helper conex = null;
+            
+            try
+            {
+                conex = new helper();
+                indError += conex.getErrorSQL();
+
+                if(!indError.equals(""))
+                {
+                    errores.add(indError);
+                }
+                else
+                {
+                    indError += conex.executeNonQuery("CALL usp_updColor(?,?)",
+                            new Object[]{ modelo.getIdCol(),modelo.getDesCol() });
+
+                    if(!indError.equals(""))
+                    {
+                        errores.add(indError);
+                    }
+                }
+            }
+            catch (Exception e) 
+            {
+                indError += "error";
                 errores.add(e.getMessage());
             }
             finally
@@ -407,7 +372,7 @@ public class ProvinciasAction extends MasterAction implements ModelDriven<Provin
             try
             {
                 conex = new helper();
-                indError = conex.getErrorSQL().trim();
+                indError += conex.getErrorSQL().trim();
 
                 if(!indError.equals(""))
                 {
@@ -415,9 +380,9 @@ public class ProvinciasAction extends MasterAction implements ModelDriven<Provin
                 }
                 else
                 {
-                    tabla = conex.executeDataSet("CALL usp_verifDependProv(?,?)", 
-                            new Object[]{ modelo.getIdDep(),modelo.getIdPrvDep() });
-                    indError = conex.getErrorSQL();
+                    tabla = conex.executeDataSet("CALL usp_verifDependColor(?)", 
+                            new Object[]{ modelo.getIdCol() });
+                    indError += conex.getErrorSQL();
 
                     if(!indError.equals(""))
                     {
@@ -434,8 +399,8 @@ public class ProvinciasAction extends MasterAction implements ModelDriven<Provin
                         /* Si no tiene dependencias */
                         if(cant == 0)
                         {
-                            indError = conex.executeNonQuery("CALL usp_dltProvincia(?,?)",
-                                    new Object[]{ modelo.getIdDep(),modelo.getIdPrvDep() });
+                            indError += conex.executeNonQuery("CALL usp_dltColor(?)",
+                                    new Object[]{ modelo.getIdCol() });
 
                             indError = indError.trim();
                             if(indError.trim().equals(""))
@@ -445,8 +410,8 @@ public class ProvinciasAction extends MasterAction implements ModelDriven<Provin
                         }
                         else /* si tiene dependencias */
                         {
-                            indError = "error";
-                            errores.add("Existen registros dependientes de la provincia");
+                            indError += "error";
+                            errores.add("Existen registros dependientes del color");
                         }
                     }
                 }
@@ -473,7 +438,7 @@ public class ProvinciasAction extends MasterAction implements ModelDriven<Provin
     
     public String vrfSeleccion()
     {
-        if(modelo.getIdPrvDep()==0)
+        if(modelo.getIdCol().trim().equals(""))
         {
             indError = "error";
             errores.add("No ha seleccionado ningun registro");
@@ -481,26 +446,25 @@ public class ProvinciasAction extends MasterAction implements ModelDriven<Provin
         
         return "vrfSeleccion";
     }
-    
+
     /**
      * @return the modelo
      */
-    public Provincias getModelo() {
+    public Colores getModelo() {
         return modelo;
     }
 
     /**
      * @param modelo the modelo to set
      */
-    public void setModelo(Provincias modelo) {
+    public void setModelo(Colores modelo) {
         this.modelo = modelo;
     }
 
     /**
-     * @return the listProvincias
+     * @return the listColores
      */
-    public ArrayList<Provincias> getListProvincias() {
-        return listProvincias;
+    public ArrayList<Colores> getListColores() {
+        return listColores;
     }
-    
 }

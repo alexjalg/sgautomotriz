@@ -69,6 +69,7 @@ public class MasterAction extends ActionSupport implements ServletRequestAware {
     protected String jsPaginacion = "";
     protected String jsPaginacionPopUp = "";
     protected String datosOblig = "";
+    protected String divPopUp = "";
     
     /*variable para recuperar filtros y otros al cambiar de paginas*/
     private String strParamsReturn="";
@@ -277,7 +278,7 @@ public class MasterAction extends ActionSupport implements ServletRequestAware {
     }
 
     //Comprueba que la fecha enviada como primer parametro sea válida, si el segundo parametro es 1,
-    //el formato con el que se validará será yyyy-MM-dd; si es 2 el formato será dd-MM-yyyy.
+    //el formato con el que se validará será yyyy-MM-dd; si es 2 el formato a validar será dd-MM-yyyy.
     protected boolean isDate(String fecha, int ind) 
     {
         try
@@ -610,9 +611,12 @@ public class MasterAction extends ActionSupport implements ServletRequestAware {
         if(curPagVis==0 || curPagVis==getUltPag())
             jsPaginacionPopUp += " $('#next_pag_pu').button('disable'); ";
         
-        jsPaginacionPopUp += " $('#prev_pag_pu').click(function(){ $('#curPag_f_pu').val("+ (curPagVis-1) +"); $('#frm_princ_pu').attr('action','"+baseURL+urlPaginacion+"'); }); ";
-        jsPaginacionPopUp += " $('#next_pag_pu').click(function(){ $('#curPag_f_pu').val("+ (curPagVis+1) +"); $('#frm_princ_pu').attr('action','"+baseURL+urlPaginacion+"'); }); ";
-        jsPaginacionPopUp += " $('#btn_search_pu').click(function(){ $('#frm_princ_pu').attr('action','"+baseURL+urlPaginacion+"'); }); ";
+        jsPaginacionPopUp += " $('#prev_pag_pu').click(function(){ $('#curPag_f_pu').val("+ (curPagVis-1) +"); $('#frm_princ_pu').attr('action','"+baseURL+urlPaginacion+"'); "
+                + " $.post( '"+baseURL+urlPaginacion+"', $('#frm_princ_pu').serialize(), function(resultado){ $('#"+divPopUp+"').html(resultado);  } ); }); ";
+        jsPaginacionPopUp += " $('#next_pag_pu').click(function(){ $('#curPag_f_pu').val("+ (curPagVis+1) +"); $('#frm_princ_pu').attr('action','"+baseURL+urlPaginacion+"'); "
+                + " $.post( '"+baseURL+urlPaginacion+"', $('#frm_princ_pu').serialize(), function(resultado){ $('#"+divPopUp+"').html(resultado);  } ); }); ";
+        jsPaginacionPopUp += " $('#btn_search_pu').click(function(){ $('#curPag_f_pu').val(1); $('#frm_princ_pu').attr('action','"+baseURL+urlPaginacion+"'); "
+                + " $.post( '"+baseURL+urlPaginacion+"', $('#frm_princ_pu').serialize(), function(resultado){ $('#"+divPopUp+"').html(resultado);  } ); }); ";
         
         return jsPaginacionPopUp;
     }
@@ -937,5 +941,19 @@ public class MasterAction extends ActionSupport implements ServletRequestAware {
         datosOblig += "<input type=\"hidden\" name=\"mod\" id=\"mod_h1\" value=\""+mod+"\" /> ";
         
         return datosOblig;
+    }
+
+    /**
+     * @return the divPopUp
+     */
+    public String getDivPopUp() {
+        return divPopUp;
+    }
+
+    /**
+     * @param divPopUp the divPopUp to set
+     */
+    public void setDivPopUp(String divPopUp) {
+        this.divPopUp = divPopUp;
     }
 }
