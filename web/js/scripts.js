@@ -378,6 +378,18 @@ function isNumberIntegerKey(evt) //Solo numeros (entero)
     return false;
 }
 
+function validaRespuestaAjax(resultado)
+{
+    resultado = $.trim(resultado);
+    
+    var _error = resultado.indexOf("error");
+
+    if(_error == -1)
+        _error = resultado.indexOf('exception');
+    
+    return _error;
+}
+
 
 
 

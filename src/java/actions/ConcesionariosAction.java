@@ -8,6 +8,7 @@
  */
 package actions;
 
+import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ModelDriven;
 import conexion.helper;
 import entities.Concesionarios;
@@ -431,6 +432,21 @@ public class ConcesionariosAction extends MasterAction implements ModelDriven<Co
      */
     public ArrayList<Concesionarios> getListConcesionarios() {
         return listConcesionarios;
+    }
+
+    /**
+     * @return the accion
+     */
+    public String getAccion() {
+        accion = this.getClass().getName().substring(this.getClass().getName().lastIndexOf(".")+1);
+        return accion;
+    }
+
+    /**
+     * @param accion the accion to set
+     */
+    public void setAccion(String accion) {
+        this.accion = accion;
     }
     
 }

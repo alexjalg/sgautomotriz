@@ -12,7 +12,7 @@
         <action name="*Color" method="{1}" class="actions.ColoresAction">
             <result name="success" type="tiles">mant-colores-index</result>
             <result name="adicionar" type="tiles">mant-colores-adicionar</result>
-            <result name="grabar">/mantenimientos/colores/grabar.jsp</result>
+            <result name="grabar" type="tiles">mant-colores-grabar</result>
             <result name="actualizar">/mantenimientos/colores/grabar.jsp</result>
             <result name="vrfSeleccion">/mantenimientos/colores/grabar.jsp</result>
             <result name="eliminar">/mantenimientos/colores/eliminar.jsp</result>

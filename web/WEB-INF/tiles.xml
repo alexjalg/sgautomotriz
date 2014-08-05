@@ -10,6 +10,10 @@
         <put-attribute name="header" value="/template/header.jsp" />
         <put-attribute name="body" value="/template/body.jsp" />	
     </definition>
+    
+    <definition name="baseLayoutPopUp" template="/template/baseLayoutPopUp.jsp">
+        <put-attribute name="body" value="/template/body.jsp" />	
+    </definition>
 
     <definition name="inicio" extends="baseLayout">
         <put-attribute name="body" value="/inicio.jsp" />
@@ -139,6 +143,9 @@
     </definition>
     <definition name="mant-colores-adicionar" extends="baseLayout">
         <put-attribute name="body" value="/mantenimientos/colores/adicionar.jsp" />
+    </definition>
+    <definition name="mant-colores-grabar" extends="baseLayoutPopUp">
+        <put-attribute name="body" value="/mantenimientos/colores/grabar.jsp" /> 
     </definition>
     
     <!--  COLORES POR MODELO  -->

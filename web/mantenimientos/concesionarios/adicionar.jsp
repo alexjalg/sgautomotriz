@@ -78,7 +78,7 @@
                     var _error = resultado.indexOf("error");
                     
                     if(_error == -1)
-                        _error = resultado.indexOf('exception');
+                        _error = resultado.indexOf('exception'); 
                     
                     if(_error != -1)
                     {

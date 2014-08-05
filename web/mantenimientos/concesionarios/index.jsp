@@ -7,7 +7,6 @@
         <div class="d-subtitle-header"></div>
     </div>
 </div>
-        
 <!-- modelo de grilla -->
 <div class="d-buttons-grid">
     <s:if test='%{perm=="M" || perm=="V"}'>

@@ -23,7 +23,7 @@ public class ColoresAction extends MasterAction implements ModelDriven<Colores>
     public Colores getModel()
     {
         tituloOpc = "Colores";
-        
+        idClaseAccion = 1;
         return modelo;
     }
     
@@ -136,44 +136,57 @@ public class ColoresAction extends MasterAction implements ModelDriven<Colores>
     @Override
     public String execute()
     {
-        urlPaginacion = "colores/Color";
+        idAccion = 1;
         
-        varReturnProcess(0);
-        if(!listVarReturn.isEmpty())
+        verifAccionTipoUsuario();
+        
+        if(indErrAcc.equals(""))
         {
-            curPagVis = Integer.parseInt(listVarReturn.get(0).toString().trim());
+            urlPaginacion = "colores/Color";
+
+            varReturnProcess(0);
+            if(!listVarReturn.isEmpty())
+            {
+                curPagVis = Integer.parseInt(listVarReturn.get(0).toString().trim());
+            }
+
+            cantColoresIndex();
+            verifPag();
+            listColoresIndex();
         }
-        
-        cantColoresIndex();
-        verifPag();
-        listColoresIndex();
         
         return SUCCESS;
     }
     
     public String adicionar()
     {
-        nivBandeja = 1;
+        idAccion = 2;
+        verifAccionTipoUsuario();
         
-        if((!opcion.trim().equals("A") && !opcion.trim().equals("M")))
+        if(indErrAcc.equals(""))
         {
-            indErrParm = "error";
-        }
-        else
-        {
-            varReturnProcess(1);
-            
-            if(opcion.equals("A"))
-            {
-                formURL = baseURL+"colores/grabarColor";
-            }
+            nivBandeja = 1;
 
-            if(opcion.equals("M"))
+            if((!opcion.trim().equals("A") && !opcion.trim().equals("M")))
             {
-                
-                getDatosColor();
-                formURL = baseURL+"colores/actualizarColor";
-                
+                indErrParm = "error";
+            }
+            else
+            {
+                varReturnProcess(1);
+
+                if(opcion.equals("A"))
+                {
+                    formURL = baseURL+"colores/grabarColor";
+                }
+
+                if(opcion.equals("M"))
+                {
+
+                    getDatosColor();
+                    formURL = baseURL+"colores/actualizarColor";
+
+                }
             }
         }
         
@@ -233,80 +246,86 @@ public class ColoresAction extends MasterAction implements ModelDriven<Colores>
     
     public String grabar()
     {
-        modelo.setIdCol(modelo.getIdCol().trim());
-        modelo.setDesCol(modelo.getDesCol().trim());
+        idAccion = 3;
+        verifAccionTipoUsuario();
         
-        if(modelo.getIdCol().equals(""))
+        if(indErrAcc.equals(""))
         {
-            indError += "error";
-            errores.add("Ingrese el código del color");
-        }
-        
-        if(modelo.getDesCol().equals(""))
-        {
-            indError += "error";
-            errores.add("Ingrese el nombre del color");
-        }
-        
-        if(indError.equals(""))
-        {
-            helper conex = null;
-            ResultSet tabla = null;
-            
-            try
-            {
-                conex = new helper();
-                indError = conex.getErrorSQL();
+            modelo.setIdCol(modelo.getIdCol().trim());
+            modelo.setDesCol(modelo.getDesCol().trim());
 
-                if(!indError.equals(""))
+            if(modelo.getIdCol().equals(""))
+            {
+                indError += "error";
+                errores.add("Ingrese el código del color");
+            }
+
+            if(modelo.getDesCol().equals(""))
+            {
+                indError += "error";
+                errores.add("Ingrese el nombre del color");
+            }
+
+            if(indError.equals(""))
+            {
+                helper conex = null;
+                ResultSet tabla = null;
+
+                try
                 {
-                    errores.add(indError);
-                }
-                else
-                {
-                    tabla = conex.executeDataSet("CALL usp_verifExistColor(?)", 
-                            new Object[]{ modelo.getIdCol() });
-                    
-                    indError += conex.getErrorSQL();
-                    
+                    conex = new helper();
+                    indError = conex.getErrorSQL();
+
                     if(!indError.equals(""))
                     {
                         errores.add(indError);
                     }
                     else
                     {
-                        int cont=0;
-                        while(tabla.next())
+                        tabla = conex.executeDataSet("CALL usp_verifExistColor(?)", 
+                                new Object[]{ modelo.getIdCol() });
+
+                        indError += conex.getErrorSQL();
+
+                        if(!indError.equals(""))
                         {
-                            cont = tabla.getInt(1);
-                        }
-                        
-                        if(cont>0)
-                        {
-                            indError += "error";
-                            errores.add("Ya existe un color con el código ingresado");
+                            errores.add(indError);
                         }
                         else
                         {
-                            indError = conex.executeNonQuery("CALL usp_insColor(?,?)", 
-                                    new Object[]{ modelo.getIdCol(),modelo.getDesCol() });
-
-                            if(!indError.equals(""))
+                            int cont=0;
+                            while(tabla.next())
                             {
-                                errores.add(indError);
+                                cont = tabla.getInt(1);
+                            }
+
+                            if(cont>0)
+                            {
+                                indError += "error";
+                                errores.add("Ya existe un color con el código ingresado");
+                            }
+                            else
+                            {
+                                indError = conex.executeNonQuery("CALL usp_insColor(?,?)", 
+                                        new Object[]{ modelo.getIdCol(),modelo.getDesCol() });
+
+                                if(!indError.equals(""))
+                                {
+                                    errores.add(indError);
+                                }
                             }
                         }
                     }
                 }
-            }
-            catch (Exception e) 
-            {
-                indError += "error";
-                errores.add(e.getMessage());
-            }
-            finally
-            {
-                conex.returnConnect();
+                catch (Exception e) 
+                {
+                    indError += "error";
+                    errores.add(e.getMessage());
+                }
+                finally
+                {
+                    conex.returnConnect();
+                }
             }
         }
         
@@ -315,73 +334,27 @@ public class ColoresAction extends MasterAction implements ModelDriven<Colores>
     
     public String actualizar()
     {
-        modelo.setIdCol(modelo.getIdCol().trim());
-        modelo.setDesCol(modelo.getDesCol().trim());
+        idAccion = 4;
+        verifAccionTipoUsuario();
         
-        if(modelo.getDesCol().equals(""))
+        if(indErrAcc.equals(""))
         {
-            indError += "error";
-            errores.add("Ingrese el nombre del color");
-        }
-        
-        if(indError.equals(""))
-        {
-            helper conex = null;
-            
-            try
-            {
-                conex = new helper();
-                indError += conex.getErrorSQL();
+            modelo.setIdCol(modelo.getIdCol().trim());
+            modelo.setDesCol(modelo.getDesCol().trim());
 
-                if(!indError.equals(""))
-                {
-                    errores.add(indError);
-                }
-                else
-                {
-                    indError += conex.executeNonQuery("CALL usp_updColor(?,?)",
-                            new Object[]{ modelo.getIdCol(),modelo.getDesCol() });
-
-                    if(!indError.equals(""))
-                    {
-                        errores.add(indError);
-                    }
-                }
-            }
-            catch (Exception e) 
+            if(modelo.getDesCol().equals(""))
             {
                 indError += "error";
-                errores.add(e.getMessage());
+                errores.add("Ingrese el nombre del color");
             }
-            finally
-            {
-                conex.returnConnect();
-            }
-        }
-        
-        return "actualizar";
-    }
-    
-    public String eliminar()
-    {
-        if(opcion.trim().equals("E"))
-        {
-            helper conex = null;
-            ResultSet tabla = null;
-            
-            try
-            {
-                conex = new helper();
-                indError += conex.getErrorSQL().trim();
 
-                if(!indError.equals(""))
+            if(indError.equals(""))
+            {
+                helper conex = null;
+
+                try
                 {
-                    errores.add(indError);
-                }
-                else
-                {
-                    tabla = conex.executeDataSet("CALL usp_verifDependColor(?)", 
-                            new Object[]{ modelo.getIdCol() });
+                    conex = new helper();
                     indError += conex.getErrorSQL();
 
                     if(!indError.equals(""))
@@ -390,46 +363,104 @@ public class ColoresAction extends MasterAction implements ModelDriven<Colores>
                     }
                     else
                     {
-                        int cant = 0;
-                        while(tabla.next())
-                        {
-                            cant = tabla.getInt(1);
-                        }
+                        indError += conex.executeNonQuery("CALL usp_updColor(?,?)",
+                                new Object[]{ modelo.getIdCol(),modelo.getDesCol() });
 
-                        /* Si no tiene dependencias */
-                        if(cant == 0)
+                        if(!indError.equals(""))
                         {
-                            indError += conex.executeNonQuery("CALL usp_dltColor(?)",
-                                    new Object[]{ modelo.getIdCol() });
-
-                            indError = indError.trim();
-                            if(indError.trim().equals(""))
-                            {
-                                errores.add(indError);
-                            }
-                        }
-                        else /* si tiene dependencias */
-                        {
-                            indError += "error";
-                            errores.add("Existen registros dependientes del color");
+                            errores.add(indError);
                         }
                     }
                 }
-            }
-            catch (Exception e) 
-            {
-                indError = "error";
-                errores.add(e.getMessage());
-            }
-            finally
-            {
-                try 
+                catch (Exception e) 
                 {
-                    tabla.close();
+                    indError += "error";
+                    errores.add(e.getMessage());
+                }
+                finally
+                {
                     conex.returnConnect();
                 }
+            }
+        }
+        
+        return "actualizar";
+    }
+    
+    public String eliminar()
+    {
+        idAccion = 5;
+        verifAccionTipoUsuario();
+        
+        if(indErrAcc.equals(""))
+        {
+            if(opcion.trim().equals("E"))
+            {
+                helper conex = null;
+                ResultSet tabla = null;
+
+                try
+                {
+                    conex = new helper();
+                    indError += conex.getErrorSQL().trim();
+
+                    if(!indError.equals(""))
+                    {
+                        errores.add(indError);
+                    }
+                    else
+                    {
+                        tabla = conex.executeDataSet("CALL usp_verifDependColor(?)", 
+                                new Object[]{ modelo.getIdCol() });
+                        indError += conex.getErrorSQL();
+
+                        if(!indError.equals(""))
+                        {
+                            errores.add(indError);
+                        }
+                        else
+                        {
+                            int cant = 0;
+                            while(tabla.next())
+                            {
+                                cant = tabla.getInt(1);
+                            }
+
+                            /* Si no tiene dependencias */
+                            if(cant == 0)
+                            {
+                                indError += conex.executeNonQuery("CALL usp_dltColor(?)",
+                                        new Object[]{ modelo.getIdCol() });
+
+                                indError = indError.trim();
+                                if(indError.trim().equals(""))
+                                {
+                                    errores.add(indError);
+                                }
+                            }
+                            else /* si tiene dependencias */
+                            {
+                                indError += "error";
+                                errores.add("Existen registros dependientes del color");
+                            }
+                        }
+                    }
+                }
                 catch (Exception e) 
-                {}
+                {
+                    indError = "error";
+                    errores.add(e.getMessage());
+                }
+                finally
+                {
+                    try 
+                    {
+                        tabla.close();
+                        conex.returnConnect();
+                    }
+                    catch (Exception e) 
+                    {}
+                }
             }
         }
         
@@ -438,32 +469,30 @@ public class ColoresAction extends MasterAction implements ModelDriven<Colores>
     
     public String vrfSeleccion()
     {
-        if(modelo.getIdCol().trim().equals(""))
+        idAccion = 6;
+        verifAccionTipoUsuario();
+        
+        if(indErrAcc.equals(""))
         {
-            indError = "error";
-            errores.add("No ha seleccionado ningun registro");
+            if(modelo.getIdCol().trim().equals(""))
+            {
+                indError = "error";
+                errores.add("No ha seleccionado ningun registro");
+            }
         }
         
         return "vrfSeleccion";
     }
 
-    /**
-     * @return the modelo
-     */
+    
     public Colores getModelo() {
         return modelo;
     }
-
-    /**
-     * @param modelo the modelo to set
-     */
+    
     public void setModelo(Colores modelo) {
         this.modelo = modelo;
     }
-
-    /**
-     * @return the listColores
-     */
+    
     public ArrayList<Colores> getListColores() {
         return listColores;
     }

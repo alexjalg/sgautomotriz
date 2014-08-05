@@ -28,6 +28,9 @@ public class MasterAction extends ActionSupport implements ServletRequestAware {
     protected String urlRedirect = "";   //url a la cual se quiere redireccionar
     protected String inicioURL = baseURL+"Inicio";  //URL a la cual redireccionar si en la peticiona de pagina falta un parametro obligatorio
     protected String indErrParm = "";
+    protected int idClaseAccion=0;
+    protected int idAccion=0;
+    protected String indErrAcc = "";  //Indica si no se tiene permiso a la url(accion) llamada
     private String titleDialog = "Sistema de Gestión Automotriz";
     
     private Map<String, Object> sesion_sga = ActionContext.getContext().getSession();
@@ -955,5 +958,81 @@ public class MasterAction extends ActionSupport implements ServletRequestAware {
      */
     public void setDivPopUp(String divPopUp) {
         this.divPopUp = divPopUp;
+    }
+
+    /**
+     * @return the indErrAcc
+     */
+    public String getIndErrAcc() {
+        return indErrAcc;
+    }
+
+    /**
+     * @return the idClaseAccion
+     */
+    public int getIdClaseAccion() {
+        return idClaseAccion;
+    }
+
+    /**
+     * @return the idAccion
+     */
+    public int getIdAccion() {
+        return idAccion;
+    }
+    
+    public void verifAccionTipoUsuario()
+    {
+        helper conex = null;
+        ResultSet tabla = null;
+        
+        try 
+        {
+            conex = new helper();
+            
+            indError = conex.getErrorSQL();
+            
+            if(!indError.equals(""))
+            {
+                errores.add(indError);
+            }
+            else
+            {
+                tabla = conex.executeDataSet("CALL usp_verifPermisosAccionTipoUsuario(?,?,?)", 
+                            new Object[]{ idClaseAccion,idAccion,sesion_sga.get("ses_idtipusu") });
+                
+                indError = conex.getErrorSQL();
+                
+                if(!indError.equals(""))
+                {
+                    errores.add(indError);
+                }
+                else
+                {
+                    while(tabla.next())
+                    {
+                        if(tabla.getInt(1)==0)
+                        {
+                            indErrAcc = "error";
+                        }
+                    }
+                }
+            }
+        }
+        catch (Exception e) 
+        {
+            indError = e.getMessage();
+            errores.add(e.getMessage());
+        }
+        finally
+        {
+            try 
+            {
+                tabla.close();
+                conex.returnConnect();
+            }
+            catch (Exception e) 
+            {}
+        }
     }
 }
