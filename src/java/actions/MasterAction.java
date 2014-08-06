@@ -30,6 +30,7 @@ public class MasterAction extends ActionSupport implements ServletRequestAware {
     protected String indErrParm = "";
     protected int idClaseAccion=0;
     protected int idAccion=0;
+    protected int indVerifAcc=0;
     protected String indErrAcc = "";  //Indica si no se tiene permiso a la url(accion) llamada
     private String titleDialog = "Sistema de Gestión Automotriz";
     
@@ -1034,5 +1035,19 @@ public class MasterAction extends ActionSupport implements ServletRequestAware {
             catch (Exception e) 
             {}
         }
+    }
+
+    /**
+     * @return the indVerifAcc
+     */
+    public int getIndVerifAcc() {
+        return indVerifAcc;
+    }
+
+    /**
+     * @param indVerifAcc the indVerifAcc to set
+     */
+    public void setIndVerifAcc(int indVerifAcc) {
+        this.indVerifAcc = indVerifAcc;
     }
 }

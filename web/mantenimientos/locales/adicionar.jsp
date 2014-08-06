@@ -50,7 +50,7 @@
                 <td>
                     <s:select name="idDep" id="idDep" list="listDepartamentos" listKey="idDep" listValue="desDep"
                               headerKey="0" headerValue="-Seleccione-" cssClass="element-form"
-                              cssStyle="min-width: 140px; max-width: 140px;" />
+                              cssStyle="min-width: 180px; max-width: 180px;" />
                 </td>
             </tr>
             <tr>
@@ -58,7 +58,7 @@
                 <td class="td-provincias">
                     <s:select name="idPrvDep" id="idPrvDep" list="listProvincias" listKey="idPrvDep" listValue="desProv"
                               headerKey="0" headerValue="-Seleccione-" cssClass="element-form"
-                              cssStyle="min-width: 140px; max-width: 140px;" />
+                              cssStyle="min-width: 240px; max-width: 240px;" />
                 </td>
             </tr>
             <tr>
@@ -66,7 +66,7 @@
                 <td class="td-distritos">
                     <s:select name="idDisPrv" id="idDisPrv" list="listDistritos" listKey="idDisPrv" listValue="desDis"
                               headerKey="0" headerValue="-Seleccione-" cssClass="element-form"
-                              cssStyle="min-width: 140px; max-width: 140px;" />
+                              cssStyle="min-width: 240px; max-width: 240px;" />
                 </td>
             </tr>
             <tr>
@@ -200,7 +200,7 @@
                 }
             );
                 
-            $.post(
+            /*$.post(
                 '<s:property value="baseURL" /><s:url includeContext="false" namespace="locales" action="getDistritosLocal" />',
                 {},
                 function(resultado){
@@ -212,11 +212,11 @@
                         $('#DIVerroresGen').dialog('open');
                     }
                     else
-                    {
-                        $('.td-distritos').html(resultado);
-                    }
+                    {*/
+                        $('.td-distritos').html('<select style="min-width: 240px; max-width: 240px;" class="element-form" id="idDisPrv" name="idDisPrv"><option selected="selected" value="0">-Seleccione-</option></select>');
+                    /*}
                 }
-            );
+            );*/
         });
         
         $('.td-provincias').delegate('#idPrvDep','change',function(){

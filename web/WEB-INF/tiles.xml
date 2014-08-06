@@ -157,6 +157,12 @@
     <definition name="mant-marcas-adicionar" extends="baseLayout">
         <put-attribute name="body" value="/mantenimientos/marcas/adicionar.jsp" />
     </definition>
+    <definition name="mant-marcas-grabar" extends="baseLayoutPopUp">
+        <put-attribute name="body" value="/mantenimientos/marcas/grabar.jsp" />
+    </definition>
+    <definition name="mant-marcas-eliminar" extends="baseLayoutPopUp">
+        <put-attribute name="body" value="/mantenimientos/marcas/eliminar.jsp" />
+    </definition>
     
     <!--  MODELOS  -->
     <definition name="mant-modelos-index" extends="baseLayout">

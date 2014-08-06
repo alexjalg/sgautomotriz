@@ -23,8 +23,26 @@ public class MarcasAction extends MasterAction implements ModelDriven<Marcas>
     public Marcas getModel()
     {
         tituloOpc = "Marcas";
+        idClaseAccion = 7;
         
         return modelo;
+    }
+    
+    public String vrfSeleccion()
+    {
+        idAccion = 1;
+        verifAccionTipoUsuario();
+        
+        if(indErrAcc.equals(""))
+        {
+            if(modelo.getIdMar().trim().equals(""))
+            {
+                indError = "error";
+                errores.add("No ha seleccionado ningun registro");
+            }
+        }
+        
+        return "vrfSeleccion";
     }
     
     private void cantMarcasIndex()
@@ -135,45 +153,57 @@ public class MarcasAction extends MasterAction implements ModelDriven<Marcas>
     @Override
     public String execute()
     {
-        nivBandeja = 1;
-        urlPaginacion = "marcas/Marca";
+        idAccion = 2;
+        verifAccionTipoUsuario();
         
-        varReturnProcess(0);
-        if(!listVarReturn.isEmpty())
+        if(indErrAcc.equals(""))
         {
-            curPagVis = Integer.parseInt(listVarReturn.get(0).toString().trim());
+            nivBandeja = 1;
+            urlPaginacion = "marcas/Marca";
+
+            varReturnProcess(0);
+            if(!listVarReturn.isEmpty())
+            {
+                curPagVis = Integer.parseInt(listVarReturn.get(0).toString().trim());
+            }
+
+            cantMarcasIndex();
+            verifPag();
+            listMarcasIndex();
         }
-        
-        cantMarcasIndex();
-        verifPag();
-        listMarcasIndex();
         
         return SUCCESS;
     }
     
     public String adicionar()
     {
-        nivBandeja = 1;
+        idAccion = 3;
+        verifAccionTipoUsuario();
         
-        if((!opcion.trim().equals("A") && !opcion.trim().equals("M")))
+        if(indErrAcc.equals(""))
         {
-            indErrParm = "error";
-        }
-        else
-        {
-            varReturnProcess(1);
-            
-            if(opcion.equals("A"))
-            {
-                formURL = baseURL+"marcas/grabarMarca";
-            }
+            nivBandeja = 1;
 
-            if(opcion.equals("M"))
+            if((!opcion.trim().equals("A") && !opcion.trim().equals("M")))
             {
-                
-                getDatosMarca();
-                formURL = baseURL+"marcas/actualizarMarca";
-                
+                indErrParm = "error";
+            }
+            else
+            {
+                varReturnProcess(1);
+
+                if(opcion.equals("A"))
+                {
+                    formURL = baseURL+"marcas/grabarMarca";
+                }
+
+                if(opcion.equals("M"))
+                {
+
+                    getDatosMarca();
+                    formURL = baseURL+"marcas/actualizarMarca";
+
+                }
             }
         }
         
@@ -233,86 +263,92 @@ public class MarcasAction extends MasterAction implements ModelDriven<Marcas>
     
     public String grabar()
     {
-        modelo.setIdMar(modelo.getIdMar().trim());
-        modelo.setDesMar(modelo.getDesMar().trim());
+        idAccion = 4;
+        verifAccionTipoUsuario();
         
-        if(modelo.getIdMar().equals(""))
+        if(indErrAcc.equals(""))
         {
-            indError += "error";
-            errores.add("Ingrese el código de la marca");
-        }
-        
-        if(modelo.getDesMar().equals(""))
-        {
-            indError += "error";
-            errores.add("Ingrese el nombre de la marca");
-        }
-        
-        if(indError.equals(""))
-        {
-            helper conex = null;
-            ResultSet tabla = null;
-            
-            try 
+            modelo.setIdMar(modelo.getIdMar().trim());
+            modelo.setDesMar(modelo.getDesMar().trim());
+
+            if(modelo.getIdMar().equals(""))
             {
-                conex = new helper();
-                indError += conex.getErrorSQL();
-                
-                if(!indError.equals(""))
+                indError += "error";
+                errores.add("Ingrese el código de la marca");
+            }
+
+            if(modelo.getDesMar().equals(""))
+            {
+                indError += "error";
+                errores.add("Ingrese el nombre de la marca");
+            }
+
+            if(indError.equals(""))
+            {
+                helper conex = null;
+                ResultSet tabla = null;
+
+                try 
                 {
-                    errores.add(indError);
-                }
-                else
-                {
-                    tabla = conex.executeDataSet("CALL usp_verifExistMarca(?)", 
-                            new Object[]{ modelo.getIdMar() });
-                    
+                    conex = new helper();
                     indError += conex.getErrorSQL();
-                    
+
                     if(!indError.equals(""))
                     {
                         errores.add(indError);
                     }
                     else
                     {
-                        int cont = 0;
-                        while(tabla.next())
+                        tabla = conex.executeDataSet("CALL usp_verifExistMarca(?)", 
+                                new Object[]{ modelo.getIdMar() });
+
+                        indError += conex.getErrorSQL();
+
+                        if(!indError.equals(""))
                         {
-                            cont = tabla.getInt(1);
-                        }
-                        
-                        if(cont>0)
-                        {
-                            indError += "error";
-                            errores.add("Ya existe una marca con el código ingresado");
+                            errores.add(indError);
                         }
                         else
                         {
-                            indError += conex.executeNonQuery("CALL usp_insMarca(?,?)",
-                                        new Object[]{ modelo.getIdMar(),modelo.getDesMar() });
-
-                            if(!indError.equals(""))
+                            int cont = 0;
+                            while(tabla.next())
                             {
-                                errores.add(indError);
+                                cont = tabla.getInt(1);
+                            }
+
+                            if(cont>0)
+                            {
+                                indError += "error";
+                                errores.add("Ya existe una marca con el código ingresado");
+                            }
+                            else
+                            {
+                                indError += conex.executeNonQuery("CALL usp_insMarca(?,?)",
+                                            new Object[]{ modelo.getIdMar(),modelo.getDesMar() });
+
+                                if(!indError.equals(""))
+                                {
+                                    errores.add(indError);
+                                }
                             }
                         }
                     }
                 }
-            }
-            catch (Exception e) 
-            {
-                indError = "error";
-                errores.add(e.getMessage());
-            }
-            finally
-            {
-                try 
-                {
-                    tabla.close();
-                    conex.returnConnect();  
-                }
                 catch (Exception e) 
-                {}
+                {
+                    indError = "error";
+                    errores.add(e.getMessage());
+                }
+                finally
+                {
+                    try 
+                    {
+                        tabla.close();
+                        conex.returnConnect();  
+                    }
+                    catch (Exception e) 
+                    {}
+                }
             }
         }
         
@@ -321,47 +357,53 @@ public class MarcasAction extends MasterAction implements ModelDriven<Marcas>
     
     public String actualizar()
     {
-        modelo.setIdMar(modelo.getIdMar().trim());
-        modelo.setDesMar(modelo.getDesMar().trim());
+        idAccion = 5;
+        verifAccionTipoUsuario();
         
-        if(modelo.getDesMar().equals(""))
+        if(indErrAcc.equals(""))
         {
-            indError += "error";
-            errores.add("Ingrese el nombre de la marca");
-        }
-        
-        if(indError.equals(""))
-        {
-            helper conex = null;
-            
-            try 
+            modelo.setIdMar(modelo.getIdMar().trim());
+            modelo.setDesMar(modelo.getDesMar().trim());
+
+            if(modelo.getDesMar().equals(""))
             {
-                conex = new helper();
-                indError = conex.getErrorSQL();
-                
-                if(!indError.equals(""))
+                indError += "error";
+                errores.add("Ingrese el nombre de la marca");
+            }
+
+            if(indError.equals(""))
+            {
+                helper conex = null;
+
+                try 
                 {
-                    errores.add(indError);
-                }
-                else
-                {
-                    indError = conex.executeNonQuery("CALL usp_updMarca(?,?)", 
-                            new Object[]{ modelo.getIdMar(),modelo.getDesMar() });
+                    conex = new helper();
+                    indError = conex.getErrorSQL();
 
                     if(!indError.equals(""))
                     {
                         errores.add(indError);
                     }
+                    else
+                    {
+                        indError = conex.executeNonQuery("CALL usp_updMarca(?,?)", 
+                                new Object[]{ modelo.getIdMar(),modelo.getDesMar() });
+
+                        if(!indError.equals(""))
+                        {
+                            errores.add(indError);
+                        }
+                    }
                 }
-            }
-            catch (Exception e) 
-            {
-                indError = "error";
-                errores.add(e.getMessage());
-            }
-            finally
-            {
-                conex.returnConnect();
+                catch (Exception e) 
+                {
+                    indError = "error";
+                    errores.add(e.getMessage());
+                }
+                finally
+                {
+                    conex.returnConnect();
+                }
             }
         }
         
@@ -370,87 +412,82 @@ public class MarcasAction extends MasterAction implements ModelDriven<Marcas>
     
     public String eliminar()
     {
-        if(opcion.trim().equals("E"))
+        idAccion = 6;
+        verifAccionTipoUsuario();
+        
+        if(indErrAcc.equals(""))
         {
-            helper conex = null;
-            ResultSet tabla = null;
-            
-            try 
+            if(opcion.trim().equals("E"))
             {
-                conex = new helper();
-                indError = conex.getErrorSQL().trim();
-                
-                if(!indError.equals(""))
+                helper conex = null;
+                ResultSet tabla = null;
+
+                try 
                 {
-                    errores.add(indError);
-                }
-                else
-                {
-                    tabla = conex.executeDataSet("CALL usp_verifDependMarca(?)", 
-                            new Object[]{ modelo.getIdMar() });
-                    indError = conex.getErrorSQL();
-                    
+                    conex = new helper();
+                    indError = conex.getErrorSQL().trim();
+
                     if(!indError.equals(""))
                     {
                         errores.add(indError);
                     }
                     else
                     {
-                        int cant = 0;
-                        while(tabla.next())
-                        {
-                            cant = tabla.getInt(1);
-                        }
-                        
-                        /* Si no tiene dependencias */
-                        if(cant == 0)
-                        {
-                            indError = conex.executeNonQuery("CALL usp_dltMarca(?)",
-                                    new Object[]{ modelo.getIdMar() });
+                        tabla = conex.executeDataSet("CALL usp_verifDependMarca(?)", 
+                                new Object[]{ modelo.getIdMar() });
+                        indError = conex.getErrorSQL();
 
-                            indError = indError.trim();
-                            if(indError.trim().equals(""))
-                            {
-                                errores.add(indError);
-                            }
-                        }
-                        else /* si tiene dependencias */
+                        if(!indError.equals(""))
                         {
-                            indError = "error";
-                            errores.add("Existen registros dependientes de la marca");
+                            errores.add(indError);
+                        }
+                        else
+                        {
+                            int cant = 0;
+                            while(tabla.next())
+                            {
+                                cant = tabla.getInt(1);
+                            }
+
+                            /* Si no tiene dependencias */
+                            if(cant == 0)
+                            {
+                                indError = conex.executeNonQuery("CALL usp_dltMarca(?)",
+                                        new Object[]{ modelo.getIdMar() });
+
+                                indError = indError.trim();
+                                if(indError.trim().equals(""))
+                                {
+                                    errores.add(indError);
+                                }
+                            }
+                            else /* si tiene dependencias */
+                            {
+                                indError = "error";
+                                errores.add("Existen registros dependientes de la marca");
+                            }
                         }
                     }
                 }
-            }
-            catch (Exception e) 
-            {
-                indError = "error";
-                errores.add(e.getMessage());
-            }
-            finally
-            {
-                try 
-                {
-                    tabla.close();
-                    conex.returnConnect();
-                }
                 catch (Exception e) 
-                {}
+                {
+                    indError = "error";
+                    errores.add(e.getMessage());
+                }
+                finally
+                {
+                    try 
+                    {
+                        tabla.close();
+                        conex.returnConnect();
+                    }
+                    catch (Exception e) 
+                    {}
+                }
             }
         }
         
         return "eliminar";
-    }
-    
-    public String vrfSeleccion()
-    {
-        if(modelo.getIdMar().trim().equals(""))
-        {
-            indError = "error";
-            errores.add("No ha seleccionado ningun registro");
-        }
-        
-        return "vrfSeleccion";
     }
     
     /**

@@ -12,10 +12,10 @@
         <action name="*Marca" method="{1}" class="actions.MarcasAction">
             <result name="success" type="tiles">mant-marcas-index</result>
             <result name="adicionar" type="tiles">mant-marcas-adicionar</result>
-            <result name="grabar">/mantenimientos/marcas/grabar.jsp</result>
-            <result name="actualizar">/mantenimientos/marcas/grabar.jsp</result>
-            <result name="vrfSeleccion">/mantenimientos/marcas/grabar.jsp</result>
-            <result name="eliminar">/mantenimientos/marcas/eliminar.jsp</result>
+            <result name="grabar" type="tiles">mant-marcas-grabar</result>
+            <result name="actualizar" type="tiles">mant-marcas-grabar</result>
+            <result name="vrfSeleccion" type="tiles">mant-marcas-grabar</result>
+            <result name="eliminar" type="tiles">mant-marcas-eliminar</result>
         </action>
     </package>
 </struts>
