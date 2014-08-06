@@ -31,8 +31,27 @@ public class LocalesAction extends MasterAction implements ModelDriven<Locales>
     public Locales getModel()
     {
         tituloOpc = "Locales";
+        idClaseAccion = 6;
         
         return modelo;
+    }
+    
+    public String vrfSeleccion()
+    {
+        idAccion = 1;
+        
+        verifAccionTipoUsuario();
+        
+        if(indErrAcc.equals(""))
+        {
+            if(modelo.getIdLocCon().trim().equals("") || modelo.getIdLocCon().trim().equals("0"))
+            {
+                indError = "error";
+                errores.add("No ha seleccionado ningun registro");
+            }
+        }
+        
+        return "vrfSeleccion";
     }
     
     private void cantLocalesConcesIndex()
@@ -147,158 +166,80 @@ public class LocalesAction extends MasterAction implements ModelDriven<Locales>
     @Override
     public String execute()
     {
-        nivBandeja = 2;
-        urlPaginacion = "locales/Local";
+        idAccion = 2;
         
-        varReturnProcess(0);
-        if(!listVarReturn.isEmpty())
-        {
-            curPagVis = Integer.parseInt(listVarReturn.get(0).toString().trim());
-            modelo.setIdCon(listVarReturn.get(1).toString());
-        }
+        verifAccionTipoUsuario();
         
-        if(modelo.getIdCon().equals("") || modelo.getIdCon().equals("0"))
+        if(indErrAcc.equals(""))
         {
-            indErrParm = "error";
-        }
-        else
-        {
-            helper conex = null;
-            ResultSet tabla = null;
-            
-            try 
+            nivBandeja = 2;
+            urlPaginacion = "locales/Local";
+
+            varReturnProcess(0);
+            if(!listVarReturn.isEmpty())
             {
-                conex = new helper();
-                indError += conex.getErrorSQL();
-                
-                if(!indError.equals(""))
-                {
-                    errores.add(indError);
-                }
-                else
-                {
-                    tabla = conex.executeDataSet("CALL usp_getDatosConcesionario(?)", 
-                            new Object[]{ modelo.getIdCon() });
-                    
-                    indError = conex.getErrorSQL();
-                    
-                    if(!indError.equals(""))
-                    {
-                        errores.add(indError);
-                    }
-                    else
-                    {
-                        while(tabla.next())
-                        {
-                            modelo.setDesCon(tabla.getString("desCon"));
-                        }
-                    }
-                }
+                curPagVis = Integer.parseInt(listVarReturn.get(0).toString().trim());
+                modelo.setIdCon(listVarReturn.get(1).toString());
             }
-            catch (Exception e) 
-            {
-                indError += "error";
-                errores.add(e.getMessage());
-            }
-            finally
-            {
-                try 
-                {
-                    tabla.close();
-                    conex.returnConnect();
-                }
-                catch (Exception e) 
-                {}
-            }
-        }
-        
-        cantLocalesConcesIndex();
-        verifPag();
-        listLocalesConcesIndex();
-        
-        return SUCCESS;
-    }
-    
-    public String adicionar()
-    {
-        nivBandeja = 2;
-        
-        if((!opcion.trim().equals("A") && !opcion.trim().equals("M")))
-        {
-            indErrParm = "error";
-        }
-        else
-        {
-            varReturnProcess(1);
-            
+
             if(modelo.getIdCon().equals("") || modelo.getIdCon().equals("0"))
             {
                 indErrParm = "error";
             }
             else
             {
-                helper conex = null;
-                ResultSet tabla = null;
-
-                try 
-                {
-                    conex = new helper();
-                    indError += conex.getErrorSQL();
-
-                    if(!indError.equals(""))
-                    {
-                        errores.add(indError);
-                    }
-                    else
-                    {
-                        tabla = conex.executeDataSet("CALL usp_getDatosConcesionario(?)", 
-                                new Object[]{ modelo.getIdCon() });
-
-                        indError = conex.getErrorSQL();
-
-                        if(!indError.equals(""))
-                        {
-                            errores.add(indError);
-                        }
-                        else
-                        {
-                            while(tabla.next())
-                            {
-                                modelo.setDesCon(tabla.getString("desCon"));
-                            }
-                        }
-                    }
-                }
-                catch (Exception e) 
-                {
-                    indError += "error";
-                    errores.add(e.getMessage());
-                }
-                finally
-                {
-                    try 
-                    {
-                        tabla.close();
-                        conex.returnConnect();
-                    }
-                    catch (Exception e) 
-                    {}
-                }
-            }
-            
-            if(opcion.equals("A"))
-            {
-                formURL = baseURL+"locales/grabarLocal";
-            }
-
-            if(opcion.equals("M"))
-            {
+                getDatosConcesionario();
                 
-                getDatosLocalConces();
-                formURL = baseURL+"locales/actualizarLocal";
+                cantLocalesConcesIndex();
+                verifPag();
+                listLocalesConcesIndex();
             }
-            
-            populateForm();
+        }
+        
+        return SUCCESS;
+    }
+    
+    public String adicionar()
+    {
+        idAccion = 3;
+        
+        verifAccionTipoUsuario();
+        
+        if(indErrAcc.equals(""))
+        {
+            nivBandeja = 2;
+
+            if((!opcion.trim().equals("A") && !opcion.trim().equals("M")))
+            {
+                indErrParm = "error";
+            }
+            else
+            {
+                varReturnProcess(1);
+
+                if(modelo.getIdCon().equals("") || modelo.getIdCon().equals("0"))
+                {
+                    indErrParm = "error";
+                }
+                else
+                {
+                    getDatosConcesionario();
+
+                    if(opcion.equals("A"))
+                    {
+                        formURL = baseURL+"locales/grabarLocal";
+                    }
+
+                    if(opcion.equals("M"))
+                    {
+
+                        getDatosLocalConcesionario();
+                        formURL = baseURL+"locales/actualizarLocal";
+                    }
+
+                    populateForm();
+                }
+            }
         }
         
         return "adicionar";
@@ -405,55 +346,62 @@ public class LocalesAction extends MasterAction implements ModelDriven<Locales>
     
     public String getProvincias()
     {
-        helper conex = null;
-        ResultSet tabla = null;
+        idAccion = 4;
         
-        try 
+        verifAccionTipoUsuario();
+        
+        if(indErrAcc.equals(""))
         {
-            conex = new helper();
-            indError += conex.getErrorSQL();
-            
-            if(!indError.equals(""))
+            helper conex = null;
+            ResultSet tabla = null;
+
+            try 
             {
-                errores.add(indError);
-            }
-            else
-            {
-                tabla = conex.executeDataSet("CALL usp_listProvincias(?)", 
-                        new Object[]{ modelo.getIdDep() });
+                conex = new helper();
                 indError += conex.getErrorSQL();
-                
+
                 if(!indError.equals(""))
                 {
                     errores.add(indError);
                 }
                 else
                 {
-                    Provincias obj;
-                    while(tabla.next())
+                    tabla = conex.executeDataSet("CALL usp_listProvincias(?)", 
+                            new Object[]{ modelo.getIdDep() });
+                    indError += conex.getErrorSQL();
+
+                    if(!indError.equals(""))
                     {
-                        obj = new Provincias();
-                        obj.setIdPrvDep(tabla.getInt("idPrvDep"));
-                        obj.setDesProv(tabla.getString("desProv"));
-                        listProvincias.add(obj);
+                        errores.add(indError);
+                    }
+                    else
+                    {
+                        Provincias obj;
+                        while(tabla.next())
+                        {
+                            obj = new Provincias();
+                            obj.setIdPrvDep(tabla.getInt("idPrvDep"));
+                            obj.setDesProv(tabla.getString("desProv"));
+                            listProvincias.add(obj);
+                        }
                     }
                 }
             }
-        }
-        catch (Exception e) 
-        {
-            indError += "error";
-            errores.add(e.getMessage());
-        }
-        finally
-        {
-            try 
-            {
-                tabla.close();
-                conex.returnConnect();
-            }
             catch (Exception e) 
-            {}
+            {
+                indError += "error";
+                errores.add(e.getMessage());
+            }
+            finally
+            {
+                try 
+                {
+                    tabla.close();
+                    conex.returnConnect();
+                }
+                catch (Exception e) 
+                {}
+            }
         }
         
         return "getProvincias";
@@ -461,37 +409,97 @@ public class LocalesAction extends MasterAction implements ModelDriven<Locales>
     
     public String getDistritos()
     {
-        helper conex = null;
-        ResultSet tabla = null;
+        idAccion = 5;
         
-        try 
+        verifAccionTipoUsuario();
+        
+        if(indErrAcc.equals(""))
         {
-            conex = new helper();
-            indError += conex.getErrorSQL();
-            
-            if(!indError.equals(""))
+            helper conex = null;
+            ResultSet tabla = null;
+
+            try 
             {
-                errores.add(indError);
-            }
-            else
-            {
-                tabla = conex.executeDataSet("CALL usp_listDistritos(?,?)", 
-                        new Object[]{ modelo.getIdDep(), modelo.getIdPrvDep() });
+                conex = new helper();
                 indError += conex.getErrorSQL();
-                
+
                 if(!indError.equals(""))
                 {
                     errores.add(indError);
                 }
                 else
                 {
-                    Distritos obj;
+                    tabla = conex.executeDataSet("CALL usp_listDistritos(?,?)", 
+                            new Object[]{ modelo.getIdDep(), modelo.getIdPrvDep() });
+                    indError += conex.getErrorSQL();
+
+                    if(!indError.equals(""))
+                    {
+                        errores.add(indError);
+                    }
+                    else
+                    {
+                        Distritos obj;
+                        while(tabla.next())
+                        {
+                            obj = new Distritos();
+                            obj.setIdDisPrv(tabla.getInt("idDisPrv"));
+                            obj.setDesDis(tabla.getString("desDis"));
+                            listDistritos.add(obj);
+                        }
+                    }
+                }
+            }
+            catch (Exception e) 
+            {
+                indError += "error";
+                errores.add(e.getMessage());
+            }
+            finally
+            {
+                try 
+                {
+                    tabla.close();
+                    conex.returnConnect();
+                }
+                catch (Exception e) 
+                {}
+            }
+        }
+        
+        return "getDistritos";
+    }
+    
+    public void getDatosConcesionario()
+    {
+        helper conex = null;
+        ResultSet tabla = null;
+
+        try 
+        {
+            conex = new helper();
+            indError += conex.getErrorSQL();
+
+            if(!indError.equals(""))
+            {
+                errores.add(indError);
+            }
+            else
+            {
+                tabla = conex.executeDataSet("CALL usp_getDatosConcesionario(?)", 
+                        new Object[]{ modelo.getIdCon() });
+
+                indError = conex.getErrorSQL();
+
+                if(!indError.equals(""))
+                {
+                    errores.add(indError);
+                }
+                else
+                {
                     while(tabla.next())
                     {
-                        obj = new Distritos();
-                        obj.setIdDisPrv(tabla.getInt("idDisPrv"));
-                        obj.setDesDis(tabla.getString("desDis"));
-                        listDistritos.add(obj);
+                        modelo.setDesCon(tabla.getString("desCon"));
                     }
                 }
             }
@@ -511,11 +519,9 @@ public class LocalesAction extends MasterAction implements ModelDriven<Locales>
             catch (Exception e) 
             {}
         }
-        
-        return "getDistritos";
     }
     
-    public void getDatosLocalConces()
+    public void getDatosLocalConcesionario()
     {
         helper conex=null;
         ResultSet tabla = null;
@@ -576,351 +582,126 @@ public class LocalesAction extends MasterAction implements ModelDriven<Locales>
     
     public String grabar()
     {
-        modelo.setDesLocCon(modelo.getDesLocCon().trim());
-        modelo.setOtrDirLoc(modelo.getOtrDirLoc().trim());
-        modelo.setNumTel1(modelo.getNumTel1().trim());
-        modelo.setNumTel2(modelo.getNumTel2().trim());
-        modelo.setNumFax(modelo.getNumFax().trim());
-        modelo.setNumRuc(modelo.getNumRuc().trim());
+        idAccion = 6;
         
-        if(modelo.getDesLocCon().equals(""))
-        {
-            indError += "error";
-            errores.add("Ingrese el nombre del local");
-        }
+        verifAccionTipoUsuario();
         
-        if(modelo.getOtrDirLoc().equals(""))
+        if(indErrAcc.equals(""))
         {
-            indError += "error";
-            errores.add("Ingrese la dirección del local");
-        }
-        
-        if(modelo.getIdDep()==0 || modelo.getIdPrvDep()==0 || modelo.getIdDisPrv()==0)
-        {
-            indError += "error";
-            errores.add("Seleccione un departamento, provincia y distrito");
-        }
-        
-        if(modelo.getNumTel1().equals("") && modelo.getNumTel2().equals("") && modelo.getNumFax().equals(""))
-        {
-            indError += "error";
-            errores.add("Debe ingresar al menos un número telefónico");
-        }
-        else
-        {
-            if(!modelo.getNumTel1().equals(""))
+            if(modelo.getDesLocCon().equals(""))
             {
-                if(!isInteger(modelo.getNumTel1()))
-                {
-                    indError += "error";
-                    errores.add("El primer número telefónico no es válido");
-                }
-                else
-                {
-                    Double telAux1 = Double.parseDouble(modelo.getNumTel1());
+                indError += "error";
+                errores.add("Ingrese el nombre del local");
+            }
 
-                    if(telAux1==0 || telAux1>9999999)
+            if(modelo.getOtrDirLoc().equals(""))
+            {
+                indError += "error";
+                errores.add("Ingrese la dirección del local");
+            }
+
+            if(modelo.getIdDep()==0 || modelo.getIdPrvDep()==0 || modelo.getIdDisPrv()==0)
+            {
+                indError += "error";
+                errores.add("Seleccione un departamento, provincia y distrito");
+            }
+
+            if(modelo.getNumTel1().equals("") && modelo.getNumTel2().equals("") && modelo.getNumFax().equals(""))
+            {
+                indError += "error";
+                errores.add("Debe ingresar al menos un número telefónico");
+            }
+            else
+            {
+                if(!modelo.getNumTel1().equals(""))
+                {
+                    if(!isInteger(modelo.getNumTel1()))
                     {
                         indError += "error";
                         errores.add("El primer número telefónico no es válido");
                     }
-                }
-            }
-            
-            if(!modelo.getNumTel2().equals(""))
-            {
-                if(!isInteger(modelo.getNumTel2()))
-                {
-                    indError += "error";
-                    errores.add("El segundo número telefónico no es válido");
-                }
-                else
-                {
-                    Double telAux2 = Double.parseDouble(modelo.getNumTel2());
+                    else
+                    {
+                        Double telAux1 = Double.parseDouble(modelo.getNumTel1());
 
-                    if(telAux2==0 || telAux2>9999999)
+                        if(telAux1==0 || telAux1>9999999)
+                        {
+                            indError += "error";
+                            errores.add("El primer número telefónico no es válido");
+                        }
+                    }
+                }
+
+                if(!modelo.getNumTel2().equals(""))
+                {
+                    if(!isInteger(modelo.getNumTel2()))
                     {
                         indError += "error";
                         errores.add("El segundo número telefónico no es válido");
                     }
+                    else
+                    {
+                        Double telAux2 = Double.parseDouble(modelo.getNumTel2());
+
+                        if(telAux2==0 || telAux2>9999999)
+                        {
+                            indError += "error";
+                            errores.add("El segundo número telefónico no es válido");
+                        }
+                    }
                 }
-            }
-            
-            if(!modelo.getNumFax().equals(""))
-            {
-                if(!isInteger(modelo.getNumFax()))
+
+                if(!modelo.getNumFax().equals(""))
                 {
-                    indError += "error";
-                    errores.add("El número de fax no es válido");
-                }
-                else
-                {
-                    Double faxAux = Double.parseDouble(modelo.getNumFax());
-                    
-                    if(faxAux==0 || faxAux>9999999)
+                    if(!isInteger(modelo.getNumFax()))
                     {
                         indError += "error";
                         errores.add("El número de fax no es válido");
                     }
+                    else
+                    {
+                        Double faxAux = Double.parseDouble(modelo.getNumFax());
+
+                        if(faxAux==0 || faxAux>9999999)
+                        {
+                            indError += "error";
+                            errores.add("El número de fax no es válido");
+                        }
+                    }
                 }
             }
-        }
-        
-        if(modelo.getNumRuc().equals(""))
-        {
-            indError += "error";
-            errores.add("Ingrese el número de RUC");
-        }
-        else
-        {
-            if(!isLong(modelo.getNumRuc()))
+
+            if(modelo.getNumRuc().equals(""))
             {
                 indError += "error";
-                errores.add("El número de RUC no es válido");
+                errores.add("Ingrese el número de RUC");
             }
             else
             {
-                Long rucAux = Long.parseLong(modelo.getNumRuc());
-
-                if(rucAux==0 || rucAux>99999999999L || rucAux<10000000000L)
+                if(!isLong(modelo.getNumRuc()))
                 {
                     indError += "error";
                     errores.add("El número de RUC no es válido");
                 }
-            }
-        }
-        
-        if(indError.equals(""))
-        {
-            helper conex=null;
-
-            try 
-            {
-                conex = new helper();
-                indError = conex.getErrorSQL();
-                
-                if(!indError.equals(""))
-                {
-                    errores.add(indError);
-                }
                 else
                 {
-                    if(modelo.getNumTel1().equals(""))
-                        modelo.setNumTel1("0");
-                    if(modelo.getNumTel2().equals(""))
-                        modelo.setNumTel2("0");
-                    if(modelo.getNumFax().equals(""))
-                        modelo.setNumFax("0");
-                    
-                    indError = conex.executeNonQuery("CALL usp_insLocalConces(?,?,?,?,?,?,?,?,?,?)",
-                                new Object[]{ modelo.getIdCon(),modelo.getDesLocCon(),modelo.getOtrDirLoc(),
-                                    modelo.getIdDep(),modelo.getIdPrvDep(),modelo.getIdDisPrv(),modelo.getNumTel1(),
-                                    modelo.getNumTel2(),modelo.getNumFax(),modelo.getNumRuc() });
-                
-                    if(!indError.equals(""))
-                    {
-                        errores.add(indError);
-                    }
-                }
-            }
-            catch (Exception e) 
-            {
-                indError = "error";
-                errores.add(e.getMessage());
-            }
-            finally
-            {
-                conex.returnConnect();
-            }
-        }
-        
-        return "grabar";
-    }
-    
-    public String actualizar()
-    {
-        modelo.setDesLocCon(modelo.getDesLocCon().trim());
-        modelo.setOtrDirLoc(modelo.getOtrDirLoc().trim());
-        modelo.setNumTel1(modelo.getNumTel1().trim());
-        modelo.setNumTel2(modelo.getNumTel2().trim());
-        modelo.setNumFax(modelo.getNumFax().trim());
-        modelo.setNumRuc(modelo.getNumRuc().trim());
-        
-        if(modelo.getDesLocCon().equals(""))
-        {
-            indError += "error";
-            errores.add("Ingrese el nombre del local");
-        }
-        
-        if(modelo.getOtrDirLoc().equals(""))
-        {
-            indError += "error";
-            errores.add("Ingrese la dirección del local");
-        }
-        
-        if(modelo.getIdDep()==0 || modelo.getIdPrvDep()==0 || modelo.getIdDisPrv()==0)
-        {
-            indError += "error";
-            errores.add("Seleccione un departamento, provincia y distrito");
-        }
-        
-        if(modelo.getNumTel1().equals("") && modelo.getNumTel2().equals("") && modelo.getNumFax().equals(""))
-        {
-            indError += "error";
-            errores.add("Debe ingresar al menos un número telefónico");
-        }
-        else
-        {
-            if(!modelo.getNumTel1().equals(""))
-            {
-                if(!isInteger(modelo.getNumTel1()))
-                {
-                    indError += "error";
-                    errores.add("El primer número telefónico no es válido");
-                }
-                else
-                {
-                    Double telAux1 = Double.parseDouble(modelo.getNumTel1());
+                    Long rucAux = Long.parseLong(modelo.getNumRuc());
 
-                    if(telAux1==0 || telAux1>9999999)
+                    if(rucAux==0 || rucAux>99999999999L || rucAux<10000000000L)
                     {
                         indError += "error";
-                        errores.add("El primer número telefónico no es válido");
+                        errores.add("El número de RUC no es válido");
                     }
                 }
             }
-            
-            if(!modelo.getNumTel2().equals(""))
-            {
-                if(!isInteger(modelo.getNumTel2()))
-                {
-                    indError += "error";
-                    errores.add("El segundo número telefónico no es válido");
-                }
-                else
-                {
-                    Double telAux2 = Double.parseDouble(modelo.getNumTel2());
 
-                    if(telAux2==0 || telAux2>9999999)
-                    {
-                        indError += "error";
-                        errores.add("El segundo número telefónico no es válido");
-                    }
-                }
-            }
-            
-            if(!modelo.getNumFax().equals(""))
+            if(indError.equals(""))
             {
-                if(!isInteger(modelo.getNumFax()))
-                {
-                    indError += "error";
-                    errores.add("El número de fax no es válido");
-                }
-                else
-                {
-                    Double faxAux = Double.parseDouble(modelo.getNumFax());
-                    
-                    if(faxAux==0 || faxAux>9999999)
-                    {
-                        indError += "error";
-                        errores.add("El número de fax no es válido");
-                    }
-                }
-            }
-        }
-        
-        if(modelo.getNumRuc().equals(""))
-        {
-            indError += "error";
-            errores.add("Ingrese el número de RUC");
-        }
-        else
-        {
-            if(!isLong(modelo.getNumRuc()))
-            {
-                indError += "error";
-                errores.add("El número de RUC no es válido");
-            }
-            else
-            {
-                Long rucAux = Long.parseLong(modelo.getNumRuc());
+                helper conex=null;
 
-                if(rucAux==0 || rucAux>99999999999L || rucAux<10000000000L)
+                try 
                 {
-                    indError += "error";
-                    errores.add("El número de RUC no es válido");
-                }
-            }
-        }
-        
-        if(indError.equals(""))
-        {
-            helper conex = null;
-
-            try 
-            {
-                conex = new helper();
-                indError = conex.getErrorSQL();
-
-                if(!indError.equals(""))
-                {
-                    errores.add(indError);
-                }
-                else
-                {
-                    if(modelo.getNumTel1().equals(""))
-                        modelo.setNumTel1("0");
-                    if(modelo.getNumTel2().equals(""))
-                        modelo.setNumTel2("0");
-                    if(modelo.getNumFax().equals(""))
-                        modelo.setNumFax("0");
-                    
-                    indError = conex.executeNonQuery("CALL usp_updLocalConces(?,?,?,?,?,?,?,?,?,?,?)",
-                            new Object[]{ Integer.parseInt(modelo.getIdCon()),Integer.parseInt(modelo.getIdLocCon()),
-                                modelo.getDesLocCon(),modelo.getOtrDirLoc(),modelo.getIdDep(),modelo.getIdPrvDep(),
-                                modelo.getIdDisPrv(),modelo.getNumTel1(),modelo.getNumTel2(),modelo.getNumFax(),
-                                modelo.getNumRuc() });
-
-                    if(!indError.equals(""))
-                    {
-                        errores.add(indError);
-                    }
-                }
-            }
-            catch (Exception e) 
-            {
-                indError = "error";
-                errores.add(e.getMessage());
-            }
-            finally
-            {
-                conex.returnConnect();
-            }
-        }
-        
-        return "actualizar";
-    }
-    
-    public String eliminar()
-    {
-        if(opcion.trim().equals("E"))
-        {
-            helper conex = null;
-            ResultSet tabla = null;
-
-            try 
-            {
-                conex = new helper();
-                indError = conex.getErrorSQL().trim();
-                
-                if(!indError.equals(""))
-                {
-                    errores.add(indError);
-                }
-                else
-                {
-                    tabla = conex.executeDataSet("CALL usp_verifDependLocalConces(?,?)", 
-                            new Object[]{ Integer.parseInt(modelo.getIdCon()),Integer.parseInt(modelo.getIdLocCon()) });
+                    conex = new helper();
                     indError = conex.getErrorSQL();
 
                     if(!indError.equals(""))
@@ -929,61 +710,282 @@ public class LocalesAction extends MasterAction implements ModelDriven<Locales>
                     }
                     else
                     {
-                        int cant = 0;
-                        while(tabla.next())
-                        {
-                            cant = tabla.getInt(1);
-                        }
+                        if(modelo.getNumTel1().equals(""))
+                            modelo.setNumTel1("0");
+                        if(modelo.getNumTel2().equals(""))
+                            modelo.setNumTel2("0");
+                        if(modelo.getNumFax().equals(""))
+                            modelo.setNumFax("0");
 
-                        /* Si no tiene dependencias */
-                        if(cant == 0)
-                        {
-                            indError = conex.executeNonQuery("CALL usp_dltLocalConces(?,?)",
-                                    new Object[]{ Integer.parseInt(modelo.getIdCon()),Integer.parseInt(modelo.getIdLocCon()) });
+                        indError = conex.executeNonQuery("CALL usp_insLocalConces(?,?,?,?,?,?,?,?,?,?)",
+                                    new Object[]{ modelo.getIdCon(),modelo.getDesLocCon(),modelo.getOtrDirLoc(),
+                                        modelo.getIdDep(),modelo.getIdPrvDep(),modelo.getIdDisPrv(),modelo.getNumTel1(),
+                                        modelo.getNumTel2(),modelo.getNumFax(),modelo.getNumRuc() });
 
-                            indError = indError.trim();
-                            if(indError.trim().equals(""))
-                            {
-                                errores.add(indError);
-                            }
-                        }
-                        else /* si tiene dependencias */
+                        if(!indError.equals(""))
                         {
-                            indError = "error";
-                            errores.add("Existen registros dependientes del concesionario");
+                            errores.add(indError);
+                        }
+                    }
+                }
+                catch (Exception e) 
+                {
+                    indError = "error";
+                    errores.add(e.getMessage());
+                }
+                finally
+                {
+                    conex.returnConnect();
+                }
+            }
+        }
+        
+        return "grabar";
+    }
+    
+    public String actualizar()
+    {
+        idAccion = 7;
+        
+        verifAccionTipoUsuario();
+        
+        if(indErrAcc.equals(""))
+        {
+            if(modelo.getDesLocCon().equals(""))
+            {
+                indError += "error";
+                errores.add("Ingrese el nombre del local");
+            }
+
+            if(modelo.getOtrDirLoc().equals(""))
+            {
+                indError += "error";
+                errores.add("Ingrese la dirección del local");
+            }
+
+            if(modelo.getIdDep()==0 || modelo.getIdPrvDep()==0 || modelo.getIdDisPrv()==0)
+            {
+                indError += "error";
+                errores.add("Seleccione un departamento, provincia y distrito");
+            }
+
+            if(modelo.getNumTel1().equals("") && modelo.getNumTel2().equals("") && modelo.getNumFax().equals(""))
+            {
+                indError += "error";
+                errores.add("Debe ingresar al menos un número telefónico");
+            }
+            else
+            {
+                if(!modelo.getNumTel1().equals(""))
+                {
+                    if(!isInteger(modelo.getNumTel1()))
+                    {
+                        indError += "error";
+                        errores.add("El primer número telefónico no es válido");
+                    }
+                    else
+                    {
+                        Double telAux1 = Double.parseDouble(modelo.getNumTel1());
+
+                        if(telAux1==0 || telAux1>9999999)
+                        {
+                            indError += "error";
+                            errores.add("El primer número telefónico no es válido");
+                        }
+                    }
+                }
+
+                if(!modelo.getNumTel2().equals(""))
+                {
+                    if(!isInteger(modelo.getNumTel2()))
+                    {
+                        indError += "error";
+                        errores.add("El segundo número telefónico no es válido");
+                    }
+                    else
+                    {
+                        Double telAux2 = Double.parseDouble(modelo.getNumTel2());
+
+                        if(telAux2==0 || telAux2>9999999)
+                        {
+                            indError += "error";
+                            errores.add("El segundo número telefónico no es válido");
+                        }
+                    }
+                }
+
+                if(!modelo.getNumFax().equals(""))
+                {
+                    if(!isInteger(modelo.getNumFax()))
+                    {
+                        indError += "error";
+                        errores.add("El número de fax no es válido");
+                    }
+                    else
+                    {
+                        Double faxAux = Double.parseDouble(modelo.getNumFax());
+
+                        if(faxAux==0 || faxAux>9999999)
+                        {
+                            indError += "error";
+                            errores.add("El número de fax no es válido");
                         }
                     }
                 }
             }
-            catch (Exception e) 
+
+            if(modelo.getNumRuc().equals(""))
             {
-                indError = "error";
-                errores.add(e.getMessage());
+                indError += "error";
+                errores.add("Ingrese el número de RUC");
             }
-            finally
+            else
             {
+                if(!isLong(modelo.getNumRuc()))
+                {
+                    indError += "error";
+                    errores.add("El número de RUC no es válido");
+                }
+                else
+                {
+                    Long rucAux = Long.parseLong(modelo.getNumRuc());
+
+                    if(rucAux==0 || rucAux>99999999999L || rucAux<10000000000L)
+                    {
+                        indError += "error";
+                        errores.add("El número de RUC no es válido");
+                    }
+                }
+            }
+
+            if(indError.equals(""))
+            {
+                helper conex = null;
+
                 try 
                 {
-                    tabla.close();
-                    conex.returnConnect();
+                    conex = new helper();
+                    indError = conex.getErrorSQL();
+
+                    if(!indError.equals(""))
+                    {
+                        errores.add(indError);
+                    }
+                    else
+                    {
+                        if(modelo.getNumTel1().equals(""))
+                            modelo.setNumTel1("0");
+                        if(modelo.getNumTel2().equals(""))
+                            modelo.setNumTel2("0");
+                        if(modelo.getNumFax().equals(""))
+                            modelo.setNumFax("0");
+
+                        indError = conex.executeNonQuery("CALL usp_updLocalConces(?,?,?,?,?,?,?,?,?,?,?)",
+                                new Object[]{ Integer.parseInt(modelo.getIdCon()),Integer.parseInt(modelo.getIdLocCon()),
+                                    modelo.getDesLocCon(),modelo.getOtrDirLoc(),modelo.getIdDep(),modelo.getIdPrvDep(),
+                                    modelo.getIdDisPrv(),modelo.getNumTel1(),modelo.getNumTel2(),modelo.getNumFax(),
+                                    modelo.getNumRuc() });
+
+                        if(!indError.equals(""))
+                        {
+                            errores.add(indError);
+                        }
+                    }
                 }
                 catch (Exception e) 
-                {}
+                {
+                    indError = "error";
+                    errores.add(e.getMessage());
+                }
+                finally
+                {
+                    conex.returnConnect();
+                }
+            }
+        }
+        
+        return "actualizar";
+    }
+    
+    public String eliminar()
+    {
+        idAccion = 8;
+        
+        verifAccionTipoUsuario();
+        
+        if(indErrAcc.equals(""))
+        {
+            if(opcion.trim().equals("E"))
+            {
+                helper conex = null;
+                ResultSet tabla = null;
+
+                try 
+                {
+                    conex = new helper();
+                    indError = conex.getErrorSQL().trim();
+
+                    if(!indError.equals(""))
+                    {
+                        errores.add(indError);
+                    }
+                    else
+                    {
+                        tabla = conex.executeDataSet("CALL usp_verifDependLocalConces(?,?)", 
+                                new Object[]{ Integer.parseInt(modelo.getIdCon()),Integer.parseInt(modelo.getIdLocCon()) });
+                        indError = conex.getErrorSQL();
+
+                        if(!indError.equals(""))
+                        {
+                            errores.add(indError);
+                        }
+                        else
+                        {
+                            int cant = 0;
+                            while(tabla.next())
+                            {
+                                cant = tabla.getInt(1);
+                            }
+
+                            /* Si no tiene dependencias */
+                            if(cant == 0)
+                            {
+                                indError = conex.executeNonQuery("CALL usp_dltLocalConces(?,?)",
+                                        new Object[]{ Integer.parseInt(modelo.getIdCon()),Integer.parseInt(modelo.getIdLocCon()) });
+
+                                indError = indError.trim();
+                                if(indError.trim().equals(""))
+                                {
+                                    errores.add(indError);
+                                }
+                            }
+                            else /* si tiene dependencias */
+                            {
+                                indError = "error";
+                                errores.add("Existen registros dependientes del concesionario");
+                            }
+                        }
+                    }
+                }
+                catch (Exception e) 
+                {
+                    indError = "error";
+                    errores.add(e.getMessage());
+                }
+                finally
+                {
+                    try 
+                    {
+                        tabla.close();
+                        conex.returnConnect();
+                    }
+                    catch (Exception e) 
+                    {}
+                }
             }
         }
         
         return "eliminar";
-    }
-    
-    public String vrfSeleccion()
-    {
-        if(modelo.getIdLocCon().trim().equals("") || modelo.getIdLocCon().trim().equals("0"))
-        {
-            indError = "error";
-            errores.add("No ha seleccionado ningun registro");
-        }
-        
-        return "vrfSeleccion";
     }
     
     /**

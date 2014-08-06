@@ -380,7 +380,7 @@ function isNumberIntegerKey(evt) //Solo numeros (entero)
 
 function validaRespuestaAjax(resultado)
 {
-    resultado = $.trim(resultado);
+    resultado = $.trim(resultado.toLowerCase());
     
     var _error = resultado.indexOf("error");
 

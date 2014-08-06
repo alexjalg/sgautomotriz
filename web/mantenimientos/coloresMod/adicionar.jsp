@@ -103,23 +103,33 @@
                 '<s:property value="baseURL" /><s:url namespace="coloresMod" includeContext="false" action="listColoresColorMod" />',
                 {},
                 function(resultado){
-                    $('#DIVcolores').dialog({
-                        buttons:{
-                            "Aceptar":function(){
-                                $('#colorIdCol').val($('.select_rec:checked').val());
-                                $('#idCol_h').val($('.select_rec:checked').val());
-                                $('#colorDesCol').val($.trim($('.select_rec:checked').parent().next().next().html()));
-                                $('#DIVcolores').dialog("close");
-                                hideOverlay(function(){});
-                            },
-                            "Cancelar":function(){
-                                $('#DIVcolores').dialog("close");
-                                hideOverlay(function(){});
+                    var _error = validaRespuestaAjax(resultado);
+                    
+                    if(_error != -1)
+                    {
+                        $('#DIVerroresGen').html(resultado);
+                        $('#DIVerroresGen').dialog('open');
+                    }
+                    else
+                    {
+                        $('#DIVcolores').dialog({
+                            buttons:{
+                                "Aceptar":function(){
+                                    $('#colorIdCol').val($('.select_rec:checked').val());
+                                    $('#idCol_h').val($('.select_rec:checked').val());
+                                    $('#colorDesCol').val($.trim($('.select_rec:checked').parent().next().next().html()));
+                                    $('#DIVcolores').dialog("close");
+                                    hideOverlay(function(){});
+                                },
+                                "Cancelar":function(){
+                                    $('#DIVcolores').dialog("close");
+                                    hideOverlay(function(){});
+                                }
                             }
-                        }
-                    });
-                    $('#DIVcolores').html(resultado);
-                    $('#DIVcolores').dialog('open');
+                        });
+                        $('#DIVcolores').html(resultado);
+                        $('#DIVcolores').dialog('open');
+                    }
                 },
                 2       
             );
@@ -130,12 +140,7 @@
                 '<s:property value="formURL" />',
                 $('#frm_colorMod').serialize(),
                 function(resultado){
-                    resultado = $.trim(resultado);
-                    var res_aux = resultado.toLowerCase();
-                    
-                    var _error = res_aux.indexOf("error");
-                    if(_error == -1)
-                        _error = res_aux.indexOf("exception");
+                    var _error = validaRespuestaAjax(resultado);
                     
                     if(_error != -1)
                     {

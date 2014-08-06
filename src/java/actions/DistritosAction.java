@@ -22,8 +22,28 @@ public class DistritosAction extends MasterAction implements ModelDriven<Distrit
     @Override
     public Distritos getModel()
     {
-        tituloOpc = "Distritos";// cambiar por campo titulo cuando este lista la tabla de opciones
+        tituloOpc = "Distritos";
+        idClaseAccion = 5;
+        
         return modelo;
+    }
+    
+    public String vrfSeleccion()
+    {
+        idAccion = 1;
+        
+        verifAccionTipoUsuario();
+        
+        if(indErrAcc.equals(""))
+        {
+            if(modelo.getIdDisPrv()==0)
+            {
+                indError = "error";
+                errores.add("No ha seleccionado ningun registro");
+            }
+        }
+        
+        return "vrfSeleccion";
     }
     
     private void cantDistritosIndex()
@@ -137,79 +157,39 @@ public class DistritosAction extends MasterAction implements ModelDriven<Distrit
     @Override
     public String execute()
     {
-        nivBandeja = 3;
+        idAccion = 2;
         
-        varReturnProcess(0);
-        if(!listVarReturn.isEmpty())
-        {
-            curPagVis = Integer.parseInt(listVarReturn.get(0).toString().trim());
-            modelo.setIdDep(Integer.parseInt(listVarReturn.get(1).toString().trim()));
-            modelo.setIdPrvDep(Integer.parseInt(listVarReturn.get(2).toString().trim()));
-            modelo.setDesDis_f(listVarReturn.get(3).toString().trim());
-        }
+        verifAccionTipoUsuario();
         
-        if(modelo.getIdDep()==0 || modelo.getIdPrvDep()==0)
+        if(indErrAcc.equals(""))
         {
-            indErrParm = "error";
-        }
-        else
-        {
-            urlPaginacion = "distritos/Distrito";
+            nivBandeja = 3;
 
-            helper conex = null;
-            ResultSet tabla = null;
-            
-            try
+            varReturnProcess(0);
+            if(!listVarReturn.isEmpty())
             {
-                conex = new helper();
-                indError = conex.getErrorSQL();
-
-                if(!indError.equals(""))
-                {
-                    errores.add(indError);
-                }
-                else
-                {
-                    tabla = conex.executeDataSet("CALL usp_getDatosProvincia(?,?)", 
-                            new Object[]{ modelo.getIdDep(),modelo.getIdPrvDep() });
-
-                    indError = conex.getErrorSQL();
-
-                    if(!indError.equals(""))
-                    {
-                        errores.add(indError);
-                    }
-                    else
-                    {
-                        while(tabla.next())
-                        {
-                            modelo.setDesDep(tabla.getString("desDep"));
-                            modelo.setDesProv(tabla.getString("desProv"));
-                        }
-                    }
-                }
-            }
-            catch (Exception e) 
-            {
-                indError = "error";
-                errores.add(e.getMessage());
-            }
-            finally
-            {
-                try 
-                {
-                    tabla.close();
-                    conex.returnConnect();
-                }
-                catch (Exception e) 
-                {}
+                curPagVis = Integer.parseInt(listVarReturn.get(0).toString().trim());
+                modelo.setIdDep(Integer.parseInt(listVarReturn.get(1).toString().trim()));
+                modelo.setIdPrvDep(Integer.parseInt(listVarReturn.get(2).toString().trim()));
+                modelo.setDesDis_f(listVarReturn.get(3).toString().trim());
             }
 
-            modelo.setDesDis_f(modelo.getDesDis_f().trim());
-            
-            cantDistritosIndex();
-            verifPag();
-            listDistritosIndex();
+            if(modelo.getIdDep()==0 || modelo.getIdPrvDep()==0)
+            {
+                indErrParm = "error";
+            }
+            else
+            {
+                urlPaginacion = "distritos/Distrito";
+
+                getDatosDepartamentoYProvincia();
+
+                modelo.setDesDis_f(modelo.getDesDis_f().trim());
+
+                cantDistritosIndex();
+                verifPag();
+                listDistritosIndex();
+            }
         }
         
         return SUCCESS;
@@ -217,22 +197,64 @@ public class DistritosAction extends MasterAction implements ModelDriven<Distrit
     
     public String adicionar()
     {
-        nivBandeja = 3;
+        idAccion = 3;
         
-        varReturnProcess(1);
+        verifAccionTipoUsuario();
         
-        if((!opcion.trim().equals("A") && !opcion.trim().equals("M")) || (modelo.getIdDep()==0 || modelo.getIdPrvDep()==0))
+        if(indErrAcc.equals(""))
         {
-            indErrParm = "error";
-        }
-        else
-        {
-            helper conex = null;
-            ResultSet tabla = null;
-            
-            try
+            nivBandeja = 3;
+
+            varReturnProcess(1);
+
+            if((!opcion.trim().equals("A") && !opcion.trim().equals("M")) || (modelo.getIdDep()==0 || modelo.getIdPrvDep()==0))
             {
-                conex = new helper();
+                indErrParm = "error";
+            }
+            else
+            {
+                getDatosDepartamentoYProvincia();
+                
+                if(opcion.equals("A"))
+                {
+                    formURL = baseURL+"distritos/grabarDistrito";
+                }
+
+                if(opcion.equals("M"))
+                {
+                    if(modelo.getIdDep()==0)
+                        indErrParm = "error";
+                    else
+                    {
+                        getDatosDistrito();
+                        formURL = baseURL+"distritos/actualizarDistrito";
+                    }
+                }
+            }
+        }
+        
+        return "adicionar";
+    }
+    
+    private void getDatosDepartamentoYProvincia()
+    {
+        helper conex = null;
+        ResultSet tabla = null;
+
+        try
+        {
+            conex = new helper();
+            indError = conex.getErrorSQL();
+
+            if(!indError.equals(""))
+            {
+                errores.add(indError);
+            }
+            else
+            {
+                tabla = conex.executeDataSet("CALL usp_getDatosProvincia(?,?)", 
+                        new Object[]{ modelo.getIdDep(),modelo.getIdPrvDep() });
+
                 indError = conex.getErrorSQL();
 
                 if(!indError.equals(""))
@@ -241,59 +263,29 @@ public class DistritosAction extends MasterAction implements ModelDriven<Distrit
                 }
                 else
                 {
-                    tabla = conex.executeDataSet("CALL usp_getDatosProvincia(?,?)", 
-                            new Object[]{ modelo.getIdDep(),modelo.getIdPrvDep() });
-
-                    indError = conex.getErrorSQL();
-
-                    if(!indError.equals(""))
+                    while(tabla.next())
                     {
-                        errores.add(indError);
+                        modelo.setDesDep(tabla.getString("desDep"));
+                        modelo.setDesProv(tabla.getString("desProv"));
                     }
-                    else
-                    {
-                        while(tabla.next())
-                        {
-                            modelo.setDesDep(tabla.getString("desDep"));
-                            modelo.setDesProv(tabla.getString("desProv"));
-                        }
-                    }
-                }
-            }
-            catch (Exception e) 
-            {
-                indError = "error";
-                errores.add(e.getMessage());
-            }
-            finally
-            {
-                try 
-                {
-                    tabla.close();
-                    conex.returnConnect();
-                }
-                catch (Exception e) 
-                {}
-            }
-            
-            if(opcion.equals("A"))
-            {
-                formURL = baseURL+"distritos/grabarDistrito";
-            }
-
-            if(opcion.equals("M"))
-            {
-                if(modelo.getIdDep()==0)
-                    indErrParm = "error";
-                else
-                {
-                    getDatosDistrito();
-                    formURL = baseURL+"distritos/actualizarDistrito";
                 }
             }
         }
-        
-        return "adicionar";
+        catch (Exception e) 
+        {
+            indError = "error";
+            errores.add(e.getMessage());
+        }
+        finally
+        {
+            try 
+            {
+                tabla.close();
+                conex.returnConnect();
+            }
+            catch (Exception e) 
+            {}
+        }
     }
     
     private void getDatosDistrito()
@@ -349,40 +341,47 @@ public class DistritosAction extends MasterAction implements ModelDriven<Distrit
     
     public String grabar()
     {
-        modelo.setDesProv(modelo.getDesProv().trim());
+        idAccion = 4;
         
-        if(indError.equals(""))
+        verifAccionTipoUsuario();
+        
+        if(indErrAcc.equals(""))
         {
-            helper conex = null;
-            
-            try
-            {
-                conex = new helper();
-                indError = conex.getErrorSQL();
+            modelo.setDesProv(modelo.getDesProv().trim());
 
-                if(!indError.equals(""))
+            if(indError.equals(""))
+            {
+                helper conex = null;
+
+                try
                 {
-                    errores.add(indError);
-                }
-                else
-                {
-                    indError = conex.executeNonQuery("CALL usp_insDistrito(?,?,?)",
-                            new Object[]{ modelo.getIdDep(),modelo.getIdPrvDep(),modelo.getDesDis() });
+                    conex = new helper();
+                    indError = conex.getErrorSQL();
 
                     if(!indError.equals(""))
                     {
                         errores.add(indError);
                     }
+                    else
+                    {
+                        indError = conex.executeNonQuery("CALL usp_insDistrito(?,?,?)",
+                                new Object[]{ modelo.getIdDep(),modelo.getIdPrvDep(),modelo.getDesDis() });
+
+                        if(!indError.equals(""))
+                        {
+                            errores.add(indError);
+                        }
+                    }
                 }
-            }
-            catch (Exception e) 
-            {
-                indError = "error";
-                errores.add(e.getMessage());
-            }
-            finally
-            {
-                conex.returnConnect();
+                catch (Exception e) 
+                {
+                    indError = "error";
+                    errores.add(e.getMessage());
+                }
+                finally
+                {
+                    conex.returnConnect();
+                }
             }
         }
         
@@ -391,41 +390,48 @@ public class DistritosAction extends MasterAction implements ModelDriven<Distrit
     
     public String actualizar()
     {
-        modelo.setDesProv(modelo.getDesProv().trim());
+        idAccion = 5;
         
-        if(indError.equals(""))
+        verifAccionTipoUsuario();
+        
+        if(indErrAcc.equals(""))
         {
-            helper conex = null;
-            
-            try
-            {
-                conex = new helper();
-                indError = conex.getErrorSQL();
+            modelo.setDesProv(modelo.getDesProv().trim());
 
-                if(!indError.equals(""))
+            if(indError.equals(""))
+            {
+                helper conex = null;
+
+                try
                 {
-                    errores.add(indError);
-                }
-                else
-                {
-                    indError = conex.executeNonQuery("CALL usp_updDistrito(?,?,?,?)",
-                            new Object[]{ modelo.getIdDep(), modelo.getIdPrvDep(), modelo.getIdDisPrv(),
-                                modelo.getDesDis() });
+                    conex = new helper();
+                    indError = conex.getErrorSQL();
 
                     if(!indError.equals(""))
                     {
                         errores.add(indError);
                     }
+                    else
+                    {
+                        indError = conex.executeNonQuery("CALL usp_updDistrito(?,?,?,?)",
+                                new Object[]{ modelo.getIdDep(), modelo.getIdPrvDep(), modelo.getIdDisPrv(),
+                                    modelo.getDesDis() });
+
+                        if(!indError.equals(""))
+                        {
+                            errores.add(indError);
+                        }
+                    }
                 }
-            }
-            catch (Exception e) 
-            {
-                indError = "error";
-                errores.add(e.getMessage());
-            }
-            finally
-            {
-                conex.returnConnect();
+                catch (Exception e) 
+                {
+                    indError = "error";
+                    errores.add(e.getMessage());
+                }
+                finally
+                {
+                    conex.returnConnect();
+                }
             }
         }
         
@@ -434,54 +440,50 @@ public class DistritosAction extends MasterAction implements ModelDriven<Distrit
     
     public String eliminar()
     {
-        if(opcion.trim().equals("E"))
+        idAccion = 6;
+        
+        verifAccionTipoUsuario();
+        
+        if(indErrAcc.equals(""))
         {
-            helper conex = null;
-            
-            try
+            if(opcion.trim().equals("E"))
             {
-                conex = new helper();
-                indError = conex.getErrorSQL().trim();
+                helper conex = null;
 
-                if(!indError.equals(""))
+                try
                 {
-                    errores.add(indError);
-                }
-                else
-                {
-                    indError = conex.executeNonQuery("CALL usp_dltDistrito(?,?,?)",
-                            new Object[]{ modelo.getIdDep(),modelo.getIdPrvDep(),modelo.getIdDisPrv() });
+                    conex = new helper();
+                    indError = conex.getErrorSQL().trim();
 
-                    indError = indError.trim();
-                    if(indError.trim().equals(""))
+                    if(!indError.equals(""))
                     {
                         errores.add(indError);
                     }
+                    else
+                    {
+                        indError = conex.executeNonQuery("CALL usp_dltDistrito(?,?,?)",
+                                new Object[]{ modelo.getIdDep(),modelo.getIdPrvDep(),modelo.getIdDisPrv() });
+
+                        indError = indError.trim();
+                        if(indError.trim().equals(""))
+                        {
+                            errores.add(indError);
+                        }
+                    }
                 }
-            }
-            catch (Exception e) 
-            {
-                indError = "error";
-                errores.add(e.getMessage());
-            }
-            finally
-            {
-                conex.returnConnect();
+                catch (Exception e) 
+                {
+                    indError = "error";
+                    errores.add(e.getMessage());
+                }
+                finally
+                {
+                    conex.returnConnect();
+                }
             }
         }
         
         return "eliminar";
-    }
-    
-    public String vrfSeleccion()
-    {
-        if(modelo.getIdDisPrv()==0)
-        {
-            indError = "error";
-            errores.add("No ha seleccionado ningun registro");
-        }
-        
-        return "vrfSeleccion";
     }
     
     /**

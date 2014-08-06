@@ -12,10 +12,10 @@
         <action name="*ColorMod" method="{1}" class="actions.ColoresModeloAction">
             <result name="success" type="tiles">mant-coloresMod-index</result>
             <result name="adicionar" type="tiles">mant-coloresMod-adicionar</result>
-            <result name="listColores">/mantenimientos/coloresMod/listColores.jsp</result>
-            <result name="grabar">/mantenimientos/coloresMod/grabar.jsp</result>
-            <result name="vrfSeleccion">/mantenimientos/coloresMod/grabar.jsp</result>
-            <result name="eliminar">/mantenimientos/coloresMod/eliminar.jsp</result>
+            <result name="listColores" type="tiles">mant-coloresMod-listcolores</result>
+            <result name="grabar" type="tiles">mant-coloresMod-grabar</result>
+            <result name="vrfSeleccion" type="tiles">mant-coloresMod-grabar</result>
+            <result name="eliminar" type="tiles">mant-coloresMod-eliminar</result>
         </action>
     </package>
 </struts>

@@ -38,6 +38,12 @@
     <definition name="mant-departamentos-adicionar" extends="baseLayout">
         <put-attribute name="body" value="/mantenimientos/departamentos/adicionar.jsp" />
     </definition>
+    <definition name="mant-departamentos-grabar" extends="baseLayoutPopUp">
+        <put-attribute name="body" value="/mantenimientos/departamentos/grabar.jsp" />
+    </definition>
+    <definition name="mant-departamentos-eliminar" extends="baseLayoutPopUp">
+        <put-attribute name="body" value="/mantenimientos/departamentos/eliminar.jsp" />
+    </definition>
     
     <!-- PROVINCIAS -->
     <definition name="mant-provincias-index" extends="baseLayout">
@@ -53,6 +59,12 @@
     </definition>
     <definition name="mant-distritos-adicionar" extends="baseLayout">
         <put-attribute name="body" value="/mantenimientos/distritos/adicionar.jsp" />
+    </definition>
+    <definition name="mant-distritos-grabar" extends="baseLayoutPopUp">
+        <put-attribute name="body" value="/mantenimientos/distritos/grabar.jsp" />
+    </definition>
+    <definition name="mant-distritos-eliminar" extends="baseLayoutPopUp">
+        <put-attribute name="body" value="/mantenimientos/distritos/eliminar.jsp" />
     </definition>
     
     
@@ -109,6 +121,13 @@
     <definition name="mant-concesionarios-adicionar" extends="baseLayout">
         <put-attribute name="body" value="/mantenimientos/concesionarios/adicionar.jsp" />
     </definition>
+    <definition name="mant-concesionarios-grabar" extends="baseLayoutPopUp">
+        <put-attribute name="body" value="/mantenimientos/concesionarios/grabar.jsp" />
+    </definition>
+    <definition name="mant-concesionarios-eliminar" extends="baseLayoutPopUp">
+        <put-attribute name="body" value="/mantenimientos/concesionarios/eliminar.jsp" />
+    </definition>
+    
     
     <!--  LOCALES  -->
     <definition name="mant-locales-index" extends="baseLayout">
@@ -116,6 +135,18 @@
     </definition>
     <definition name="mant-locales-adicionar" extends="baseLayout">
         <put-attribute name="body" value="/mantenimientos/locales/adicionar.jsp" />
+    </definition>
+    <definition name="mant-locales-grabar" extends="baseLayoutPopUp">
+        <put-attribute name="body" value="/mantenimientos/locales/grabar.jsp" />
+    </definition>
+    <definition name="mant-locales-eliminar" extends="baseLayoutPopUp">
+        <put-attribute name="body" value="/mantenimientos/locales/eliminar.jsp" />
+    </definition>
+    <definition name="mant-locales-listProvincias" extends="baseLayoutPopUp">
+        <put-attribute name="body" value="/mantenimientos/locales/getProvincias.jsp" />
+    </definition>
+    <definition name="mant-locales-listDistritos" extends="baseLayoutPopUp">
+        <put-attribute name="body" value="/mantenimientos/locales/getDistritos.jsp" />
     </definition>
     
     
@@ -147,6 +178,9 @@
     <definition name="mant-colores-grabar" extends="baseLayoutPopUp">
         <put-attribute name="body" value="/mantenimientos/colores/grabar.jsp" /> 
     </definition>
+    <definition name="mant-colores-eliminar" extends="baseLayoutPopUp">
+        <put-attribute name="body" value="/mantenimientos/colores/eliminar.jsp" /> 
+    </definition>
     
     <!--  COLORES POR MODELO  -->
     <definition name="mant-coloresMod-index" extends="baseLayout">
@@ -155,7 +189,15 @@
     <definition name="mant-coloresMod-adicionar" extends="baseLayout">
         <put-attribute name="body" value="/mantenimientos/coloresMod/adicionar.jsp" />
     </definition>
-    
+    <definition name="mant-coloresMod-listcolores" extends="baseLayoutPopUp">
+        <put-attribute name="body" value="/mantenimientos/coloresMod/listColores.jsp" />
+    </definition>
+    <definition name="mant-coloresMod-grabar" extends="baseLayoutPopUp">
+        <put-attribute name="body" value="/mantenimientos/coloresMod/grabar.jsp" />
+    </definition>
+    <definition name="mant-coloresMod-eliminar" extends="baseLayoutPopUp">
+        <put-attribute name="body" value="/mantenimientos/coloresMod/eliminar.jsp" />
+    </definition>
     
     <!--  TIPO DE COLORES  -->
     <definition name="mant-tipoCambio-index" extends="baseLayout">

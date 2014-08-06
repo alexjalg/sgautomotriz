@@ -34,9 +34,22 @@
                 <div class="d-cont-menu">
                     <tiles:insertAttribute name="header" />
                 </div>		
-                <div class="d-content">			
-                    <tiles:insertAttribute name="body" />		
-                    
+                <div class="d-content">	
+                    <s:if test='%{indErrAcc!=""}'>
+                        <div class="ui-state-error ui-corner-all" style="padding: 0 .7em; padding-top: 5px; width: 300px; margin: auto; margin-top: 40px;">
+                            <span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>
+                            <span style="color: #C60200; font-weight: bold; font-size: 13px;">Error</span>
+                            <span style="display: block; color: #C60200; margin-top: 10px; margin-bottom: 20px;">
+                                No cuenta con permisos para realizar esta acción.
+                                <br />
+                                <br />
+                                Será redireccionado a la pagina anterior
+                            </span>
+                        </div>
+                    </s:if>
+                    <s:else>
+                        <tiles:insertAttribute name="body" />		
+                    </s:else>
                 </div>
             </div>
             <div class="overlay">
@@ -46,15 +59,21 @@
                     </div>
                 </div>
             </div>
-                    
+
             <div id="DIVverif" title="<s:property value="titleDialog" />" class="alerta"></div>
             <div id="DIVchgPwd" title="<s:property value="titleDialog" />" class="alerta"></div>
             <div id="DIVupdDtsPer" title="<s:property value="titleDialog" />" class="alerta"></div>
+            <!--DIV para errores genericos como por ejemplo: caducidad ed sesion, falta de permisos para accion, 
+            entre otros -->
             <div id="DIVerroresGen" title="<s:property value="titleDialog" />" class="alerta"></div>
         </body>
     </html>
 
     <script type="text/javascript">
+        <s:if test='%{indErrAcc!=""}'>
+            setTimeout(function(){ history.back(-10); },4000);
+        </s:if>  
+            
         $('#DIVverif').dialog({
             autoOpen: false,
             width: 340,
@@ -188,16 +207,23 @@
         
         $('#DIVerroresGen').dialog({
             autoOpen: false,
-            width: 340,
+            width: 380,
             height: 200,
             modal: true,
             closeOnEscape: false,
             open: function(event, ui) { $(".ui-dialog-titlebar-close").hide(); },
             draggable: false,
-            resizable: false
+            resizable: false,
+            buttons:{
+                "Aceptar":function(){
+                    $('#DIVerroresGen').dialog('close');
+                    hideOverlay(function(){});
+                }
+            }
         });
         
         $(document).ready(function() {
+            
         });
     </script>
     </s:else>

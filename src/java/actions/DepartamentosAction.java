@@ -23,8 +23,28 @@ public class DepartamentosAction extends MasterAction implements ModelDriven<Dep
     @Override
     public Departamentos getModel()
     {
-        tituloOpc = "Departamentos";// cambiar por campo titulo cuando este lista la tabla de opciones
+        tituloOpc = "Departamentos";
+        idClaseAccion = 4;
+        
         return modelo;
+    }
+    
+    public String vrfSeleccion()
+    {
+        idAccion = 1;
+        
+        verifAccionTipoUsuario();
+        
+        if(indErrAcc.equals(""))
+        {
+            if(modelo.getIdDep()==0)
+            {
+                indError = "error";
+                errores.add("No ha seleccionado ningun registro");
+            }
+        }
+        
+        return "vrfSeleccion";
     }
     
     private void cantDptosIndex()
@@ -137,52 +157,66 @@ public class DepartamentosAction extends MasterAction implements ModelDriven<Dep
     @Override
     public String execute()
     {
-        nivBandeja = 1;
+        idAccion = 2;
         
-        urlPaginacion = "departamentos/Departamento";
+        verifAccionTipoUsuario();
         
-        modelo.setDesDep_f(modelo.getDesDep_f().trim());
-        varReturn = varReturn.trim();
-        
-        varReturnProcess(0);
-        if(!listVarReturn.isEmpty())
+        if(indErrAcc.equals(""))
         {
-            curPagVis = Integer.parseInt(listVarReturn.get(0).toString().trim());
-            modelo.setDesDep_f(listVarReturn.get(1).toString().trim());
+            nivBandeja = 1;
+
+            urlPaginacion = "departamentos/Departamento";
+
+            modelo.setDesDep_f(modelo.getDesDep_f().trim());
+            varReturn = varReturn.trim();
+
+            varReturnProcess(0);
+            if(!listVarReturn.isEmpty())
+            {
+                curPagVis = Integer.parseInt(listVarReturn.get(0).toString().trim());
+                modelo.setDesDep_f(listVarReturn.get(1).toString().trim());
+            }
+
+            cantDptosIndex();
+            verifPag();
+            listDptosIndex();
         }
-        
-        cantDptosIndex();
-        verifPag();
-        listDptosIndex();
         
         return SUCCESS;
     }
     
     public String adicionar()
     {
-        nivBandeja = 1;
+        idAccion = 3;
         
-        if(!opcion.trim().equals("A") && !opcion.trim().equals("M"))
+        verifAccionTipoUsuario();
+        
+        if(indErrAcc.equals(""))
         {
-            indErrParm = "error";
-        }
-        else
-        {
-            varReturnProcess(1);
-            
-            if(opcion.equals("A"))
-            {
-                formURL = baseURL+"departamentos/grabarDepartamento";
-            }
+            nivBandeja = 1;
 
-            if(opcion.equals("M"))
+            if(!opcion.trim().equals("A") && !opcion.trim().equals("M"))
             {
-                if(modelo.getIdDep()==0)
-                    indErrParm = "error";
-                else
+                indErrParm = "error";
+            }
+            else
+            {
+                varReturnProcess(1);
+
+                if(opcion.equals("A"))
                 {
-                    getDatosDepartamento();
-                    formURL = baseURL+"departamentos/actualizarDepartamento";
+                    formURL = baseURL+"departamentos/grabarDepartamento";
+                }
+
+                if(opcion.equals("M"))
+                {
+                    if(modelo.getIdDep()==0)
+                        indErrParm = "error";
+                    else
+                    {
+                        getDatosDepartamento();
+                        formURL = baseURL+"departamentos/actualizarDepartamento";
+                    }
                 }
             }
         }
@@ -244,138 +278,36 @@ public class DepartamentosAction extends MasterAction implements ModelDriven<Dep
     
     public String grabar()
     {
-        modelo.setDesDep(modelo.getDesDep().trim());
-        modelo.setCodTel(modelo.getCodTel().trim());
+        idAccion = 4;
         
-        if(indError.equals(""))
+        verifAccionTipoUsuario();
+        
+        if(indErrAcc.equals(""))
         {
-            helper conex = null;
-            
-            try 
-            {
-                conex = new helper();
-                indError = conex.getErrorSQL();
+            modelo.setDesDep(modelo.getDesDep().trim());
+            modelo.setCodTel(modelo.getCodTel().trim());
 
-                if(!indError.equals(""))
-                {
-                    errores.add(indError);
-                }
-                else
-                {
-                    indError = conex.executeNonQuery("CALL usp_insDepartamento(?,?)",
-                            new Object[]{ modelo.getDesDep(),modelo.getCodTel() });
+            if(indError.equals(""))
+            {
+                helper conex = null;
 
-                    if(!indError.equals(""))
-                    {
-                        errores.add(indError);
-                    }
-                }
-            }
-            catch (Exception e) 
-            {
-                indError = "error";
-                errores.add(e.getMessage());
-            }
-            finally
-            {
-                conex.returnConnect();
-            }
-        }
-        
-        return "grabar";
-    }
-    
-    public String actualizar()
-    {
-        modelo.setDesDep(modelo.getDesDep().trim());
-        modelo.setCodTel(modelo.getCodTel().trim());
-        
-        if(indError.equals(""))
-        {
-            helper conex = null;
-            
-            try
-            {
-                conex = new helper();
-                indError = conex.getErrorSQL();
-
-                if(!indError.equals(""))
-                {
-                    errores.add(indError);
-                }
-                else
-                {
-                    indError = conex.executeNonQuery("CALL usp_updDepartamento(?,?,?)",
-                            new Object[]{ modelo.getIdDep(), modelo.getDesDep(), modelo.getCodTel() });
-
-                    if(!indError.equals(""))
-                    {
-                        errores.add(indError);
-                    }
-                }
-            }
-            catch (Exception e) 
-            {
-                indError = "error";
-                errores.add(e.getMessage());
-            }
-            finally
-            {
-                conex.returnConnect();
-            }
-        }
-        
-        return "actualizar";
-    }
-    
-    public String eliminar()
-    {
-        if(opcion.trim().equals("E"))
-        {
-            helper conex = new helper();
-
-            indError = conex.getErrorSQL().trim();
-            if(!indError.equals(""))
-            {
-                errores.add(indError);
-            }
-            else
-            {
-                ResultSet tabla = null;
                 try 
                 {
-                    tabla = conex.executeDataSet("CALL usp_verifDependDpto(?)", 
-                            new Object[]{ modelo.getIdDep() });
+                    conex = new helper();
                     indError = conex.getErrorSQL();
-                    
+
                     if(!indError.equals(""))
                     {
                         errores.add(indError);
                     }
                     else
                     {
-                        int cant = 0;
-                        while(tabla.next())
-                        {
-                            cant = tabla.getInt(1);
-                        }
-                        
-                        /* Si no tiene dependencias */
-                        if(cant == 0)
-                        {
-                            indError = conex.executeNonQuery("CALL usp_dltDepartamento(?)",
-                                    new Object[]{ modelo.getIdDep() });
+                        indError = conex.executeNonQuery("CALL usp_insDepartamento(?,?)",
+                                new Object[]{ modelo.getDesDep(),modelo.getCodTel() });
 
-                            indError = indError.trim();
-                            if(indError.trim().equals(""))
-                            {
-                                errores.add(indError);
-                            }
-                        }
-                        else /* si tiene dependencias */
+                        if(!indError.equals(""))
                         {
-                            indError = "error";
-                            errores.add("Existen registros dependientes del departamento");
+                            errores.add(indError);
                         }
                     }
                 }
@@ -391,18 +323,130 @@ public class DepartamentosAction extends MasterAction implements ModelDriven<Dep
             }
         }
         
-        return "eliminar";
+        return "grabar";
     }
     
-    public String vrfSeleccion()
+    public String actualizar()
     {
-        if(modelo.getIdDep()==0)
+        idAccion = 5;
+        
+        verifAccionTipoUsuario();
+        
+        if(indErrAcc.equals(""))
         {
-            indError = "error";
-            errores.add("No ha seleccionado ningun registro");
+            modelo.setDesDep(modelo.getDesDep().trim());
+            modelo.setCodTel(modelo.getCodTel().trim());
+
+            if(indError.equals(""))
+            {
+                helper conex = null;
+
+                try
+                {
+                    conex = new helper();
+                    indError = conex.getErrorSQL();
+
+                    if(!indError.equals(""))
+                    {
+                        errores.add(indError);
+                    }
+                    else
+                    {
+                        indError = conex.executeNonQuery("CALL usp_updDepartamento(?,?,?)",
+                                new Object[]{ modelo.getIdDep(), modelo.getDesDep(), modelo.getCodTel() });
+
+                        if(!indError.equals(""))
+                        {
+                            errores.add(indError);
+                        }
+                    }
+                }
+                catch (Exception e) 
+                {
+                    indError = "error";
+                    errores.add(e.getMessage());
+                }
+                finally
+                {
+                    conex.returnConnect();
+                }
+            }
         }
         
-        return "vrfSeleccion";
+        return "actualizar";
+    }
+    
+    public String eliminar()
+    {
+        idAccion = 6;
+        
+        verifAccionTipoUsuario();
+        
+        if(indErrAcc.equals(""))
+        {
+            if(opcion.trim().equals("E"))
+            {
+                helper conex = new helper();
+
+                indError = conex.getErrorSQL().trim();
+                if(!indError.equals(""))
+                {
+                    errores.add(indError);
+                }
+                else
+                {
+                    ResultSet tabla = null;
+                    try 
+                    {
+                        tabla = conex.executeDataSet("CALL usp_verifDependDpto(?)", 
+                                new Object[]{ modelo.getIdDep() });
+                        indError = conex.getErrorSQL();
+
+                        if(!indError.equals(""))
+                        {
+                            errores.add(indError);
+                        }
+                        else
+                        {
+                            int cant = 0;
+                            while(tabla.next())
+                            {
+                                cant = tabla.getInt(1);
+                            }
+
+                            /* Si no tiene dependencias */
+                            if(cant == 0)
+                            {
+                                indError = conex.executeNonQuery("CALL usp_dltDepartamento(?)",
+                                        new Object[]{ modelo.getIdDep() });
+
+                                indError = indError.trim();
+                                if(indError.trim().equals(""))
+                                {
+                                    errores.add(indError);
+                                }
+                            }
+                            else /* si tiene dependencias */
+                            {
+                                indError = "error";
+                                errores.add("Existen registros dependientes del departamento");
+                            }
+                        }
+                    }
+                    catch (Exception e) 
+                    {
+                        indError = "error";
+                        errores.add(e.getMessage());
+                    }
+                    finally
+                    {
+                        conex.returnConnect();
+                    }
+                }
+            }
+        }
+        
+        return "eliminar";
     }
     
     /**

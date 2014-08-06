@@ -54,7 +54,7 @@ public class Locales
      * @param desCon the desCon to set
      */
     public void setDesCon(String desCon) {
-        this.desCon = desCon;
+        this.desCon = desCon.trim();
     }
 
     /**
@@ -82,7 +82,7 @@ public class Locales
      * @param desLocCon the desLocCon to set
      */
     public void setDesLocCon(String desLocCon) {
-        this.desLocCon = desLocCon;
+        this.desLocCon = desLocCon.trim();
     }
 
     /**
@@ -96,7 +96,7 @@ public class Locales
      * @param idTipLoc the idTipLoc to set
      */
     public void setIdTipLoc(String idTipLoc) {
-        this.idTipLoc = idTipLoc;
+        this.idTipLoc = idTipLoc.trim();
     }
 
     /**
@@ -110,7 +110,7 @@ public class Locales
      * @param otrDirLoc the otrDirLoc to set
      */
     public void setOtrDirLoc(String otrDirLoc) {
-        this.otrDirLoc = otrDirLoc;
+        this.otrDirLoc = otrDirLoc.trim();
     }
 
     /**
@@ -138,7 +138,7 @@ public class Locales
      * @param desDep the desDep to set
      */
     public void setDesDep(String desDep) {
-        this.desDep = desDep;
+        this.desDep = desDep.trim();
     }
 
     /**
@@ -166,7 +166,7 @@ public class Locales
      * @param desProv the desProv to set
      */
     public void setDesProv(String desProv) {
-        this.desProv = desProv;
+        this.desProv = desProv.trim();
     }
 
     /**
@@ -194,7 +194,7 @@ public class Locales
      * @param desDis the desDis to set
      */
     public void setDesDis(String desDis) {
-        this.desDis = desDis;
+        this.desDis = desDis.trim();
     }
 
     /**
@@ -208,7 +208,7 @@ public class Locales
      * @param numTel1 the numTel1 to set
      */
     public void setNumTel1(String numTel1) {
-        this.numTel1 = numTel1;
+        this.numTel1 = numTel1.trim();
     }
 
     /**
@@ -222,7 +222,7 @@ public class Locales
      * @param numTel2 the numTel2 to set
      */
     public void setNumTel2(String numTel2) {
-        this.numTel2 = numTel2;
+        this.numTel2 = numTel2.trim();
     }
 
     /**
@@ -236,7 +236,7 @@ public class Locales
      * @param numFax the numFax to set
      */
     public void setNumFax(String numFax) {
-        this.numFax = numFax;
+        this.numFax = numFax.trim();
     }
 
     /**
@@ -250,6 +250,6 @@ public class Locales
      * @param numRuc the numRuc to set
      */
     public void setNumRuc(String numRuc) {
-        this.numRuc = numRuc;
+        this.numRuc = numRuc.trim();
     }
 }

@@ -30,13 +30,25 @@
     NO SE ENVIARON LOS PARAMETROS CORRECTOS -->
     
     </s:if>
-    <s:else>		
-        <tiles:insertAttribute name="body" />
+    <s:else>
+        <s:if test='%{indErrAcc!=""}'>
+            <div class="ui-state-error ui-corner-all" style="padding: 0 .7em; padding-top: 5px;">
+                <span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>
+                <span style="color: #C60200; font-weight: bold; font-size: 13px;">Error</span>
+                <s:hidden value="error" />
+                <span style="display: block; color: #C60200; margin-top: 10px; margin-bottom: 20px;">
+                    No cuenta con permisos para realizar esta acción.
+                </span>
+            </div>
+        </s:if>
+        <s:else>
+            <tiles:insertAttribute name="body" />
 
-        <script type="text/javascript">
-            $(document).ready(function() {
+            <script type="text/javascript">
+                $(document).ready(function() {
 
-            });
-        </script>
+                });
+            </script>
+        </s:else>
     </s:else>
 </s:else>

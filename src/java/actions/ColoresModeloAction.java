@@ -26,8 +26,27 @@ public class ColoresModeloAction extends MasterAction implements ModelDriven<Col
     public ColoresModelo getModel()
     {
         tituloOpc = "Colores por Modelo";
+        idClaseAccion = 2;
         
         return modelo;
+    }
+    
+    public String vrfSeleccion()
+    {
+        idAccion = 1;
+        
+        verifAccionTipoUsuario();
+        
+        if(indErrAcc.equals(""))
+        {
+            if(modelo.getIdCol().equals(""))
+            {
+                indError = "error";
+                errores.add("No ha seleccionado ningun registro");
+            }
+        }
+        
+        return "vrfSeleccion";
     }
     
     private void cantColoresModIndex()
@@ -140,30 +159,37 @@ public class ColoresModeloAction extends MasterAction implements ModelDriven<Col
     @Override
     public String execute()
     {
-        nivBandeja = 3;
+        idAccion = 2;
         
-        varReturnProcess(0);
-        if(!listVarReturn.isEmpty())
-        {
-            curPagVis = Integer.parseInt(listVarReturn.get(0).toString().trim());
-            modelo.setIdMar(listVarReturn.get(1).toString().trim());
-            modelo.setIdModMar(listVarReturn.get(2).toString().trim());
-        }
+        verifAccionTipoUsuario();
         
-        if(modelo.getIdMar().trim().equals("") || modelo.getIdModMar().trim().equals(""))
-        //if(false)
+        if(indErrAcc.equals(""))
         {
-            indErrParm = "error";
-        }
-        else
-        {
-            urlPaginacion = "coloresMod/ColorMod";
-            
-            getDatosMarcaModelo();
-            
-            cantColoresModIndex();
-            verifPag();
-            listColoresModIndex();
+            nivBandeja = 3;
+
+            varReturnProcess(0);
+            if(!listVarReturn.isEmpty())
+            {
+                curPagVis = Integer.parseInt(listVarReturn.get(0).toString().trim());
+                modelo.setIdMar(listVarReturn.get(1).toString().trim());
+                modelo.setIdModMar(listVarReturn.get(2).toString().trim());
+            }
+
+            if(modelo.getIdMar().trim().equals("") || modelo.getIdModMar().trim().equals(""))
+            //if(false)
+            {
+                indErrParm = "error";
+            }
+            else
+            {
+                urlPaginacion = "coloresMod/ColorMod";
+
+                getDatosMarcaModelo();
+
+                cantColoresModIndex();
+                verifPag();
+                listColoresModIndex();
+            }
         }
         
         return SUCCESS;
@@ -238,22 +264,29 @@ public class ColoresModeloAction extends MasterAction implements ModelDriven<Col
     
     public String adicionar()
     {
-        nivBandeja = 3;
+        idAccion = 3;
         
-        varReturnProcess(1);
+        verifAccionTipoUsuario();
         
-        if((!opcion.trim().equals("A") && !opcion.trim().equals("M")) || modelo.getIdMar().trim().equals("") 
-                || modelo.getIdModMar().trim().equals(""))
+        if(indErrAcc.equals(""))
         {
-            indErrParm = "error";
-        }
-        else
-        {
-            getDatosMarcaModelo();
-            
-            if(opcion.equals("A"))
+            nivBandeja = 3;
+
+            varReturnProcess(1);
+
+            if((!opcion.trim().equals("A") && !opcion.trim().equals("M")) || modelo.getIdMar().trim().equals("") 
+                    || modelo.getIdModMar().trim().equals(""))
             {
-                formURL = baseURL+"coloresMod/grabarColorMod";
+                indErrParm = "error";
+            }
+            else
+            {
+                getDatosMarcaModelo();
+
+                if(opcion.equals("A"))
+                {
+                    formURL = baseURL+"coloresMod/grabarColorMod";
+                }
             }
         }
         
@@ -368,90 +401,104 @@ public class ColoresModeloAction extends MasterAction implements ModelDriven<Col
     
     public String listColores()
     {
-        regPag = 13;
-        urlPaginacion = "coloresMod/listColoresColorMod";
-        divPopUp = "DIVcolores";
+        idAccion = 4;
         
-        cantColoresIndex();
-        verifPag();
-        listColoresIndex();
+        verifAccionTipoUsuario();
+        
+        if(indErrAcc.equals(""))
+        {
+            regPag = 13;
+            urlPaginacion = "coloresMod/listColoresColorMod";
+            divPopUp = "DIVcolores";
+
+            cantColoresIndex();
+            verifPag();
+            listColoresIndex();
+        }
         
         return "listColores";
     }
     
     public String grabar()
     {
-        if(modelo.getIdCol().equals(""))
-        {
-            indError += "error";
-            errores.add("Seleccione un color");
-        }
+        idAccion = 5;
         
-        if(indError.equals(""))
+        verifAccionTipoUsuario();
+        
+        if(indErrAcc.equals(""))
         {
-            helper conex = null;
-            ResultSet tabla = null;
-            
-            try
+            if(modelo.getIdCol().equals(""))
             {
-                conex = new helper();
-                indError += conex.getErrorSQL();
+                indError += "error";
+                errores.add("Seleccione un color");
+            }
 
-                if(!indError.equals(""))
+            if(indError.equals(""))
+            {
+                helper conex = null;
+                ResultSet tabla = null;
+
+                try
                 {
-                    errores.add(indError);
-                }
-                else
-                {
-                    tabla = conex.executeDataSet("CALL usp_verifExistColorMod(?,?,?)", 
-                            new Object[]{ modelo.getIdMar(),modelo.getIdModMar(),modelo.getIdCol() });
-                    
+                    conex = new helper();
                     indError += conex.getErrorSQL();
-                    
+
                     if(!indError.equals(""))
                     {
                         errores.add(indError);
                     }
                     else
                     {
-                        int cont = 0;
-                        while(tabla.next())
+                        tabla = conex.executeDataSet("CALL usp_verifExistColorMod(?,?,?)", 
+                                new Object[]{ modelo.getIdMar(),modelo.getIdModMar(),modelo.getIdCol() });
+
+                        indError += conex.getErrorSQL();
+
+                        if(!indError.equals(""))
                         {
-                            cont = tabla.getInt(1);
-                        }
-                        
-                        if(cont>0)
-                        {
-                            indError += "error";
-                            errores.add("El color seleccionado ya fue registrado para este modelo");
+                            errores.add(indError);
                         }
                         else
                         {
-                            indError += conex.executeNonQuery("CALL usp_insColorMod(?,?,?)",
-                                    new Object[]{ modelo.getIdMar(),modelo.getIdModMar(),modelo.getIdCol() });
-
-                            if(!indError.equals(""))
+                            int cont = 0;
+                            while(tabla.next())
                             {
-                                errores.add(indError);
+                                cont = tabla.getInt(1);
+                            }
+
+                            if(cont>0)
+                            {
+                                indError += "error";
+                                errores.add("El color seleccionado ya fue registrado para este modelo");
+                            }
+                            else
+                            {
+                                indError += conex.executeNonQuery("CALL usp_insColorMod(?,?,?)",
+                                        new Object[]{ modelo.getIdMar(),modelo.getIdModMar(),modelo.getIdCol() });
+
+                                if(!indError.equals(""))
+                                {
+                                    errores.add(indError);
+                                }
                             }
                         }
                     }
                 }
-            }
-            catch (Exception e) 
-            {
-                indError += "error";
-                errores.add(e.getMessage());
-            }
-            finally
-            {
-                try 
-                {
-                    tabla.close();
-                    conex.returnConnect();
-                }
                 catch (Exception e) 
-                {}
+                {
+                    indError += "error";
+                    errores.add(e.getMessage());
+                }
+                finally
+                {
+                    try 
+                    {
+                        tabla.close();
+                        conex.returnConnect();
+                    }
+                    catch (Exception e) 
+                    {}
+                }
             }
         }
         
@@ -460,54 +507,50 @@ public class ColoresModeloAction extends MasterAction implements ModelDriven<Col
     
     public String eliminar()
     {
-        if(opcion.trim().equals("E"))
+        idAccion = 6;
+        
+        verifAccionTipoUsuario();
+        
+        if(indErrAcc.equals(""))
         {
-            helper conex = null;
-            
-            try
+            if(opcion.trim().equals("E"))
             {
-                conex = new helper();
-                indError += conex.getErrorSQL().trim();
+                helper conex = null;
 
-                if(!indError.equals(""))
+                try
                 {
-                    errores.add(indError);
-                }
-                else
-                {
-                    indError += conex.executeNonQuery("CALL usp_dltColorMod(?,?,?)",
-                            new Object[]{ modelo.getIdMar(),modelo.getIdModMar(),modelo.getIdCol() });
+                    conex = new helper();
+                    indError += conex.getErrorSQL().trim();
 
-                    indError = indError.trim();
-                    if(indError.trim().equals(""))
+                    if(!indError.equals(""))
                     {
                         errores.add(indError);
                     }
+                    else
+                    {
+                        indError += conex.executeNonQuery("CALL usp_dltColorMod(?,?,?)",
+                                new Object[]{ modelo.getIdMar(),modelo.getIdModMar(),modelo.getIdCol() });
+
+                        indError = indError.trim();
+                        if(indError.trim().equals(""))
+                        {
+                            errores.add(indError);
+                        }
+                    }
                 }
-            }
-            catch (Exception e) 
-            {
-                indError += "error";
-                errores.add(e.getMessage());
-            }
-            finally
-            {
-                conex.returnConnect();
+                catch (Exception e) 
+                {
+                    indError += "error";
+                    errores.add(e.getMessage());
+                }
+                finally
+                {
+                    conex.returnConnect();
+                }
             }
         }
         
         return "eliminar";
-    }
-    
-    public String vrfSeleccion()
-    {
-        if(modelo.getIdCol().equals(""))
-        {
-            indError = "error";
-            errores.add("No ha seleccionado ningun registro");
-        }
-        
-        return "vrfSeleccion";
     }
     
     /**

@@ -74,11 +74,7 @@
                 '<s:property value="formURL" />',
                 $('#frm_concesionario').serialize(),
                 function(resultado){
-                    resultado = $.trim(resultado);
-                    var _error = resultado.indexOf("error");
-                    
-                    if(_error == -1)
-                        _error = resultado.indexOf('exception'); 
+                    var _error = validaRespuestaAjax(resultado);
                     
                     if(_error != -1)
                     {

@@ -24,8 +24,27 @@ public class ConcesionariosAction extends MasterAction implements ModelDriven<Co
     public Concesionarios getModel()
     {
         tituloOpc = "Concesionarios";
+        idClaseAccion = 3;
         
         return modelo;
+    }
+    
+    public String vrfSeleccion()
+    {
+        idAccion = 1;
+        
+        verifAccionTipoUsuario();
+        
+        if(indErrAcc.equals(""))
+        {
+            if(modelo.getIdCon().trim().equals("") || modelo.getIdCon().trim().equals("0"))
+            {
+                indError = "error";
+                errores.add("No ha seleccionado ningun registro");
+            }
+        }
+        
+        return "vrfSeleccion";
     }
     
     private void cantConcesionariosIndex()
@@ -136,45 +155,59 @@ public class ConcesionariosAction extends MasterAction implements ModelDriven<Co
     @Override
     public String execute()
     {
-        nivBandeja = 1;
-        urlPaginacion = "concesionarios/Concesionario";
+        idAccion = 2;
         
-        varReturnProcess(0);
-        if(!listVarReturn.isEmpty())
+        verifAccionTipoUsuario();
+        
+        if(indErrAcc.equals(""))
         {
-            curPagVis = Integer.parseInt(listVarReturn.get(0).toString().trim());
+            nivBandeja = 1;
+            urlPaginacion = "concesionarios/Concesionario";
+
+            varReturnProcess(0);
+            if(!listVarReturn.isEmpty())
+            {
+                curPagVis = Integer.parseInt(listVarReturn.get(0).toString().trim());
+            }
+
+            cantConcesionariosIndex();
+            verifPag();
+            listConcesionariosIndex();
         }
-        
-        cantConcesionariosIndex();
-        verifPag();
-        listConcesionariosIndex();
         
         return SUCCESS;
     }
     
     public String adicionar()
     {
-        nivBandeja = 1;
+        idAccion = 3;
         
-        if((!opcion.trim().equals("A") && !opcion.trim().equals("M")))
+        verifAccionTipoUsuario();
+        
+        if(indErrAcc.equals(""))
         {
-            indErrParm = "error";
-        }
-        else
-        {
-            varReturnProcess(1);
-            
-            if(opcion.equals("A"))
-            {
-                formURL = baseURL+"concesionarios/grabarConcesionario";
-            }
+            nivBandeja = 1;
 
-            if(opcion.equals("M"))
+            if((!opcion.trim().equals("A") && !opcion.trim().equals("M")))
             {
-                
-                getDatosConcesionario();
-                formURL = baseURL+"concesionarios/actualizarConcesionario";
-                
+                indErrParm = "error";
+            }
+            else
+            {
+                varReturnProcess(1);
+
+                if(opcion.equals("A"))
+                {
+                    formURL = baseURL+"concesionarios/grabarConcesionario";
+                }
+
+                if(opcion.equals("M"))
+                {
+
+                    getDatosConcesionario();
+                    formURL = baseURL+"concesionarios/actualizarConcesionario";
+
+                }
             }
         }
         
@@ -234,120 +267,27 @@ public class ConcesionariosAction extends MasterAction implements ModelDriven<Co
     
     public String grabar()
     {
-        modelo.setDesCon(modelo.getDesCon().trim());
+        idAccion = 4;
         
-        if(modelo.getDesCon().equals(""))
+        verifAccionTipoUsuario();
+        
+        if(indErrAcc.equals(""))
         {
-            indError += "error";
-            errores.add("Ingrese el nombre del concesionario");
-        }
-        
-        if(indError.equals(""))
-        {
-            helper conex = null;
-            
-            try
-            {
-                conex = new helper();
-                indError = conex.getErrorSQL();
+            modelo.setDesCon(modelo.getDesCon().trim());
 
-                if(!indError.equals(""))
-                {
-                    errores.add(indError);
-                }
-                else
-                {
-                    indError = conex.executeNonQuery("CALL usp_insConcesionario(?)", 
-                            new Object[]{ modelo.getDesCon() });
+            if(modelo.getDesCon().equals(""))
+            {
+                indError += "error";
+                errores.add("Ingrese el nombre del concesionario");
+            }
 
-                    if(!indError.equals(""))
-                    {
-                        errores.add(indError);
-                    }
-                }
-            }
-            catch (Exception e) 
+            if(indError.equals(""))
             {
-                indError = "error";
-                errores.add(e.getMessage());
-            }
-            finally
-            {
-                conex.returnConnect();
-            }
-        }
-        
-        return "grabar";
-    }
-    
-    public String actualizar()
-    {
-        modelo.setDesCon(modelo.getDesCon().trim());
-        
-        if(modelo.getDesCon().equals(""))
-        {
-            indError="error";
-            errores.add("Ingrese el nombre del concesionario");
-        }
-        
-        if(indError.equals(""))
-        {
-            helper conex = null;
-            
-            try
-            {
-                conex = new helper();
-                indError = conex.getErrorSQL();
+                helper conex = null;
 
-                if(!indError.equals(""))
+                try
                 {
-                    errores.add(indError);
-                }
-                else
-                {
-                    indError = conex.executeNonQuery("CALL usp_updConcesionario(?,?)",
-                            new Object[]{ Integer.parseInt(modelo.getIdCon()),modelo.getDesCon() });
-
-                    if(!indError.equals(""))
-                    {
-                        errores.add(indError);
-                    }
-                }
-            }
-            catch (Exception e) 
-            {
-                indError = "error";
-                errores.add(e.getMessage());
-            }
-            finally
-            {
-                conex.returnConnect();
-            }
-        }
-        
-        return "actualizar";
-    }
-    
-    public String eliminar()
-    {
-        if(opcion.trim().equals("E"))
-        {
-            helper conex = null;
-            ResultSet tabla = null;
-            
-            try
-            {
-                conex = new helper();
-                indError = conex.getErrorSQL().trim();
-
-                if(!indError.equals(""))
-                {
-                    errores.add(indError);
-                }
-                else
-                {
-                    tabla = conex.executeDataSet("CALL usp_verifDependConcesionario(?)", 
-                            new Object[]{ Integer.parseInt(modelo.getIdCon()) });
+                    conex = new helper();
                     indError = conex.getErrorSQL();
 
                     if(!indError.equals(""))
@@ -356,61 +296,164 @@ public class ConcesionariosAction extends MasterAction implements ModelDriven<Co
                     }
                     else
                     {
-                        int cant = 0;
-                        while(tabla.next())
-                        {
-                            cant = tabla.getInt(1);
-                        }
+                        indError = conex.executeNonQuery("CALL usp_insConcesionario(?)", 
+                                new Object[]{ modelo.getDesCon() });
 
-                        /* Si no tiene dependencias */
-                        if(cant == 0)
+                        if(!indError.equals(""))
                         {
-                            indError = conex.executeNonQuery("CALL usp_dltConcesionario(?)",
-                                    new Object[]{ Integer.parseInt(modelo.getIdCon()) });
-
-                            indError = indError.trim();
-                            if(indError.trim().equals(""))
-                            {
-                                errores.add(indError);
-                            }
-                        }
-                        else /* si tiene dependencias */
-                        {
-                            indError = "error";
-                            errores.add("Existen registros dependientes del concesionario");
+                            errores.add(indError);
                         }
                     }
                 }
-            }
-            catch (Exception e) 
-            {
-                indError = "error";
-                errores.add(e.getMessage());
-            }
-            finally
-            {
-                try 
+                catch (Exception e) 
                 {
-                    tabla.close();
+                    indError = "error";
+                    errores.add(e.getMessage());
+                }
+                finally
+                {
                     conex.returnConnect();
                 }
+            }
+        }
+        
+        return "grabar";
+    }
+    
+    public String actualizar()
+    {
+        idAccion = 5;
+        
+        verifAccionTipoUsuario();
+        
+        if(indErrAcc.equals(""))
+        {
+            modelo.setDesCon(modelo.getDesCon().trim());
+
+            if(modelo.getDesCon().equals(""))
+            {
+                indError="error";
+                errores.add("Ingrese el nombre del concesionario");
+            }
+
+            if(indError.equals(""))
+            {
+                helper conex = null;
+
+                try
+                {
+                    conex = new helper();
+                    indError = conex.getErrorSQL();
+
+                    if(!indError.equals(""))
+                    {
+                        errores.add(indError);
+                    }
+                    else
+                    {
+                        indError = conex.executeNonQuery("CALL usp_updConcesionario(?,?)",
+                                new Object[]{ Integer.parseInt(modelo.getIdCon()),modelo.getDesCon() });
+
+                        if(!indError.equals(""))
+                        {
+                            errores.add(indError);
+                        }
+                    }
+                }
                 catch (Exception e) 
-                {}
+                {
+                    indError = "error";
+                    errores.add(e.getMessage());
+                }
+                finally
+                {
+                    conex.returnConnect();
+                }
+            }
+        }
+        
+        return "actualizar";
+    }
+    
+    public String eliminar()
+    {
+        idAccion = 6;
+        
+        verifAccionTipoUsuario();
+        
+        if(indErrAcc.equals(""))
+        {
+            if(opcion.trim().equals("E"))
+            {
+                helper conex = null;
+                ResultSet tabla = null;
+
+                try
+                {
+                    conex = new helper();
+                    indError = conex.getErrorSQL().trim();
+
+                    if(!indError.equals(""))
+                    {
+                        errores.add(indError);
+                    }
+                    else
+                    {
+                        tabla = conex.executeDataSet("CALL usp_verifDependConcesionario(?)", 
+                                new Object[]{ Integer.parseInt(modelo.getIdCon()) });
+                        indError = conex.getErrorSQL();
+
+                        if(!indError.equals(""))
+                        {
+                            errores.add(indError);
+                        }
+                        else
+                        {
+                            int cant = 0;
+                            while(tabla.next())
+                            {
+                                cant = tabla.getInt(1);
+                            }
+
+                            /* Si no tiene dependencias */
+                            if(cant == 0)
+                            {
+                                indError = conex.executeNonQuery("CALL usp_dltConcesionario(?)",
+                                        new Object[]{ Integer.parseInt(modelo.getIdCon()) });
+
+                                indError = indError.trim();
+                                if(indError.trim().equals(""))
+                                {
+                                    errores.add(indError);
+                                }
+                            }
+                            else /* si tiene dependencias */
+                            {
+                                indError = "error";
+                                errores.add("Existen registros dependientes del concesionario");
+                            }
+                        }
+                    }
+                }
+                catch (Exception e) 
+                {
+                    indError = "error";
+                    errores.add(e.getMessage());
+                }
+                finally
+                {
+                    try 
+                    {
+                        tabla.close();
+                        conex.returnConnect();
+                    }
+                    catch (Exception e) 
+                    {}
+                }
             }
         }
         
         return "eliminar";
-    }
-    
-    public String vrfSeleccion()
-    {
-        if(modelo.getIdCon().trim().equals("") || modelo.getIdCon().trim().equals("0"))
-        {
-            indError = "error";
-            errores.add("No ha seleccionado ningun registro");
-        }
-        
-        return "vrfSeleccion";
     }
     
     /**

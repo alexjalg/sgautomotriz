@@ -186,7 +186,17 @@
                     idDep:$('#idDep').val()
                 },
                 function(resultado){
-                    $('.td-provincias').html(resultado);
+                    var _error = validaRespuestaAjax(resultado);
+                    
+                    if(_error != -1)
+                    {
+                        $('#DIVerroresGen').html(resultado);
+                        $('#DIVerroresGen').dialog('open');
+                    }
+                    else
+                    {
+                        $('.td-provincias').html(resultado);
+                    }
                 }
             );
                 
@@ -194,7 +204,17 @@
                 '<s:property value="baseURL" /><s:url includeContext="false" namespace="locales" action="getDistritosLocal" />',
                 {},
                 function(resultado){
-                    $('.td-distritos').html(resultado);
+                    var _error = validaRespuestaAjax(resultado);
+                    
+                    if(_error != -1)
+                    {
+                        $('#DIVerroresGen').html(resultado);
+                        $('#DIVerroresGen').dialog('open');
+                    }
+                    else
+                    {
+                        $('.td-distritos').html(resultado);
+                    }
                 }
             );
         });
@@ -207,7 +227,17 @@
                     idPrvDep:$('#idPrvDep').val()
                 },
                 function(resultado){
-                    $('.td-distritos').html(resultado);
+                    var _error = validaRespuestaAjax(resultado);
+                    
+                    if(_error != -1)
+                    {
+                        $('#DIVerroresGen').html(resultado);
+                        $('#DIVerroresGen').dialog('open');
+                    }
+                    else
+                    {
+                        $('.td-distritos').html(resultado);
+                    }
                 }
             );
         });

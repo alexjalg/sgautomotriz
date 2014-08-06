@@ -12,10 +12,10 @@
         <action name="*Distrito" method="{1}" class="actions.DistritosAction">
             <result name="success" type="tiles">mant-distritos-index</result>
             <result name="adicionar" type="tiles">mant-distritos-adicionar</result>
-            <result name="grabar">/mantenimientos/distritos/grabar.jsp</result>
-            <result name="actualizar">/mantenimientos/distritos/grabar.jsp</result>
-            <result name="vrfSeleccion">/mantenimientos/distritos/grabar.jsp</result>
-            <result name="eliminar">/mantenimientos/distritos/eliminar.jsp</result>
+            <result name="grabar" type="tiles">mant-distritos-grabar</result>
+            <result name="actualizar" type="tiles">mant-distritos-grabar</result>
+            <result name="vrfSeleccion" type="tiles">mant-distritos-grabar</result>
+            <result name="eliminar" type="tiles">mant-distritos-eliminar</result>
         </action>
     </package>
 </struts>

@@ -12,12 +12,12 @@
         <action name="*Local" method="{1}" class="actions.LocalesAction">
             <result name="success" type="tiles">mant-locales-index</result>
             <result name="adicionar" type="tiles">mant-locales-adicionar</result>
-            <result name="grabar">/mantenimientos/locales/grabar.jsp</result>
-            <result name="actualizar">/mantenimientos/locales/grabar.jsp</result>
-            <result name="vrfSeleccion">/mantenimientos/locales/grabar.jsp</result>
-            <result name="eliminar">/mantenimientos/locales/eliminar.jsp</result>
-            <result name="getProvincias">/mantenimientos/locales/getProvincias.jsp</result>
-            <result name="getDistritos">/mantenimientos/locales/getDistritos.jsp</result>
+            <result name="grabar" type="tiles">mant-locales-grabar</result>
+            <result name="actualizar" type="tiles">mant-locales-grabar</result>
+            <result name="vrfSeleccion" type="tiles">mant-locales-grabar</result>
+            <result name="eliminar" type="tiles">mant-locales-eliminar</result>
+            <result name="getProvincias" type="tiles">mant-locales-listProvincias</result>
+            <result name="getDistritos" type="tiles">mant-locales-listDistritos</result>
         </action>
     </package>
 </struts>

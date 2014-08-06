@@ -12,10 +12,10 @@
         <action name="*Concesionario" method="{1}" class="actions.ConcesionariosAction">
             <result name="success" type="tiles">mant-concesionarios-index</result>
             <result name="adicionar" type="tiles">mant-concesionarios-adicionar</result>
-            <result name="grabar">/mantenimientos/concesionarios/grabar.jsp</result>
-            <result name="actualizar">/mantenimientos/concesionarios/grabar.jsp</result>
-            <result name="vrfSeleccion">/mantenimientos/concesionarios/grabar.jsp</result>
-            <result name="eliminar">/mantenimientos/concesionarios/eliminar.jsp</result>
+            <result name="grabar" type="tiles">mant-concesionarios-grabar</result>
+            <result name="actualizar" type="tiles">mant-concesionarios-grabar</result>
+            <result name="vrfSeleccion" type="tiles">mant-concesionarios-grabar</result>
+            <result name="eliminar" type="tiles">mant-concesionarios-eliminar</result>
         </action>
     </package>
 </struts>

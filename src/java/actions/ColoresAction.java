@@ -24,7 +24,25 @@ public class ColoresAction extends MasterAction implements ModelDriven<Colores>
     {
         tituloOpc = "Colores";
         idClaseAccion = 1;
+        
         return modelo;
+    }
+    
+    public String vrfSeleccion()
+    {
+        idAccion = 1;
+        verifAccionTipoUsuario();
+        
+        if(indErrAcc.equals(""))
+        {
+            if(modelo.getIdCol().trim().equals(""))
+            {
+                indError = "error";
+                errores.add("No ha seleccionado ningun registro");
+            }
+        }
+        
+        return "vrfSeleccion";
     }
     
     private void cantColoresIndex()
@@ -136,7 +154,7 @@ public class ColoresAction extends MasterAction implements ModelDriven<Colores>
     @Override
     public String execute()
     {
-        idAccion = 1;
+        idAccion = 2;
         
         verifAccionTipoUsuario();
         
@@ -160,7 +178,7 @@ public class ColoresAction extends MasterAction implements ModelDriven<Colores>
     
     public String adicionar()
     {
-        idAccion = 2;
+        idAccion = 3;
         verifAccionTipoUsuario();
         
         if(indErrAcc.equals(""))
@@ -246,7 +264,7 @@ public class ColoresAction extends MasterAction implements ModelDriven<Colores>
     
     public String grabar()
     {
-        idAccion = 3;
+        idAccion = 4;
         verifAccionTipoUsuario();
         
         if(indErrAcc.equals(""))
@@ -334,7 +352,7 @@ public class ColoresAction extends MasterAction implements ModelDriven<Colores>
     
     public String actualizar()
     {
-        idAccion = 4;
+        idAccion = 5;
         verifAccionTipoUsuario();
         
         if(indErrAcc.equals(""))
@@ -389,7 +407,7 @@ public class ColoresAction extends MasterAction implements ModelDriven<Colores>
     
     public String eliminar()
     {
-        idAccion = 5;
+        idAccion = 6;
         verifAccionTipoUsuario();
         
         if(indErrAcc.equals(""))
@@ -466,24 +484,6 @@ public class ColoresAction extends MasterAction implements ModelDriven<Colores>
         
         return "eliminar";
     }
-    
-    public String vrfSeleccion()
-    {
-        idAccion = 6;
-        verifAccionTipoUsuario();
-        
-        if(indErrAcc.equals(""))
-        {
-            if(modelo.getIdCol().trim().equals(""))
-            {
-                indError = "error";
-                errores.add("No ha seleccionado ningun registro");
-            }
-        }
-        
-        return "vrfSeleccion";
-    }
-
     
     public Colores getModelo() {
         return modelo;

@@ -134,8 +134,8 @@
                 '<s:property value="baseURL" /><s:url namespace="coloresMod" includeContext="false" action="vrfSeleccionColorMod" />',
                 $('#frm_princ').serialize(),
                 function(resultado){
-                    resultado = $.trim(resultado);
-                    var _error = resultado.indexOf("error");
+                    var _error = validaRespuestaAjax(resultado);
+                    
                     if(_error != -1)
                     {
                         $('#DIVverif').html(resultado);
@@ -149,12 +149,12 @@
                             $('#frm_princ').serialize(),
                             function(resultado1)
                             {
-                                resultado1 = $.trim(resultado1);
-                                var _error1 = resultado1.indexOf("error");
+                                var _error1 = validaRespuestaAjax(resultado1);
+                                
                                 if(_error1 != -1)
                                 {
-                                    $('#DIVeliminar').html(resultado1);
-                                    $('#DIVeliminar').dialog('open');
+                                    $('#DIVerroresGen').html(resultado1);
+                                    $('#DIVerroresGen').dialog('open');
                                 }
                                 else
                                 {
@@ -168,20 +168,12 @@
                                                     $('#frm_princ').serialize(),
                                                     function(resultado2)
                                                     {
-                                                        resultado2 = $.trim(resultado2);
-                                                        var _error2 = resultado2.indexOf("error");
+                                                        var _error2 = validaRespuestaAjax(resultado2);
+                                                        
                                                         if(_error2 != -1)
                                                         {
-                                                            $('#DIVeliminar').html(resultado2);
-                                                            $('#DIVeliminar').dialog({
-                                                                buttons:{
-                                                                    "Aceptar":function(){
-                                                                        $('#DIVeliminar').dialog('close');
-                                                                        hideOverlay(function(){});
-                                                                    }
-                                                                }
-                                                            });
-                                                            $('#DIVeliminar').dialog('open');
+                                                            $('#DIVerroresGen').html(resultado2);
+                                                            $('#DIVerroresGen').dialog('open');
                                                         }
                                                         else
                                                         {
