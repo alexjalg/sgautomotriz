@@ -133,6 +133,9 @@
     <definition name="mant-locales-index" extends="baseLayout">
         <put-attribute name="body" value="/mantenimientos/locales/index.jsp" />
     </definition>
+    <definition name="mant-locales-indexVerif" extends="baseLayoutPopUp">
+        <put-attribute name="body" value="/mantenimientos/locales/index.jsp" />
+    </definition>
     <definition name="mant-locales-adicionar" extends="baseLayout">
         <put-attribute name="body" value="/mantenimientos/locales/adicionar.jsp" />
     </definition>
@@ -171,6 +174,12 @@
     <definition name="mant-modelos-adicionar" extends="baseLayout">
         <put-attribute name="body" value="/mantenimientos/modelos/adicionar.jsp" />
     </definition>
+    <definition name="mant-modelos-grabar" extends="baseLayoutPopUp">
+        <put-attribute name="body" value="/mantenimientos/modelos/grabar.jsp" />
+    </definition>
+    <definition name="mant-modelos-eliminar" extends="baseLayoutPopUp">
+        <put-attribute name="body" value="/mantenimientos/modelos/eliminar.jsp" />
+    </definition>
     
     <!--  AQUI VA LO RELACIONADO A VERSIONES  -->
     
@@ -179,6 +188,9 @@
         <put-attribute name="body" value="/mantenimientos/colores/index.jsp" />
     </definition>
     <definition name="mant-colores-adicionar" extends="baseLayout">
+        <put-attribute name="body" value="/mantenimientos/colores/adicionar.jsp" />
+    </definition>
+    <definition name="mant-colores-modificar" extends="baseLayout">
         <put-attribute name="body" value="/mantenimientos/colores/adicionar.jsp" />
     </definition>
     <definition name="mant-colores-grabar" extends="baseLayoutPopUp">

@@ -129,15 +129,15 @@
                     {
                         $('#opcion_h1').val('M');
                         var href = $(location).attr('href');
-                        
+
                         var _varret = $('#nivBandeja_f').val()+'%'+href+'%'+$('#mtu_h1').val()+'%'+$('#mmo_h1').val()+'%'+$('#mop_h1').val()+'%'+$('#mni_h1').val()+'%'+$('#mod_h1').val()+'%'+$('#curPag_f').val()+'|';
                         $('#varReturn_f').val($('#varReturn_f').val()+_varret);
-                        
-                        $('#frm_princ').attr('action','<s:property value="baseURL" /><s:url namespace="colores" includeContext="false" action="adicionarColor" />');
-                        $('#frm_princ').submit();
+
+                        $('#frm_princ').attr('action','<s:property value="baseURL" /><s:url namespace="colores" includeContext="false" action="modificarColor" />');
+                        $('#frm_princ').submit();           
                     }
                 },
-                1
+                2
             );
         });
         

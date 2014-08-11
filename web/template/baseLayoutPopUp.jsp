@@ -26,9 +26,13 @@
 </s:if>
 <s:else>
     <s:if test='%{indErrParm!=""}'>
-    <!-- ADICIONAR ACCIONES SI SE PRESENTA EL SIGUIENTE ERROR :
-    NO SE ENVIARON LOS PARAMETROS CORRECTOS -->
-    
+        <s:if test='%{indErrAcc!=""}'>
+            <!-- ADICIONAR ACCIONES SI SE PRESENTA EL SIGUIENTE ERROR :
+            NO SE ENVIARON LOS PARAMETROS CORRECTOS -->
+        </s:if>
+        <s:else>
+            
+        </s:else>
     </s:if>
     <s:else>
         <s:if test='%{indErrAcc!=""}'>
@@ -42,13 +46,15 @@
             </div>
         </s:if>
         <s:else>
-            <tiles:insertAttribute name="body" />
+            <s:if test='%{indVerifAcc==0}'>
+                <tiles:insertAttribute name="body" />
 
-            <script type="text/javascript">
-                $(document).ready(function() {
+                <script type="text/javascript">
+                    $(document).ready(function() {
 
-                });
-            </script>
+                    });
+                </script>
+            </s:if>
         </s:else>
     </s:else>
 </s:else>

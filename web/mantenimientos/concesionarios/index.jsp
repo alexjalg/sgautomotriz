@@ -233,15 +233,15 @@
                     else
                     {
                         var href = $(location).attr('href');
-                        
+
                         var _varret = $('#nivBandeja_f').val()+'%'+href+'%'+$('#mtu_h1').val()+'%'+$('#mmo_h1').val()+'%'+$('#mop_h1').val()+'%'+$('#mni_h1').val()+'%'+$('#mod_h1').val()+'%'+$('#curPag_f').val()+'|';
                         $('#varReturn_f').val($('#varReturn_f').val()+_varret);
-                        
+
                         $('#frm_princ').attr('action','<s:property value="baseURL" /><s:url namespace="locales" includeContext="false" action="Local" />');
                         $('#frm_princ').submit();
                     }
                 },
-                1
+                2
             );
         });
     });

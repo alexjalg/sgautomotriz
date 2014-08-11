@@ -95,8 +95,8 @@
                 '<s:property value="formURL" />',
                 $('#frm_modelo').serialize(),
                 function(resultado){
-                    resultado = $.trim(resultado);
-                    var _error = resultado.indexOf("error");
+                    var _error = validaRespuestaAjax(resultado);
+                    
                     if(_error != -1)
                     {
                         $('#DIVgrabar').html(resultado);

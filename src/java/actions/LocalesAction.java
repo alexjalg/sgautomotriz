@@ -170,7 +170,7 @@ public class LocalesAction extends MasterAction implements ModelDriven<Locales>
         
         verifAccionTipoUsuario();
         
-        if(indErrAcc.equals(""))
+        if(indErrAcc.equals("") && indVerifAcc==0)
         {
             nivBandeja = 2;
             urlPaginacion = "locales/Local";
@@ -196,7 +196,7 @@ public class LocalesAction extends MasterAction implements ModelDriven<Locales>
             }
         }
         
-        return SUCCESS;
+        return "success";
     }
     
     public String adicionar()

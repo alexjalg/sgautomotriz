@@ -12,6 +12,7 @@
         <action name="*Color" method="{1}" class="actions.ColoresAction">
             <result name="success" type="tiles">mant-colores-index</result>
             <result name="adicionar" type="tiles">mant-colores-adicionar</result>
+            <result name="modificar" type="tiles">mant-colores-modificar</result>
             <result name="grabar" type="tiles">mant-colores-grabar</result>
             <result name="actualizar" type="tiles">mant-colores-grabar</result>
             <result name="vrfSeleccion" type="tiles">mant-colores-grabar</result>

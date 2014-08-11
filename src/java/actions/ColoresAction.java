@@ -173,7 +173,7 @@ public class ColoresAction extends MasterAction implements ModelDriven<Colores>
             listColoresIndex();
         }
         
-        return SUCCESS;
+        return "success";
     }
     
     public String adicionar()
@@ -195,12 +195,34 @@ public class ColoresAction extends MasterAction implements ModelDriven<Colores>
 
                 if(opcion.equals("A"))
                 {
+                    modelo.setIdCol("");
                     formURL = baseURL+"colores/grabarColor";
                 }
+            }
+        }
+        
+        return "adicionar";
+    }
+    
+    public String modificar()
+    {
+        idAccion = 4;
+        verifAccionTipoUsuario();
+        
+        if(indErrAcc.equals(""))
+        {
+            nivBandeja = 1;
 
+            if((!opcion.trim().equals("A") && !opcion.trim().equals("M")))
+            {
+                indErrParm = "error";
+            }
+            else
+            {
+                varReturnProcess(1);
+                
                 if(opcion.equals("M"))
                 {
-
                     getDatosColor();
                     formURL = baseURL+"colores/actualizarColor";
 
@@ -208,7 +230,7 @@ public class ColoresAction extends MasterAction implements ModelDriven<Colores>
             }
         }
         
-        return "adicionar";
+        return "modificar";
     }
     
     public void getDatosColor()
@@ -264,7 +286,7 @@ public class ColoresAction extends MasterAction implements ModelDriven<Colores>
     
     public String grabar()
     {
-        idAccion = 4;
+        idAccion = 5;
         verifAccionTipoUsuario();
         
         if(indErrAcc.equals(""))
@@ -352,7 +374,7 @@ public class ColoresAction extends MasterAction implements ModelDriven<Colores>
     
     public String actualizar()
     {
-        idAccion = 5;
+        idAccion = 6;
         verifAccionTipoUsuario();
         
         if(indErrAcc.equals(""))
@@ -407,7 +429,7 @@ public class ColoresAction extends MasterAction implements ModelDriven<Colores>
     
     public String eliminar()
     {
-        idAccion = 6;
+        idAccion = 7;
         verifAccionTipoUsuario();
         
         if(indErrAcc.equals(""))
