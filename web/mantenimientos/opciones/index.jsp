@@ -6,14 +6,6 @@
         <s:property value="tituloOpc" />
         <div class="d-subtitle-header"></div>
     </div>
-    <!--<div class="d-subheader">
-        <div class="d-back">
-            <a href="javascript:void(0)" class="back">Volver</a>
-            <form id="frm_back" action="<s:property value="backURL" />" method="post">
-                <s:hidden name="varReturn" id="varReturn_f" />
-            </form>
-        </div>
-    </div>-->
 </div>
         
 <!-- modelo de grilla -->
@@ -31,11 +23,6 @@
 <div class="d-content-grilla" style="min-width: 890px;">
     <form id="frm_princ" method="POST" action="<s:property value="baseURL" /><s:property value="urlPaginacion" />">
     <s:property value="datosOblig" escape="false" />
-
-    <s:hidden name="curPagVis" id="curPag_f" />
-    
-    <s:hidden name="varReturn" id="varReturn_f" />
-    <s:hidden name="nivBandeja" id="nivBandeja_f" />
     
     <div class="d-grilla" style="">
         <div class="d-content-grilla-head">
@@ -143,7 +130,7 @@
                         var _varret = $('#nivBandeja_f').val()+'%'+href+'%'+$('#mtu_h1').val()+'%'+$('#mmo_h1').val()+'%'+$('#mop_h1').val()+'%'+$('#mni_h1').val()+'%'+$('#mod_h1').val()+'%'+$('#curPag_f').val()+'%'+$('#desOpc_f').val()+'|';
                         $('#varReturn_f').val($('#varReturn_f').val()+_varret);
                         
-                        $('#frm_princ').attr('action','<s:property value="baseURL" /><s:url namespace="opciones" includeContext="false" action="adicionarOpcion" />');
+                        $('#frm_princ').attr('action','<s:property value="baseURL" /><s:url namespace="opciones" includeContext="false" action="modificarOpcion" />');
                         $('#frm_princ').submit();
                     }
                 },

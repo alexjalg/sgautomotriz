@@ -47,11 +47,6 @@
     <form id="frm_princ" method="POST" action="<s:property value="baseURL" /><s:property value="urlPaginacion" />">
     <s:hidden name="idDep" id="idDep_h1" />
     <s:property value="datosOblig" escape="false" />
-
-    <s:hidden name="curPagVis" id="curPag_f" />
-    
-    <s:hidden name="varReturn" id="varReturn_f" />
-    <s:hidden name="nivBandeja" id="nivBandeja_f" />
     
     <div class="d-grilla" style="overflow: hidden;">
         <div class="d-content-grilla-head" style="">

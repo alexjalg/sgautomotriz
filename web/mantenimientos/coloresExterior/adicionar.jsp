@@ -13,7 +13,7 @@
 </div>
             
 <form method="POST" id="frm_color_back" action="<s:property value="backURL" />">
-    <s:hidden name="varReturn" id="varReturn_f" />
+    <s:hidden name="varReturn" />
 </form>
         
 <div class="d-content-form">
@@ -25,18 +25,18 @@
                 </td>
                 <td style="">
                     <s:if test='%{opcion=="A"}'>
-                        <s:textfield name="idCol" cssClass="element-form" cssStyle="width:40px;" maxlength="3" />
+                        <s:textfield name="idColExt" cssClass="element-form" cssStyle="width:40px;" maxlength="3" />
                     </s:if>
                     <s:elseif test='%{opcion=="M"}'>
-                        <s:textfield name="idCol" disabled="true" cssClass="element-form" cssStyle="width:40px;" />
-                        <s:hidden name="idCol" />
+                        <s:textfield name="idColExt" disabled="true" cssClass="element-form" cssStyle="width:40px;" />
+                        <s:hidden name="idColExt" />
                     </s:elseif>
                 </td>
             </tr>
             <tr>
                 <td style="width: 50px;">Color<span class="required">*</span></td>
                 <td>
-                    <s:textfield name="desCol" cssClass="element-form" cssStyle="width:350px;" maxLength="50" />
+                    <s:textfield name="desColExt" cssClass="element-form" cssStyle="width:350px;" maxLength="50" />
                 </td>
             </tr>
             <tr>

@@ -32,6 +32,7 @@ public class MasterAction extends ActionSupport implements ServletRequestAware {
     protected int idAccion=0;
     protected int indVerifAcc=0;
     protected String indErrAcc = "";  //Indica si no se tiene permiso a la url(accion) llamada
+    protected String indErrSes = "";  //Indica si error de sesion caducada
     private String titleDialog = "Sistema de Gestión Automotriz";
     
     private Map<String, Object> sesion_sga = ActionContext.getContext().getSession();
@@ -44,11 +45,13 @@ public class MasterAction extends ActionSupport implements ServletRequestAware {
     protected int cantReg = 0;  //Cantidad de registros en la pagina actual
     protected int curPag = 1;   //Pagina actual (para proceso)
     protected int curPagVis = 1;   //Pagina actual (para visualizar)
-    protected int ultPag=1;     //Ultima pagina
-    protected int regPag=15;    //Registros que se visualizaran por pagina
+    protected int ultPag = 1;     //Ultima pagina
+    protected int regPag = 15;    //Registros que se visualizaran por pagina
     
-    //Variables para titulo de opcion (se visualizara en cabecera de la grilla o formulario)
+    //Variable para titulo de opcion (se visualizara en cabecera de la grilla o formulario)
     protected String tituloOpc="";
+    //Variable que idica que concepto sequiere eliminar
+    protected String conceptoEliminar="";
     
     protected String accion="";     //Guardara y mostrara en la cabecera la accion que se hara cuando se envie un formulario
     protected String opcion = "";   //Indicara que se va hacer cuando se envie un formulario, por ejemplo, confirmar antes de grabar. NO usar para indicar errores.
@@ -943,6 +946,9 @@ public class MasterAction extends ActionSupport implements ServletRequestAware {
         datosOblig += "<input type=\"hidden\" name=\"mop\" id=\"mop_h1\" value=\""+mop+"\" /> ";
         datosOblig += "<input type=\"hidden\" name=\"mni\" id=\"mni_h1\" value=\""+mni+"\" /> ";
         datosOblig += "<input type=\"hidden\" name=\"mod\" id=\"mod_h1\" value=\""+mod+"\" /> ";
+        datosOblig += "<input type=\"hidden\" name=\"curPagVis\" id=\"curPag_f\" value=\""+curPagVis+"\" />";
+        datosOblig += "<input type=\"hidden\" name=\"varReturn\" id=\"varReturn_f\" value=\""+varReturn+"\" />";
+        datosOblig += "<input type=\"hidden\" name=\"nivBandeja\" id=\"nivBandeja_f\" value=\""+nivBandeja+"\" />";
         
         return datosOblig;
     }
@@ -989,35 +995,42 @@ public class MasterAction extends ActionSupport implements ServletRequestAware {
         
         try 
         {
-            conex = new helper();
-            
-            indError = conex.getErrorSQL();
-            
-            if(!indError.equals(""))
-            {
-                errores.add(indError);
-            }
-            else
-            {
-                tabla = conex.executeDataSet("CALL usp_verifPermisosAccionTipoUsuario(?,?,?)", 
-                            new Object[]{ idClaseAccion,idAccion,sesion_sga.get("ses_idtipusu") });
-                
+            if(sesion_sga.get("ses_estado").equals("A"))
+            {    
+                conex = new helper();
+
                 indError = conex.getErrorSQL();
-                
+
                 if(!indError.equals(""))
                 {
                     errores.add(indError);
                 }
                 else
                 {
-                    while(tabla.next())
+                    tabla = conex.executeDataSet("CALL usp_verifPermisosAccionTipoUsuario(?,?,?)", 
+                                new Object[]{ idClaseAccion,idAccion,sesion_sga.get("ses_idtipusu") });
+
+                    indError = conex.getErrorSQL();
+
+                    if(!indError.equals(""))
                     {
-                        if(tabla.getInt(1)==0)
+                        errores.add(indError);
+                    }
+                    else
+                    {
+                        while(tabla.next())
                         {
-                            indErrAcc = "error";
+                            if(tabla.getInt(1)==0)
+                            {
+                                indErrAcc = "error";
+                            }
                         }
                     }
                 }
+            }
+            else
+            {
+                indErrAcc = "error";
             }
         }
         catch (Exception e) 
@@ -1049,5 +1062,19 @@ public class MasterAction extends ActionSupport implements ServletRequestAware {
      */
     public void setIndVerifAcc(int indVerifAcc) {
         this.indVerifAcc = indVerifAcc;
+    }
+
+    /**
+     * @return the conceptoEliminar
+     */
+    public String getConceptoEliminar() {
+        return conceptoEliminar;
+    }
+
+    /**
+     * @param conceptoEliminar the conceptoEliminar to set
+     */
+    public void setConceptoEliminar(String conceptoEliminar) {
+        this.conceptoEliminar = conceptoEliminar;
     }
 }

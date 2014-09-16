@@ -6,7 +6,6 @@
  * - 
  * -
  */
-
 package actions;
 
 import com.opensymphony.xwork2.ModelDriven;
@@ -15,100 +14,92 @@ import entities.Provincias;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
-public class ProvinciasAction extends MasterAction implements ModelDriven<Provincias>
-{
+public class ProvinciasAction extends MasterAction implements ModelDriven<Provincias> {
+
     private Provincias modelo = new Provincias();
     private ArrayList<Provincias> listProvincias = new ArrayList<Provincias>();
-    
+
     @Override
-    public Provincias getModel()
-    {
+    public Provincias getModel() {
         tituloOpc = "Provincias";// cambiar por campo titulo cuando este lista la tabla de opciones
+        idClaseAccion = 12;
+
         return modelo;
     }
-    
-    private void cantProvinciasIndex()
-    {
+
+    public String vrfSeleccion() {
+        idAccion = 1;
+
+        verifAccionTipoUsuario();
+
+        if (indErrAcc.equals("")) {
+            if (modelo.getIdPrvDep() == 0) {
+                indError = "error";
+                errores.add("No ha seleccionado ningun registro");
+            }
+        }
+
+        return "vrfSeleccion";
+    }
+
+    private void cantProvinciasIndex() {
         helper conex = null;
         ResultSet tabla = null;
-        
-        try
-        {
+
+        try {
             conex = new helper();
             indError = conex.getErrorSQL().trim();
 
-            if(!indError.trim().equals(""))
-            {
+            if (!indError.trim().equals("")) {
                 errores.add(indError);
-            }
-            else
-            {
-                tabla = conex.executeDataSet("CALL usp_cantProvIndex(?,?)", 
-                        new Object[]{ modelo.getIdDep(),modelo.getDesProv_f().trim() });
+            } else {
+                tabla = conex.executeDataSet("CALL usp_cantProvIndex(?,?)",
+                        new Object[]{modelo.getIdDep(), modelo.getDesProv_f().trim()});
 
                 indError = conex.getErrorSQL();
 
-                if(!indError.equals(""))
-                {
+                if (!indError.equals("")) {
                     errores.add(indError);
-                }
-                else
-                {
-                    while(tabla.next())
-                    {
+                } else {
+                    while (tabla.next()) {
                         cantReg = tabla.getInt(1);
                     }
                 }
             }
-        }
-        catch (Exception e) 
-        {
+        } catch (Exception e) {
             indError = "error";
             errores.add(e.getMessage());
-        }
-        finally
-        {
-            try 
-            {
+        } finally {
+            try {
                 tabla.close();
                 conex.returnConnect();
+            } catch (Exception e) {
             }
-            catch (Exception e) 
-            {}
         }
     }
-    
-    private void listProvinciasIndex()
-    {
+
+    private void listProvinciasIndex() {
         helper conex = null;
         ResultSet tabla = null;
-        
-        try
-        {
+
+        try {
             conex = new helper();
             indError = conex.getErrorSQL();
 
-            if(!indError.equals(""))
-            {
+            if (!indError.equals("")) {
                 errores.add(indError);
-            }
-            else
-            {
-                tabla = conex.executeDataSet("CALL usp_listProvIndex(?,?,?,?)", 
-                        new Object[]{ modelo.getIdDep(),modelo.getDesProv_f().trim(),
-                            (getCurPag())*getRegPag(),getRegPag() });
+            } else {
+                tabla = conex.executeDataSet("CALL usp_listProvIndex(?,?,?,?)",
+                        new Object[]{modelo.getIdDep(), modelo.getDesProv_f().trim(),
+                    (getCurPag()) * getRegPag(), getRegPag()});
 
                 indError = conex.getErrorSQL();
 
-                if(!indError.equals(""))
-                {
+                if (!indError.equals("")) {
                     errores.add(indError);
-                }
-                else
-                {
+                } else {
                     Provincias obj;
-                    while(tabla.next())
-                    {
+                    while (tabla.next()) {
                         obj = new Provincias();
                         obj.setIdPrvDep(tabla.getInt("idPrvDep"));
                         obj.setDesProv(tabla.getString("desProv"));
@@ -116,49 +107,36 @@ public class ProvinciasAction extends MasterAction implements ModelDriven<Provin
                     }
                 }
             }
-        }
-        catch (Exception e) 
-        {
+        } catch (Exception e) {
             indError = "error";
             errores.add(e.getMessage());
-        }
-        finally
-        {
-            try 
-            {
+        } finally {
+            try {
                 tabla.close();
                 conex.returnConnect();
+            } catch (Exception e) {
             }
-            catch (Exception e) 
-            {}
         }
     }
-    
+
     @Override
-    public String execute()
-    {
-        nivBandeja = 2;
-        
-        if(modelo.getIdDep()==0)
-        {
-            indErrParm = "error";
-        }
-        else
-        {
+    public String execute() {
+        idAccion = 2;
+        verifAccionTipoUsuario();
+
+        if (indErrAcc.equals("")) {
+            nivBandeja = 2;
+            
             varReturnProcess(0);
-            if(!listVarReturn.isEmpty())
-            {
+            if (!listVarReturn.isEmpty()) {
                 curPagVis = Integer.parseInt(listVarReturn.get(0).toString().trim());
                 modelo.setIdDep(Integer.parseInt(listVarReturn.get(1).toString().trim()));
                 modelo.setDesProv_f(listVarReturn.get(2).toString().trim());
             }
 
-            if(modelo.getIdDep()==0)
-            {
+            if (modelo.getIdDep() == 0) {
                 indErrParm = "error";
-            }
-            else
-            {
+            } else {
                 urlPaginacion = "provincias/Provincia";
 
                 getDatosDepartamento();
@@ -170,318 +148,267 @@ public class ProvinciasAction extends MasterAction implements ModelDriven<Provin
                 listProvinciasIndex();
             }
         }
-        
+
         return SUCCESS;
     }
-    
-    private void getDatosDepartamento()
-    {
+
+    private void getDatosDepartamento() {
         helper conex = null;
         ResultSet tabla = null;
-        
-        try 
-        {
+
+        try {
             conex = new helper();
             indError = conex.getErrorSQL();
-            
-            if(!indError.equals(""))
-            {
+
+            if (!indError.equals("")) {
                 errores.add(indError);
-            }
-            else
-            {
-                tabla = conex.executeDataSet("CALL usp_getDatosDepartamento(?)", 
-                        new Object[]{ modelo.getIdDep() });
+            } else {
+                tabla = conex.executeDataSet("CALL usp_getDatosDepartamento(?)",
+                        new Object[]{modelo.getIdDep()});
 
                 indError = conex.getErrorSQL();
 
-                if(!indError.equals(""))
-                {
+                if (!indError.equals("")) {
                     errores.add(indError);
-                }
-                else
-                {
-                    while(tabla.next())
-                    {
+                } else {
+                    while (tabla.next()) {
                         modelo.setDesDep(tabla.getString("desDep"));
                     }
                 }
             }
-        }
-        catch (Exception e) 
-        {
+        } catch (Exception e) {
             indError = "error";
             errores.add(e.getMessage());
-        }
-        finally
-        {
-            try 
-            {
+        } finally {
+            try {
                 tabla.close();
                 conex.returnConnect();
+            } catch (Exception e) {
             }
-            catch (Exception e) 
-            {}
         }
     }
-    
-    public String adicionar()
-    {
-        nivBandeja = 2;
-        
-        if((!opcion.trim().equals("A") && !opcion.trim().equals("M")) || modelo.getIdDep()==0)
-        {
-            indErrParm = "error";
-        }
-        else
-        {
-            varReturnProcess(1);
-            
-            getDatosDepartamento();
-            
-            if(opcion.equals("A"))
-            {
-                formURL = baseURL+"provincias/grabarProvincia";
-            }
 
-            if(opcion.equals("M"))
-            {
-                if(modelo.getIdDep()==0)
-                    indErrParm = "error";
-                else
-                {
-                    getDatosProvincia();
-                    formURL = baseURL+"provincias/actualizarProvincia";
+    public String adicionar() {
+        idAccion = 3;
+        verifAccionTipoUsuario();
+
+        if (indErrAcc.equals("")) {
+            nivBandeja = 2;
+
+            if ((!opcion.trim().equals("A") && !opcion.trim().equals("M")) || modelo.getIdDep() == 0) {
+                indErrParm = "error";
+            } else {
+                varReturnProcess(1);
+
+                getDatosDepartamento();
+
+                if (opcion.equals("A")) {
+                    formURL = baseURL + "provincias/grabarProvincia";
                 }
             }
         }
-        
+
         return "adicionar";
     }
     
-    private void getDatosProvincia()
-    {
+    public String modificar() {
+        idAccion = 4;
+        verifAccionTipoUsuario();
+
+        if (indErrAcc.equals("")) {
+            nivBandeja = 2;
+
+            if ((!opcion.trim().equals("A") && !opcion.trim().equals("M")) || modelo.getIdDep() == 0) {
+                indErrParm = "error";
+            } else {
+                varReturnProcess(1);
+
+                getDatosDepartamento();
+
+                if (opcion.equals("M")) {
+                    if (modelo.getIdDep() == 0) {
+                        indErrParm = "error";
+                    } else {
+                        getDatosProvincia();
+                        formURL = baseURL + "provincias/actualizarProvincia";
+                    }
+                }
+            }
+        }
+
+        return "modificar";
+    }
+
+    private void getDatosProvincia() {
         helper conex = null;
         ResultSet tabla = null;
-        
-        try
-        {
+
+        try {
             conex = new helper();
             indError = conex.getErrorSQL();
 
-            if(!indError.equals(""))
-            {
+            if (!indError.equals("")) {
                 errores.add(indError);
-            }
-            else
-            {
-                tabla = conex.executeDataSet("CALL usp_getDatosProvincia(?,?)", 
-                    new Object[]{ modelo.getIdDep(),modelo.getIdPrvDep() });
+            } else {
+                tabla = conex.executeDataSet("CALL usp_getDatosProvincia(?,?)",
+                        new Object[]{modelo.getIdDep(), modelo.getIdPrvDep()});
 
                 indError = conex.getErrorSQL();
 
-                if(!indError.equals(""))
-                {
+                if (!indError.equals("")) {
                     errores.add(indError);
-                }
-                else
-                {
-                    while(tabla.next())
-                    {
+                } else {
+                    while (tabla.next()) {
                         modelo.setDesProv(tabla.getString("desProv"));
                     }
                 }
             }
-        }
-        catch (Exception e) 
-        {
+        } catch (Exception e) {
             indError = "error";
             errores.add(e.getMessage());
-        }
-        finally
-        {
-            try 
-            {
+        } finally {
+            try {
                 tabla.close();
                 conex.returnConnect();
-            }
-            catch (Exception e) 
-            {}
-        }
-    }
-    
-    public String grabar()
-    {
-        modelo.setDesProv(modelo.getDesProv().trim());
-        
-        if(indError.equals(""))
-        {
-            helper conex = null;
-            ResultSet tabla = null;
-            
-            try 
-            {
-                conex = new helper();
-                indError = conex.getErrorSQL();
-
-                if(!indError.equals(""))
-                {
-                    errores.add(indError);
-                }
-                else
-                {
-                    indError = conex.executeNonQuery("CALL usp_insProvincia(?,?)",
-                            new Object[]{ modelo.getIdDep(),modelo.getDesProv() });
-
-                    if(!indError.equals(""))
-                    {
-                        errores.add(indError);
-                    }
-                }
-            }
-            catch (Exception e) 
-            {
-                indError = "error";
-                errores.add(e.getMessage());
-            }
-            finally
-            {
-                conex.returnConnect();
+            } catch (Exception e) {
             }
         }
-        
-        return "grabar";
     }
-    
-    public String actualizar()
-    {
-        modelo.setDesProv(modelo.getDesProv().trim());
-        
-        if(indError.equals(""))
-        {
-            helper conex = null;
-            ResultSet tabla = null;
-            
-            try
-            {
-                conex = new helper();
-                indError = conex.getErrorSQL();
 
-                if(!indError.equals(""))
-                {
-                    errores.add(indError);
-                }
-                else
-                {
-                    indError = conex.executeNonQuery("CALL usp_updProvincia(?,?,?)",
-                            new Object[]{ modelo.getIdDep(), modelo.getIdPrvDep(), 
-                                modelo.getDesProv() });
+    public String grabar() {
+        idAccion = 5;
+        verifAccionTipoUsuario();
 
-                    if(!indError.equals(""))
-                    {
-                        errores.add(indError);
-                    }   
-                }
-            }
-            catch (Exception e) 
-            {
-                indError = "error";
-                errores.add(e.getMessage());
-            }
-            finally
-            {
-                conex.returnConnect();
-            }
-        }
-        
-        return "actualizar";
-    }
-    
-    public String eliminar()
-    {
-        if(opcion.trim().equals("E"))
-        {
-            helper conex = null;
-            ResultSet tabla = null;
-            
-            try
-            {
-                conex = new helper();
-                indError = conex.getErrorSQL().trim();
+        if (indErrAcc.equals("")) {
+            modelo.setDesProv(modelo.getDesProv().trim());
 
-                if(!indError.equals(""))
-                {
-                    errores.add(indError);
-                }
-                else
-                {
-                    tabla = conex.executeDataSet("CALL usp_verifDependProv(?,?)", 
-                            new Object[]{ modelo.getIdDep(),modelo.getIdPrvDep() });
+            if (indError.equals("")) {
+                helper conex = null;
+                ResultSet tabla = null;
+
+                try {
+                    conex = new helper();
                     indError = conex.getErrorSQL();
 
-                    if(!indError.equals(""))
-                    {
+                    if (!indError.equals("")) {
                         errores.add(indError);
-                    }
-                    else
-                    {
-                        int cant = 0;
-                        while(tabla.next())
-                        {
-                            cant = tabla.getInt(1);
-                        }
+                    } else {
+                        indError = conex.executeNonQuery("CALL usp_insProvincia(?,?)",
+                                new Object[]{modelo.getIdDep(), modelo.getDesProv()});
 
-                        /* Si no tiene dependencias */
-                        if(cant == 0)
-                        {
-                            indError = conex.executeNonQuery("CALL usp_dltProvincia(?,?)",
-                                    new Object[]{ modelo.getIdDep(),modelo.getIdPrvDep() });
-
-                            indError = indError.trim();
-                            if(indError.trim().equals(""))
-                            {
-                                errores.add(indError);
-                            }
-                        }
-                        else /* si tiene dependencias */
-                        {
-                            indError = "error";
-                            errores.add("Existen registros dependientes de la provincia");
+                        if (!indError.equals("")) {
+                            errores.add(indError);
                         }
                     }
-                }
-            }
-            catch (Exception e) 
-            {
-                indError = "error";
-                errores.add(e.getMessage());
-            }
-            finally
-            {
-                try 
-                {
-                    tabla.close();
+                } catch (Exception e) {
+                    indError = "error";
+                    errores.add(e.getMessage());
+                } finally {
                     conex.returnConnect();
                 }
-                catch (Exception e) 
-                {}
             }
         }
-        
+
+        return "grabar";
+    }
+
+    public String actualizar() {
+        idAccion = 6;
+        verifAccionTipoUsuario();
+
+        if (indErrAcc.equals("")) {
+            modelo.setDesProv(modelo.getDesProv().trim());
+
+            if (indError.equals("")) {
+                helper conex = null;
+                ResultSet tabla = null;
+
+                try {
+                    conex = new helper();
+                    indError = conex.getErrorSQL();
+
+                    if (!indError.equals("")) {
+                        errores.add(indError);
+                    } else {
+                        indError = conex.executeNonQuery("CALL usp_updProvincia(?,?,?)",
+                                new Object[]{modelo.getIdDep(), modelo.getIdPrvDep(),
+                            modelo.getDesProv()});
+
+                        if (!indError.equals("")) {
+                            errores.add(indError);
+                        }
+                    }
+                } catch (Exception e) {
+                    indError = "error";
+                    errores.add(e.getMessage());
+                } finally {
+                    conex.returnConnect();
+                }
+            }
+        }
+
+        return "actualizar";
+    }
+
+    public String eliminar() {
+        idAccion = 7;
+        verifAccionTipoUsuario();
+
+        if (indErrAcc.equals("")) {
+            if (opcion.trim().equals("E")) {
+                helper conex = null;
+                ResultSet tabla = null;
+
+                try {
+                    conex = new helper();
+                    indError = conex.getErrorSQL().trim();
+
+                    if (!indError.equals("")) {
+                        errores.add(indError);
+                    } else {
+                        tabla = conex.executeDataSet("CALL usp_verifDependProv(?,?)",
+                                new Object[]{modelo.getIdDep(), modelo.getIdPrvDep()});
+                        indError = conex.getErrorSQL();
+
+                        if (!indError.equals("")) {
+                            errores.add(indError);
+                        } else {
+                            int cant = 0;
+                            while (tabla.next()) {
+                                cant = tabla.getInt(1);
+                            }
+
+                            /* Si no tiene dependencias */
+                            if (cant == 0) {
+                                indError = conex.executeNonQuery("CALL usp_dltProvincia(?,?)",
+                                        new Object[]{modelo.getIdDep(), modelo.getIdPrvDep()});
+
+                                indError = indError.trim();
+                                if (indError.trim().equals("")) {
+                                    errores.add(indError);
+                                }
+                            } else /* si tiene dependencias */ {
+                                indError = "error";
+                                errores.add("Existen registros dependientes de la provincia");
+                            }
+                        }
+                    }
+                } catch (Exception e) {
+                    indError = "error";
+                    errores.add(e.getMessage());
+                } finally {
+                    try {
+                        tabla.close();
+                        conex.returnConnect();
+                    } catch (Exception e) {
+                    }
+                }
+            }
+        }
+
         return "eliminar";
     }
-    
-    public String vrfSeleccion()
-    {
-        if(modelo.getIdPrvDep()==0)
-        {
-            indError = "error";
-            errores.add("No ha seleccionado ningun registro");
-        }
-        
-        return "vrfSeleccion";
-    }
-    
+
     /**
      * @return the modelo
      */
@@ -502,5 +429,4 @@ public class ProvinciasAction extends MasterAction implements ModelDriven<Provin
     public ArrayList<Provincias> getListProvincias() {
         return listProvincias;
     }
-    
 }

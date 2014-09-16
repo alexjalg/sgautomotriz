@@ -12,14 +12,14 @@
         <action name="*Usuario" method="{1}" class="actions.UsuariosAction">
             <result name="success" type="tiles">mant-usuarios-index</result>
             <result name="adicionar" type="tiles">mant-usuarios-adicionar</result>
-            <result name="grabar">/mantenimientos/usuarios/grabar.jsp</result>
-            <result name="actualizar">/mantenimientos/usuarios/grabar.jsp</result>
-            <result name="vrfSeleccion">/mantenimientos/usuarios/grabar.jsp</result>
-            <result name="eliminar">/mantenimientos/usuarios/eliminar.jsp</result>
-            <result name="actEstado">/mantenimientos/usuarios/grabar.jsp</result>
+            <result name="grabar" type="tiles">mant-usuarios-grabar</result>
+            <result name="actualizar" type="tiles">mant-usuarios-grabar</result>
+            <result name="vrfSeleccion" type="tiles">mant-usuarios-grabar</result>
+            <result name="eliminar" type="tiles">mant-usuarios-eliminar</result>
+            <result name="actEstado" type="tiles">mant-usuarios-grabar</result>
             <result name="getLocales">/mantenimientos/usuarios/getLocales.jsp</result>
-            <result name="updPassword">/mantenimientos/usuarios/updPassword.jsp</result>
-            <result name="updVarSesionCaducCla">/mantenimientos/usuarios/grabar.jsp</result>
+            <result name="updPassword" type="tiles">mant-usuarios-updPass</result>
+            <result name="updVarSesionCaducCla" type="tiles">mant-usuarios-grabar</result>
             
             <result name="imprimir">/mantenimientos/usuarios/imprimir.jsp</result>
         </action>

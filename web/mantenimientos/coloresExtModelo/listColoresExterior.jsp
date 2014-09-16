@@ -2,9 +2,6 @@
 <div id="aux"></div>
 <div class="d-content-grilla" style="min-width: 550px;">
     <form id="frm_princ_pu" method="POST" action="<s:property value="baseURL" /><s:property value="urlPaginacion" />">
-    <s:hidden name="idTipUsu" />
-    <s:hidden name="opcion" />
-
     <s:hidden name="curPagVis" id="curPag_f_pu" />
     
     <div class="d-grilla" style="overflow: hidden;">
@@ -13,31 +10,31 @@
                 <tr class="tr-head">
                     <td style="width: 24px;"></td>
                     <td style="width: 40px; text-align: center;">Cod.</td>
-                    <td style="<s:if test='%{modeloColor.desCol_f!=""}'> background-color: #B5CCED; </s:if>">
+                    <td style="<s:if test='%{modeloColorExterior.desColExt_f!=""}'> background-color: #B5CCED; </s:if>">
                         Color
                     </td>
                 </tr>
                 <tr class="tr-head">
                     <td></td>
                     <td></td>
-                    <td style="<s:if test='%{modeloColor.desCol_f!=""}'> background-color: #B5CCED; </s:if>">
-                        <s:textfield name="modeloColor.desCol_f" cssClass="element-form-grid" cssStyle="width: 200px;" maxLength="50" />
+                    <td style="<s:if test='%{modeloColorExterior.desColExt_f!=""}'> background-color: #B5CCED; </s:if>">
+                        <s:textfield name="modeloColorExterior.desColExt_f" cssClass="element-form-grid" cssStyle="width: 200px;" maxLength="50" />
                     </td>
                 </tr>
             </table>
         </div>
         <div class="d-content-grilla-body d-content-grilla-body-popup">
             <table border="0" cellpadding="0" cellspacing="0" style="">
-                <s:iterator value="listColores">
+                <s:iterator value="listColoresExterior">
                 <tr>
                     <td style="width: 24px;">
-                        <input type="radio" name="idCol" id="rbt_idCol" value="<s:property value="idCol" />" class="select_rec" />
+                        <input type="radio" name="idColExt" id="rbt_idColExt" value="<s:property value="idColExt" />" class="select_rec" />
                     </td>
                     <td style="width: 40px; text-align: center;">
-                        <s:property value="idCol" />
+                        <s:property value="idColExt" />
                     </td>
                     <td style="">
-                        <s:property value="desCol" />
+                        <s:property value="desColExt" />
                     </td>
                 </tr>
                 </s:iterator>

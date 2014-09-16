@@ -6,7 +6,7 @@
             <div class="both"></div>
         </div>
         <div style="padding: 0px 10px 15px 10px; text-align: center;">
-            ¿Desea eliminar la sub-opción?
+            ¿Desea eliminar el color de exterior?
         </div>
     </div>
 </s:if>

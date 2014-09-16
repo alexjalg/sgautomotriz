@@ -37,8 +37,8 @@
         <include file="marcas.xml" />
         <include file="modelos.xml" />
         
-        <include file="colores.xml" />
-        <include file="coloresModelo.xml" />
+        <include file="coloresExterior.xml" />
+        <include file="coloresExteriorModelo.xml" />
         
         <include file="tipoCambio.xml" />
 </struts>

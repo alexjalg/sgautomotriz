@@ -12,10 +12,10 @@
         <action name="*Provincia" method="{1}" class="actions.ProvinciasAction">
             <result name="success" type="tiles">mant-provincias-index</result>
             <result name="adicionar" type="tiles">mant-provincias-adicionar</result>
-            <result name="grabar">/mantenimientos/provincias/grabar.jsp</result>
-            <result name="actualizar">/mantenimientos/provincias/grabar.jsp</result>
-            <result name="vrfSeleccion">/mantenimientos/provincias/grabar.jsp</result>
-            <result name="eliminar">/mantenimientos/provincias/eliminar.jsp</result>
+            <result name="grabar" type="tiles">mant-provincias-grabar</result>
+            <result name="actualizar" type="tiles">mant-provincias-grabar</result>
+            <result name="vrfSeleccion" type="tiles">mant-provincias-grabar</result>
+            <result name="eliminar" type="tiles">mant-provincias-eliminar</result>
         </action>
     </package>
 </struts>

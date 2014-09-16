@@ -16,7 +16,9 @@ public class Locales
     private String desCon="";
     private String idLocCon="0";
     private String desLocCon="";
-    private String idTipLoc="0";
+    private String desNomCom="";
+    private String desCorta="";
+    private int idTipLoc=0;
     private String otrDirLoc="";
     private int idDep=0;
     private String desDep="";
@@ -24,10 +26,8 @@ public class Locales
     private String desProv="";
     private int idDisPrv=0;
     private String desDis="";
-    private String numTel1="0";
-    private String numTel2="0";
-    private String numFax="0";
     private String numRuc="";
+    private String otrDatEqu1="";
 
     /**
      * @return the idCon
@@ -88,15 +88,15 @@ public class Locales
     /**
      * @return the idTipLoc
      */
-    public String getIdTipLoc() {
+    public int getIdTipLoc() {
         return idTipLoc;
     }
 
     /**
      * @param idTipLoc the idTipLoc to set
      */
-    public void setIdTipLoc(String idTipLoc) {
-        this.idTipLoc = idTipLoc.trim();
+    public void setIdTipLoc(int idTipLoc) {
+        this.idTipLoc = idTipLoc;
     }
 
     /**
@@ -196,49 +196,7 @@ public class Locales
     public void setDesDis(String desDis) {
         this.desDis = desDis.trim();
     }
-
-    /**
-     * @return the numTel1
-     */
-    public String getNumTel1() {
-        return numTel1;
-    }
-
-    /**
-     * @param numTel1 the numTel1 to set
-     */
-    public void setNumTel1(String numTel1) {
-        this.numTel1 = numTel1.trim();
-    }
-
-    /**
-     * @return the numTel2
-     */
-    public String getNumTel2() {
-        return numTel2;
-    }
-
-    /**
-     * @param numTel2 the numTel2 to set
-     */
-    public void setNumTel2(String numTel2) {
-        this.numTel2 = numTel2.trim();
-    }
-
-    /**
-     * @return the numFax
-     */
-    public String getNumFax() {
-        return numFax;
-    }
-
-    /**
-     * @param numFax the numFax to set
-     */
-    public void setNumFax(String numFax) {
-        this.numFax = numFax.trim();
-    }
-
+    
     /**
      * @return the numRuc
      */
@@ -251,5 +209,47 @@ public class Locales
      */
     public void setNumRuc(String numRuc) {
         this.numRuc = numRuc.trim();
+    }
+
+    /**
+     * @return the desNomCom
+     */
+    public String getDesNomCom() {
+        return desNomCom;
+    }
+
+    /**
+     * @param desNomCom the desNomCom to set
+     */
+    public void setDesNomCom(String desNomCom) {
+        this.desNomCom = desNomCom;
+    }
+
+    /**
+     * @return the desCorta
+     */
+    public String getDesCorta() {
+        return desCorta;
+    }
+
+    /**
+     * @param desCorta the desCorta to set
+     */
+    public void setDesCorta(String desCorta) {
+        this.desCorta = desCorta;
+    }
+
+    /**
+     * @return the otrDatEqu1
+     */
+    public String getOtrDatEqu1() {
+        return otrDatEqu1;
+    }
+
+    /**
+     * @param otrDatEqu1 the otrDatEqu1 to set
+     */
+    public void setOtrDatEqu1(String otrDatEqu1) {
+        this.otrDatEqu1 = otrDatEqu1;
     }
 }

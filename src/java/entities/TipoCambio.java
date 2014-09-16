@@ -13,8 +13,10 @@ package entities;
 public class TipoCambio 
 {
     private String fecTipCam="";
-    private String impTipCamInt="";
-    private String impTipCamLeg="";
+    private String impTCIntCom="";
+    private String impTCIntVen="";
+    private String impTCLegCom="";
+    private String impTCLegVen="";
     private String indMod="";
 
     /**
@@ -32,34 +34,6 @@ public class TipoCambio
     }
 
     /**
-     * @return the impTipCam
-     */
-    public String getImpTipCamInt() {
-        return impTipCamInt;
-    }
-
-    /**
-     * @param impTipCam the impTipCam to set
-     */
-    public void setImpTipCamInt(String impTipCamInt) {
-        this.impTipCamInt = impTipCamInt;
-    }
-
-    /**
-     * @return the impTipCamLeg
-     */
-    public String getImpTipCamLeg() {
-        return impTipCamLeg;
-    }
-
-    /**
-     * @param impTipCamLeg the impTipCamLeg to set
-     */
-    public void setImpTipCamLeg(String impTipCamLeg) {
-        this.impTipCamLeg = impTipCamLeg;
-    }
-
-    /**
      * @return the indMod
      */
     public String getIndMod() {
@@ -71,5 +45,61 @@ public class TipoCambio
      */
     public void setIndMod(String indMod) {
         this.indMod = indMod;
+    }
+
+    /**
+     * @return the impTCIntCom
+     */
+    public String getImpTCIntCom() {
+        return impTCIntCom;
+    }
+
+    /**
+     * @param impTCIntCom the impTCIntCom to set
+     */
+    public void setImpTCIntCom(String impTCIntCom) {
+        this.impTCIntCom = impTCIntCom;
+    }
+
+    /**
+     * @return the impTCIntVen
+     */
+    public String getImpTCIntVen() {
+        return impTCIntVen;
+    }
+
+    /**
+     * @param impTCIntVen the impTCIntVen to set
+     */
+    public void setImpTCIntVen(String impTCIntVen) {
+        this.impTCIntVen = impTCIntVen;
+    }
+
+    /**
+     * @return the impTCLegCom
+     */
+    public String getImpTCLegCom() {
+        return impTCLegCom;
+    }
+
+    /**
+     * @param impTCLegCom the impTCLegCom to set
+     */
+    public void setImpTCLegCom(String impTCLegCom) {
+        this.impTCLegCom = impTCLegCom;
+    }
+
+    /**
+     * @return the impTCLegVen
+     */
+    public String getImpTCLegVen() {
+        return impTCLegVen;
+    }
+
+    /**
+     * @param impTCLegVen the impTCLegVen to set
+     */
+    public void setImpTCLegVen(String impTCLegVen) {
+        this.impTCLegVen = impTCLegVen;
     }
 }

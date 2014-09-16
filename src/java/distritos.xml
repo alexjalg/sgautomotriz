@@ -12,6 +12,7 @@
         <action name="*Distrito" method="{1}" class="actions.DistritosAction">
             <result name="success" type="tiles">mant-distritos-index</result>
             <result name="adicionar" type="tiles">mant-distritos-adicionar</result>
+            <result name="modificar" type="tiles">mant-distritos-adicionar</result>
             <result name="grabar" type="tiles">mant-distritos-grabar</result>
             <result name="actualizar" type="tiles">mant-distritos-grabar</result>
             <result name="vrfSeleccion" type="tiles">mant-distritos-grabar</result>

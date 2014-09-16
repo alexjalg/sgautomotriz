@@ -29,11 +29,6 @@
 <div class="d-content-grilla" style="min-width: 660px;">
     <form id="frm_princ" method="POST" action="<s:property value="baseURL" /><s:property value="urlPaginacion" />">
     <s:property value="datosOblig" escape="false" />
-
-    <s:hidden name="curPagVis" id="curPag_f" />
-    
-    <s:hidden name="varReturn" id="varReturn_f" />
-    <s:hidden name="nivBandeja" id="nivBandeja_f" />
     
     <div class="d-grilla" style="overflow: hidden;">
         <div class="d-content-grilla-head" style="">
@@ -46,6 +41,9 @@
                     <td style="<s:if test='%{desUsu_f!=""}'> background-color: #B5CCED; </s:if>">
                         Apellidos y Nombres
                     </td>
+                    <td style="width: 190px; text-align: center; <s:if test='%{idTipUsu_f!=""}'> background-color: #B5CCED; </s:if>">
+                        Tipo de Usuario
+                    </td>
                     <td style="width:54px; text-align: center;">
                         Activo
                     </td>
@@ -53,13 +51,17 @@
                 <tr class="tr-head">
                     <td style="width: 24px;"></td>
                     <td style="width:90px; text-align: center; <s:if test='%{idUsu_f!=""}'> background-color: #B5CCED; </s:if>">
-                        <s:textfield name="idUsu_f" cssClass="element-form-grid" cssStyle="width: 80px;" />
+                    <s:textfield name="idUsu_f" id="idUsu_f" cssClass="element-form-grid" cssStyle="width: 80px;" />
                     </td>
                     <td style="<s:if test='%{desUsu_f!=""}'> background-color: #B5CCED; </s:if>">
-                        <s:textfield name="desUsu_f" cssClass="element-form-grid" cssStyle="width: 400px;" />
+                        <s:textfield name="desUsu_f" id="desUsu_f" cssClass="element-form-grid" cssStyle="width: 400px;" />
+                    </td>
+                    <td style="width: 190px; text-align: center; <s:if test='%{idTipUsu_f!=""}'> background-color: #B5CCED; </s:if>">
+                        <s:select name="idTipUsu_f" id="idTipUsu_f" list="listTipoUsuario"
+                                  listKey="idTipUsu" listValue="desTipUsu" headerKey="0" headerValue="-Seleccione-"
+                                  cssClass="element-form-grid" cssStyle="width: 180px;" />
                     </td>
                     <td style="width:54px; text-align: center;">
-                        
                     </td>
                 </tr>
             </table>
@@ -76,6 +78,9 @@
                     </td>
                     <td style="">
                         <s:property value="desUsu" />
+                    </td>
+                    <td style="width: 190px; text-align: center;">
+                        <s:property value="desTipUsu" />
                     </td>
                     <td style="width:54px; text-align: center;">
                         <input type="checkbox" id="chk_edousu" <s:if test='%{edoUsu=="A"}'> checked="checked" class="chk_edousu check_grid_on" </s:if><s:else> class="chk_edousu" </s:else> />
@@ -133,7 +138,7 @@
             $('#opcion_h1').val('A');
             var href = $(location).attr('href');
             
-            var _varret = $('#nivBandeja_f').val()+'%'+href+'%'+$('#mtu_h1').val()+'%'+$('#mmo_h1').val()+'%'+$('#mop_h1').val()+'%'+$('#mni_h1').val()+'%'+$('#mod_h1').val()+'%'+$('#curPag_f').val()+'%'+$('#idUsu_f').val()+'%'+$('#desUsu_f').val()+'|';
+            var _varret = $('#nivBandeja_f').val()+'%'+href+'%'+$('#mtu_h1').val()+'%'+$('#mmo_h1').val()+'%'+$('#mop_h1').val()+'%'+$('#mni_h1').val()+'%'+$('#mod_h1').val()+'%'+$('#curPag_f').val()+'%'+$('#idUsu_f').val()+'%'+$('#desUsu_f').val()+'%'+$('#idTipUsu_f').val()+'|';
             $('#varReturn_f').val($('#varReturn_f').val()+_varret);
             
             $('#frm_princ').attr('action','<s:property value="baseURL" /><s:url namespace="usuarios" includeContext="false" action="adicionarUsuario" />');
@@ -157,7 +162,7 @@
                         $('#opcion_h1').val('M');
                         var href = $(location).attr('href');
                         
-                        var _varret = $('#nivBandeja_f').val()+'%'+href+'%'+$('#mtu_h1').val()+'%'+$('#mmo_h1').val()+'%'+$('#mop_h1').val()+'%'+$('#mni_h1').val()+'%'+$('#mod_h1').val()+'%'+$('#curPag_f').val()+'%'+$('#idUsu_f').val()+'%'+$('#desUsu_f').val()+'|';
+                        var _varret = $('#nivBandeja_f').val()+'%'+href+'%'+$('#mtu_h1').val()+'%'+$('#mmo_h1').val()+'%'+$('#mop_h1').val()+'%'+$('#mni_h1').val()+'%'+$('#mod_h1').val()+'%'+$('#curPag_f').val()+'%'+$('#idUsu_f').val()+'%'+$('#desUsu_f').val()+'%'+$('#idTipUsu_f').val()+'|';
                         $('#varReturn_f').val($('#varReturn_f').val()+_varret);
                         
                         $('#frm_princ').attr('action','<s:property value="baseURL" /><s:url namespace="usuarios" includeContext="false" action="adicionarUsuario" />');

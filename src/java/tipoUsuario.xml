@@ -12,10 +12,10 @@
         <action name="*TipoUsuario" method="{1}" class="actions.TipoUsuarioAction">
             <result name="success" type="tiles">mant-tipusu-index</result>
             <result name="adicionar" type="tiles">mant-tipusu-adicionar</result>
-            <result name="grabar">/mantenimientos/tipoUsuario/grabar.jsp</result>
-            <result name="actualizar">/mantenimientos/tipoUsuario/grabar.jsp</result>
-            <result name="vrfSeleccion">/mantenimientos/tipoUsuario/grabar.jsp</result>
-            <result name="eliminar">/mantenimientos/tipoUsuario/eliminar.jsp</result>
+            <result name="grabar" type="tiles">mant-tipusu-grabar</result>
+            <result name="actualizar" type="tiles">mant-tipusu-grabar</result>
+            <result name="vrfSeleccion" type="tiles">mant-tipusu-grabar</result>
+            <result name="eliminar" type="tiles">mant-tipusu-eliminar</result>
         </action>
     </package>
 </struts>

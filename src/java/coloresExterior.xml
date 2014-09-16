@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+    <package name="coloresExterior" namespace="/coloresExterior" extends="struts-default">
+        <result-types>
+            <result-type name="tiles" class="org.apache.struts2.views.tiles.TilesResult" />
+        </result-types>
+
+        <action name="*ColorExterior" method="{1}" class="actions.ColoresExteriorAction">
+            <result name="success" type="tiles">mant-coloresExt-index</result>
+            <result name="adicionar" type="tiles">mant-coloresExt-adicionar</result>
+            <result name="modificar" type="tiles">mant-coloresExt-adicionar</result>
+            <result name="grabar" type="tiles">mant-coloresExt-grabar</result>
+            <result name="actualizar" type="tiles">mant-coloresExt-grabar</result>
+            <result name="vrfSeleccion" type="tiles">mant-coloresExt-grabar</result>
+            <result name="eliminar" type="tiles">mant-coloresExt-eliminar</result>
+        </action>
+    </package>
+</struts>

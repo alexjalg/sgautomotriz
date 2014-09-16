@@ -10,14 +10,14 @@
  */
 package entities;
 
-public class ColoresModelo 
+public class ColoresExteriorModelo 
 {
     private String idMar="";
     private String desMar="";
     private String idModMar="";
     private String desModMar="";
-    private String idCol="";
-    private String desCol="";
+    private String idColExt="";
+    private String desColExt="";
 
     /**
      * @return the idMar
@@ -76,30 +76,30 @@ public class ColoresModelo
     }
 
     /**
-     * @return the idCol
+     * @return the idColExt
      */
-    public String getIdCol() {
-        return idCol;
+    public String getIdColExt() {
+        return idColExt;
     }
 
     /**
-     * @param idCol the idCol to set
+     * @param idColExt the idCol to set
      */
-    public void setIdCol(String idCol) {
-        this.idCol = idCol;
+    public void setIdColExt(String idColExt) {
+        this.idColExt = idColExt;
     }
 
     /**
-     * @return the desCol
+     * @return the desColExt
      */
-    public String getDesCol() {
-        return desCol;
+    public String getDesColExt() {
+        return desColExt;
     }
 
     /**
      * @param desCol the desCol to set
      */
-    public void setDesCol(String desCol) {
-        this.desCol = desCol;
+    public void setDesColExt(String desColExt) {
+        this.desColExt = desColExt;
     }
 }

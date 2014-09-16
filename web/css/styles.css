@@ -547,6 +547,14 @@ select.element-form
     vertical-align: middle;
 }
 
+select.element-form-grid
+{
+    padding: 1px;
+    padding-left: 2px;
+    height: 22px;
+    vertical-align: middle;
+}
+
 textarea.element-form
 {
     resize: none;
@@ -601,12 +609,12 @@ textarea.element-form
     padding-bottom: 3px;
     margin-bottom: 5px;
     height: 20px;
-	
+
 }
 
 .d-content-form .table-form tr td .d-block-form div
 {
-	
+
 }
 
 .d-content-form .table-form tr td .d-block-form div.text-block

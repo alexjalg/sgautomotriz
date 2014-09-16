@@ -15,28 +15,27 @@
             <!-- MODULOS -->
             <result name="modulosTipUsu" type="tiles">mant-permisos-modulosIndex</result>
             <result name="adicionarModulo" type="tiles">mant-permisos-modulosAdicionar</result>
-            <result name="listModulos">/mantenimientos/permisos/listModulos.jsp</result>
-            <result name="grabarModulo">/mantenimientos/permisos/grabar.jsp</result>
-            <result name="actualizarModulo">/mantenimientos/permisos/grabar.jsp</result>
-            <result name="vrfSelecModulo">/mantenimientos/permisos/grabar.jsp</result>
-            <result name="eliminarModulo">/mantenimientos/permisos/modulosEliminar.jsp</result>
+            <result name="listModulos" type="tiles">mant-permisos-listModulos</result>
+            <result name="grabarModulo" type="tiles">mant-permisos-grabar</result>
+            <result name="actualizarModulo" type="tiles">mant-permisos-grabar</result>
+            <result name="vrfSelecModulo" type="tiles">mant-permisos-grabar</result>
             
             <!-- OPCIONES -->
             <result name="opcionesTipUsu" type="tiles">mant-permisos-opcionesIndex</result>
             <result name="adicionarOpcion" type="tiles">mant-permisos-opcionesAdicionar</result>
-            <result name="listOpciones">/mantenimientos/permisos/listOpciones.jsp</result>
-            <result name="grabarOpcion">/mantenimientos/permisos/grabar.jsp</result>
-            <result name="actualizarOpcion">/mantenimientos/permisos/grabar.jsp</result>
-            <result name="vrfSelecOpcion">/mantenimientos/permisos/grabar.jsp</result>
-            <result name="eliminarOpcion">/mantenimientos/permisos/opcionesEliminar.jsp</result>
+            <result name="listOpciones" type="tiles">mant-permisos-listOpciones</result>
+            <result name="grabarOpcion" type="tiles">mant-permisos-grabar</result>
+            <result name="actualizarOpcion" type="tiles">mant-permisos-grabar</result>
+            <result name="vrfSelecOpcion" type="tiles">mant-permisos-grabar</result>
             
             <!-- SUB-OPCIONES -->
             <result name="subopcionesTipUsu" type="tiles">mant-permisos-subopcionesIndex</result>
             <result name="adicionarSubOpcion" type="tiles">mant-permisos-subopcionesAdicionar</result>
-            <result name="grabarSubOpcion">/mantenimientos/permisos/grabar.jsp</result>
-            <result name="actualizarSubOpcion">/mantenimientos/permisos/grabar.jsp</result>
-            <result name="vrfSelecSubOpcion">/mantenimientos/permisos/grabar.jsp</result>
-            <result name="eliminarSubOpcion">/mantenimientos/permisos/subopcionesEliminar.jsp</result>
+            <result name="grabarSubOpcion" type="tiles">mant-permisos-grabar</result>
+            <result name="actualizarSubOpcion" type="tiles">mant-permisos-grabar</result>
+            <result name="vrfSelecSubOpcion" type="tiles">mant-permisos-grabar</result>
+            
+            <result name="eliminar" type="tiles">mant-permisos-eliminar</result>
         </action>
     </package>
 </struts>

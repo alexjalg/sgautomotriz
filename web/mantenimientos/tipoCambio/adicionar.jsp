@@ -13,7 +13,7 @@
 </div>
             
 <form method="POST" id="frm_tipoCambio_back" action="<s:property value="backURL" />">
-    <s:hidden name="varReturn" id="varReturn_f" />
+    <s:hidden name="varReturn" />
 </form>
         
 <div class="d-content-form">
@@ -29,16 +29,30 @@
                 </td>
             </tr>
             <tr>
-                <td style="width: 50px;">Tipo de Cambio Interno<span class="required">*</span></td>
+                <td style="width: 50px;">Interno compra<span class="required">*</span></td>
                 <td>
-                    <s:textfield name="impTipCamInt" cssClass="element-form" cssStyle="width:60px;" maxLength="7"
+                    <s:textfield name="impTCIntCom" cssClass="element-form" cssStyle="width:60px;" maxLength="7"
                                  onkeypress="return isNumberKey(event)" />
                 </td>
             </tr>
             <tr>
-                <td style="width: 50px;">Tipo de Cambio Legal<span class="required">*</span></td>
+                <td style="width: 50px;">Interno venta<span class="required">*</span></td>
                 <td>
-                    <s:textfield name="impTipCamLeg" cssClass="element-form" cssStyle="width:60px;" maxLength="7" 
+                    <s:textfield name="impTCIntVen" cssClass="element-form" cssStyle="width:60px;" maxLength="7"
+                                 onkeypress="return isNumberKey(event)" />
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 50px;">Legal compra<span class="required">*</span></td>
+                <td>
+                    <s:textfield name="impTCLegCom" cssClass="element-form" cssStyle="width:60px;" maxLength="7" 
+                                 onkeypress="return isNumberKey(event)" />
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 50px;">Legal venta<span class="required">*</span></td>
+                <td>
+                    <s:textfield name="impTCLegVen" cssClass="element-form" cssStyle="width:60px;" maxLength="7" 
                                  onkeypress="return isNumberKey(event)" />
                 </td>
             </tr>

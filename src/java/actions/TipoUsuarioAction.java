@@ -6,7 +6,6 @@
  * - 
  * -
  */
-
 package actions;
 
 import com.opensymphony.xwork2.ModelDriven;
@@ -17,99 +16,89 @@ import entities.TipoUsuario;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
-public class TipoUsuarioAction extends MasterAction implements ModelDriven<TipoUsuario>
-{
+public class TipoUsuarioAction extends MasterAction implements ModelDriven<TipoUsuario> {
+
     private TipoUsuario modelo = new TipoUsuario();
     private ArrayList<TipoUsuario> listTipoUsuario = new ArrayList<TipoUsuario>();
-    
+
     @Override
-    public TipoUsuario getModel()
-    {
+    public TipoUsuario getModel() {
         tituloOpc = "Tipos de Usuario";
-        
+        idClaseAccion = 14;
+
         return modelo;
     }
     
-    private void cantTipoUsuarioIndex()
-    {
+    public String vrfSeleccion() {
+        idAccion = 1;
+        verifAccionTipoUsuario();
+
+        if (indErrAcc.equals("")) {
+            if (modelo.getIdTipUsu().trim().equals("") || modelo.getIdTipUsu().trim().equals("0")) {
+                indError = "error";
+                errores.add("No ha seleccionado ningun registro");
+            }
+        }
+
+        return "vrfSeleccion";
+    }
+
+    private void cantTipoUsuarioIndex() {
         helper conex = null;
         ResultSet tabla = null;
-        
-        try
-        {
+
+        try {
             conex = new helper();
             indError = conex.getErrorSQL();
 
-            if(!indError.equals(""))
-            {
+            if (!indError.equals("")) {
                 errores.add(indError);
-            }
-            else
-            {
-                tabla = conex.executeDataSet("CALL usp_cantTipoUsuarioIndex()",new Object[]{});
+            } else {
+                tabla = conex.executeDataSet("CALL usp_cantTipoUsuarioIndex()", new Object[]{});
 
                 indError = conex.getErrorSQL();
 
-                if(!indError.equals(""))
-                {
+                if (!indError.equals("")) {
                     errores.add(indError);
-                }
-                else
-                {
-                    while(tabla.next())
-                    {
+                } else {
+                    while (tabla.next()) {
                         cantReg = tabla.getInt(1);
                     }
                 }
             }
-        }
-        catch (Exception e) 
-        {
+        } catch (Exception e) {
             indError = "error";
             errores.add(e.getMessage());
-        }
-        finally
-        {
-            try 
-            {
+        } finally {
+            try {
                 tabla.close();
                 conex.returnConnect();
+            } catch (Exception e) {
             }
-            catch (Exception e) 
-            {}
         }
     }
-    
-    private void listTipoUsuarioIndex()
-    {
+
+    private void listTipoUsuarioIndex() {
         helper conex = null;
         ResultSet tabla = null;
-        
-        try
-        {
+
+        try {
             conex = new helper();
             indError = conex.getErrorSQL();
 
-            if(!indError.equals(""))
-            {
+            if (!indError.equals("")) {
                 errores.add(indError);
-            }
-            else
-            {
-                tabla = conex.executeDataSet("CALL usp_listTipoUsuarioIndex(?,?)", 
-                        new Object[]{ getCurPag()*getRegPag(),getRegPag() });
+            } else {
+                tabla = conex.executeDataSet("CALL usp_listTipoUsuarioIndex(?,?)",
+                        new Object[]{getCurPag() * getRegPag(), getRegPag()});
 
                 indError = conex.getErrorSQL();
 
-                if(!indError.equals(""))
-                {
+                if (!indError.equals("")) {
                     errores.add(indError);
-                }
-                else
-                {
+                } else {
                     TipoUsuario obj;
-                    while(tabla.next())
-                    {
+                    while (tabla.next()) {
                         obj = new TipoUsuario();
                         obj.setIdTipUsu(tabla.getString("idTipUsu"));
                         obj.setDesTipUsu(tabla.getString("desTipUsu"));
@@ -117,291 +106,250 @@ public class TipoUsuarioAction extends MasterAction implements ModelDriven<TipoU
                     }
                 }
             }
-        }
-        catch (Exception e) 
-        {
+        } catch (Exception e) {
             indError = "error";
             errores.add(e.getMessage());
-        }
-        finally
-        {
-            try 
-            {
+        } finally {
+            try {
                 tabla.close();
                 conex.returnConnect();
+            } catch (Exception e) {
             }
-            catch (Exception e) 
-            {}
         }
     }
-    
+
     @Override
-    public String execute()
-    {
-        nivBandeja = 1;
-        urlPaginacion = "tipoUsuario/TipoUsuario";
-        
-        varReturnProcess(0);
-        if(!listVarReturn.isEmpty())
-        {
-            curPagVis = Integer.parseInt(listVarReturn.get(0).toString().trim());
+    public String execute() {
+        idAccion = 2;
+        verifAccionTipoUsuario();
+
+        if (indErrAcc.equals("")) {
+            nivBandeja = 1;
+            urlPaginacion = "tipoUsuario/TipoUsuario";
+
+            varReturnProcess(0);
+            if (!listVarReturn.isEmpty()) {
+                curPagVis = Integer.parseInt(listVarReturn.get(0).toString().trim());
+            }
+
+            cantTipoUsuarioIndex();
+            verifPag();
+            listTipoUsuarioIndex();
         }
-        
-        cantTipoUsuarioIndex();
-        verifPag();
-        listTipoUsuarioIndex();
-        
+
         return SUCCESS;
     }
 
-    public String adicionar()
-    {
-        nivBandeja = 1;
-        
-        if((!opcion.trim().equals("A") && !opcion.trim().equals("M")))
-        {
-            indErrParm = "error";
-        }
-        else
-        {
-            varReturnProcess(1);
-            
-            if(opcion.equals("A"))
-            {
-                formURL = baseURL+"tipoUsuario/grabarTipoUsuario";
-            }
+    public String adicionar() {
+        idAccion = 3;
+        verifAccionTipoUsuario();
 
-            if(opcion.equals("M"))
-            {
-                getDatosTipoUsuario();
-                formURL = baseURL+"tipoUsuario/actualizarTipoUsuario";
-                
+        if (indErrAcc.equals("")) {
+            nivBandeja = 1;
+
+            if ((!opcion.trim().equals("A") && !opcion.trim().equals("M"))) {
+                indErrParm = "error";
+            } else {
+                varReturnProcess(1);
+
+                if (opcion.equals("A")) {
+                    formURL = baseURL + "tipoUsuario/grabarTipoUsuario";
+                }
             }
         }
-        
+
         return "adicionar";
     }
     
-    public void getDatosTipoUsuario()
-    {
+    public String modificar() {
+        idAccion = 4;
+        verifAccionTipoUsuario();
+
+        if (indErrAcc.equals("")) {
+            nivBandeja = 1;
+
+            if ((!opcion.trim().equals("A") && !opcion.trim().equals("M"))) {
+                indErrParm = "error";
+            } else {
+                varReturnProcess(1);
+                
+                if (opcion.equals("M")) {
+                    getDatosTipoUsuario();
+                    formURL = baseURL + "tipoUsuario/actualizarTipoUsuario";
+                }
+            }
+        }
+
+        return "adicionar";
+    }
+
+    public void getDatosTipoUsuario() {
         helper conex = null;
         ResultSet tabla = null;
-        
-        try
-        {
+
+        try {
             conex = new helper();
             indError = conex.getErrorSQL();
 
-            if(!indError.equals(""))
-            {
+            if (!indError.equals("")) {
                 errores.add(indError);
-            }
-            else
-            {
-                tabla = conex.executeDataSet("CALL usp_getDatosTipoUsuario(?)", 
-                        new Object[]{ modelo.getIdTipUsu() });
+            } else {
+                tabla = conex.executeDataSet("CALL usp_getDatosTipoUsuario(?)",
+                        new Object[]{modelo.getIdTipUsu()});
                 indError = conex.getErrorSQL();
 
-                if(!indError.equals(""))
-                {
+                if (!indError.equals("")) {
                     errores.add(indError);
-                }
-                else
-                {
-                    while(tabla.next())
-                    {
+                } else {
+                    while (tabla.next()) {
                         modelo.setIdTipUsu(tabla.getString("idTipUsu"));
                         modelo.setDesTipUsu(tabla.getString("desTipUsu"));
                     }
                 }
             }
-        }
-        catch (Exception e) 
-        {
+        } catch (Exception e) {
             indError = "error";
             errores.add(e.getMessage());
-        }
-        finally
-        {
-            try 
-            {
+        } finally {
+            try {
                 tabla.close();
                 conex.returnConnect();
-            }
-            catch (Exception e) 
-            {}
-        }
-    }
-    
-    public String grabar()
-    {
-        modelo.setDesTipUsu(modelo.getDesTipUsu().trim());
-        
-        if(indError.equals(""))
-        {
-            helper conex = null;
-            
-            try
-            {
-                conex = new helper();
-                indError = conex.getErrorSQL();
-
-                if(!indError.equals(""))
-                {
-                    errores.add(indError);
-                }
-                else
-                {
-                    indError = conex.executeNonQuery("CALL usp_insTipoUsuario(?)", 
-                            new Object[]{ modelo.getDesTipUsu() });
-
-                    if(!indError.equals(""))
-                    {
-                        errores.add(indError);
-                    }
-                }
-            }
-            catch (Exception e) 
-            {
-                indError = "error";
-                errores.add(e.getMessage());
-            }
-            finally
-            {
-                conex.returnConnect();
+            } catch (Exception e) {
             }
         }
-        
-        return "grabar";
     }
-    
-    public String actualizar()
-    {
-        modelo.setDesTipUsu(modelo.getDesTipUsu().trim());
-        
-        if(indError.equals(""))
-        {
-            helper conex = null;
-            
-            try
-            {
-                conex = new helper();
-                indError = conex.getErrorSQL();
 
-                if(!indError.equals(""))
-                {
-                    errores.add(indError);
-                }
-                else
-                {
-                    indError = conex.executeNonQuery("CALL usp_updTipoUsuario(?,?)",
-                            new Object[]{ Integer.parseInt(modelo.getIdTipUsu()),modelo.getDesTipUsu() });
+    public String grabar() {
+        idAccion = 5;
+        verifAccionTipoUsuario();
 
-                    if(!indError.equals(""))
-                    {
-                        errores.add(indError);
-                    }
-                }
-            }
-            catch (Exception e) 
-            {
-                indError = "error";
-                errores.add(e.getMessage());
-            }
-            finally
-            {
-                conex.returnConnect();
-            }
-        }
-        
-        return "actualizar";
-    }
-    
-    public String eliminar()
-    {
-        if(opcion.trim().equals("E"))
-        {
-            helper conex = null;
-            ResultSet tabla = null;
-            
-            try
-            {
-                conex = new helper();
-                indError = conex.getErrorSQL().trim();
+        if (indErrAcc.equals("")) {
+            modelo.setDesTipUsu(modelo.getDesTipUsu().trim());
 
-                if(!indError.equals(""))
-                {
-                    errores.add(indError);
-                }
-                else
-                {
-                    tabla = conex.executeDataSet("CALL usp_verifDependTipoUsuario(?)", 
-                            new Object[]{ Integer.parseInt(modelo.getIdTipUsu()) });
+            if (indError.equals("")) {
+                helper conex = null;
+
+                try {
+                    conex = new helper();
                     indError = conex.getErrorSQL();
 
-                    if(!indError.equals(""))
-                    {
+                    if (!indError.equals("")) {
                         errores.add(indError);
-                    }
-                    else
-                    {
-                        int cant = 0;
-                        while(tabla.next())
-                        {
-                            cant = tabla.getInt(1);
-                        }
+                    } else {
+                        indError = conex.executeNonQuery("CALL usp_insTipoUsuario(?)",
+                                new Object[]{modelo.getDesTipUsu()});
 
-                        /* Si no tiene dependencias */
-                        if(cant == 0)
-                        {
-                            indError = conex.executeNonQuery("CALL usp_dltTipoUsuario(?)",
-                                    new Object[]{ Integer.parseInt(modelo.getIdTipUsu()) });
-
-                            indError = indError.trim();
-                            if(indError.trim().equals(""))
-                            {
-                                errores.add(indError);
-                            }
-                        }
-                        else /* si tiene dependencias */
-                        {
-                            indError = "error";
-                            errores.add("Existen registros dependientes del tipo de usuario");
+                        if (!indError.equals("")) {
+                            errores.add(indError);
                         }
                     }
-                }
-            }
-            catch (Exception e) 
-            {
-                indError = "error";
-                errores.add(e.getMessage());
-            }
-            finally
-            {
-                try 
-                {
-                    tabla.close();
+                } catch (Exception e) {
+                    indError = "error";
+                    errores.add(e.getMessage());
+                } finally {
                     conex.returnConnect();
                 }
-                catch (Exception e) 
-                {}
             }
         }
-        
+
+        return "grabar";
+    }
+
+    public String actualizar() {
+        idAccion = 6;
+        verifAccionTipoUsuario();
+
+        if (indErrAcc.equals("")) {
+            modelo.setDesTipUsu(modelo.getDesTipUsu().trim());
+
+            if (indError.equals("")) {
+                helper conex = null;
+
+                try {
+                    conex = new helper();
+                    indError = conex.getErrorSQL();
+
+                    if (!indError.equals("")) {
+                        errores.add(indError);
+                    } else {
+                        indError = conex.executeNonQuery("CALL usp_updTipoUsuario(?,?)",
+                                new Object[]{Integer.parseInt(modelo.getIdTipUsu()), modelo.getDesTipUsu()});
+
+                        if (!indError.equals("")) {
+                            errores.add(indError);
+                        }
+                    }
+                } catch (Exception e) {
+                    indError = "error";
+                    errores.add(e.getMessage());
+                } finally {
+                    conex.returnConnect();
+                }
+            }
+        }
+
+        return "actualizar";
+    }
+
+    public String eliminar() {
+        idAccion = 7;
+        verifAccionTipoUsuario();
+
+        if (indErrAcc.equals("")) {
+            if (opcion.trim().equals("E")) {
+                helper conex = null;
+                ResultSet tabla = null;
+
+                try {
+                    conex = new helper();
+                    indError = conex.getErrorSQL().trim();
+
+                    if (!indError.equals("")) {
+                        errores.add(indError);
+                    } else {
+                        tabla = conex.executeDataSet("CALL usp_verifDependTipoUsuario(?)",
+                                new Object[]{Integer.parseInt(modelo.getIdTipUsu())});
+                        indError = conex.getErrorSQL();
+
+                        if (!indError.equals("")) {
+                            errores.add(indError);
+                        } else {
+                            int cant = 0;
+                            while (tabla.next()) {
+                                cant = tabla.getInt(1);
+                            }
+
+                            /* Si no tiene dependencias */
+                            if (cant == 0) {
+                                indError = conex.executeNonQuery("CALL usp_dltTipoUsuario(?)",
+                                        new Object[]{Integer.parseInt(modelo.getIdTipUsu())});
+
+                                indError = indError.trim();
+                                if (indError.trim().equals("")) {
+                                    errores.add(indError);
+                                }
+                            } else /* si tiene dependencias */ {
+                                indError = "error";
+                                errores.add("Existen registros dependientes del tipo de usuario");
+                            }
+                        }
+                    }
+                } catch (Exception e) {
+                    indError = "error";
+                    errores.add(e.getMessage());
+                } finally {
+                    try {
+                        tabla.close();
+                        conex.returnConnect();
+                    } catch (Exception e) {
+                    }
+                }
+            }
+        }
+
         return "eliminar";
     }
-    
-    public String vrfSeleccion()
-    {
-        if(modelo.getIdTipUsu().trim().equals("") || modelo.getIdTipUsu().trim().equals("0"))
-        {
-            indError = "error";
-            errores.add("No ha seleccionado ningun registro");
-        }
-        
-        return "vrfSeleccion";
-    }
-    
+
     /**
      * @return the modelo
      */

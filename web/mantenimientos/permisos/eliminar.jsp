@@ -6,7 +6,7 @@
             <div class="both"></div>
         </div>
         <div style="padding: 0px 10px 15px 10px; text-align: center;">
-            ¿Desea eliminar el color?
+            ¿Desea eliminar <s:property value="conceptoEliminar" />?
         </div>
     </div>
 </s:if>

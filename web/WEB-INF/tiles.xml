@@ -19,18 +19,6 @@
         <put-attribute name="body" value="/inicio.jsp" />
     </definition>
     
-    <!-- USUARIOS -->
-    <definition name="mant-usuarios-index" extends="baseLayout">
-        <put-attribute name="body" value="/mantenimientos/usuarios/index.jsp" />
-    </definition>
-    <definition name="mant-usuarios-adicionar" extends="baseLayout">
-        <put-attribute name="body" value="/mantenimientos/usuarios/adicionar.jsp" />
-    </definition>
-    <definition name="mant-usuarios-imprimir" extends="baseLayout">
-        <put-attribute name="body" value="/mantenimientos/usuarios/imprimir.jsp" />
-    </definition>
-    
-    
     <!-- DEPARTAMENTOS -->
     <definition name="mant-departamentos-index" extends="baseLayout">
         <put-attribute name="body" value="/mantenimientos/departamentos/index.jsp" />
@@ -51,6 +39,12 @@
     </definition>
     <definition name="mant-provincias-adicionar" extends="baseLayout">
         <put-attribute name="body" value="/mantenimientos/provincias/adicionar.jsp" />
+    </definition>
+    <definition name="mant-provincias-grabar" extends="baseLayoutPopUp">
+        <put-attribute name="body" value="/mantenimientos/provincias/grabar.jsp" />
+    </definition>
+    <definition name="mant-provincias-eliminar" extends="baseLayoutPopUp">
+        <put-attribute name="body" value="/mantenimientos/provincias/eliminar.jsp" />
     </definition>
     
     <!-- DISTRITOS -->
@@ -75,6 +69,12 @@
     <definition name="mant-modulos-adicionar" extends="baseLayout">
         <put-attribute name="body" value="/mantenimientos/modulos/adicionar.jsp" />
     </definition>
+    <definition name="mant-modulos-grabar" extends="baseLayoutPopUp">
+        <put-attribute name="body" value="/mantenimientos/modulos/grabar.jsp" />
+    </definition>
+    <definition name="mant-modulos-eliminar" extends="baseLayoutPopUp">
+        <put-attribute name="body" value="/mantenimientos/modulos/eliminar.jsp" />
+    </definition>
     
     <!-- OPCIONES -->
     <definition name="mant-opciones-index" extends="baseLayout">
@@ -82,6 +82,12 @@
     </definition>
     <definition name="mant-opciones-adicionar" extends="baseLayout">
         <put-attribute name="body" value="/mantenimientos/opciones/adicionar.jsp" />
+    </definition>
+    <definition name="mant-opciones-grabar" extends="baseLayoutPopUp">
+        <put-attribute name="body" value="/mantenimientos/opciones/grabar.jsp" />
+    </definition>
+    <definition name="mant-opciones-eliminar" extends="baseLayoutPopUp">
+        <put-attribute name="body" value="/mantenimientos/opciones/eliminar.jsp" />
     </definition>
     
     <!-- TIPO DE USUARIO -->
@@ -91,7 +97,32 @@
     <definition name="mant-tipusu-adicionar" extends="baseLayout">
         <put-attribute name="body" value="/mantenimientos/tipoUsuario/adicionar.jsp" />
     </definition>
+    <definition name="mant-tipusu-grabar" extends="baseLayoutPopUp">
+        <put-attribute name="body" value="/mantenimientos/tipoUsuario/grabar.jsp" />
+    </definition>
+    <definition name="mant-tipusu-eliminar" extends="baseLayoutPopUp">
+        <put-attribute name="body" value="/mantenimientos/tipoUsuario/eliminar.jsp" />
+    </definition>
     
+    <!-- USUARIOS -->
+    <definition name="mant-usuarios-index" extends="baseLayout">
+        <put-attribute name="body" value="/mantenimientos/usuarios/index.jsp" />
+    </definition>
+    <definition name="mant-usuarios-adicionar" extends="baseLayout">
+        <put-attribute name="body" value="/mantenimientos/usuarios/adicionar.jsp" />
+    </definition>
+    <definition name="mant-usuarios-imprimir" extends="baseLayout">
+        <put-attribute name="body" value="/mantenimientos/usuarios/imprimir.jsp" />
+    </definition>
+    <definition name="mant-usuarios-updPass" extends="baseLayoutPopUp">
+        <put-attribute name="body" value="/mantenimientos/usuarios/updPassword.jsp" />
+    </definition>
+    <definition name="mant-usuarios-grabar" extends="baseLayoutPopUp">
+        <put-attribute name="body" value="/mantenimientos/usuarios/grabar.jsp" />
+    </definition>
+    <definition name="mant-usuarios-eliminar" extends="baseLayoutPopUp">
+        <put-attribute name="body" value="/mantenimientos/usuarios/eliminar.jsp" />
+    </definition>
     
     <!-- PERMISOS -->
     <definition name="mant-permisos-modulosIndex" extends="baseLayout">
@@ -100,17 +131,29 @@
     <definition name="mant-permisos-modulosAdicionar" extends="baseLayout">
         <put-attribute name="body" value="/mantenimientos/permisos/modulosAdicionar.jsp" />
     </definition>
+    <definition name="mant-permisos-listModulos" extends="baseLayoutPopUp">
+        <put-attribute name="body" value="/mantenimientos/permisos/listModulos.jsp" />
+    </definition>
     <definition name="mant-permisos-opcionesIndex" extends="baseLayout">
         <put-attribute name="body" value="/mantenimientos/permisos/opcionesIndex.jsp" />
     </definition>
     <definition name="mant-permisos-opcionesAdicionar" extends="baseLayout">
         <put-attribute name="body" value="/mantenimientos/permisos/opcionesAdicionar.jsp" />
     </definition>
+    <definition name="mant-permisos-listOpciones" extends="baseLayoutPopUp">
+        <put-attribute name="body" value="/mantenimientos/permisos/listOpciones.jsp" />
+    </definition>
     <definition name="mant-permisos-subopcionesIndex" extends="baseLayout">
         <put-attribute name="body" value="/mantenimientos/permisos/subopcionesIndex.jsp" />
     </definition>
     <definition name="mant-permisos-subopcionesAdicionar" extends="baseLayout">
         <put-attribute name="body" value="/mantenimientos/permisos/subopcionesAdicionar.jsp" />
+    </definition>
+    <definition name="mant-permisos-grabar" extends="baseLayoutPopUp">
+        <put-attribute name="body" value="/mantenimientos/permisos/grabar.jsp" />
+    </definition>
+    <definition name="mant-permisos-eliminar" extends="baseLayoutPopUp">
+        <put-attribute name="body" value="/mantenimientos/permisos/eliminar.jsp" />
     </definition>
     
     
@@ -183,45 +226,48 @@
     
     <!--  AQUI VA LO RELACIONADO A VERSIONES  -->
     
-    <!--  COLORES  -->
-    <definition name="mant-colores-index" extends="baseLayout">
-        <put-attribute name="body" value="/mantenimientos/colores/index.jsp" />
+    <!--  COLORES DE EXTERIOR  -->
+    <definition name="mant-coloresExt-index" extends="baseLayout">
+        <put-attribute name="body" value="/mantenimientos/coloresExterior/index.jsp" />
     </definition>
-    <definition name="mant-colores-adicionar" extends="baseLayout">
-        <put-attribute name="body" value="/mantenimientos/colores/adicionar.jsp" />
+    <definition name="mant-coloresExt-adicionar" extends="baseLayout">
+        <put-attribute name="body" value="/mantenimientos/coloresExterior/adicionar.jsp" />
     </definition>
-    <definition name="mant-colores-modificar" extends="baseLayout">
-        <put-attribute name="body" value="/mantenimientos/colores/adicionar.jsp" />
+    <definition name="mant-coloresExt-grabar" extends="baseLayoutPopUp">
+        <put-attribute name="body" value="/mantenimientos/coloresExterior/grabar.jsp" /> 
     </definition>
-    <definition name="mant-colores-grabar" extends="baseLayoutPopUp">
-        <put-attribute name="body" value="/mantenimientos/colores/grabar.jsp" /> 
-    </definition>
-    <definition name="mant-colores-eliminar" extends="baseLayoutPopUp">
-        <put-attribute name="body" value="/mantenimientos/colores/eliminar.jsp" /> 
+    <definition name="mant-coloresExt-eliminar" extends="baseLayoutPopUp">
+        <put-attribute name="body" value="/mantenimientos/coloresExterior/eliminar.jsp" /> 
     </definition>
     
     <!--  COLORES POR MODELO  -->
-    <definition name="mant-coloresMod-index" extends="baseLayout">
-        <put-attribute name="body" value="/mantenimientos/coloresMod/index.jsp" />
+    <definition name="mant-coloresExtModelo-index" extends="baseLayout">
+        <put-attribute name="body" value="/mantenimientos/coloresExtModelo/index.jsp" />
     </definition>
-    <definition name="mant-coloresMod-adicionar" extends="baseLayout">
-        <put-attribute name="body" value="/mantenimientos/coloresMod/adicionar.jsp" />
+    <definition name="mant-coloresExtModelo-adicionar" extends="baseLayout">
+        <put-attribute name="body" value="/mantenimientos/coloresExtModelo/adicionar.jsp" />
     </definition>
-    <definition name="mant-coloresMod-listcolores" extends="baseLayoutPopUp">
-        <put-attribute name="body" value="/mantenimientos/coloresMod/listColores.jsp" />
+    <definition name="mant-coloresExtModelo-listColoresExt" extends="baseLayoutPopUp">
+        <put-attribute name="body" value="/mantenimientos/coloresExtModelo/listColoresExterior.jsp" />
     </definition>
-    <definition name="mant-coloresMod-grabar" extends="baseLayoutPopUp">
-        <put-attribute name="body" value="/mantenimientos/coloresMod/grabar.jsp" />
+    <definition name="mant-coloresExtModelo-grabar" extends="baseLayoutPopUp">
+        <put-attribute name="body" value="/mantenimientos/coloresExtModelo/grabar.jsp" />
     </definition>
-    <definition name="mant-coloresMod-eliminar" extends="baseLayoutPopUp">
-        <put-attribute name="body" value="/mantenimientos/coloresMod/eliminar.jsp" />
+    <definition name="mant-coloresExtModelo-eliminar" extends="baseLayoutPopUp">
+        <put-attribute name="body" value="/mantenimientos/coloresExtModelo/eliminar.jsp" />
     </definition>
     
-    <!--  TIPO DE COLORES  -->
+    <!--  TIPO DE CAMBIO  -->
     <definition name="mant-tipoCambio-index" extends="baseLayout">
         <put-attribute name="body" value="/mantenimientos/tipoCambio/index.jsp" />
     </definition>
     <definition name="mant-tipoCambio-adicionar" extends="baseLayout">
         <put-attribute name="body" value="/mantenimientos/tipoCambio/adicionar.jsp" />
+    </definition>
+    <definition name="mant-tipoCambio-grabar" extends="baseLayoutPopUp">
+        <put-attribute name="body" value="/mantenimientos/tipoCambio/grabar.jsp" />
+    </definition>
+    <definition name="mant-tipoCambio-eliminar" extends="baseLayoutPopUp">
+        <put-attribute name="body" value="/mantenimientos/tipoCambio/eliminar.jsp" />
     </definition>
 </tiles-definitions>

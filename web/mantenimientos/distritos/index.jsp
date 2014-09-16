@@ -28,6 +28,8 @@
         
 <!-- modelo de grilla -->
 <div class="d-buttons-grid">
+<s:if test='%{perm=="M" || perm=="V"}'>
+    <s:if test='%{perm=="M"}'>
     <button id="btn-add">
         Adicionar
     </button>
@@ -37,18 +39,14 @@
     <button id="btn-delete">
         Eliminar
     </button>
+    </s:if>
+</s:if>
 </div>
 <div class="d-content-grilla" style="min-width: 660px;">
     <form id="frm_princ" method="POST" action="<s:property value="baseURL" /><s:property value="urlPaginacion" />">
     <s:hidden name="idDep" id="idDep_h1" />
     <s:hidden name="idPrvDep" id="idPrvDep_h1" />
-    <s:hidden name="opcion" id="opcion_h1" />
-    <s:hidden name="backURL" id="backURL_h1" />
-
-    <s:hidden name="curPagVis" id="curPag_f" />
-    
-    <s:hidden name="varReturn" id="varReturn_f" />
-    <s:hidden name="nivBandeja" id="nivBandeja_f" />
+    <s:property value="datosOblig" escape="false" />
     
     <div class="d-grilla" style="overflow: hidden;">
         <div class="d-content-grilla-head" style="">
@@ -143,7 +141,7 @@
                         var _varret = $('#nivBandeja_f').val()+'%'+href+'%'+$('#mtu_h1').val()+'%'+$('#mmo_h1').val()+'%'+$('#mop_h1').val()+'%'+$('#mni_h1').val()+'%'+$('#mod_h1').val()+'%'+$('#curPag_f').val()+'%'+$('#idDep_h1').val()+'%'+$('#idPrvDep_h1').val()+'%'+$('#desDis_f').val()+'|';
                         $('#varReturn_f').val($('#varReturn_f').val()+_varret);
                         
-                        $('#frm_princ').attr('action','<s:property value="baseURL" /><s:url namespace="distritos" includeContext="false" action="adicionarDistrito" />');
+                        $('#frm_princ').attr('action','<s:property value="baseURL" /><s:url namespace="distritos" includeContext="false" action="modificarDistrito" />');
                         $('#frm_princ').submit();
                     }
                 },

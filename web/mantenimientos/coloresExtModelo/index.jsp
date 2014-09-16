@@ -44,11 +44,6 @@
     <s:hidden name="idMar" id="idMar_h1" />
     <s:hidden name="idModMar" id="idModMar_h1" />
     <s:property value="datosOblig" escape="false" />
-
-    <s:hidden name="curPagVis" id="curPag_f" />
-    
-    <s:hidden name="varReturn" id="varReturn_f" />
-    <s:hidden name="nivBandeja" id="nivBandeja_f" />
     
     <div class="d-grilla" style="overflow: hidden;">
         <div class="d-content-grilla-head" style="">
@@ -59,7 +54,7 @@
                         Código
                     </td>
                     <td style="">
-                        Color
+                        Color de exterior
                     </td>
                 </tr>
                 <tr class="tr-head">
@@ -71,16 +66,16 @@
         </div>
         <div class="d-content-grilla-body">
             <table border="0" cellpadding="0" cellspacing="0" style="">
-                <s:iterator value="listColoresMod">
+                <s:iterator value="listColoresExtModelo">
                 <tr>
                     <td style="width: 24px;">
-                        <input type="radio" name="idCol" id="rbt_idCol" value="<s:property value="idCol" />" class="select_rec" />
+                        <input type="radio" name="idColExt" id="rbt_idCol" value="<s:property value="idColExt" />" class="select_rec" />
                     </td>
                     <td style="width: 70px;">
-                        <s:property value="idCol" />
+                        <s:property value="idColExt" />
                     </td>
                     <td style="">
-                        <s:property value="desCol" />
+                        <s:property value="desColExt" />
                     </td>
                 </tr>
                 </s:iterator>
@@ -125,13 +120,13 @@
             var _varret = $('#nivBandeja_f').val()+'%'+href+'%'+$('#mtu_h1').val()+'%'+$('#mmo_h1').val()+'%'+$('#mop_h1').val()+'%'+$('#mni_h1').val()+'%'+$('#mod_h1').val()+'%'+$('#curPag_f').val()+'%'+$('#idMar_h1').val()+'%'+$('#idModMar_h1').val()+'|';
             $('#varReturn_f').val($('#varReturn_f').val()+_varret);
             
-            $('#frm_princ').attr('action','<s:property value="baseURL" /><s:url namespace="coloresMod" includeContext="false" action="adicionarColorMod" />');
+            $('#frm_princ').attr('action','<s:property value="baseURL" /><s:url namespace="coloresExtModelo" includeContext="false" action="adicionarColorExtModelo" />');
             $('#frm_princ').submit();
         });
         
         $('#btn-delete').click(function(){
             post(
-                '<s:property value="baseURL" /><s:url namespace="coloresMod" includeContext="false" action="vrfSeleccionColorMod" />',
+                '<s:property value="baseURL" /><s:url namespace="coloresExtModelo" includeContext="false" action="vrfSeleccionColorExtModelo" />',
                 $('#frm_princ').serialize(),
                 function(resultado){
                     var _error = validaRespuestaAjax(resultado);
@@ -145,7 +140,7 @@
                     {
                         $('#opcion_h1').val('C');
                         post(
-                            '<s:property value="baseURL" /><s:url namespace="coloresMod" includeContext="false" action="eliminarColorMod" />',
+                            '<s:property value="baseURL" /><s:url namespace="coloresExtModelo" includeContext="false" action="eliminarColorExtModelo" />',
                             $('#frm_princ').serialize(),
                             function(resultado1)
                             {
@@ -164,7 +159,7 @@
                                                 $('#DIVeliminar').dialog('close');
                                                 $('#opcion_h1').val('E');
                                                 post(
-                                                    '<s:property value="baseURL" /><s:url namespace="coloresMod" includeContext="false" action="eliminarColorMod" />',
+                                                    '<s:property value="baseURL" /><s:url namespace="coloresExtModelo" includeContext="false" action="eliminarColorExtModelo" />',
                                                     $('#frm_princ').serialize(),
                                                     function(resultado2)
                                                     {
@@ -178,7 +173,7 @@
                                                         else
                                                         {
                                                             $('#DIVeliminar').dialog('close');
-                                                            $('#frm_princ').attr('action','<s:property value="baseURL" /><s:url namespace="coloresMod" includeContext="false" action="ColorMod" />');
+                                                            $('#frm_princ').attr('action','<s:property value="baseURL" /><s:url namespace="coloresExtModelo" includeContext="false" action="ColorExtModelo" />');
                                                             $('#frm_princ').submit();
                                                         }
                                                     },

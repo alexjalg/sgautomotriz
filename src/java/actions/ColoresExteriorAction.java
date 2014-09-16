@@ -1,7 +1,7 @@
 /*
- * Action: Marcas
+ * Action: Colores
  * Creado por: Angelo Ccoicca
- * Fecha de creación: 16-05-2014
+ * Fecha de creación: 19-05-2014
  * Modificado por                   Fecha de Modificación
  * - 
  * -
@@ -10,19 +10,19 @@ package actions;
 
 import com.opensymphony.xwork2.ModelDriven;
 import conexion.helper;
-import entities.Marcas;
+import entities.ColoresExterior;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
-public class MarcasAction extends MasterAction implements ModelDriven<Marcas> {
+public class ColoresExteriorAction extends MasterAction implements ModelDriven<ColoresExterior> {
 
-    private Marcas modelo = new Marcas();
-    private ArrayList<Marcas> listMarcas = new ArrayList<Marcas>();
+    private ColoresExterior modelo = new ColoresExterior();
+    private ArrayList<ColoresExterior> listColoresExterior = new ArrayList<ColoresExterior>();
 
     @Override
-    public Marcas getModel() {
-        tituloOpc = "Marcas";
-        idClaseAccion = 7;
+    public ColoresExterior getModel() {
+        tituloOpc = "Colores de Exterior";
+        idClaseAccion = 1;
 
         return modelo;
     }
@@ -32,7 +32,7 @@ public class MarcasAction extends MasterAction implements ModelDriven<Marcas> {
         verifAccionTipoUsuario();
 
         if (indErrAcc.equals("")) {
-            if (modelo.getIdMar().trim().equals("")) {
+            if (modelo.getIdColExt().trim().equals("")) {
                 indError = "error";
                 errores.add("No ha seleccionado ningun registro");
             }
@@ -41,7 +41,7 @@ public class MarcasAction extends MasterAction implements ModelDriven<Marcas> {
         return "vrfSeleccion";
     }
 
-    private void cantMarcasIndex() {
+    private void cantColoresIndex() {
         helper conex = null;
         ResultSet tabla = null;
 
@@ -52,9 +52,10 @@ public class MarcasAction extends MasterAction implements ModelDriven<Marcas> {
             if (!indError.equals("")) {
                 errores.add(indError);
             } else {
-                tabla = conex.executeDataSet("CALL usp_cantMarcasIndex()", new Object[]{});
+                tabla = conex.executeDataSet("CALL usp_cantColoresExtIndex(?)",
+                        new Object[]{modelo.getDesColExt_f()});
 
-                indError = conex.getErrorSQL();
+                indError += conex.getErrorSQL();
 
                 if (!indError.equals("")) {
                     errores.add(indError);
@@ -76,36 +77,36 @@ public class MarcasAction extends MasterAction implements ModelDriven<Marcas> {
         }
     }
 
-    private void listMarcasIndex() {
+    private void listColoresIndex() {
         helper conex = null;
         ResultSet tabla = null;
 
         try {
             conex = new helper();
-            indError = conex.getErrorSQL();
+            indError += conex.getErrorSQL();
 
             if (!indError.equals("")) {
                 errores.add(indError);
             } else {
-                tabla = conex.executeDataSet("CALL usp_listMarcasIndex(?,?)",
-                        new Object[]{getCurPag() * regPag, regPag});
+                tabla = conex.executeDataSet("CALL usp_listColoresExtIndex(?,?,?)",
+                        new Object[]{modelo.getDesColExt_f(), getCurPag() * regPag, regPag});
 
-                indError = conex.getErrorSQL();
+                indError += conex.getErrorSQL();
 
                 if (!indError.equals("")) {
                     errores.add(indError);
                 } else {
-                    Marcas obj;
+                    ColoresExterior obj;
                     while (tabla.next()) {
-                        obj = new Marcas();
-                        obj.setIdMar(tabla.getString("idMar"));
-                        obj.setDesMar(tabla.getString("desMar"));
-                        listMarcas.add(obj);
+                        obj = new ColoresExterior();
+                        obj.setIdColExt(tabla.getString("idColExt"));
+                        obj.setDesColExt(tabla.getString("desColExt"));
+                        listColoresExterior.add(obj);
                     }
                 }
             }
         } catch (Exception e) {
-            indError = "error";
+            indError += "error";
             errores.add(e.getMessage());
         } finally {
             try {
@@ -119,23 +120,24 @@ public class MarcasAction extends MasterAction implements ModelDriven<Marcas> {
     @Override
     public String execute() {
         idAccion = 2;
+
         verifAccionTipoUsuario();
 
         if (indErrAcc.equals("")) {
-            nivBandeja = 1;
-            urlPaginacion = "marcas/Marca";
+            urlPaginacion = "coloresExterior/ColorExterior";
 
             varReturnProcess(0);
             if (!listVarReturn.isEmpty()) {
                 curPagVis = Integer.parseInt(listVarReturn.get(0).toString().trim());
+                modelo.setDesColExt_f(listVarReturn.get(1).toString());
             }
 
-            cantMarcasIndex();
+            cantColoresIndex();
             verifPag();
-            listMarcasIndex();
+            listColoresIndex();
         }
 
-        return SUCCESS;
+        return "success";
     }
 
     public String adicionar() {
@@ -151,14 +153,8 @@ public class MarcasAction extends MasterAction implements ModelDriven<Marcas> {
                 varReturnProcess(1);
 
                 if (opcion.equals("A")) {
-                    formURL = baseURL + "marcas/grabarMarca";
-                }
-
-                if (opcion.equals("M")) {
-
-                    getDatosMarca();
-                    formURL = baseURL + "marcas/actualizarMarca";
-
+                    modelo.setIdColExt("");
+                    formURL = baseURL + "coloresExterior/grabarColorExterior";
                 }
             }
         }
@@ -179,8 +175,8 @@ public class MarcasAction extends MasterAction implements ModelDriven<Marcas> {
                 varReturnProcess(1);
 
                 if (opcion.equals("M")) {
-                    getDatosMarca();
-                    formURL = baseURL + "marcas/actualizarMarca";
+                    getDatosColor();
+                    formURL = baseURL + "coloresExterior/actualizarColorExterior";
 
                 }
             }
@@ -189,32 +185,32 @@ public class MarcasAction extends MasterAction implements ModelDriven<Marcas> {
         return "adicionar";
     }
 
-    private void getDatosMarca() {
+    public void getDatosColor() {
         helper conex = null;
         ResultSet tabla = null;
 
         try {
             conex = new helper();
-            indError = conex.getErrorSQL();
+            indError += conex.getErrorSQL();
 
             if (!indError.equals("")) {
                 errores.add(indError);
             } else {
-                tabla = conex.executeDataSet("CALL usp_getDatosMarca(?)",
-                        new Object[]{modelo.getIdMar()});
-                indError = conex.getErrorSQL();
+                tabla = conex.executeDataSet("CALL usp_getDatosColorExt(?)",
+                        new Object[]{modelo.getIdColExt()});
+                indError += conex.getErrorSQL();
 
                 if (!indError.equals("")) {
                     errores.add(indError);
                 } else {
                     while (tabla.next()) {
-                        modelo.setIdMar(tabla.getString("idMar"));
-                        modelo.setDesMar(tabla.getString("desMar"));
+                        modelo.setIdColExt(tabla.getString("idColExt"));
+                        modelo.setDesColExt(tabla.getString("desColExt"));
                     }
                 }
             }
         } catch (Exception e) {
-            indError = "error";
+            indError += "error";
             errores.add(e.getMessage());
         } finally {
             try {
@@ -230,17 +226,17 @@ public class MarcasAction extends MasterAction implements ModelDriven<Marcas> {
         verifAccionTipoUsuario();
 
         if (indErrAcc.equals("")) {
-            modelo.setIdMar(modelo.getIdMar().trim());
-            modelo.setDesMar(modelo.getDesMar().trim());
+            modelo.setIdColExt(modelo.getIdColExt().trim());
+            modelo.setDesColExt(modelo.getDesColExt().trim());
 
-            if (modelo.getIdMar().equals("")) {
+            if (modelo.getIdColExt().equals("")) {
                 indError += "error";
-                errores.add("Ingrese el código de la marca");
+                errores.add("Ingrese el código del color de exterior");
             }
 
-            if (modelo.getDesMar().equals("")) {
+            if (modelo.getDesColExt().equals("")) {
                 indError += "error";
-                errores.add("Ingrese el nombre de la marca");
+                errores.add("Ingrese el nombre del color de exterior");
             }
 
             if (indError.equals("")) {
@@ -249,13 +245,13 @@ public class MarcasAction extends MasterAction implements ModelDriven<Marcas> {
 
                 try {
                     conex = new helper();
-                    indError += conex.getErrorSQL();
+                    indError = conex.getErrorSQL();
 
                     if (!indError.equals("")) {
                         errores.add(indError);
                     } else {
-                        tabla = conex.executeDataSet("CALL usp_verifExistMarca(?)",
-                                new Object[]{modelo.getIdMar()});
+                        tabla = conex.executeDataSet("CALL usp_verifExistColorExt(?)",
+                                new Object[]{modelo.getIdColExt()});
 
                         indError += conex.getErrorSQL();
 
@@ -269,10 +265,10 @@ public class MarcasAction extends MasterAction implements ModelDriven<Marcas> {
 
                             if (cont > 0) {
                                 indError += "error";
-                                errores.add("Ya existe una marca con el código ingresado");
+                                errores.add("Ya existe un color de exterior con el código ingresado");
                             } else {
-                                indError += conex.executeNonQuery("CALL usp_insMarca(?,?)",
-                                        new Object[]{modelo.getIdMar(), modelo.getDesMar()});
+                                indError = conex.executeNonQuery("CALL usp_insColorExt(?,?)",
+                                        new Object[]{ modelo.getIdColExt(), modelo.getDesColExt() });
 
                                 if (!indError.equals("")) {
                                     errores.add(indError);
@@ -281,14 +277,10 @@ public class MarcasAction extends MasterAction implements ModelDriven<Marcas> {
                         }
                     }
                 } catch (Exception e) {
-                    indError = "error";
+                    indError += "error";
                     errores.add(e.getMessage());
                 } finally {
-                    try {
-                        tabla.close();
-                        conex.returnConnect();
-                    } catch (Exception e) {
-                    }
+                    conex.returnConnect();
                 }
             }
         }
@@ -301,12 +293,12 @@ public class MarcasAction extends MasterAction implements ModelDriven<Marcas> {
         verifAccionTipoUsuario();
 
         if (indErrAcc.equals("")) {
-            modelo.setIdMar(modelo.getIdMar().trim());
-            modelo.setDesMar(modelo.getDesMar().trim());
+            modelo.setIdColExt(modelo.getIdColExt().trim());
+            modelo.setDesColExt(modelo.getDesColExt().trim());
 
-            if (modelo.getDesMar().equals("")) {
+            if (modelo.getDesColExt().equals("")) {
                 indError += "error";
-                errores.add("Ingrese el nombre de la marca");
+                errores.add("Ingrese el nombre del color de exterior");
             }
 
             if (indError.equals("")) {
@@ -314,20 +306,20 @@ public class MarcasAction extends MasterAction implements ModelDriven<Marcas> {
 
                 try {
                     conex = new helper();
-                    indError = conex.getErrorSQL();
+                    indError += conex.getErrorSQL();
 
                     if (!indError.equals("")) {
                         errores.add(indError);
                     } else {
-                        indError = conex.executeNonQuery("CALL usp_updMarca(?,?)",
-                                new Object[]{modelo.getIdMar(), modelo.getDesMar()});
+                        indError += conex.executeNonQuery("CALL usp_updColorExt(?,?)",
+                                new Object[]{modelo.getIdColExt(), modelo.getDesColExt()});
 
                         if (!indError.equals("")) {
                             errores.add(indError);
                         }
                     }
                 } catch (Exception e) {
-                    indError = "error";
+                    indError += "error";
                     errores.add(e.getMessage());
                 } finally {
                     conex.returnConnect();
@@ -339,7 +331,7 @@ public class MarcasAction extends MasterAction implements ModelDriven<Marcas> {
     }
 
     public String eliminar() {
-        idAccion = 6;
+        idAccion = 7;
         verifAccionTipoUsuario();
 
         if (indErrAcc.equals("")) {
@@ -349,14 +341,14 @@ public class MarcasAction extends MasterAction implements ModelDriven<Marcas> {
 
                 try {
                     conex = new helper();
-                    indError = conex.getErrorSQL().trim();
+                    indError += conex.getErrorSQL().trim();
 
                     if (!indError.equals("")) {
                         errores.add(indError);
                     } else {
-                        tabla = conex.executeDataSet("CALL usp_verifDependMarca(?)",
-                                new Object[]{modelo.getIdMar()});
-                        indError = conex.getErrorSQL();
+                        tabla = conex.executeDataSet("CALL usp_verifDependColorExt(?)",
+                                new Object[]{modelo.getIdColExt()});
+                        indError += conex.getErrorSQL();
 
                         if (!indError.equals("")) {
                             errores.add(indError);
@@ -368,16 +360,16 @@ public class MarcasAction extends MasterAction implements ModelDriven<Marcas> {
 
                             /* Si no tiene dependencias */
                             if (cant == 0) {
-                                indError = conex.executeNonQuery("CALL usp_dltMarca(?)",
-                                        new Object[]{modelo.getIdMar()});
+                                indError += conex.executeNonQuery("CALL usp_dltColorExt(?)",
+                                        new Object[]{modelo.getIdColExt()});
 
                                 indError = indError.trim();
                                 if (indError.trim().equals("")) {
                                     errores.add(indError);
                                 }
                             } else /* si tiene dependencias */ {
-                                indError = "error";
-                                errores.add("Existen registros dependientes de la marca");
+                                indError += "error";
+                                errores.add("Existen registros dependientes del color de exterior");
                             }
                         }
                     }
@@ -397,24 +389,15 @@ public class MarcasAction extends MasterAction implements ModelDriven<Marcas> {
         return "eliminar";
     }
 
-    /**
-     * @return the modelo
-     */
-    public Marcas getModelo() {
+    public ColoresExterior getModelo() {
         return modelo;
     }
 
-    /**
-     * @param modelo the modelo to set
-     */
-    public void setModelo(Marcas modelo) {
+    public void setModelo(ColoresExterior modelo) {
         this.modelo = modelo;
     }
 
-    /**
-     * @return the listMarcas
-     */
-    public ArrayList<Marcas> getListMarcas() {
-        return listMarcas;
+    public ArrayList<ColoresExterior> getListColoresExterior() {
+        return listColoresExterior;
     }
 }

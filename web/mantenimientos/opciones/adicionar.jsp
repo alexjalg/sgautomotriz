@@ -13,7 +13,7 @@
 </div>
             
 <form method="POST" id="frm_opcion_back" action="<s:property value="backURL" />">
-    <s:hidden name="varReturn" id="varReturn_f" />
+    <s:hidden name="varReturn" />
 </form>
         
 <div class="d-content-form">

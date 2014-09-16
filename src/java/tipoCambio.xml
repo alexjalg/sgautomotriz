@@ -12,10 +12,10 @@
         <action name="*TipoCambio" method="{1}" class="actions.TipoCambioAction">
             <result name="success" type="tiles">mant-tipoCambio-index</result>
             <result name="adicionar" type="tiles">mant-tipoCambio-adicionar</result>
-            <result name="grabar">/mantenimientos/tipoCambio/grabar.jsp</result>
-            <result name="actualizar">/mantenimientos/tipoCambio/grabar.jsp</result>
-            <result name="vrfSeleccion">/mantenimientos/tipoCambio/grabar.jsp</result>
-            <result name="eliminar">/mantenimientos/tipoCambio/eliminar.jsp</result>
+            <result name="grabar" type="tiles">mant-tipoCambio-grabar</result>
+            <result name="actualizar" type="tiles">mant-tipoCambio-grabar</result>
+            <result name="vrfSeleccion" type="tiles">mant-tipoCambio-grabar</result>
+            <result name="eliminar" type="tiles">mant-tipoCambio-eliminar</result>
         </action>
     </package>
 </struts>

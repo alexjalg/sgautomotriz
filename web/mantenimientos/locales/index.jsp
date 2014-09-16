@@ -44,11 +44,6 @@
     <form id="frm_princ" method="POST" action="<s:property value="baseURL" /><s:property value="urlPaginacion" />">
     <s:hidden name="idCon" id="idCon_h1" />
     <s:property value="datosOblig" escape="false" />
-
-    <s:hidden name="curPagVis" id="curPag_f" />
-    
-    <s:hidden name="varReturn" id="varReturn_f" />
-    <s:hidden name="nivBandeja" id="nivBandeja_f" />
     
     <div class="d-grilla" style="overflow: hidden;">
         <div class="d-content-grilla-head" style="">
@@ -56,12 +51,14 @@
                 <tr class="tr-head">
                     <td style="width: 24px;"></td>
                     <td style="width: 50px;">Código</td>
-                    <td style="">Local</td>
+                    <td style="width: 400px;">Nombre</td>
+                    <td style="">Nombre Comercial</td>
                     <td style="width: 140px; text-align: center;">RUC</td>
                 </tr>
                 <tr class="tr-head">
                     <td style="width: 24px;"></td>
                     <td style="width: 40px;"></td>
+                    <td style="width: 400px;"></td>
                     <td style=""></td>
                     <td style="width: 140px;"></td>
                 </tr>
@@ -77,8 +74,11 @@
                     <td style="width: 50px;">
                         <s:property value="idLocCon" />
                     </td>
-                    <td style="">
+                    <td style="width: 400px;">
                         <s:property value="desLocCon" />
+                    </td>
+                    <td style="">
+                        <s:property value="desNomCom" />
                     </td>
                     <td style="width:140px; text-align: center;">
                         <s:property value="numRuc" />
@@ -151,7 +151,7 @@
                         var _varret = $('#nivBandeja_f').val()+'%'+href+'%'+$('#mtu_h1').val()+'%'+$('#mmo_h1').val()+'%'+$('#mop_h1').val()+'%'+$('#mni_h1').val()+'%'+$('#mod_h1').val()+'%'+$('#curPag_f').val()+'%'+$('#idCon_h1').val()+'|';
                         $('#varReturn_f').val($('#varReturn_f').val()+_varret);
                         
-                        $('#frm_princ').attr('action','<s:property value="baseURL" /><s:url namespace="locales" includeContext="false" action="adicionarLocal" />');
+                        $('#frm_princ').attr('action','<s:property value="baseURL" /><s:url namespace="locales" includeContext="false" action="modificarLocal" />');
                         $('#frm_princ').submit();
                     }
                 },

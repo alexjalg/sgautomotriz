@@ -10,28 +10,41 @@
  */
 package entities;
 
-public class Usuarios 
-{
+public class Usuarios {
+
     private String idUsu = "";
     private String idUsu_f = "";
     private String desApeUsu = "";
     private String desNomUsu = "";
+    private String otrClaUsu = "";
     private String desUsu = "";
     private String desUsu_f = "";
     private String desUsuFull = "";
-    private int idTipUsu=0;
-    private String otrClaUsu = "";
+    private int idTipUsu = 0;
+    private int idTipUsu_f = 0;
+    private String desTipUsu="";
+    private int idCon = 0;
+    private String desCon = "";
+    private int idLocCon = 0;
+    private String desLocCon = "";
+    private String numTelFij = "";
+    private String numAnexo = "";
+    private String numTelMov1 = "";
+    private String numTelMov2 = "";
+    private String numTelRP1 = "";
+    private String numTelRP2 = "";
+    private String numTelRP3 = "";
+    private String otrEmaTra = "";
+    private String fecUltCamCla = "";
+    private String indClaRes = "";
     private String otrNueClaUsu = "";
     private String otrNueClaUsu2 = "";
-    private int idCon=0;
-    private String desCon="";
-    private int idLocCon=0;
-    private String desLocCon="";
+    private String indBloUsu = "";
+    private int numIntfal = 0;
     private String edoUsu = "";
     private String edoUsu_f = "";
-    private String fecReg="";
-    private String fecUltCamCla="";
-    private String indClaRes="";
+    private String fecReg = "";
+    private String idUsuReg = "";
 
     public String getIdUsu() {
         return idUsu;
@@ -112,7 +125,7 @@ public class Usuarios
     public void setDesUsuFull(String desUsuFull) {
         this.desUsuFull = desUsuFull;
     }
-    
+
     /**
      * @return the idUsu_f
      */
@@ -293,5 +306,207 @@ public class Usuarios
      */
     public void setOtrNueClaUsu2(String otrNueClaUsu2) {
         this.otrNueClaUsu2 = otrNueClaUsu2;
+    }
+
+    /**
+     * @return the numTelFij
+     */
+    public String getNumTelFij() {
+        return numTelFij;
+    }
+
+    /**
+     * @param numTelFij the numTelFij to set
+     */
+    public void setNumTelFij(String numTelFij) {
+        numTelFij = numTelFij.trim();
+        if (numTelFij.equals("")) {
+            numTelFij="0";
+        }
+        
+        this.numTelFij = numTelFij;
+    }
+
+    /**
+     * @return the numAnexo
+     */
+    public String getNumAnexo() {
+        return numAnexo;
+    }
+
+    /**
+     * @param numAnexo the numAnexo to set
+     */
+    public void setNumAnexo(String numAnexo) {
+        numAnexo = numAnexo.trim();
+        if (numAnexo.equals("")) {
+            numAnexo="0";
+        }
+        
+        this.numAnexo = numAnexo;
+    }
+
+    /**
+     * @return the numTelMov1
+     */
+    public String getNumTelMov1() {
+        return numTelMov1;
+    }
+
+    /**
+     * @param numTelMov1 the numTelMov1 to set
+     */
+    public void setNumTelMov1(String numTelMov1) {
+        numTelMov1 = numTelMov1.trim();
+        if (numTelMov1.equals("")) {
+            numTelMov1="0";
+        }
+        
+        this.numTelMov1 = numTelMov1;
+    }
+
+    /**
+     * @return the numTelMov2
+     */
+    public String getNumTelMov2() {
+        return numTelMov2;
+    }
+
+    /**
+     * @param numTelMov2 the numTelMov2 to set
+     */
+    public void setNumTelMov2(String numTelMov2) {
+        numTelMov2 = numTelMov2.trim();
+        if (numTelMov2.equals("")) {
+            numTelMov2="0";
+        }
+        
+        this.numTelMov2 = numTelMov2;
+    }
+
+    /**
+     * @return the numTelRP1
+     */
+    public String getNumTelRP1() {
+        return numTelRP1;
+    }
+
+    /**
+     * @param numTelRP1 the numTelRP1 to set
+     */
+    public void setNumTelRP1(String numTelRP1) {
+        this.numTelRP1 = numTelRP1;
+    }
+
+    /**
+     * @return the numTelRP2
+     */
+    public String getNumTelRP2() {
+        return numTelRP2;
+    }
+
+    /**
+     * @param numTelRP2 the numTelRP2 to set
+     */
+    public void setNumTelRP2(String numTelRP2) {
+        this.numTelRP2 = numTelRP2;
+    }
+
+    /**
+     * @return the numTelRP3
+     */
+    public String getNumTelRP3() {
+        return numTelRP3;
+    }
+
+    /**
+     * @param numTelRP3 the numTelRP3 to set
+     */
+    public void setNumTelRP3(String numTelRP3) {
+        this.numTelRP3 = numTelRP3;
+    }
+
+    /**
+     * @return the otrEmaTra
+     */
+    public String getOtrEmaTra() {
+        return otrEmaTra;
+    }
+
+    /**
+     * @param otrEmaTra the otrEmaTra to set
+     */
+    public void setOtrEmaTra(String otrEmaTra) {
+        this.otrEmaTra = otrEmaTra;
+    }
+
+    /**
+     * @return the indBloUsu
+     */
+    public String getIndBloUsu() {
+        return indBloUsu;
+    }
+
+    /**
+     * @param indBloUsu the indBloUsu to set
+     */
+    public void setIndBloUsu(String indBloUsu) {
+        this.indBloUsu = indBloUsu;
+    }
+
+    /**
+     * @return the numIntfal
+     */
+    public int getNumIntfal() {
+        return numIntfal;
+    }
+
+    /**
+     * @param numIntfal the numIntfal to set
+     */
+    public void setNumIntfal(int numIntfal) {
+        this.numIntfal = numIntfal;
+    }
+
+    /**
+     * @return the idUsuReg
+     */
+    public String getIdUsuReg() {
+        return idUsuReg;
+    }
+
+    /**
+     * @param idUsuReg the idUsuReg to set
+     */
+    public void setIdUsuReg(String idUsuReg) {
+        this.idUsuReg = idUsuReg;
+    }
+
+    /**
+     * @return the desTipUsu
+     */
+    public String getDesTipUsu() {
+        return desTipUsu;
+    }
+
+    /**
+     * @param desTipUsu the desTipUsu to set
+     */
+    public void setDesTipUsu(String desTipUsu) {
+        this.desTipUsu = desTipUsu;
+    }
+
+    /**
+     * @return the idTipUsu_f
+     */
+    public int getIdTipUsu_f() {
+        return idTipUsu_f;
+    }
+
+    /**
+     * @param idTipUsu_f the idTipUsu_f to set
+     */
+    public void setIdTipUsu_f(int idTipUsu_f) {
+        this.idTipUsu_f = idTipUsu_f;
     }
 }

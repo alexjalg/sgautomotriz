@@ -27,11 +27,6 @@
 <div class="d-content-grilla" style="min-width: 660px;">
     <form id="frm_princ" method="POST" action="<s:property value="baseURL" /><s:property value="urlPaginacion" />">
     <s:property value="datosOblig" escape="false" />
-
-    <s:hidden name="curPagVis" id="curPag_f" />
-    
-    <s:hidden name="varReturn" id="varReturn_f" />
-    <s:hidden name="nivBandeja" id="nivBandeja_f" />
     
     <div class="d-grilla" style="overflow: hidden;">
         <div class="d-content-grilla-head" style="">
@@ -41,31 +36,31 @@
                     <td style="width:70px; text-align: center;">
                         Código
                     </td>
-                    <td style="<s:if test='%{desCol_f!=""}'> background-color: #B5CCED; </s:if>">
-                        Color
+                    <td style="<s:if test='%{desColExt_f!=""}'> background-color: #B5CCED; </s:if>">
+                        Color de exterior
                     </td>
                 </tr>
                 <tr class="tr-head">
                     <td style="width: 24px;"></td>
                     <td></td>
-                    <td style="<s:if test='%{desCol_f!=""}'> background-color: #B5CCED; </s:if>">
-                        <s:textfield name="desCol_f" cssClass="element-form-grid" cssStyle="width: 400px;" maxLength="50" />
+                    <td style="<s:if test='%{desColExt_f!=""}'> background-color: #B5CCED; </s:if>">
+                        <s:textfield name="desColExt_f" id="desColExt_f" cssClass="element-form-grid" cssStyle="width: 400px;" maxLength="50" />
                     </td>
                 </tr>
             </table>
         </div>
         <div class="d-content-grilla-body">
             <table border="0" cellpadding="0" cellspacing="0" style="">
-                <s:iterator value="listColores">
+                <s:iterator value="listColoresExterior">
                 <tr>
                     <td style="width: 24px;">
-                        <input type="radio" name="idCol" id="rbt_idCol" value="<s:property value="idCol" />" class="select_rec" />
+                        <input type="radio" name="idColExt" id="rbt_idColExt" value="<s:property value="idColExt" />" class="select_rec" />
                     </td>
                     <td style="width:70px; text-align: center;">
-                        <s:property value="idCol" />
+                        <s:property value="idColExt" />
                     </td>
                     <td style="">
-                        <s:property value="desCol" />
+                        <s:property value="desColExt" />
                     </td>
                 </tr>
                 </s:iterator>
@@ -106,16 +101,16 @@
             $('#opcion_h1').val('A');
             var href = $(location).attr('href');
 
-            var _varret = $('#nivBandeja_f').val()+'%'+href+'%'+$('#mtu_h1').val()+'%'+$('#mmo_h1').val()+'%'+$('#mop_h1').val()+'%'+$('#mni_h1').val()+'%'+$('#mod_h1').val()+'%'+$('#curPag_f').val()+'|';
+            var _varret = $('#nivBandeja_f').val()+'%'+href+'%'+$('#mtu_h1').val()+'%'+$('#mmo_h1').val()+'%'+$('#mop_h1').val()+'%'+$('#mni_h1').val()+'%'+$('#mod_h1').val()+'%'+$('#curPag_f').val()+'%'+$('#desColExt_f').val()+'|';
             $('#varReturn_f').val($('#varReturn_f').val()+_varret);
 
-            $('#frm_princ').attr('action','<s:property value="baseURL" /><s:url namespace="colores" includeContext="false" action="adicionarColor" />');
+            $('#frm_princ').attr('action','<s:property value="baseURL" /><s:url namespace="coloresExterior" includeContext="false" action="adicionarColorExterior" />');
             $('#frm_princ').submit();
         });
         
         $('#btn-edit').click(function() {
             post(
-                '<s:property value="baseURL" /><s:url namespace="colores" includeContext="false" action="vrfSeleccionColor" />',
+                '<s:property value="baseURL" /><s:url namespace="coloresExterior" includeContext="false" action="vrfSeleccionColorExterior" />',
                 $('#frm_princ').serialize(),
                 function(resultado){
                     var _error = validaRespuestaAjax(resultado);
@@ -130,10 +125,10 @@
                         $('#opcion_h1').val('M');
                         var href = $(location).attr('href');
 
-                        var _varret = $('#nivBandeja_f').val()+'%'+href+'%'+$('#mtu_h1').val()+'%'+$('#mmo_h1').val()+'%'+$('#mop_h1').val()+'%'+$('#mni_h1').val()+'%'+$('#mod_h1').val()+'%'+$('#curPag_f').val()+'|';
+                        var _varret = $('#nivBandeja_f').val()+'%'+href+'%'+$('#mtu_h1').val()+'%'+$('#mmo_h1').val()+'%'+$('#mop_h1').val()+'%'+$('#mni_h1').val()+'%'+$('#mod_h1').val()+'%'+$('#curPag_f').val()+'%'+$('#desColExt_f').val()+'|';
                         $('#varReturn_f').val($('#varReturn_f').val()+_varret);
 
-                        $('#frm_princ').attr('action','<s:property value="baseURL" /><s:url namespace="colores" includeContext="false" action="modificarColor" />');
+                        $('#frm_princ').attr('action','<s:property value="baseURL" /><s:url namespace="coloresExterior" includeContext="false" action="modificarColorExterior" />');
                         $('#frm_princ').submit();           
                     }
                 },
@@ -143,7 +138,7 @@
         
         $('#btn-delete').click(function(){
             post(
-                '<s:property value="baseURL" /><s:url namespace="colores" includeContext="false" action="vrfSeleccionColor" />',
+                '<s:property value="baseURL" /><s:url namespace="coloresExterior" includeContext="false" action="vrfSeleccionColorExterior" />',
                 $('#frm_princ').serialize(),
                 function(resultado){
                     var _error = validaRespuestaAjax(resultado);
@@ -157,7 +152,7 @@
                     {
                         $('#opcion_h1').val('C');
                         post(
-                            '<s:property value="baseURL" /><s:url namespace="colores" includeContext="false" action="eliminarColor" />',
+                            '<s:property value="baseURL" /><s:url namespace="coloresExterior" includeContext="false" action="eliminarColorExterior" />',
                             $('#frm_princ').serialize(),
                             function(resultado1)
                             {
@@ -176,7 +171,7 @@
                                                 $('#DIVeliminar').dialog('close');
                                                 $('#opcion_h1').val('E');
                                                 post(
-                                                    '<s:property value="baseURL" /><s:url namespace="colores" includeContext="false" action="eliminarColor" />',
+                                                    '<s:property value="baseURL" /><s:url namespace="coloresExterior" includeContext="false" action="eliminarColorExterior" />',
                                                     $('#frm_princ').serialize(),
                                                     function(resultado2)
                                                     {
@@ -190,7 +185,7 @@
                                                         else
                                                         {
                                                             $('#DIVeliminar').dialog('close');
-                                                            $('#frm_princ').attr('action','<s:property value="baseURL" /><s:url namespace="colores" includeContext="false" action="Color" />');
+                                                            $('#frm_princ').attr('action','<s:property value="baseURL" /><s:url namespace="coloresExterior" includeContext="false" action="ColorExterior" />');
                                                             $('#frm_princ').submit();
                                                         }
                                                     },

@@ -34,10 +34,10 @@
             <tr>
                 <td style="width: 50px;">Color<span class="required">*</span></td>
                 <td>
-                    <s:hidden name="idCol" id="idCol_h" />
-                    <input type="text" name="idCol" id="colorIdCol" id="colorIdCol" class="element-form" style="width: 40px; text-align: center;" 
+                    <s:hidden name="idColExt" id="idColExt_h" />
+                    <input type="text" name="idColExt" id="colorIdColExt" class="element-form" style="width: 40px; text-align: center;" 
                            max="3" disabled="true" />
-                    <input type="text" id="colorDesCol" class="element-form" style="width:400px;" maxLength="50" 
+                    <input type="text" id="colorDesColExt" class="element-form" style="width:400px;" maxLength="50" 
                            disabled="true" />
                     <button id="btn_colores">...</button>    
                 </td>
@@ -100,7 +100,7 @@
         
         $('#btn_colores').click(function(){
             post(
-                '<s:property value="baseURL" /><s:url namespace="coloresMod" includeContext="false" action="listColoresColorMod" />',
+                '<s:property value="baseURL" /><s:url namespace="coloresExtModelo" includeContext="false" action="listColoresExteriorColorExtModelo" />',
                 {},
                 function(resultado){
                     var _error = validaRespuestaAjax(resultado);
@@ -115,9 +115,9 @@
                         $('#DIVcolores').dialog({
                             buttons:{
                                 "Aceptar":function(){
-                                    $('#colorIdCol').val($('.select_rec:checked').val());
-                                    $('#idCol_h').val($('.select_rec:checked').val());
-                                    $('#colorDesCol').val($.trim($('.select_rec:checked').parent().next().next().html()));
+                                    $('#colorIdColExt').val($('.select_rec:checked').val());
+                                    $('#idColExt_h').val($('.select_rec:checked').val());
+                                    $('#colorDesColExt').val($.trim($('.select_rec:checked').parent().next().next().html()));
                                     $('#DIVcolores').dialog("close");
                                     hideOverlay(function(){});
                                 },

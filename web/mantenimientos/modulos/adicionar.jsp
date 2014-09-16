@@ -13,9 +13,7 @@
 </div>
             
 <form method="POST" id="frm_modulo_back" action="<s:property value="backURL" />">
-    <s:hidden name="opcion" id="opcion_h1" value="" />
-    
-    <s:hidden name="curPagVis" />
+    <s:hidden name="varReturn" />
 </form>
         
 <div class="d-content-form">

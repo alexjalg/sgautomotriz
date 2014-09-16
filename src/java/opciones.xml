@@ -12,10 +12,10 @@
         <action name="*Opcion" method="{1}" class="actions.OpcionesAction">
             <result name="success" type="tiles">mant-opciones-index</result>
             <result name="adicionar" type="tiles">mant-opciones-adicionar</result>
-            <result name="grabar">/mantenimientos/opciones/grabar.jsp</result>
-            <result name="actualizar">/mantenimientos/opciones/grabar.jsp</result>
-            <result name="vrfSeleccion">/mantenimientos/opciones/grabar.jsp</result>
-            <result name="eliminar">/mantenimientos/opciones/eliminar.jsp</result>
+            <result name="grabar" type="tiles">mant-opciones-grabar</result>
+            <result name="actualizar" type="tiles">mant-opciones-grabar</result>
+            <result name="vrfSeleccion" type="tiles">mant-opciones-grabar</result>
+            <result name="eliminar" type="tiles">mant-opciones-eliminar</result>
         </action>
     </package>
 </struts>

@@ -6,7 +6,7 @@
             <div class="both"></div>
         </div>
         <div style="padding: 0px 10px 15px 10px; text-align: center;">
-            ¿Desea eliminar la opción?
+            ¿Eliminar el color de exterior del modelo?
         </div>
     </div>
 </s:if>

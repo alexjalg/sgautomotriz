@@ -15,118 +15,90 @@ import entities.Concesionarios;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
-public class ConcesionariosAction extends MasterAction implements ModelDriven<Concesionarios>
-{
+public class ConcesionariosAction extends MasterAction implements ModelDriven<Concesionarios> {
+
     private Concesionarios modelo = new Concesionarios();
     private ArrayList<Concesionarios> listConcesionarios = new ArrayList<Concesionarios>();
 
     @Override
-    public Concesionarios getModel()
-    {
+    public Concesionarios getModel() {
         tituloOpc = "Concesionarios";
         idClaseAccion = 3;
-        
+
         return modelo;
     }
-    
-    public String vrfSeleccion()
-    {
+
+    public String vrfSeleccion() {
+
         idAccion = 1;
-        
         verifAccionTipoUsuario();
-        
-        if(indErrAcc.equals(""))
-        {
-            if(modelo.getIdCon().trim().equals("") || modelo.getIdCon().trim().equals("0"))
-            {
+
+        if (indErrAcc.equals("")) {
+            if (modelo.getIdCon().trim().equals("") || modelo.getIdCon().trim().equals("0")) {
                 indError = "error";
                 errores.add("No ha seleccionado ningun registro");
             }
         }
-        
+
         return "vrfSeleccion";
     }
-    
-    private void cantConcesionariosIndex()
-    {
+
+    private void cantConcesionariosIndex() {
         helper conex = null;
         ResultSet tabla = null;
-        
-        try 
-        {
+
+        try {
             conex = new helper();
             indError = conex.getErrorSQL();
-        
-            if(!indError.equals(""))
-            {
+
+            if (!indError.equals("")) {
                 errores.add(indError);
-            }
-            else
-            {
+            } else {
                 tabla = conex.executeDataSet("CALL usp_cantConcesionariosIndex()", new Object[]{});
 
                 indError = conex.getErrorSQL();
 
-                if(!indError.equals(""))
-                {
+                if (!indError.equals("")) {
                     errores.add(indError);
-                }
-                else
-                {
-                    while(tabla.next())
-                    {
+                } else {
+                    while (tabla.next()) {
                         cantReg = tabla.getInt(1);
                     }
                 }
             }
-        }
-        catch (Exception e) 
-        {
+        } catch (Exception e) {
             indError = "error";
             errores.add(e.getMessage());
-        }
-        finally
-        {
-            try 
-            {
+        } finally {
+            try {
                 tabla.close();
                 conex.returnConnect();
+            } catch (Exception e) {
             }
-            catch (Exception e) 
-            {}
         }
     }
-    
-    private void listConcesionariosIndex()
-    {
+
+    private void listConcesionariosIndex() {
         helper conex = null;
         ResultSet tabla = null;
-        
-        try 
-        {
+
+        try {
             conex = new helper();
             indError = conex.getErrorSQL();
 
-            if(!indError.equals(""))
-            {
+            if (!indError.equals("")) {
                 errores.add(indError);
-            }
-            else
-            {
-                tabla = conex.executeDataSet("CALL usp_listConcesionariosIndex(?,?)", 
-                        new Object[]{ getCurPag()*regPag,regPag });
+            } else {
+                tabla = conex.executeDataSet("CALL usp_listConcesionariosIndex(?,?)",
+                        new Object[]{getCurPag() * regPag, regPag});
 
                 indError = conex.getErrorSQL();
 
-                if(!indError.equals(""))
-                {
+                if (!indError.equals("")) {
                     errores.add(indError);
-                }
-                else
-                {
+                } else {
                     Concesionarios obj;
-                    while(tabla.next())
-                    {
+                    while (tabla.next()) {
                         obj = new Concesionarios();
                         obj.setIdCon(tabla.getString("idCon"));
                         obj.setDesCon(tabla.getString("desCon"));
@@ -134,39 +106,29 @@ public class ConcesionariosAction extends MasterAction implements ModelDriven<Co
                     }
                 }
             }
-        }
-        catch (Exception e) 
-        {
+        } catch (Exception e) {
             indError = "error";
             errores.add(e.getMessage());
-        }
-        finally
-        {
-            try 
-            {
+        } finally {
+            try {
                 tabla.close();
                 conex.returnConnect();
+            } catch (Exception e) {
             }
-            catch (Exception e) 
-            {}
         }
     }
-    
+
     @Override
-    public String execute()
-    {
+    public String execute() {
         idAccion = 2;
-        
         verifAccionTipoUsuario();
-        
-        if(indErrAcc.equals(""))
-        {
+
+        if (indErrAcc.equals("")) {
             nivBandeja = 1;
             urlPaginacion = "concesionarios/Concesionario";
 
             varReturnProcess(0);
-            if(!listVarReturn.isEmpty())
-            {
+            if (!listVarReturn.isEmpty()) {
                 curPagVis = Integer.parseInt(listVarReturn.get(0).toString().trim());
             }
 
@@ -174,288 +136,235 @@ public class ConcesionariosAction extends MasterAction implements ModelDriven<Co
             verifPag();
             listConcesionariosIndex();
         }
-        
+
         return SUCCESS;
     }
-    
-    public String adicionar()
-    {
+
+    public String adicionar() {
         idAccion = 3;
-        
+
         verifAccionTipoUsuario();
-        
-        if(indErrAcc.equals(""))
-        {
+
+        if (indErrAcc.equals("")) {
             nivBandeja = 1;
 
-            if((!opcion.trim().equals("A") && !opcion.trim().equals("M")))
-            {
+            if ((!opcion.trim().equals("A") && !opcion.trim().equals("M"))) {
                 indErrParm = "error";
-            }
-            else
-            {
+            } else {
                 varReturnProcess(1);
 
-                if(opcion.equals("A"))
-                {
-                    formURL = baseURL+"concesionarios/grabarConcesionario";
-                }
-
-                if(opcion.equals("M"))
-                {
-
-                    getDatosConcesionario();
-                    formURL = baseURL+"concesionarios/actualizarConcesionario";
-
+                if (opcion.equals("A")) {
+                    formURL = baseURL + "concesionarios/grabarConcesionario";
                 }
             }
         }
-        
+
         return "adicionar";
     }
-    
-    public void getDatosConcesionario()
-    {
+
+    public String modificar() {
+        idAccion = 4;
+
+        verifAccionTipoUsuario();
+
+        if (indErrAcc.equals("")) {
+            nivBandeja = 1;
+
+            if ((!opcion.trim().equals("A") && !opcion.trim().equals("M"))) {
+                indErrParm = "error";
+            } else {
+                varReturnProcess(1);
+                
+                if (opcion.equals("M")) {
+                    getDatosConcesionario();
+                    formURL = baseURL + "concesionarios/actualizarConcesionario";
+                }
+            }
+        }
+
+        return "adicionar";
+    }
+
+    public void getDatosConcesionario() {
         helper conex = null;
         ResultSet tabla = null;
-        
-        try 
-        {
+
+        try {
             conex = new helper();
             indError = conex.getErrorSQL();
 
-            if(!indError.equals(""))
-            {
+            if (!indError.equals("")) {
                 errores.add(indError);
-            }
-            else
-            {
-                tabla = conex.executeDataSet("CALL usp_getDatosConcesionario(?)", 
-                        new Object[]{ modelo.getIdCon() });
+            } else {
+                tabla = conex.executeDataSet("CALL usp_getDatosConcesionario(?)",
+                        new Object[]{modelo.getIdCon()});
                 indError = conex.getErrorSQL();
 
-                if(!indError.equals(""))
-                {
+                if (!indError.equals("")) {
                     errores.add(indError);
-                }
-                else
-                {
-                    while(tabla.next())
-                    {
+                } else {
+                    while (tabla.next()) {
                         modelo.setIdCon(tabla.getString("idCon"));
                         modelo.setDesCon(tabla.getString("desCon"));
                     }
                 }
             }
-        }
-        catch (Exception e) 
-        {
+        } catch (Exception e) {
             indError = "error";
             errores.add(e.getMessage());
-        }
-        finally
-        {
-            try 
-            {
+        } finally {
+            try {
                 tabla.close();
                 conex.returnConnect();
+            } catch (Exception e) {
             }
-            catch (Exception e) 
-            {}
         }
     }
-    
-    public String grabar()
-    {
-        idAccion = 4;
-        
+
+    public String grabar() {
+        idAccion = 5;
+
         verifAccionTipoUsuario();
-        
-        if(indErrAcc.equals(""))
-        {
+
+        if (indErrAcc.equals("")) {
             modelo.setDesCon(modelo.getDesCon().trim());
 
-            if(modelo.getDesCon().equals(""))
-            {
+            if (modelo.getDesCon().equals("")) {
                 indError += "error";
                 errores.add("Ingrese el nombre del concesionario");
             }
 
-            if(indError.equals(""))
-            {
+            if (indError.equals("")) {
                 helper conex = null;
 
-                try
-                {
+                try {
                     conex = new helper();
                     indError = conex.getErrorSQL();
 
-                    if(!indError.equals(""))
-                    {
+                    if (!indError.equals("")) {
                         errores.add(indError);
-                    }
-                    else
-                    {
-                        indError = conex.executeNonQuery("CALL usp_insConcesionario(?)", 
-                                new Object[]{ modelo.getDesCon() });
+                    } else {
+                        indError = conex.executeNonQuery("CALL usp_insConcesionario(?)",
+                                new Object[]{modelo.getDesCon()});
 
-                        if(!indError.equals(""))
-                        {
+                        if (!indError.equals("")) {
                             errores.add(indError);
                         }
                     }
-                }
-                catch (Exception e) 
-                {
+                } catch (Exception e) {
                     indError = "error";
                     errores.add(e.getMessage());
-                }
-                finally
-                {
+                } finally {
                     conex.returnConnect();
                 }
             }
         }
-        
+
         return "grabar";
     }
-    
-    public String actualizar()
-    {
-        idAccion = 5;
-        
+
+    public String actualizar() {
+        idAccion = 6;
+
         verifAccionTipoUsuario();
-        
-        if(indErrAcc.equals(""))
-        {
+
+        if (indErrAcc.equals("")) {
             modelo.setDesCon(modelo.getDesCon().trim());
 
-            if(modelo.getDesCon().equals(""))
-            {
-                indError="error";
+            if (modelo.getDesCon().equals("")) {
+                indError = "error";
                 errores.add("Ingrese el nombre del concesionario");
             }
 
-            if(indError.equals(""))
-            {
+            if (indError.equals("")) {
                 helper conex = null;
 
-                try
-                {
+                try {
                     conex = new helper();
                     indError = conex.getErrorSQL();
 
-                    if(!indError.equals(""))
-                    {
+                    if (!indError.equals("")) {
                         errores.add(indError);
-                    }
-                    else
-                    {
+                    } else {
                         indError = conex.executeNonQuery("CALL usp_updConcesionario(?,?)",
-                                new Object[]{ Integer.parseInt(modelo.getIdCon()),modelo.getDesCon() });
+                                new Object[]{Integer.parseInt(modelo.getIdCon()), modelo.getDesCon()});
 
-                        if(!indError.equals(""))
-                        {
+                        if (!indError.equals("")) {
                             errores.add(indError);
                         }
                     }
-                }
-                catch (Exception e) 
-                {
+                } catch (Exception e) {
                     indError = "error";
                     errores.add(e.getMessage());
-                }
-                finally
-                {
+                } finally {
                     conex.returnConnect();
                 }
             }
         }
-        
+
         return "actualizar";
     }
-    
-    public String eliminar()
-    {
-        idAccion = 6;
-        
+
+    public String eliminar() {
+        idAccion = 7;
+
         verifAccionTipoUsuario();
-        
-        if(indErrAcc.equals(""))
-        {
-            if(opcion.trim().equals("E"))
-            {
+
+        if (indErrAcc.equals("")) {
+            if (opcion.trim().equals("E")) {
                 helper conex = null;
                 ResultSet tabla = null;
 
-                try
-                {
+                try {
                     conex = new helper();
                     indError = conex.getErrorSQL().trim();
 
-                    if(!indError.equals(""))
-                    {
+                    if (!indError.equals("")) {
                         errores.add(indError);
-                    }
-                    else
-                    {
-                        tabla = conex.executeDataSet("CALL usp_verifDependConcesionario(?)", 
-                                new Object[]{ Integer.parseInt(modelo.getIdCon()) });
+                    } else {
+                        tabla = conex.executeDataSet("CALL usp_verifDependConcesionario(?)",
+                                new Object[]{Integer.parseInt(modelo.getIdCon())});
                         indError = conex.getErrorSQL();
 
-                        if(!indError.equals(""))
-                        {
+                        if (!indError.equals("")) {
                             errores.add(indError);
-                        }
-                        else
-                        {
+                        } else {
                             int cant = 0;
-                            while(tabla.next())
-                            {
+                            while (tabla.next()) {
                                 cant = tabla.getInt(1);
                             }
 
                             /* Si no tiene dependencias */
-                            if(cant == 0)
-                            {
+                            if (cant == 0) {
                                 indError = conex.executeNonQuery("CALL usp_dltConcesionario(?)",
-                                        new Object[]{ Integer.parseInt(modelo.getIdCon()) });
+                                        new Object[]{Integer.parseInt(modelo.getIdCon())});
 
                                 indError = indError.trim();
-                                if(indError.trim().equals(""))
-                                {
+                                if (indError.trim().equals("")) {
                                     errores.add(indError);
                                 }
-                            }
-                            else /* si tiene dependencias */
-                            {
+                            } else /* si tiene dependencias */ {
                                 indError = "error";
                                 errores.add("Existen registros dependientes del concesionario");
                             }
                         }
                     }
-                }
-                catch (Exception e) 
-                {
+                } catch (Exception e) {
                     indError = "error";
                     errores.add(e.getMessage());
-                }
-                finally
-                {
-                    try 
-                    {
+                } finally {
+                    try {
                         tabla.close();
                         conex.returnConnect();
+                    } catch (Exception e) {
                     }
-                    catch (Exception e) 
-                    {}
                 }
             }
         }
-        
+
         return "eliminar";
     }
-    
+
     /**
      * @return the modelo
      */
@@ -481,7 +390,7 @@ public class ConcesionariosAction extends MasterAction implements ModelDriven<Co
      * @return the accion
      */
     public String getAccion() {
-        accion = this.getClass().getName().substring(this.getClass().getName().lastIndexOf(".")+1);
+        accion = this.getClass().getName().substring(this.getClass().getName().lastIndexOf(".") + 1);
         return accion;
     }
 
@@ -491,5 +400,4 @@ public class ConcesionariosAction extends MasterAction implements ModelDriven<Co
     public void setAccion(String accion) {
         this.accion = accion;
     }
-    
 }

@@ -48,11 +48,6 @@
     <s:hidden name="idModu" id="idModu_h1" />
     <s:hidden name="idOpc1" id="idOpc1_h1" />
     <s:property value="datosOblig" escape="false" />
-
-    <s:hidden name="curPagVis" id="curPag_f" />
-    
-    <s:hidden name="varReturn" id="varReturn_f" />
-    <s:hidden name="nivBandeja" id="nivBandeja_f" />
     
     <div class="d-grilla" style="overflow: hidden;">
         <div class="d-content-grilla-head" style="">

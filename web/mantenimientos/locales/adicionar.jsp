@@ -9,7 +9,7 @@
         <div class="d-back">
             <a href="javascript:void(0)" class="back">Volver</a>
             <form method="POST" id="frm_local_back" action="<s:property value="backURL" />">
-                <s:hidden name="varReturn" id="varReturn_f" />
+                <s:hidden name="varReturn" />
             </form>
         </div>
     </div>
@@ -28,15 +28,35 @@
         <s:hidden name="idCon" />
         <table border="0" cellpadding="0" cellspacing="0" class="table-form">
             <tr>
-                <td style="width: 90px;">Local<span class="required">*</span></td>
+                <td style="width: 130px;">Nombre<span class="required">*</span></td>
                 <td>
                     <s:if test='%{opcion=="A"}'>
-                        <s:textfield name="desLocCon" cssClass="element-form" cssStyle="width:350px;" maxLength="40" />
+                        <s:textfield name="desLocCon" cssClass="element-form" cssStyle="width:380px;" maxLength="40" />
                     </s:if>
                     <s:elseif test='%{opcion=="M"}'>
-                        <s:textfield name="desLocCon" cssClass="element-form" cssStyle="width:350px;" maxLength="40" />
+                        <s:textfield name="desLocCon" cssClass="element-form" cssStyle="width:380px;" maxLength="40" />
                         <s:hidden name="idLocCon" id="idLocCon" />
                     </s:elseif>
+                </td>
+            </tr>
+            <tr>
+                <td>Nombre comercial<span class="required">*</span></td>
+                <td>
+                    <s:textfield name="desNomCom" cssClass="element-form" cssStyle="width:380px;" maxLength="40" />
+                </td>
+            </tr>
+            <tr>
+                <td>Nombre corto<span class="required">*</span></td>
+                <td>
+                    <s:textfield name="desCorta" cssClass="element-form" cssStyle="width:180px;" maxLength="12" />
+                </td>
+            </tr>
+            <tr>
+                <td>Tipo de local<span class="required">*</span></td>
+                <td>
+                    <s:select name="idTipLoc" id="idTipLoc" list="listTipoLocales" listKey="idTipLoc" listValue="desTipLoc"
+                              headerKey="0" headerValue="-Seleccione-" cssClass="element-form"
+                              cssStyle="min-width: 200px; max-width: 200px;" />
                 </td>
             </tr>
             <tr>
@@ -70,49 +90,16 @@
                 </td>
             </tr>
             <tr>
-                <td>Teléfono 1</td>
-                <td>
-                    <s:if test='%{numTel1=="0"}'>
-                        <s:textfield name="numTel1" value="" cssClass="element-form" cssStyle="width:100px;" maxLength="7"
-                                 onkeypress="return isNumberIntegerKey(event)" />
-                    </s:if>
-                    <s:else>
-                        <s:textfield name="numTel1" cssClass="element-form" cssStyle="width:100px;" maxLength="7"
-                                 onkeypress="return isNumberIntegerKey(event)" />
-                    </s:else>
-                </td>
-            </tr>
-            <tr>
-                <td>Teléfono 2</td>
-                <td>
-                    <s:if test='%{numTel2=="0"}'>
-                        <s:textfield name="numTel2" value="" cssClass="element-form" cssStyle="width:100px;" maxLength="7"
-                                 onkeypress="return isNumberIntegerKey(event)" />
-                    </s:if>
-                    <s:else>
-                        <s:textfield name="numTel2" cssClass="element-form" cssStyle="width:100px;" maxLength="7"
-                                 onkeypress="return isNumberIntegerKey(event)" />
-                    </s:else>
-                </td>
-            </tr>
-            <tr>
-                <td>Fax</td>
-                <td>
-                    <s:if test='%{numFax=="0"}'>
-                        <s:textfield name="numFax" value="" cssClass="element-form" cssStyle="width:100px;" maxLength="7"
-                                 onkeypress="return isNumberIntegerKey(event)" />
-                    </s:if>
-                    <s:else>
-                        <s:textfield name="numFax" cssClass="element-form" cssStyle="width:100px;" maxLength="7"
-                                 onkeypress="return isNumberIntegerKey(event)" />
-                    </s:else>
-                </td>
-            </tr>
-            <tr>
                 <td>RUC<span class="required">*</span></td>
                 <td>
                     <s:textfield name="numRuc" cssClass="element-form" cssStyle="width:140px;" maxLength="11"
                                  onkeypress="return isNumberIntegerKey(event)" />
+                </td>
+            </tr>
+            <tr>
+                <td>Dato de Equivalencia</td>
+                <td>
+                    <s:textfield name="otrDatEqu1" cssClass="element-form" cssStyle="width:120px;" maxLength="10" />
                 </td>
             </tr>
             <tr>

@@ -41,7 +41,7 @@
     <button id="btn-versiones">
         Versiones
     </button>
-    <button id="btn-colores">
+    <button id="btn-coloresExt">
         Colores
     </button>
 </s:if>
@@ -50,11 +50,6 @@
     <form id="frm_princ" method="POST" action="<s:property value="baseURL" /><s:property value="urlPaginacion" />">
     <s:hidden name="idMar" id="idMar_h1" />
     <s:property value="datosOblig" escape="false" />
-
-    <s:hidden name="curPagVis" id="curPag_f" />
-    
-    <s:hidden name="varReturn" id="varReturn_f" />
-    <s:hidden name="nivBandeja" id="nivBandeja_f" />
     
     <div class="d-grilla" style="overflow: hidden;">
         <div class="d-content-grilla-head" style="">
@@ -112,7 +107,7 @@
         $('#btn-edit').button();
         $('#btn-delete').button();
         $('#btn-versiones').button();
-        $('#btn-colores').button();
+        $('#btn-coloresExt').button();
         
         $('#btn_search').css('visibility','hidden');
     
@@ -158,7 +153,7 @@
                         var _varret = $('#nivBandeja_f').val()+'%'+href+'%'+$('#mtu_h1').val()+'%'+$('#mmo_h1').val()+'%'+$('#mop_h1').val()+'%'+$('#mni_h1').val()+'%'+$('#mod_h1').val()+'%'+$('#curPag_f').val()+'%'+$('#idMar_h1').val()+'|';
                         $('#varReturn_f').val($('#varReturn_f').val()+_varret);
                         
-                        $('#frm_princ').attr('action','<s:property value="baseURL" /><s:url namespace="modelos" includeContext="false" action="adicionarModelo" />');
+                        $('#frm_princ').attr('action','<s:property value="baseURL" /><s:url namespace="modelos" includeContext="false" action="modificarModelo" />');
                         $('#frm_princ').submit();
                     }
                 },
@@ -269,7 +264,7 @@
             );
         });
         
-        $('#btn-colores').click(function(){
+        $('#btn-coloresExt').click(function(){
             post(
                 '<s:property value="baseURL" /><s:url namespace="modelos" includeContext="false" action="vrfSeleccionModelo" />',
                 $('#frm_princ').serialize(),
@@ -290,7 +285,7 @@
 
                         $('#curPag_f').val(1);
                     
-                        $('#frm_princ').attr('action','<s:property value="baseURL" /><s:url namespace="coloresMod" includeContext="false" action="ColorMod" />');
+                        $('#frm_princ').attr('action','<s:property value="baseURL" /><s:url namespace="coloresExtModelo" includeContext="false" action="ColorExtModelo" />');
                         $('#frm_princ').submit();
                     }
                 },

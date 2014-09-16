@@ -27,28 +27,31 @@
 <div class="d-content-grilla" style="min-width: 860px;">
     <form id="frm_princ" method="POST" action="<s:property value="baseURL" /><s:property value="urlPaginacion" />">
     <s:property value="datosOblig" escape="false" />
-
-    <s:hidden name="curPagVis" id="curPag_f" />
-    
-    <s:hidden name="varReturn" id="varReturn_f" />
-    <s:hidden name="nivBandeja" id="nivBandeja_f" />
     
     <div class="d-grilla" style="overflow: hidden;">
         <div class="d-content-grilla-head" style="">
             <table border="0" cellpadding="0" cellspacing="0" style="">
                 <tr class="tr-head">
                     <td style="width: 24px;"></td>
-                    <td style="width:130px; text-align: center;">
+                    <td style="text-align: center;">
                         Fecha
                     </td>
-                    <td style="width: 550px; text-align: center;">
-                        Interno
+                    <td style="width: 240px; text-align: center;">
+                        Interno compra
                     </td>
-                    <td style="text-align: center;">
-                        Legal
+                    <td style="width: 240px; text-align: center;">
+                        Interno venta
+                    </td>
+                    <td style="width: 240px; text-align: center;">
+                        Legal compra
+                    </td>
+                    <td style="width: 240px; text-align: center;">
+                        Legal venta
                     </td>
                 </tr>
                 <tr class="tr-head">
+                    <td></td>
+                    <td></td>
                     <td></td>
                     <td></td>
                     <td></td>
@@ -65,14 +68,20 @@
                             <input type="radio" name="fecTipCam" id="rbt_fecTipCam" value="<s:property value="fecTipCam" />" class="select_rec" />
                         </s:if>
                     </td>
-                    <td style="width:130px; text-align: center;">
+                    <td style="text-align: center;">
                         <s:property value="fecTipCam" />
                     </td>
-                    <td style="width: 550px; text-align: center;">
-                        <s:property value="impTipCamInt" />
+                    <td style="width: 240px; text-align: center;">
+                        <s:property value="impTCIntCom" />
                     </td>
-                    <td style="text-align: center;">
-                        <s:property value="impTipCamLeg" />
+                    <td style="width: 240px; text-align: center;">
+                        <s:property value="impTCIntVen" />
+                    </td>
+                    <td style="width: 240px; text-align: center;">
+                        <s:property value="impTCLegCom" />
+                    </td>
+                    <td style="width: 240px; text-align: center;">
+                        <s:property value="impTCLegVen" />
                     </td>
                 </tr>
                 </s:iterator>
@@ -142,7 +151,7 @@
                         var _varret = $('#nivBandeja_f').val()+'%'+href+'%'+$('#mtu_h1').val()+'%'+$('#mmo_h1').val()+'%'+$('#mop_h1').val()+'%'+$('#mni_h1').val()+'%'+$('#mod_h1').val()+'%'+$('#curPag_f').val()+'|';
                         $('#varReturn_f').val($('#varReturn_f').val()+_varret);
                         
-                        $('#frm_princ').attr('action','<s:property value="baseURL" /><s:url namespace="tipoCambio" includeContext="false" action="adicionarTipoCambio" />');
+                        $('#frm_princ').attr('action','<s:property value="baseURL" /><s:url namespace="tipoCambio" includeContext="false" action="modificarTipoCambio" />');
                         $('#frm_princ').submit();
                     }
                 },
