@@ -101,8 +101,6 @@
                 draggable: false,
                 resizable: false
             });
-	    
-	    var InputText = "Text in grau...";
 	 
 	    $('#idUsu').val('Usuario');
             $('#idUsu').addClass('focus');

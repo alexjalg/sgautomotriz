@@ -587,6 +587,11 @@ textarea.element-form
     padding-bottom: 4px;
 }
 
+.focus
+{
+    color: #AAAAAA;
+}
+
 .d-content-form
 {
     padding: 10px 20px;
@@ -622,7 +627,7 @@ textarea.element-form
     position: absolute;
     left: 0px;
     padding-right: 5px;
-    background-color: #F3F9FF;
+    background-color: #E8F0F8;
     z-index: 10;
 }
 

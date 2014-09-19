@@ -100,18 +100,15 @@
     </form>
 </div>
 <div id="DIVeliminar" title="<s:property value="titleDialog" />" class="alerta"></div>
-<s:iterator value="errores">
-    <s:property /><br /> 
-</s:iterator>
         
 <script type="text/javascript">
     $(document).ready(function() {
         /*Paginacion de grilla*/
         <s:property value="jsPaginacion" escape="false" />
                 
-        $('#btn-add').button();
+        /*$('#btn-add').button();
         $('#btn-edit').button();
-        $('#btn-delete').button();
+        $('#btn-delete').button();*/
     
         $('#DIVeliminar').dialog({
             autoOpen: false,
@@ -165,7 +162,7 @@
                         var _varret = $('#nivBandeja_f').val()+'%'+href+'%'+$('#mtu_h1').val()+'%'+$('#mmo_h1').val()+'%'+$('#mop_h1').val()+'%'+$('#mni_h1').val()+'%'+$('#mod_h1').val()+'%'+$('#curPag_f').val()+'%'+$('#idUsu_f').val()+'%'+$('#desUsu_f').val()+'%'+$('#idTipUsu_f').val()+'|';
                         $('#varReturn_f').val($('#varReturn_f').val()+_varret);
                         
-                        $('#frm_princ').attr('action','<s:property value="baseURL" /><s:url namespace="usuarios" includeContext="false" action="adicionarUsuario" />');
+                        $('#frm_princ').attr('action','<s:property value="baseURL" /><s:url namespace="usuarios" includeContext="false" action="modificarUsuario" />');
                         $('#frm_princ').submit();
                     }
                 },

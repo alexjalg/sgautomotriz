@@ -14,6 +14,7 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import conexion.helper;
+import entities.Meses;
 import java.sql.ResultSet;
 
 @SuppressWarnings("serial")
@@ -101,6 +102,8 @@ public class MasterAction extends ActionSupport implements ServletRequestAware {
     protected String curYear="";
     protected String curMonth="";
     protected String curDay="";
+    
+    private ArrayList<Meses> listMeses = new ArrayList<Meses>();
 
     public void setServletRequest(HttpServletRequest request) {
         this.servletRequest = request;
@@ -1076,5 +1079,25 @@ public class MasterAction extends ActionSupport implements ServletRequestAware {
      */
     public void setConceptoEliminar(String conceptoEliminar) {
         this.conceptoEliminar = conceptoEliminar;
+    }
+
+    /**
+     * @return the listMeses
+     */
+    public ArrayList<Meses> getListMeses() {
+        listMeses.add(new Meses(1, "Enero", "Ene"));
+        listMeses.add(new Meses(2, "Febrero", "Feb"));
+        listMeses.add(new Meses(3, "Marzo", "Mar"));
+        listMeses.add(new Meses(4, "Abril", "Abr"));
+        listMeses.add(new Meses(5, "Mayo", "May"));
+        listMeses.add(new Meses(6, "Junio", "Jun"));
+        listMeses.add(new Meses(7, "Julio", "Jul"));
+        listMeses.add(new Meses(8, "Agosto", "Ago"));
+        listMeses.add(new Meses(9, "Septiembre", "Sep"));
+        listMeses.add(new Meses(10, "Octubre", "Oct"));
+        listMeses.add(new Meses(11, "Noviembre", "Nov"));
+        listMeses.add(new Meses(12, "Diciembre", "Dic"));
+        
+        return listMeses;
     }
 }

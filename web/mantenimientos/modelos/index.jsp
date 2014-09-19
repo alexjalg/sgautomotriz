@@ -242,13 +242,11 @@
                 function(resultado){
                     resultado = $.trim(resultado);
                     var _error = resultado.indexOf("error");
-                    if(_error != -1)
-                    {
+                    if(_error != -1) {
                         $('#DIVverif').html(resultado);
                         $('#DIVverif').dialog('open');
                     }
-                    else
-                    {
+                    else {
                         var href = $(location).attr('href');
                         
                         var _varret = $('#nivBandeja_f').val()+'%'+href+'%'+$('#mtu_h1').val()+'%'+$('#mmo_h1').val()+'%'+$('#mop_h1').val()+'%'+$('#mni_h1').val()+'%'+$('#mod_h1').val()+'%'+$('#curPag_f').val()+'%'+$('#idMar_h1').val()+'|';
@@ -271,13 +269,11 @@
                 function(resultado){
                     resultado = $.trim(resultado);
                     var _error = resultado.indexOf("error");
-                    if(_error != -1)
-                    {
+                    if(_error != -1) {
                         $('#DIVverif').html(resultado);
                         $('#DIVverif').dialog('open');
                     }
-                    else
-                    {
+                    else {
                         var href = $(location).attr('href');
                         
                         var _varret = $('#nivBandeja_f').val()+'%'+href+'%'+$('#mtu_h1').val()+'%'+$('#mmo_h1').val()+'%'+$('#mop_h1').val()+'%'+$('#mni_h1').val()+'%'+$('#mod_h1').val()+'%'+$('#curPag_f').val()+'%'+$('#idMar_h1').val()+'|';

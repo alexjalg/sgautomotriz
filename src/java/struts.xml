@@ -33,12 +33,31 @@
         
         <include file="concesionarios.xml" />
         <include file="locales.xml" />
+        <include file="tipoLocal.xml" />
         
         <include file="marcas.xml" />
         <include file="modelos.xml" />
+        <include file="versiones.xml" />
         
         <include file="coloresExterior.xml" />
         <include file="coloresExteriorModelo.xml" />
+        <include file="colorInterior.xml" />
         
         <include file="tipoCambio.xml" />
+        
+        <include file="tipoDocumento.xml" />
+        <include file="grupoCliente.xml" />
+        <include file="clientes.xml" />
+        <include file="formaPago.xml" />
+        
+        <include file="tipoCombustible.xml" />
+        <include file="tipoTransmision.xml" />
+        <include file="claseVehiculo.xml" />
+        <include file="categoriaVehiculo.xml" />
+        <include file="tipoCarroceria.xml" />
+        <include file="tipoTraccion.xml" />
+        
+        
+        <include file="campania.xml" />
+        
 </struts>

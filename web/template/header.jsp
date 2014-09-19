@@ -1,36 +1,38 @@
 <%@taglib uri="/struts-tags" prefix="s" %>
 <ul class="ul-modulos">
-<s:iterator value="#session.ses_listmodumaster" status="stat_modu">
-    <li><s:property value="desModu" escape="false" />
-    <s:if test='%{cantOpcDep>0}'>
-        <ul class="ul-opciones ul-opc">
-        <s:iterator value="listOpc" status="stat_opc">
-            <s:if test='%{cantOpcDep>0}'>
-            <li>
-                <span class="cont-opciones opc"><s:property value="desOpc" escape="false" /></span>
-                <ul class="ul-opciones ul-subopc">
-                    <s:iterator value="listSubOpc" status="stat_subopc">
-                    <li>
-                        <a class="subopc" href="<s:property value="baseURL" /><s:property value="desUrlOpc" />?mtu=<s:property value="idTipUsu" />&mmo=<s:property value="idModu" />&mop=<s:property value="idOpc" />&mni=<s:property value="numNivOpc" />&mod=<s:property value="idOpcDep" />">
-                            <s:property value="desOpc" escape="false" />
-                        </a>
-                    </li>
-                    </s:iterator>
-                </ul>
-            </li>    
-            </s:if>
-            <s:else>
-            <li class="sin-opciones">
-                <a class="opc" href="<s:property value="baseURL" /><s:property value="desUrlOpc" />?mtu=<s:property value="idTipUsu" />&mmo=<s:property value="idModu" />&mop=<s:property value="idOpc" />&mni=<s:property value="numNivOpc" />&mod=<s:property value="idOpcDep" />">
-                    <s:property value="desOpc" escape="false" />
-                </a>
-            </li>
-            </s:else>
-        </s:iterator>    
-        </ul>
-    </s:if>
-    </li>
-</s:iterator>
+<s:if test='%{#session.ses_indmencad!="V" && #session.ses_indclares!="R"}'>
+    <s:iterator value="#session.ses_listmodumaster" status="stat_modu">
+        <li><s:property value="desModu" escape="false" />
+        <s:if test='%{cantOpcDep>0}'>
+            <ul class="ul-opciones ul-opc">
+            <s:iterator value="listOpc" status="stat_opc">
+                <s:if test='%{cantOpcDep>0}'>
+                <li>
+                    <span class="cont-opciones opc"><s:property value="desOpc" escape="false" /></span>
+                    <ul class="ul-opciones ul-subopc">
+                        <s:iterator value="listSubOpc" status="stat_subopc">
+                        <li>
+                            <a class="subopc" href="<s:property value="baseURL" /><s:property value="desUrlOpc" />?mtu=<s:property value="idTipUsu" />&mmo=<s:property value="idModu" />&mop=<s:property value="idOpc" />&mni=<s:property value="numNivOpc" />&mod=<s:property value="idOpcDep" />">
+                                <s:property value="desOpc" escape="false" />
+                            </a>
+                        </li>
+                        </s:iterator>
+                    </ul>
+                </li>    
+                </s:if>
+                <s:else>
+                <li class="sin-opciones">
+                    <a class="opc" href="<s:property value="baseURL" /><s:property value="desUrlOpc" />?mtu=<s:property value="idTipUsu" />&mmo=<s:property value="idModu" />&mop=<s:property value="idOpc" />&mni=<s:property value="numNivOpc" />&mod=<s:property value="idOpcDep" />">
+                        <s:property value="desOpc" escape="false" />
+                    </a>
+                </li>
+                </s:else>
+            </s:iterator>    
+            </ul>
+        </s:if>
+        </li>
+    </s:iterator>
+</s:if>
 </ul>
 <div class="d-datos-user ui-state-default">
     <span class="ui-icon ui-icon-person"></span> 

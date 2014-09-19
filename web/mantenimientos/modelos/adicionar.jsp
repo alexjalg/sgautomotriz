@@ -9,6 +9,7 @@
         <div class="d-back">
             <a href="javascript:void(0)" class="back">Volver</a>
             <form method="POST" id="frm_modelo_back" action="<s:property value="backURL" />">
+                
                 <s:hidden name="varReturn" />
             </form>
         </div>

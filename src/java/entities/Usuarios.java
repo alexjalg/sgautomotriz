@@ -47,6 +47,8 @@ public class Usuarios {
     private String idUsuReg = "";
 
     public String getIdUsu() {
+        idUsu = idUsu.trim();
+        
         return idUsu;
     }
 
@@ -55,6 +57,8 @@ public class Usuarios {
     }
 
     public String getOtrClaUsu() {
+        otrClaUsu = otrClaUsu.trim();
+        
         return otrClaUsu;
     }
 
@@ -63,6 +67,8 @@ public class Usuarios {
     }
 
     public String getEdoUsu() {
+        edoUsu = edoUsu.trim();
+                
         return edoUsu;
     }
 
@@ -74,6 +80,8 @@ public class Usuarios {
      * @return the desApeUsu
      */
     public String getDesApeUsu() {
+        desApeUsu = desApeUsu.trim();
+        
         return desApeUsu;
     }
 
@@ -88,6 +96,8 @@ public class Usuarios {
      * @return the desNomUsu
      */
     public String getDesNomUsu() {
+        desNomUsu = desNomUsu.trim();
+        
         return desNomUsu;
     }
 
@@ -102,6 +112,8 @@ public class Usuarios {
      * @return the desUsu
      */
     public String getDesUsu() {
+        desUsu = desUsu.trim();
+        
         return desUsu;
     }
 
@@ -116,6 +128,8 @@ public class Usuarios {
      * @return the desUsuFull
      */
     public String getDesUsuFull() {
+        desUsuFull = desUsuFull.trim();
+        
         return desUsuFull;
     }
 
@@ -130,6 +144,8 @@ public class Usuarios {
      * @return the idUsu_f
      */
     public String getIdUsu_f() {
+        idUsu_f = idUsu_f.trim();
+                
         return idUsu_f;
     }
 
@@ -144,6 +160,8 @@ public class Usuarios {
      * @return the desUsu_f
      */
     public String getDesUsu_f() {
+        desUsu_f = desUsu_f.trim();
+        
         return desUsu_f;
     }
 
@@ -158,6 +176,8 @@ public class Usuarios {
      * @return the edoUsu_f
      */
     public String getEdoUsu_f() {
+        edoUsu_f = edoUsu_f.trim();
+        
         return edoUsu_f;
     }
 
@@ -214,6 +234,8 @@ public class Usuarios {
      * @return the fecReg
      */
     public String getFecReg() {
+        fecReg = fecReg.trim();
+        
         return fecReg;
     }
 
@@ -221,6 +243,10 @@ public class Usuarios {
      * @param fecReg the fecReg to set
      */
     public void setFecReg(String fecReg) {
+        if(fecReg.trim().equals("")) {
+            fecReg = "0000-00-00";
+        }
+        
         this.fecReg = fecReg;
     }
 
@@ -228,6 +254,8 @@ public class Usuarios {
      * @return the fecUltCamCla
      */
     public String getFecUltCamCla() {
+        fecUltCamCla = fecUltCamCla.trim();
+        
         return fecUltCamCla;
     }
 
@@ -235,6 +263,10 @@ public class Usuarios {
      * @param fecUltCamCla the fecUltCamCla to set
      */
     public void setFecUltCamCla(String fecUltCamCla) {
+        if(fecUltCamCla.trim().equals("")) {
+            fecUltCamCla = "0000-00-00";
+        }
+        
         this.fecUltCamCla = fecUltCamCla;
     }
 
@@ -242,6 +274,8 @@ public class Usuarios {
      * @return the indClaRes
      */
     public String getIndClaRes() {
+        indClaRes = indClaRes.trim();
+        
         return indClaRes;
     }
 
@@ -256,6 +290,8 @@ public class Usuarios {
      * @return the desCon
      */
     public String getDesCon() {
+        desCon = desCon.trim();
+        
         return desCon;
     }
 
@@ -270,6 +306,8 @@ public class Usuarios {
      * @return the desLocCon
      */
     public String getDesLocCon() {
+        desLocCon = desLocCon.trim();
+        
         return desLocCon;
     }
 
@@ -284,6 +322,8 @@ public class Usuarios {
      * @return the otrNueClaUsu
      */
     public String getOtrNueClaUsu() {
+        otrNueClaUsu = otrNueClaUsu.trim();
+        
         return otrNueClaUsu;
     }
 
@@ -298,6 +338,8 @@ public class Usuarios {
      * @return the otrNueClaUsu2
      */
     public String getOtrNueClaUsu2() {
+        otrNueClaUsu2 = otrNueClaUsu2.trim();
+        
         return otrNueClaUsu2;
     }
 
@@ -312,6 +354,8 @@ public class Usuarios {
      * @return the numTelFij
      */
     public String getNumTelFij() {
+        numTelFij = numTelFij.trim();
+        
         return numTelFij;
     }
 
@@ -331,6 +375,8 @@ public class Usuarios {
      * @return the numAnexo
      */
     public String getNumAnexo() {
+        numAnexo = numAnexo.trim();
+        
         return numAnexo;
     }
 
@@ -350,6 +396,8 @@ public class Usuarios {
      * @return the numTelMov1
      */
     public String getNumTelMov1() {
+        numTelMov1 = numTelMov1.trim();
+        
         return numTelMov1;
     }
 
@@ -369,6 +417,8 @@ public class Usuarios {
      * @return the numTelMov2
      */
     public String getNumTelMov2() {
+        numTelMov2 = numTelMov2.trim();
+        
         return numTelMov2;
     }
 
@@ -388,6 +438,8 @@ public class Usuarios {
      * @return the numTelRP1
      */
     public String getNumTelRP1() {
+        numTelRP1 = numTelRP1.trim();
+        
         return numTelRP1;
     }
 
@@ -395,6 +447,10 @@ public class Usuarios {
      * @param numTelRP1 the numTelRP1 to set
      */
     public void setNumTelRP1(String numTelRP1) {
+        numTelRP1 = numTelRP1.trim();
+        if(numTelRP1.equals("RPM") || numTelRP1.equals("RPC") || numTelRP1.equals("Nextel"))
+            numTelRP1 = "";
+        
         this.numTelRP1 = numTelRP1;
     }
 
@@ -402,6 +458,8 @@ public class Usuarios {
      * @return the numTelRP2
      */
     public String getNumTelRP2() {
+        numTelRP2 = numTelRP2.trim();
+        
         return numTelRP2;
     }
 
@@ -409,6 +467,10 @@ public class Usuarios {
      * @param numTelRP2 the numTelRP2 to set
      */
     public void setNumTelRP2(String numTelRP2) {
+        numTelRP2 = numTelRP2.trim();
+        if(numTelRP2.equals("RPM") || numTelRP2.equals("RPC") || numTelRP2.equals("Nextel"))
+            numTelRP2 = "";
+        
         this.numTelRP2 = numTelRP2;
     }
 
@@ -416,6 +478,8 @@ public class Usuarios {
      * @return the numTelRP3
      */
     public String getNumTelRP3() {
+        numTelRP3 = numTelRP3.trim();
+        
         return numTelRP3;
     }
 
@@ -423,6 +487,10 @@ public class Usuarios {
      * @param numTelRP3 the numTelRP3 to set
      */
     public void setNumTelRP3(String numTelRP3) {
+        numTelRP3 = numTelRP3.trim();
+        if(numTelRP3.equals("RPM") || numTelRP3.equals("RPC") || numTelRP3.equals("Nextel"))
+            numTelRP3 = "";
+        
         this.numTelRP3 = numTelRP3;
     }
 
@@ -430,6 +498,8 @@ public class Usuarios {
      * @return the otrEmaTra
      */
     public String getOtrEmaTra() {
+        otrEmaTra = otrEmaTra.trim();
+        
         return otrEmaTra;
     }
 
@@ -444,6 +514,8 @@ public class Usuarios {
      * @return the indBloUsu
      */
     public String getIndBloUsu() {
+        indBloUsu = indBloUsu.trim();
+        
         return indBloUsu;
     }
 
@@ -472,6 +544,8 @@ public class Usuarios {
      * @return the idUsuReg
      */
     public String getIdUsuReg() {
+        idUsuReg = idUsuReg.trim();
+        
         return idUsuReg;
     }
 
@@ -486,6 +560,8 @@ public class Usuarios {
      * @return the desTipUsu
      */
     public String getDesTipUsu() {
+        desTipUsu = desTipUsu.trim();
+                
         return desTipUsu;
     }
 

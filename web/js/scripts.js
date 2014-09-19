@@ -378,6 +378,14 @@ function isNumberIntegerKey(evt) //Solo numeros (entero)
     return false;
 }
 
+function isCharacterKey(evt)
+{
+    var charCode = (evt.which) ? evt.which : window.event.keyCode
+    if (charCode > 32 && charCode<39 || charCode>39 && (charCode < 65 || charCode > 90) && (charCode < 97 || charCode > 122) && (charCode<165) || charCode==13 || charCode==0  )
+        return false;
+    return true;
+}
+
 function validaRespuestaAjax(resultado)
 {
     resultado = $.trim(resultado.toLowerCase());

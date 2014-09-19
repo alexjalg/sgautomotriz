@@ -33,11 +33,11 @@
 </s:if>
 <s:if test='%{indError!=""}'>
     <div class="ui-state-error ui-corner-all" style="padding: 0 .7em;">
-            <span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>
-            <ul class="error">
-                <s:iterator value="errores">
-                    <li><s:property /></li> 
-                </s:iterator>
-            </ul>
-        </div>
+        <span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>
+        <ul class="error">
+            <s:iterator value="errores">
+                <li><s:property /></li> 
+            </s:iterator>
+        </ul>
+    </div>
 </s:if>

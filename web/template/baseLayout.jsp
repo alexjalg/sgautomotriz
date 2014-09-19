@@ -74,6 +74,8 @@
             setTimeout(function(){ history.back(-10); },4000);
         </s:if>  
             
+        $('button').button();
+            
         $('#DIVverif').dialog({
             autoOpen: false,
             width: 340,
@@ -166,11 +168,11 @@
             }
         });
         
-        //Si la contraseña del usuario ha caducado, se mostrará un popup con un formulario
-        //el cual le permitirá cambiar su contraseña, si no cambiase su contraseña y simplemente 
-        //cerrara el popup, la aplicacion terminará su sesión y lo redireccionará a la pagina 
-        //de acceso a la aplicación
-        <s:if test='%{#session.ses_indmencad=="V"}'>
+        //Si la contraseña del usuario ha caducado o se le haya reseteado su contraseña,se mostrará 
+        //un popup con un formulario el cual le permitirá cambiar su contraseña, si no cambiase 
+        //su contraseña y simplemente cerrara el popup, la aplicacion terminará su sesión y lo redireccionará 
+        //a la pagina de acceso a la aplicación
+        <s:if test='%{#session.ses_indmencad=="V" || #session.ses_indclares=="R"}'>
         post(
             '<s:property value="baseURL" /><s:url includeContext="false" namespace="usuarios" action="updPasswordUsuario" />',
             {

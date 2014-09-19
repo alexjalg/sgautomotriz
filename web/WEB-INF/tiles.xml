@@ -171,7 +171,6 @@
         <put-attribute name="body" value="/mantenimientos/concesionarios/eliminar.jsp" />
     </definition>
     
-    
     <!--  LOCALES  -->
     <definition name="mant-locales-index" extends="baseLayout">
         <put-attribute name="body" value="/mantenimientos/locales/index.jsp" />
@@ -193,6 +192,20 @@
     </definition>
     <definition name="mant-locales-listDistritos" extends="baseLayoutPopUp">
         <put-attribute name="body" value="/mantenimientos/locales/getDistritos.jsp" />
+    </definition>
+    
+    <!-- TIPOS DE LOCAL-->
+    <definition name="mant-tipoLocal-index" extends="baseLayout">
+        <put-attribute name="body" value="/mantenimientos/tipoLocal/index.jsp" />
+    </definition>    
+    <definition name="mant-tipoLocal-adicionar" extends="baseLayout">
+        <put-attribute name="body" value="/mantenimientos/tipoLocal/adicionar.jsp" />
+    </definition>
+    <definition name="mant-tipoLocal-grabar" extends="baseLayoutPopUp">
+        <put-attribute name="body" value="/mantenimientos/tipoLocal/grabar.jsp" />
+    </definition>
+    <definition name="mant-tipoLocal-eliminar" extends="baseLayoutPopUp">
+        <put-attribute name="body" value="/mantenimientos/tipoLocal/eliminar.jsp" />
     </definition>
     
     
@@ -224,7 +237,19 @@
         <put-attribute name="body" value="/mantenimientos/modelos/eliminar.jsp" />
     </definition>
     
-    <!--  AQUI VA LO RELACIONADO A VERSIONES  -->
+    <!--  VERSIONES  -->
+    <definition name="mant-versiones-index" extends="baseLayout">
+        <put-attribute name="body" value="/mantenimientos/versiones/index.jsp" />
+    </definition> 
+    <definition name="mant-versiones-adicionar" extends="baseLayout">
+        <put-attribute name="body" value="/mantenimientos/versiones/adicionar.jsp" />
+    </definition>
+    <definition name="mant-versiones-grabar" extends="baseLayoutPopUp">
+        <put-attribute name="body" value="/mantenimientos/versiones/grabar.jsp" />
+    </definition>
+    <definition name="mant-versiones-eliminar" extends="baseLayoutPopUp">
+        <put-attribute name="body" value="/mantenimientos/versiones/eliminar.jsp" />
+    </definition>
     
     <!--  COLORES DE EXTERIOR  -->
     <definition name="mant-coloresExt-index" extends="baseLayout">
@@ -240,7 +265,7 @@
         <put-attribute name="body" value="/mantenimientos/coloresExterior/eliminar.jsp" /> 
     </definition>
     
-    <!--  COLORES POR MODELO  -->
+    <!--  COLORES DE EXTERIOR POR MODELO  -->
     <definition name="mant-coloresExtModelo-index" extends="baseLayout">
         <put-attribute name="body" value="/mantenimientos/coloresExtModelo/index.jsp" />
     </definition>
@@ -257,6 +282,21 @@
         <put-attribute name="body" value="/mantenimientos/coloresExtModelo/eliminar.jsp" />
     </definition>
     
+    <!-- COLORES DE INTERIOR -->
+    <definition name="mant-colorInterior-index" extends="baseLayout">
+        <put-attribute name="body" value="/mantenimientos/colorInterior/index.jsp" />
+    </definition>    
+    <definition name="mant-colorInterior-adicionar" extends="baseLayout">
+        <put-attribute name="body" value="/mantenimientos/colorInterior/adicionar.jsp" />
+    </definition>
+    <definition name="mant-colorInterior-grabar" extends="baseLayoutPopUp">
+        <put-attribute name="body" value="/mantenimientos/colorInterior/grabar.jsp" />
+    </definition>
+    <definition name="mant-colorInterior-eliminar" extends="baseLayoutPopUp">
+        <put-attribute name="body" value="/mantenimientos/colorInterior/eliminar.jsp" />
+    </definition>
+    
+    
     <!--  TIPO DE CAMBIO  -->
     <definition name="mant-tipoCambio-index" extends="baseLayout">
         <put-attribute name="body" value="/mantenimientos/tipoCambio/index.jsp" />
@@ -269,5 +309,162 @@
     </definition>
     <definition name="mant-tipoCambio-eliminar" extends="baseLayoutPopUp">
         <put-attribute name="body" value="/mantenimientos/tipoCambio/eliminar.jsp" />
+    </definition>
+    
+    
+    <!-- GRUPO DE CLIENTES -->
+    <definition name="mant-grupoCliente-index" extends="baseLayout">
+        <put-attribute name="body" value="/mantenimientos/grupoCliente/index.jsp" />
+    </definition>    
+    <definition name="mant-grupoCliente-adicionar" extends="baseLayout">
+        <put-attribute name="body" value="/mantenimientos/grupoCliente/adicionar.jsp" />
+    </definition>
+    <definition name="mant-grupoCliente-grabar" extends="baseLayoutPopUp">
+        <put-attribute name="body" value="/mantenimientos/grupoCliente/grabar.jsp" />
+    </definition>
+    <definition name="mant-grupoCliente-eliminar" extends="baseLayoutPopUp">
+        <put-attribute name="body" value="/mantenimientos/grupoCliente/eliminar.jsp" />
+    </definition>
+    
+    <!-- CLIENTES -->
+    <definition name="mant-clientes-index" extends="baseLayout">
+        <put-attribute name="body" value="/mantenimientos/clientes/index.jsp" />
+    </definition>
+    <definition name="mant-clientes-adicionar" extends="baseLayout">
+        <put-attribute name="body" value="/mantenimientos/clientes/adicionar.jsp" />
+    </definition>
+    <definition name="mant-clientes-grabar" extends="baseLayoutPopUp">
+        <put-attribute name="body" value="/mantenimientos/clientes/grabar.jsp" />
+    </definition>
+    <definition name="mant-clientes-eliminar" extends="baseLayoutPopUp">
+        <put-attribute name="body" value="/mantenimientos/clientes/eliminar.jsp" />
+    </definition>
+    
+    <!-- TIPOS DE DOCUMENTOS-->
+    <definition name="mant-tipoDocumento-index" extends="baseLayout">
+        <put-attribute name="body" value="/mantenimientos/tipoDocumento/index.jsp" />
+    </definition>    
+    <definition name="mant-tipoDocumento-adicionar" extends="baseLayout">
+        <put-attribute name="body" value="/mantenimientos/tipoDocumento/adicionar.jsp" />
+    </definition>
+    <definition name="mant-tipoDocumento-grabar" extends="baseLayoutPopUp">
+        <put-attribute name="body" value="/mantenimientos/tipoDocumento/grabar.jsp" />
+    </definition>
+    <definition name="mant-tipoDocumento-eliminar" extends="baseLayoutPopUp">
+        <put-attribute name="body" value="/mantenimientos/tipoDocumento/eliminar.jsp" />
+    </definition>
+    
+    <!-- FORMAS DE PAGO -->
+    <definition name="mant-formaPago-index" extends="baseLayout">
+        <put-attribute name="body" value="/mantenimientos/formaPago/index.jsp" />
+    </definition>    
+    <definition name="mant-formaPago-adicionar" extends="baseLayout">
+        <put-attribute name="body" value="/mantenimientos/formaPago/adicionar.jsp" />
+    </definition>
+    <definition name="mant-formaPago-grabar" extends="baseLayoutPopUp">
+        <put-attribute name="body" value="/mantenimientos/formaPago/grabar.jsp" />
+    </definition>
+    <definition name="mant-formaPago-eliminar" extends="baseLayoutPopUp">
+        <put-attribute name="body" value="/mantenimientos/formaPago/eliminar.jsp" />
+    </definition>
+    
+    
+    <!--  TIPO DE COMBUSTIBLE -->
+    <definition name="mant-tipoCombustible-index" extends="baseLayout">
+        <put-attribute name="body" value="/mantenimientos/tipoCombustible/index.jsp" />
+    </definition>    
+    <definition name="mant-tipoCombustible-adicionar" extends="baseLayout">
+        <put-attribute name="body" value="/mantenimientos/tipoCombustible/adicionar.jsp" />
+    </definition>
+    <definition name="mant-tipoCombustible-grabar" extends="baseLayoutPopUp">
+        <put-attribute name="body" value="/mantenimientos/tipoCombustible/grabar.jsp" />
+    </definition>
+    <definition name="mant-tipoCombustible-eliminar" extends="baseLayoutPopUp">
+        <put-attribute name="body" value="/mantenimientos/tipoCombustible/eliminar.jsp" />
+    </definition>
+    
+    <!--  TIPO DE TRASMISION -->
+    <definition name="mant-tipoTrasmision-index" extends="baseLayout">
+        <put-attribute name="body" value="/mantenimientos/tipoTrasmision/index.jsp" />
+    </definition>    
+    <definition name="mant-tipoTrasmision-adicionar" extends="baseLayout">
+        <put-attribute name="body" value="/mantenimientos/tipoTrasmision/adicionar.jsp" />
+    </definition>
+    <definition name="mant-tipoTrasmision-grabar" extends="baseLayoutPopUp">
+        <put-attribute name="body" value="/mantenimientos/tipoTrasmision/grabar.jsp" />
+    </definition>
+    <definition name="mant-tipoTrasmision-eliminar" extends="baseLayoutPopUp">
+        <put-attribute name="body" value="/mantenimientos/tipoTrasmision/eliminar.jsp" />
+    </definition>
+    
+    <!--  CLASE VEHICULOS -->
+    <definition name="mant-claseVehiculo-index" extends="baseLayout">
+        <put-attribute name="body" value="/mantenimientos/claseVehiculo/index.jsp" />
+    </definition>    
+    <definition name="mant-claseVehiculo-adicionar" extends="baseLayout">
+        <put-attribute name="body" value="/mantenimientos/claseVehiculo/adicionar.jsp" />
+    </definition>
+    <definition name="mant-claseVehiculo-grabar" extends="baseLayoutPopUp">
+        <put-attribute name="body" value="/mantenimientos/claseVehiculo/grabar.jsp" />
+    </definition>
+    <definition name="mant-claseVehiculo-eliminar" extends="baseLayoutPopUp">
+        <put-attribute name="body" value="/mantenimientos/claseVehiculo/eliminar.jsp" />
+    </definition>
+    
+    <!--  CATEGORIA DE  VEHICULOS -->
+    <definition name="mant-categoriaVehiculo-index" extends="baseLayout">
+        <put-attribute name="body" value="/mantenimientos/categoriaVehiculo/index.jsp" />
+    </definition>    
+    <definition name="mant-categoriaVehiculo-adicionar" extends="baseLayout">
+        <put-attribute name="body" value="/mantenimientos/categoriaVehiculo/adicionar.jsp" />
+    </definition>
+    <definition name="mant-categoriaVehiculo-grabar" extends="baseLayoutPopUp">
+        <put-attribute name="body" value="/mantenimientos/categoriaVehiculo/grabar.jsp" />
+    </definition>
+    <definition name="mant-categoriaVehiculo-eliminar" extends="baseLayoutPopUp">
+        <put-attribute name="body" value="/mantenimientos/categoriaVehiculo/eliminar.jsp" />
+    </definition>
+    
+    <!-- TIPO DE CARROCERIA -->
+    <definition name="mant-tipoCarroceria-index" extends="baseLayout">
+        <put-attribute name="body" value="/mantenimientos/tipoCarroceria/index.jsp" />
+    </definition>    
+    <definition name="mant-tipoCarroceria-adicionar" extends="baseLayout">
+        <put-attribute name="body" value="/mantenimientos/tipoCarroceria/adicionar.jsp" />
+    </definition>
+    <definition name="mant-tipoCarroceria-grabar" extends="baseLayoutPopUp">
+        <put-attribute name="body" value="/mantenimientos/tipoCarroceria/grabar.jsp" />
+    </definition>
+    <definition name="mant-tipoCarroceria-eliminar" extends="baseLayoutPopUp">
+        <put-attribute name="body" value="/mantenimientos/tipoCarroceria/eliminar.jsp" />
+    </definition>
+    
+    <!-- TIPO DE TRACCIÓN -->
+    <definition name="mant-tipoTraccion-index" extends="baseLayout">
+        <put-attribute name="body" value="/mantenimientos/tipoTraccion/index.jsp" />
+    </definition>    
+    <definition name="mant-tipoTraccion-adicionar" extends="baseLayout">
+        <put-attribute name="body" value="/mantenimientos/tipoTraccion/adicionar.jsp" />
+    </definition>
+    <definition name="mant-tipoTraccion-grabar" extends="baseLayoutPopUp">
+        <put-attribute name="body" value="/mantenimientos/tipoTraccion/grabar.jsp" />
+    </definition>
+    <definition name="mant-tipoTraccion-eliminar" extends="baseLayoutPopUp">
+        <put-attribute name="body" value="/mantenimientos/tipoTraccion/eliminar.jsp" />
+    </definition>
+    
+    
+    <!-- CAMPAÑAS -->
+    <definition name="mant-campania-index" extends="baseLayout">
+        <put-attribute name="body" value="/mantenimientos/campania/index.jsp" />
+    </definition>    
+    <definition name="mant-campania-adicionar" extends="baseLayout">
+        <put-attribute name="body" value="/mantenimientos/campania/adicionar.jsp" />
+    </definition>
+    <definition name="mant-campania-grabar" extends="baseLayoutPopUp">
+        <put-attribute name="body" value="/mantenimientos/campania/grabar.jsp" />
+    </definition>
+    <definition name="mant-campania-eliminar" extends="baseLayoutPopUp">
+        <put-attribute name="body" value="/mantenimientos/campania/eliminar.jsp" />
     </definition>
 </tiles-definitions>

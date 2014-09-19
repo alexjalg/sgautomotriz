@@ -227,6 +227,24 @@ public class UsuariosAction extends MasterAction implements ModelDriven<Usuarios
             if (!indError.equals("")) {
                 errores.add(indError);
             } else {
+                tabla = null;
+                tabla = conex.executeDataSet("CALL usp_listTipoUsuario()", new Object[]{});
+
+                indError = conex.getErrorSQL();
+
+                if (!indError.equals("")) {
+                    errores.add(indError);
+                } else {
+                    TipoUsuario obj;
+                    while (tabla.next()) {
+                        obj = new TipoUsuario();
+                        obj.setIdTipUsu(tabla.getString("idTipUsu"));
+                        obj.setDesTipUsu(tabla.getString("desTipUsu"));
+                        listTipoUsuario.add(obj);
+                    }
+                }
+                
+                tabla = null;
                 tabla = conex.executeDataSet("CALL usp_listConcesionarios()", new Object[]{});
 
                 indError = conex.getErrorSQL();
@@ -236,7 +254,6 @@ public class UsuariosAction extends MasterAction implements ModelDriven<Usuarios
                 } else {
                     Concesionarios obj;
                     while (tabla.next()) {
-                        errores.add(tabla.getString("desCon"));
                         obj = new Concesionarios();
                         obj.setIdCon(tabla.getString("idCon"));
                         obj.setDesCon(tabla.getString("desCon"));
@@ -259,23 +276,6 @@ public class UsuariosAction extends MasterAction implements ModelDriven<Usuarios
                         obj.setIdLocCon(tabla.getString("idLocCon"));
                         obj.setDesLocCon(tabla.getString("desLocCon"));
                         listLocales.add(obj);
-                    }
-                }
-
-                tabla = null;
-                tabla = conex.executeDataSet("CALL usp_listTipoUsuario()", new Object[]{});
-
-                indError = conex.getErrorSQL();
-
-                if (!indError.equals("")) {
-                    errores.add(indError);
-                } else {
-                    TipoUsuario obj;
-                    while (tabla.next()) {
-                        obj = new TipoUsuario();
-                        obj.setIdTipUsu(tabla.getString("idTipUsu"));
-                        obj.setDesTipUsu(tabla.getString("desTipUsu"));
-                        listTipoUsuario.add(obj);
                     }
                 }
             }
@@ -315,6 +315,14 @@ public class UsuariosAction extends MasterAction implements ModelDriven<Usuarios
                         modelo.setIdTipUsu(tabla.getInt("idTipUsu"));
                         modelo.setIdCon(tabla.getInt("idCon"));
                         modelo.setIdLocCon(tabla.getInt("idLocCon"));
+                        modelo.setNumTelFij(tabla.getString("numTelFij"));
+                        modelo.setNumAnexo(tabla.getString("numAnexo"));
+                        modelo.setNumTelMov1(tabla.getString("numTelMov1"));
+                        modelo.setNumTelMov2(tabla.getString("numTelMov2"));
+                        modelo.setNumTelRP1(tabla.getString("numTelRP1"));
+                        modelo.setNumTelRP2(tabla.getString("numTelRP2"));
+                        modelo.setNumTelRP3(tabla.getString("numTelRP3"));
+                        modelo.setOtrEmaTra(tabla.getString("otrEmaTra"));
                     }
                 }
             }
@@ -431,49 +439,147 @@ public class UsuariosAction extends MasterAction implements ModelDriven<Usuarios
         verifAccionTipoUsuario();
 
         if (indErrAcc.equals("")) {
-            modelo.setIdUsu(modelo.getIdUsu().trim());
-            modelo.setDesNomUsu(modelo.getDesNomUsu().trim());
-            modelo.setDesApeUsu(modelo.getDesApeUsu().trim());
-            modelo.setOtrClaUsu(modelo.getOtrClaUsu().trim());
-
             if (modelo.getIdUsu().equals("")) {
-                indError = "error";
+                indError += "error";
                 errores.add("Ingrese el número de DNI");
             } else {
-                if (modelo.getIdUsu().length() != 8) {
-                    indError = "error";
+                if (modelo.getIdUsu().length() < 8) {
+                    indError += "error";
                     errores.add("El DNI ingresado no es válido");
                 }
             }
 
             if (modelo.getDesApeUsu().equals("")) {
-                indError = "error";
+                indError += "error";
                 errores.add("Ingrese los apellidos");
             }
 
             if (modelo.getDesNomUsu().equals("")) {
-                indError = "error";
+                indError += "error";
                 errores.add("Ingrese los nombres ");
             }
 
+            if (modelo.getOtrClaUsu().equals("")) {
+                indError += "error";
+                errores.add("Debe ingresar la contraseña");
+            }
+            
             if (modelo.getIdTipUsu() == 0) {
-                indError = "error";
+                indError += "error";
                 errores.add("Seleccione el tipo de usuario");
             }
 
-            if (modelo.getOtrClaUsu().equals("")) {
-                indError = "error";
-                errores.add("Debe ingresar la contraseña");
-            }
-
             if (modelo.getIdCon() == 0) {
-                indError = "error";
+                indError += "error";
                 errores.add("Seleccione un concesionario");
             }
 
             if (modelo.getIdLocCon() == 0 && modelo.getIdCon() != 0) {
-                indError = "error";
+                indError += "error";
                 errores.add("Seleccione un local");
+            }
+            
+            if (modelo.getNumTelFij().equals("0") && modelo.getNumTelMov1().equals("0")
+                    && modelo.getNumTelMov2().equals("0") && modelo.getNumTelRP1().equals("")
+                    && modelo.getNumTelRP2().equals("") && modelo.getNumTelRP3().equals("")){
+                indError += "error";
+                errores.add("Debe ingresar al menos un número telefónico");
+            }
+            
+            if (!modelo.getNumTelFij().equals("0")) {
+                if(modelo.getNumTelFij().length()<6 || modelo.getNumTelFij().length()>10) {
+                    indError += "error";
+                    errores.add("Número de teléfono fijo no válido");
+                } else {
+                    if(!isInteger(modelo.getNumTelFij())) {
+                        indError += "error";
+                        errores.add("Número de teléfono fijo no válido");
+                    } else {
+                        if(Integer.parseInt(modelo.getNumTelFij())==0) {
+                            indError += "error";
+                            errores.add("Número de teléfono fijo no válido");
+                        }
+                    }
+                }
+            }
+            
+            if (!modelo.getNumAnexo().equals("0") && modelo.getNumAnexo().length()>5) {
+                if(modelo.getNumAnexo().length()>5) {
+                    indError += "error";
+                    errores.add("Número de anexo no válido");
+                } else {
+                    if(!isInteger(modelo.getNumAnexo())) {
+                        indError += "error";
+                        errores.add("Número de anexo no válido");
+                    } else {
+                        if(Integer.parseInt(modelo.getNumAnexo())==0) {
+                            indError += "error";
+                            errores.add("Número de anexo no válido");
+                        }
+                    }
+                }
+            }
+            
+            if (!modelo.getNumTelMov1().equals("0")) {
+                if(modelo.getNumTelMov1().length()<9 || modelo.getNumTelMov1().length()>10) {
+                    indError += "error";
+                    errores.add("Número de movil 1 no válido");
+                } else {
+                    if(!isInteger(modelo.getNumTelMov1())) {
+                        indError += "error";
+                        errores.add("Número de movil 1 no válido");
+                    } else {
+                        if(Integer.parseInt(modelo.getNumTelMov1())==0) {
+                            indError += "error";
+                            errores.add("Número de movil 1 no válido");
+                        }
+                    }
+                }
+            }
+            
+            if (!modelo.getNumTelMov2().equals("0")) {
+                if(modelo.getNumTelMov2().length()<9 || modelo.getNumTelMov2().length()>10) {
+                    indError += "error";
+                    errores.add("Número de movil 2 no válido");
+                } else {
+                    if(!isInteger(modelo.getNumTelMov2())) {
+                        indError += "error";
+                        errores.add("Número de movil 2 no válido");
+                    } else {
+                        if(Integer.parseInt(modelo.getNumTelMov2())==0) {
+                            indError += "error";
+                            errores.add("Número de movil 2 no válido");
+                        }
+                    }
+                }
+            }
+            
+            if (!modelo.getNumTelRP1().equals("")) {
+                if(modelo.getNumTelRP1().length()>10) {
+                    indError += "error";
+                    errores.add("Número RPM no válido");
+                }
+            }
+            
+            if (!modelo.getNumTelRP2().equals("")) {
+                if(modelo.getNumTelRP2().length()>10) {
+                    indError += "error";
+                    errores.add("Número RPC no válido");
+                }
+            }
+            
+            if (!modelo.getNumTelRP3().equals("")) {
+                if(modelo.getNumTelRP3().length()>10) {
+                    indError += "error";
+                    errores.add("Número Nextel no válido");
+                }
+            }
+            
+            if(!modelo.getOtrEmaTra().equals("")) {
+                if(!isEmail(modelo.getOtrEmaTra())) {
+                    indError += "error";
+                    errores.add("Email no válido");
+                }
             }
 
             if (indError.equals("")) {
@@ -493,9 +599,11 @@ public class UsuariosAction extends MasterAction implements ModelDriven<Usuarios
                             pwd += Integer.toHexString(Integer.parseInt(Byte.toString((byte) ((b & 0x0F0) >> 4)))).toString();
                         }
 
-                        indError = conex.executeNonQuery("CALL usp_insUsuario(?,?,?,?,?,?,?)",
-                                new Object[]{modelo.getIdUsu(), modelo.getDesApeUsu(), modelo.getDesNomUsu(), modelo.getIdTipUsu(),
-                            pwd, modelo.getIdCon(), modelo.getIdLocCon()});
+                        indError = conex.executeNonQuery("CALL usp_insUsuario(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                                new Object[]{ modelo.getIdUsu(),modelo.getDesApeUsu(),modelo.getDesNomUsu(),pwd, 
+                                    modelo.getIdTipUsu(),modelo.getIdCon(), modelo.getIdLocCon(),modelo.getNumTelFij(),
+                                    modelo.getNumAnexo(),modelo.getNumTelMov1(),modelo.getNumTelMov2(),modelo.getNumTelRP1(),
+                                    modelo.getNumTelRP2(),modelo.getNumTelRP3(),modelo.getOtrEmaTra(),sesion_sga.get("ses_idusu") });
 
                         if (!indError.trim().equals("")) {
                             errores.add(indError);
@@ -518,34 +626,132 @@ public class UsuariosAction extends MasterAction implements ModelDriven<Usuarios
         verifAccionTipoUsuario();
 
         if (indErrAcc.equals("")) {
-            modelo.setIdUsu(modelo.getIdUsu().trim());
-            modelo.setDesNomUsu(modelo.getDesNomUsu().trim());
-            modelo.setDesApeUsu(modelo.getDesApeUsu().trim());
-            modelo.setOtrClaUsu(modelo.getOtrClaUsu().trim());
-
             if (modelo.getDesApeUsu().equals("")) {
-                indError = "error";
+                indError += "error";
                 errores.add("Ingrese los apellidos");
             }
 
             if (modelo.getDesNomUsu().equals("")) {
-                indError = "error";
+                indError += "error";
                 errores.add("Ingrese los nombres ");
             }
-
+            
             if (modelo.getIdTipUsu() == 0) {
-                indError = "error";
+                indError += "error";
                 errores.add("Seleccione el tipo de usuario");
             }
 
             if (modelo.getIdCon() == 0) {
-                indError = "error";
+                indError += "error";
                 errores.add("Seleccione un concesionario");
             }
 
             if (modelo.getIdLocCon() == 0 && modelo.getIdCon() != 0) {
-                indError = "error";
+                indError += "error";
                 errores.add("Seleccione un local");
+            }
+            
+            if (modelo.getNumTelFij().equals("") && modelo.getNumTelMov1().equals("")
+                    && modelo.getNumTelMov2().equals("") && modelo.getNumTelRP1().equals("")
+                    && modelo.getNumTelRP2().equals("") && modelo.getNumTelRP3().equals("")){
+                indError += "error";
+                errores.add("Debe ingresar al menos un número telefónico");
+            }
+            
+            if (!modelo.getNumTelFij().equals("0")) {
+                if(modelo.getNumTelFij().length()<6 || modelo.getNumTelFij().length()>10) {
+                    indError += "error";
+                    errores.add("Número de teléfono fijo no válido");
+                } else {
+                    if(!isInteger(modelo.getNumTelFij())) {
+                        indError += "error";
+                        errores.add("Número de teléfono fijo no válido");
+                    } else {
+                        if(Integer.parseInt(modelo.getNumTelFij())==0) {
+                            indError += "error";
+                            errores.add("Número de teléfono fijo no válido");
+                        }
+                    }
+                }
+            }
+            
+            if (!modelo.getNumAnexo().equals("0") && modelo.getNumAnexo().length()>5) {
+                if(modelo.getNumAnexo().length()>5) {
+                    indError += "error";
+                    errores.add("Número de anexo no válido");
+                } else {
+                    if(!isInteger(modelo.getNumAnexo())) {
+                        indError += "error";
+                        errores.add("Número de anexo no válido");
+                    } else {
+                        if(Integer.parseInt(modelo.getNumAnexo())==0) {
+                            indError += "error";
+                            errores.add("Número de anexo no válido");
+                        }
+                    }
+                }
+            }
+            
+            if (!modelo.getNumTelMov1().equals("0")) {
+                if(modelo.getNumTelMov1().length()<9 || modelo.getNumTelMov1().length()>10) {
+                    indError += "error";
+                    errores.add("Número de movil 1 no válido");
+                } else {
+                    if(!isInteger(modelo.getNumTelMov1())) {
+                        indError += "error";
+                        errores.add("Número de movil 1 no válido");
+                    } else {
+                        if(Integer.parseInt(modelo.getNumTelMov1())==0) {
+                            indError += "error";
+                            errores.add("Número de movil 1 no válido");
+                        }
+                    }
+                }
+            }
+            
+            if (!modelo.getNumTelMov2().equals("0")) {
+                if(modelo.getNumTelMov2().length()<9 || modelo.getNumTelMov2().length()>10) {
+                    indError += "error";
+                    errores.add("Número de movil 2 no válido");
+                } else {
+                    if(!isInteger(modelo.getNumTelMov2())) {
+                        indError += "error";
+                        errores.add("Número de movil 2 no válido");
+                    } else {
+                        if(Integer.parseInt(modelo.getNumTelMov2())==0) {
+                            indError += "error";
+                            errores.add("Número de movil 2 no válido");
+                        }
+                    }
+                }
+            }
+            
+            if (!modelo.getNumTelRP1().equals("")) {
+                if(modelo.getNumTelRP1().length()>10) {
+                    indError += "error";
+                    errores.add("Número RPM no válido");
+                }
+            }
+            
+            if (!modelo.getNumTelRP2().equals("")) {
+                if(modelo.getNumTelRP2().length()>10) {
+                    indError += "error";
+                    errores.add("Número RPC no válido");
+                }
+            }
+            
+            if (!modelo.getNumTelRP3().equals("")) {
+                if(modelo.getNumTelRP3().length()>10) {
+                    indError += "error";
+                    errores.add("Número Nextel no válido");
+                }
+            }
+            
+            if(!modelo.getOtrEmaTra().equals("")) {
+                if(!isEmail(modelo.getOtrEmaTra())) {
+                    indError += "error";
+                    errores.add("Email no válido");
+                }
             }
 
             if (indError.equals("")) {
@@ -567,9 +773,11 @@ public class UsuariosAction extends MasterAction implements ModelDriven<Usuarios
                             }
                         }
 
-                        indError = conex.executeNonQuery("CALL usp_updUsuario(?,?,?,?,?,?,?)",
-                                new Object[]{modelo.getIdUsu(), modelo.getDesApeUsu(), modelo.getDesNomUsu(), modelo.getIdTipUsu(),
-                            pwd, modelo.getIdCon(), modelo.getIdLocCon()});
+                        indError = conex.executeNonQuery("CALL usp_updUsuario(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                                new Object[]{ modelo.getIdUsu(),modelo.getDesApeUsu(),modelo.getDesNomUsu(),pwd,modelo.getIdTipUsu(),
+                                    modelo.getIdCon(), modelo.getIdLocCon(),modelo.getNumTelFij(),modelo.getNumAnexo(),
+                                    modelo.getNumTelMov1(),modelo.getNumTelMov2(),modelo.getNumTelRP1(),modelo.getNumTelRP2(),
+                                    modelo.getNumTelRP3(),modelo.getOtrEmaTra() });
 
                         if (!indError.trim().equals("")) {
                             errores.add(indError);
@@ -665,10 +873,13 @@ public class UsuariosAction extends MasterAction implements ModelDriven<Usuarios
 
         if (indErrAcc.equals("")) {
             if (!opcion.equals("F")) {
-                if (modelo.getOtrClaUsu().trim().equals("")) {
-                    errores.add("Ingrese la contraseña actual");
-                    indError += "error";
+                if(!sesion_sga.get("ses_indclares").equals("R")) {
+                    if (modelo.getOtrClaUsu().trim().equals("")) {
+                        errores.add("Ingrese la contraseña actual");
+                        indError += "error";
+                    }
                 }
+                
                 if (modelo.getOtrNueClaUsu().trim().equals("")) {
                     errores.add("Ingrese la nueva contraseña");
                     indError += "error";
@@ -684,20 +895,22 @@ public class UsuariosAction extends MasterAction implements ModelDriven<Usuarios
 
                     try {
                         conex = new helper();
+                        
+                        if(!sesion_sga.get("ses_indclares").equals("R")) {
+                            String clave = "";
+                            byte[] md5_bytes_cla = Codificador.getEncoded(modelo.getOtrClaUsu().trim(), "md5").getBytes();
+                            for (byte b : md5_bytes_cla) {
+                                clave += Integer.toHexString(Integer.parseInt(Byte.toString((byte) ((b & 0x0F0) >> 4)))).toString();
+                            }
 
-                        String clave = "";
-                        byte[] md5_bytes_cla = Codificador.getEncoded(modelo.getOtrClaUsu().trim(), "md5").getBytes();
-                        for (byte b : md5_bytes_cla) {
-                            clave += Integer.toHexString(Integer.parseInt(Byte.toString((byte) ((b & 0x0F0) >> 4)))).toString();
-                        }
-
-                        tabla = null;
-                        tabla = conex.executeDataSet("CALL usp_verifUsuarioPassword(?,?)",
-                                new Object[]{sesion_sga.get("ses_idusu"), clave});
-                        while (tabla.next()) {
-                            if (tabla.getInt(1) == 0) {
-                                errores.add("La contraseña actual no es correcta");
-                                indError += "error";
+                            tabla = null;
+                            tabla = conex.executeDataSet("CALL usp_verifUsuarioPassword(?,?)",
+                                    new Object[]{sesion_sga.get("ses_idusu"), clave});
+                            while (tabla.next()) {
+                                if (tabla.getInt(1) == 0) {
+                                    errores.add("La contraseña actual no es correcta");
+                                    indError += "error";
+                                }
                             }
                         }
 
