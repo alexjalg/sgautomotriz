@@ -17,7 +17,7 @@ public class ColorInteriorAction extends MasterAction implements ModelDriven<Col
 
     @Override
     public ColorInteior getModel() {
-        tituloOpc = "Colores de Interior";
+        tituloOpc = "Colores de interior";
         idClaseAccion = 24;
         return modelo;
     }

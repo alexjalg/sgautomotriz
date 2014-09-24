@@ -17,7 +17,7 @@ public class TipoDocumentoAction extends MasterAction implements ModelDriven<Tip
 
     @Override
     public TipoDocumento getModel() {
-        tituloOpc = "Tipos de Documento";
+        tituloOpc = "Tipos de documento";
         idClaseAccion = 22;
         return modelo;
     }

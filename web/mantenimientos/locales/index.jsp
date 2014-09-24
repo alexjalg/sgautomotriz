@@ -18,7 +18,7 @@
         <table>
             <tr>
                 <td class="lbl-concept">Concesionario: </td>
-                <td class="lbl-value"><span><s:property value="desCon" /><span></td>
+                <td class="lbl-value"><span><s:property value="desCon" /></span></td>
             </tr>
         </table>
     </div>

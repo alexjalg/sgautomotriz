@@ -1,45 +1,46 @@
 package entities;
 
 public class Versiones {
-    private String idMar;
-    private String idModMar;
-    private String idVerMod;
-    private String desVerMod;
-    private String desKat;
-    private String desPreCha;
-    private String desPreMot;
-    private int idCatVeh;
-    private int idClaVeh;
-    private int idTipCar;
-    private int idTipCom;
-    private int idTipTras;
-    private int idTipTrac;
-    private String desPotMot;
-    private String numCilVeh;
-    private String numCil;
-    private String numAsiVeh;
-    private String numPasVeh;
-    private String numPueVeh;
-    private String numEjeVeh;
-    private String numRueVeh;
-    private String numDisEje;
-    private String numMedLar;
-    private String numMedAnc;
-    private String numMedAlt;
-    private String numPesNet;
-    private String numPesBru;
-    private String numCarUti;
+    private String idMar = "";
+    private String idModMar = "";
+    private String idVerMod = "";
+    private String desVerMod = "";
+    private String desKat = "";
+    private String desPreCha = "";
+    private String desPreMot = "";
+    private int idCatVeh = 0;
+    private int idClaVeh = 0;
+    private int idTipCar = 0;
+    private int idTipCom = 0;
+    private int idTipTras = 0;
+    private int idTipTrac = 0;
+    private String desPotMot = "";
+    private String numCilVeh = "";
+    private String numCil = "";
+    private String numAsiVeh = "";
+    private String numPasVeh = "";
+    private String numPueVeh = "";
+    private String numEjeVeh = "";
+    private String numRueVeh = "";
+    private String numDisEje = "";
+    private String numMedLar = "";
+    private String numMedAnc = "";
+    private String numMedAlt = "";
+    private String numPesNet = "";
+    private String numPesBru = "";
+    private String numCarUti = "";
     
     
-    private String desTipCar;
-    private String desCatVeh;
-    private String desClaVeh;
-    private String desTipCom;
-    private String desTipTras;
-    private String desTipTrac;
-    private String desMar;
-    private String desModMar;
-
+    private String desTipCar = "";
+    private String desCatVeh = "";
+    private String desClaVeh = "";
+    private String desTipCom = "";
+    private String desTipTras = "";
+    private String desTipTrac = "";
+    private String desMar = "";
+    private String desModMar = "";
+    
+    private String desVerMod_f="";
     /**
      * @return the idMar
      */
@@ -661,6 +662,24 @@ public class Versiones {
         desModMar = desModMar.trim();
         
         this.desModMar = desModMar;
+    }
+
+    /**
+     * @return the desVerMod_f
+     */
+    public String getDesVerMod_f() {
+        desVerMod_f = desVerMod_f.trim();
+        
+        return desVerMod_f;
+    }
+
+    /**
+     * @param desVerMod_f the desVerMod_f to set
+     */
+    public void setDesVerMod_f(String desVerMod_f) {
+        desVerMod_f = desVerMod_f.trim();
+        
+        this.desVerMod_f = desVerMod_f;
     }
 
 }

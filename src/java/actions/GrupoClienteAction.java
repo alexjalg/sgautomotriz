@@ -14,7 +14,7 @@ public class GrupoClienteAction extends MasterAction implements ModelDriven<Grup
 
     @Override
     public GrupoCliente getModel() {
-        tituloOpc = "Grupos de Cliente";
+        tituloOpc = "Grupos de cliente";
         idClaseAccion = 26;
         return getModelo();
     }

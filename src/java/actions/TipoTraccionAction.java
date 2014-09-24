@@ -14,7 +14,7 @@ public class TipoTraccionAction extends MasterAction implements ModelDriven<Tipo
 
     @Override
     public TipoTraccion getModel() {
-        tituloOpc = "Tipo de Tracción";
+        tituloOpc = "Tipo de tracción";
         idClaseAccion = 28;
         return modelo;
     }

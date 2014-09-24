@@ -17,7 +17,7 @@ public class TipoCombustibleAction extends MasterAction implements ModelDriven<T
 
     @Override
     public TipoCombustible getModel() {
-        tituloOpc = "Tipos de Combustible";
+        tituloOpc = "Tipos de combustible";
         idClaseAccion = 17;
         return modelo;
     }

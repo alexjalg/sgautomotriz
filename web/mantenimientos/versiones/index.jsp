@@ -56,7 +56,7 @@
                     <td style="width: 50px; text-align: center;">
                         Código
                     </td>
-                    <td style="">
+                    <td style="<s:if test='%{desVerMod_f!=""}'> background-color: #B5CCED; </s:if>">
                         Versión
                     </td>
                     <td style="width: 220px;">
@@ -72,7 +72,9 @@
                 <tr class="tr-head">
                     <td style=""></td>
                     <td style=""></td>
-                    <td style=""></td>
+                    <td style="<s:if test='%{desVerMod_f!=""}'> background-color: #B5CCED; </s:if>">
+                        <s:textfield name="desVerMod_f" id="desVerMod_f" cssClass="element-form-grid" cssStyle="width: 300px;" />
+                    </td>
                     <td style=""></td>
                     <td style=""></td>
                     <td style=""></td>
@@ -142,7 +144,7 @@
             $('#opcion_h1').val('A');
             var href = $(location).attr('href');
             
-            var _varret = $('#nivBandeja_f').val()+'%'+href+'%'+$('#mtu_h1').val()+'%'+$('#mmo_h1').val()+'%'+$('#mop_h1').val()+'%'+$('#mni_h1').val()+'%'+$('#mod_h1').val()+'%'+$('#curPag_f').val()+'%'+$('#idMar_h1').val()+'%'+$('#idModMar_h1').val()+'|';
+            var _varret = $('#nivBandeja_f').val()+'%'+href+'%'+$('#mtu_h1').val()+'%'+$('#mmo_h1').val()+'%'+$('#mop_h1').val()+'%'+$('#mni_h1').val()+'%'+$('#mod_h1').val()+'%'+$('#curPag_f').val()+'%'+$('#idMar_h1').val()+'%'+$('#idModMar_h1').val()+'|';            
             $('#varReturn_f').val($('#varReturn_f').val()+_varret);
             
             $('#frm_princ').attr('action','<s:property value="baseURL" /><s:url namespace="versiones" includeContext="false" action="adicionarVersion" />');

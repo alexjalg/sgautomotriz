@@ -17,7 +17,7 @@ public class FormaPagoAction extends MasterAction implements ModelDriven<FormaPa
 
     @Override
     public FormaPago getModel() {
-        tituloOpc = "Formas de Pago";
+        tituloOpc = "Formas de pago";
         idClaseAccion = 19;
         return modelo;
     }

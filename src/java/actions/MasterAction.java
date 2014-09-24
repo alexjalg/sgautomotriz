@@ -1,5 +1,6 @@
 package actions;
 
+import com.ibm.db2.jcc.DBTimestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -14,8 +15,10 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import conexion.helper;
+import entities.Anios;
 import entities.Meses;
 import java.sql.ResultSet;
+import java.util.Calendar;
 
 @SuppressWarnings("serial")
 public class MasterAction extends ActionSupport implements ServletRequestAware {
@@ -104,6 +107,7 @@ public class MasterAction extends ActionSupport implements ServletRequestAware {
     protected String curDay="";
     
     private ArrayList<Meses> listMeses = new ArrayList<Meses>();
+    private ArrayList<Anios> listAnios = new ArrayList<Anios>();
 
     public void setServletRequest(HttpServletRequest request) {
         this.servletRequest = request;
@@ -1099,5 +1103,32 @@ public class MasterAction extends ActionSupport implements ServletRequestAware {
         listMeses.add(new Meses(12, "Diciembre", "Dic"));
         
         return listMeses;
+    }
+
+    /**
+     * @return the listAnios
+     */
+    public ArrayList<Anios> getListAnios() {
+        Calendar cal = Calendar.getInstance();
+        
+        int anio = cal.getTime().getYear()+1900;
+        
+        for(int i=anio-5;i<=anio;i++) {
+            listAnios.add(new Anios(i));
+        }
+        
+        return listAnios;
+    }
+    
+    public ArrayList<Anios> getListAniosCustom(int antes, int despues) {
+        Calendar cal = Calendar.getInstance();
+        
+        int anio = cal.getTime().getYear()+1900;
+        
+        for(int i=anio-antes; i<=anio+despues; i++) {
+            listAnios.add(new Anios(i));
+        }
+        
+        return listAnios;
     }
 }

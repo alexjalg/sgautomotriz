@@ -296,6 +296,20 @@
         <put-attribute name="body" value="/mantenimientos/colorInterior/eliminar.jsp" />
     </definition>
     
+    <!-- CORTESIAS -->
+    <definition name="mant-cortesia-index" extends="baseLayout">
+        <put-attribute name="body" value="/mantenimientos/cortesias/index.jsp" />
+    </definition>    
+    <definition name="mant-cortesia-adicionar" extends="baseLayout">
+        <put-attribute name="body" value="/mantenimientos/cortesias/adicionar.jsp" />
+    </definition>
+    <definition name="mant-cortesia-grabar" extends="baseLayoutPopUp">
+        <put-attribute name="body" value="/mantenimientos/cortesias/grabar.jsp" />
+    </definition>
+    <definition name="mant-cortesia-eliminar" extends="baseLayoutPopUp">
+        <put-attribute name="body" value="/mantenimientos/cortesias/eliminar.jsp" />
+    </definition>
+    
     
     <!--  TIPO DE CAMBIO  -->
     <definition name="mant-tipoCambio-index" extends="baseLayout">
@@ -383,7 +397,7 @@
         <put-attribute name="body" value="/mantenimientos/tipoCombustible/eliminar.jsp" />
     </definition>
     
-    <!--  TIPO DE TRASMISION -->
+    <!--  TIPO DE TRANSMISION -->
     <definition name="mant-tipoTrasmision-index" extends="baseLayout">
         <put-attribute name="body" value="/mantenimientos/tipoTrasmision/index.jsp" />
     </definition>    
@@ -466,5 +480,61 @@
     </definition>
     <definition name="mant-campania-eliminar" extends="baseLayoutPopUp">
         <put-attribute name="body" value="/mantenimientos/campania/eliminar.jsp" />
+    </definition>
+    
+    
+     <!-- TIPO DE DOCUMENTO DE VENTA -->
+    <definition name="mant-tipoDocumentoVenta-index" extends="baseLayout">
+        <put-attribute name="body" value="/mantenimientos/tipoDocumentoVenta/index.jsp" />
+    </definition>    
+    <definition name="mant-tipoDocumentoVenta-adicionar" extends="baseLayout">
+        <put-attribute name="body" value="/mantenimientos/tipoDocumentoVenta/adicionar.jsp" />
+    </definition>    
+    <definition name="mant-tipoDocumentoVenta-grabar" extends="baseLayoutPopUp">
+        <put-attribute name="body" value="/mantenimientos/tipoDocumentoVenta/grabar.jsp" />
+    </definition>
+    <definition name="mant-tipoDocumentoVenta-eliminar" extends="baseLayoutPopUp">
+        <put-attribute name="body" value="/mantenimientos/tipoDocumentoVenta/eliminar.jsp" />
+    </definition>
+    
+    
+    <!-- AMBIENTES DE UBICACION-->
+    <definition name="mant-ambienteUbicacion-index" extends="baseLayout">
+        <put-attribute name="body" value="/mantenimientos/ambienteUbicacion/index.jsp" />
+    </definition>    
+    <definition name="mant-ambienteUbicacion-adicionar" extends="baseLayout">
+        <put-attribute name="body" value="/mantenimientos/ambienteUbicacion/adicionar.jsp" />
+    </definition>
+    <definition name="mant-ambienteUbicacion-grabar" extends="baseLayoutPopUp">
+        <put-attribute name="body" value="/mantenimientos/ambienteUbicacion/grabar.jsp" />
+    </definition>
+    <definition name="mant-ambienteUbicacion-eliminar" extends="baseLayoutPopUp">
+        <put-attribute name="body" value="/mantenimientos/ambienteUbicacion/eliminar.jsp" />
+    </definition>
+    
+    <!-- UBICACION POR AMBIENTE -->
+    <definition name="mant-ubicacionAmbiente-index" extends="baseLayout">
+        <put-attribute name="body" value="/mantenimientos/ubicacionAmbiente/index.jsp" />
+    </definition>    
+    <definition name="mant-ubicacionAmbiente-adicionar" extends="baseLayout">
+        <put-attribute name="body" value="/mantenimientos/ubicacionAmbiente/adicionar.jsp" />
+    </definition>
+    <definition name="mant-ubicacionAmbiente-grabar" extends="baseLayoutPopUp">
+        <put-attribute name="body" value="/mantenimientos/ubicacionAmbiente/grabar.jsp" />
+    </definition>
+    <definition name="mant-ubicacionAmbiente-eliminar" extends="baseLayoutPopUp">
+        <put-attribute name="body" value="/mantenimientos/ubicacionAmbiente/eliminar.jsp" />
+    </definition>
+    
+    
+    <!-- PRECIOS DE LISTA -->
+    <definition name="mant-precioLista-index" extends="baseLayout">
+        <put-attribute name="body" value="/mantenimientos/precioLista/index.jsp" />
+    </definition>    
+    <definition name="mant-precioLista-adicionar" extends="baseLayout">
+        <put-attribute name="body" value="/mantenimientos/precioLista/adicionar.jsp" />
+    </definition>
+    <definition name="mant-precioLista-grabar" extends="baseLayoutPopUp">
+        <put-attribute name="body" value="/mantenimientos/precioLista/grabar.jsp" />
     </definition>
 </tiles-definitions>

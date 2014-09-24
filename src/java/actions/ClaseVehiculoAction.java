@@ -17,7 +17,7 @@ public class ClaseVehiculoAction extends MasterAction implements ModelDriven<Cla
 
     @Override
     public ClaseVehiculo getModel() {
-        tituloOpc = "Clases de Vehículo";
+        tituloOpc = "Clases de vehículo";
         idClaseAccion = 16;
         return modelo;
     }

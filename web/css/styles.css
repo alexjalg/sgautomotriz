@@ -338,7 +338,7 @@ body
 
 .d-header-labels .lbl-concept
 {
-    padding-right: 5px;
+    padding-right: 3px;
     padding-left: 30px;
 }
 
@@ -351,8 +351,36 @@ body
 .d-header-labels .lbl-value span
 {
     border-bottom: 1px solid #405E94;
-    padding-right: 3px;
+    padding-right: 5px;
 }
+
+.d-header-filters
+{
+    margin: 0 auto;
+    margin-top: 7px;
+    padding: 5px 15px;
+    background-color: #E8F0F8;
+    border: 1px solid #98B0CD;
+    border-radius: 3px;
+    display: table;
+}
+
+.d-header-filters table
+{
+    margin: 0 auto;
+    color: #405E94;
+}
+
+.d-header-filters table td
+{
+    height: 26px;
+}
+
+.d-header-filters table td .element-form {
+    margin-left: 5px;
+    margin-right: 10px;
+}
+
 
 /*************************************************************************************/
 

@@ -7,17 +7,18 @@
 	<constant name="struts.enable.DynamicMethodInvocation" value="false" />
 	<constant name="struts.devMode" value="true" />
 	<constant name="struts.ui.theme" value="simple" />
+        <constant name="struts.action.excludePattern" value="/Imprimir"/>
 	
 	<package name="default" namespace="/" extends="struts-default">
-		<default-action-ref name="index" />
-		
-		<global-results>
-			<result name="error">/error.jsp</result>
-		</global-results>
-		
-		<global-exception-mappings>
-			<exception-mapping result="error" exception="java.lang.Exception" />
-		</global-exception-mappings>
+            <default-action-ref name="index" />
+
+            <global-results>
+                    <result name="error">/error.jsp</result>
+            </global-results>
+
+            <global-exception-mappings>
+                    <exception-mapping result="error" exception="java.lang.Exception" />
+            </global-exception-mappings>
 	</package>
 	
 	<include file="inicio.xml" /> 
@@ -43,6 +44,8 @@
         <include file="coloresExteriorModelo.xml" />
         <include file="colorInterior.xml" />
         
+        <include file="precioLista.xml" />
+        
         <include file="tipoCambio.xml" />
         
         <include file="tipoDocumento.xml" />
@@ -59,5 +62,10 @@
         
         
         <include file="campania.xml" />
+        <include file="cortesias.xml" />
+        <include file="tipoDocumentoVenta.xml" />
         
+        
+        <include file="ambienteUbicacion.xml" />
+        <include file="ubicacionAmbiente.xml" />
 </struts>

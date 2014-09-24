@@ -13,7 +13,7 @@ public class TipoCarroceriaAction extends MasterAction implements ModelDriven<Ti
 
     @Override
     public TipoCarroceria getModel() {
-        tituloOpc = "Tipo de Carroceria";
+        tituloOpc = "Tipo de carroceria";
         idClaseAccion = 27;
         return getModelo();
     }

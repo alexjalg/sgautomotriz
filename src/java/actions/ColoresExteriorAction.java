@@ -21,7 +21,7 @@ public class ColoresExteriorAction extends MasterAction implements ModelDriven<C
 
     @Override
     public ColoresExterior getModel() {
-        tituloOpc = "Colores de Exterior";
+        tituloOpc = "Colores de exterior";
         idClaseAccion = 1;
 
         return modelo;

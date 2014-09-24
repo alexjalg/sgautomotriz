@@ -21,7 +21,7 @@ public class TipoCambioAction extends MasterAction implements ModelDriven<TipoCa
 
     @Override
     public TipoCambio getModel() {
-        tituloOpc = "Tipo de Cambio";
+        tituloOpc = "Tipo de cambio";
         idClaseAccion = 13;
 
         return modelo;

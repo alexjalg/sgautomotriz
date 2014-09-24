@@ -17,7 +17,7 @@ public class TipoLocalAction  extends  MasterAction implements ModelDriven<TipoL
     
     @Override
     public TipoLocal getModel() {
-        tituloOpc = "Tipos de Local";
+        tituloOpc = "Tipos de local";
         idClaseAccion = 23;
         return modelo;
     }

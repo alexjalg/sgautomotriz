@@ -23,7 +23,7 @@ public class TipoUsuarioAction extends MasterAction implements ModelDriven<TipoU
 
     @Override
     public TipoUsuario getModel() {
-        tituloOpc = "Tipos de Usuario";
+        tituloOpc = "Tipos de usuario";
         idClaseAccion = 14;
 
         return modelo;

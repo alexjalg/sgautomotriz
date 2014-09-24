@@ -17,7 +17,7 @@ public class TipoTrasmisionAction extends MasterAction implements ModelDriven<Ti
 
     @Override
     public TipoTrasmision getModel() {
-        tituloOpc = "Tipos de Transmisión";
+        tituloOpc = "Tipos de transmisión";
         idClaseAccion = 18;
         return modelo;
     }

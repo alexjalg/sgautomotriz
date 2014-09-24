@@ -10,11 +10,22 @@
             <a href="javascript:void(0)" class="back">Volver</a>
         </div>
     </div>
+    <div class="d-header-labels">
+        <table>
+            <tr>
+                <td class="lbl-concept">Marca: </td>
+                <td class="lbl-value"><span><s:property value="desMar" /><span></td>
+                <td class="lbl-concept">Modelo: </td>
+                <td class="lbl-value"><span><s:property value="desModMar" /><span></td>
+            </tr>
+        </table>
+    </div>
 </div>
 
 <form method="POST" id="frm_versiones_back" action="<s:property value="backURL" />">
     <s:hidden name="idMar" id="idMar" />
     <s:hidden name="idModMar" id="idModMar"/>
+    <s:hidden name="desVerMod_f" id="desVerMod_f" value="" />    
     <s:hidden name="varReturn" id="varReturn_f" />
 </form>
 

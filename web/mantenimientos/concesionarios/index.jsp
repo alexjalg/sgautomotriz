@@ -24,6 +24,9 @@
         <button id="btn-locales">
             Locales
         </button>
+        <button id="btn-cortesias">
+            Cortesias
+        </button>
     </s:if>
 </div>
 <div class="d-content-grilla" style="min-width: 660px;">
@@ -81,11 +84,6 @@
     $(document).ready(function() {
         /*Paginacion de grilla*/
         <s:property value="jsPaginacion" escape="false" />
-                
-        $('#btn-add').button();
-        $('#btn-edit').button();
-        $('#btn-delete').button();
-        $('#btn-locales').button();
         
         $('#btn_search').css('visibility','hidden');
     
@@ -233,6 +231,33 @@
                         $('#varReturn_f').val($('#varReturn_f').val()+_varret);
 
                         $('#frm_princ').attr('action','<s:property value="baseURL" /><s:url namespace="locales" includeContext="false" action="Local" />');
+                        $('#frm_princ').submit();
+                    }
+                },
+                2
+            );
+        });
+        
+        $('#btn-cortesias').click(function(){
+            post(
+                '<s:property value="baseURL" /><s:url namespace="concesionarios" includeContext="false" action="vrfSeleccionConcesionario" />',
+                $('#frm_princ').serialize(),
+                function(resultado){
+                    var _error = validaRespuestaAjax(resultado);
+                    
+                    if(_error != -1)
+                    {
+                        $('#DIVverif').html(resultado);
+                        $('#DIVverif').dialog('open');
+                    }
+                    else
+                    {
+                        var href = $(location).attr('href');
+
+                        var _varret = $('#nivBandeja_f').val()+'%'+href+'%'+$('#mtu_h1').val()+'%'+$('#mmo_h1').val()+'%'+$('#mop_h1').val()+'%'+$('#mni_h1').val()+'%'+$('#mod_h1').val()+'%'+$('#curPag_f').val()+'|';
+                        $('#varReturn_f').val($('#varReturn_f').val()+_varret);
+
+                        $('#frm_princ').attr('action','<s:property value="baseURL" /><s:url namespace="cortesias" includeContext="false" action="Cortesia" />');
                         $('#frm_princ').submit();
                     }
                 },

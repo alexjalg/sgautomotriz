@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+    <package name="precioLista" namespace="/precioLista" extends="struts-default">
+        <result-types>
+            <result-type name="tiles" class="org.apache.struts2.views.tiles.TilesResult" />
+        </result-types>
+        <action name="*PrecioLista" method="{1}" class="actions.PrecioListaAction">
+            <result name="success" type="tiles">mant-precioLista-index</result>
+            <result name="vrfSeleccion" type="tiles">mant-precioLista-grabar</result>
+            <result name="adicionar" type="tiles">mant-precioLista-adicionar</result>
+            <result name="actualizar" type="tiles">mant-precioLista-grabar</result>
+            <result name="listmodelo">/mantenimientos/precioLista/cargaMod.jsp</result>            
+        </action>
+    </package>
+</struts>

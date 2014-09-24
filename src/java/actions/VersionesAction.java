@@ -28,21 +28,20 @@ public class VersionesAction extends MasterAction implements ModelDriven<Version
     public Versiones getModel() {
         tituloOpc = "Versiones";
         idClaseAccion = 29;
-        
         return modelo;
     }
 
     public String vrfSeleccion() {
         idAccion = 1;
         verifAccionTipoUsuario();
-        
+
         if (indErrAcc.equals("")) {
             if (getModelo().getIdVerMod().trim().equals("")) {
                 indError = "error";
                 errores.add("No ha seleccionado ningun registro");
             }
         }
-        
+
         return "vrfSeleccion";
     }
 
@@ -50,24 +49,26 @@ public class VersionesAction extends MasterAction implements ModelDriven<Version
     public String execute() {
         idAccion = 2;
         verifAccionTipoUsuario();
-        
+
         if (indErrAcc.equals("")) {
-            nivBandeja = 3;            
+            nivBandeja = 3;
             varReturnProcess(0);
-            
+
             if (!listVarReturn.isEmpty()) {
                 curPagVis = Integer.parseInt(listVarReturn.get(0).toString().trim());
             }
-            
+
             urlPaginacion = "versiones/Version";
+            
+            getDatosMarcaModelo();
             cantVersionesIndex();
             verifPag();
             listVersionesIndex();
         }
-        
+
         return SUCCESS;
     }
-    
+
     private void cantVersionesIndex() {
         helper conex = null;
         ResultSet tabla = null;
@@ -78,8 +79,8 @@ public class VersionesAction extends MasterAction implements ModelDriven<Version
             if (!indError.equals("")) {
                 errores.add(indError);
             } else {
-                tabla = conex.executeDataSet("CALL usp_cantVersionesIndex(?,?)", 
-                        new Object[]{ getModelo().getIdMar(),getModelo().getIdModMar() });
+                tabla = conex.executeDataSet("CALL usp_cantVersionesIndex(?,?,?)",
+                        new Object[]{modelo.getIdMar(), modelo.getIdModMar(),modelo.getDesVerMod_f()});
 
                 indError += conex.getErrorSQL();
                 if (!indError.equals("")) {
@@ -111,9 +112,9 @@ public class VersionesAction extends MasterAction implements ModelDriven<Version
             if (!indError.equals("")) {
                 errores.add(indError);
             } else {
-                tabla = conex.executeDataSet("CALL usp_listVersionIndex(?,?,?,?)",
-                        new Object[]{ getModelo().getIdMar(),getModelo().getIdModMar(),
-                            getCurPag()*regPag, regPag });
+                tabla = conex.executeDataSet("CALL usp_listVersionIndex(?,?,?,?,?)",
+                        new Object[]{modelo.getIdMar(), modelo.getIdModMar(), modelo.getDesVerMod_f(),
+                            getCurPag() * regPag, regPag});
                 indError += conex.getErrorSQL();
                 if (!indError.equals("")) {
                     errores.add(indError);
@@ -124,8 +125,6 @@ public class VersionesAction extends MasterAction implements ModelDriven<Version
                         obj.setIdMar(tabla.getString("idMar").trim());
                         obj.setIdModMar(tabla.getString("idModMar").trim());
                         obj.setIdVerMod(tabla.getString("idVerMod"));
-                        getModelo().setDesMar(tabla.getString("desMar").trim());
-                        getModelo().setDesModMar(tabla.getString("desModMar").trim());
                         obj.setDesVerMod(tabla.getString("desVerMod").trim());
                         obj.setDesKat(tabla.getString("desKat").trim());
                         obj.setDesPreCha(tabla.getString("desPreCha").trim());
@@ -145,11 +144,44 @@ public class VersionesAction extends MasterAction implements ModelDriven<Version
             }
         }
     }
+    
+    /*private void listgetVersionesIndex() {
+        helper conex = null;
+        ResultSet tabla = null;
+        try {
+            conex = new helper();
+            indError += conex.getErrorSQL();
+            if (!indError.equals("")) {
+                errores.add(indError);
+            } else {
+                tabla = conex.executeDataSet("CALL usp_listgetVersionIndex(?,?)",
+                        new Object[]{modelo.getIdMar(), modelo.getIdModMar()});
+                indError += conex.getErrorSQL();
+                if (!indError.equals("")) {
+                    errores.add(indError);
+                } else {
+                    while (tabla.next()) {
+                        modelo.setDesMar(tabla.getString("desMar").trim());                        
+                        modelo.setDesModMar(tabla.getString("desModMar").trim());                        
+                    }
+                }
+            }
+        } catch (Exception e) {
+            indError += "error";
+            errores.add(e.getMessage());
+        } finally {
+            try {
+                tabla.close();
+                conex.returnConnect();
+            } catch (Exception e) {
+            }
+        }
+    }*/
 
     public String adicionar() {
         idAccion = 3;
         verifAccionTipoUsuario();
-        
+
         if (indErrAcc.equals("")) {
             nivBandeja = 3;
             if (!opcion.trim().equals("A") || modelo.getIdMar().equals("") || modelo.getIdModMar().equals("")) {
@@ -158,8 +190,9 @@ public class VersionesAction extends MasterAction implements ModelDriven<Version
                 varReturnProcess(1);
                 if (opcion.equals("A")) {
                     modelo.setIdVerMod("");
+                    getDatosMarcaModelo();
                     populateForm();
-                    
+
                     formURL = baseURL + "versiones/grabarVersion";
                 }
             }
@@ -170,11 +203,11 @@ public class VersionesAction extends MasterAction implements ModelDriven<Version
     public String modificar() {
         idAccion = 4;
         verifAccionTipoUsuario();
-        
+
         if (indErrAcc.equals("")) {
             nivBandeja = 3;
-            if (!opcion.trim().equals("M")  || modelo.getIdMar().equals("") || 
-                    modelo.getIdModMar().equals("") || modelo.getIdVerMod().equals("") || modelo.getIdVerMod().equals("0")) {
+            if (!opcion.trim().equals("M") || modelo.getIdMar().equals("")
+                    || modelo.getIdModMar().equals("") || modelo.getIdVerMod().equals("") || modelo.getIdVerMod().equals("0")) {
                 indErrParm = "error";
             } else {
                 varReturnProcess(1);
@@ -182,10 +215,11 @@ public class VersionesAction extends MasterAction implements ModelDriven<Version
                     if (modelo.getIdVerMod().trim().equals("")) {
                         indErrParm = "error";
                     } else {
+                        getDatosMarcaModelo();
                         getDatosVersiones();
-                        
+
                         populateForm();
-                        
+
                         formURL = baseURL + "versiones/actualizarVersion";
                     }
                 }
@@ -194,20 +228,68 @@ public class VersionesAction extends MasterAction implements ModelDriven<Version
         return "modificar";
     }
     
-    public void populateForm() {
+    private void getDatosMarcaModelo() {
         helper conex = null;
         ResultSet tabla = null;
         
         try {
             conex = new helper();
-            indError += conex.getErrorSQL();
+            indError = conex.getErrorSQL();
             
             if(!indError.equals("")) {
                 errores.add(indError);
             } else {
-                tabla = null;
-                tabla = conex.executeDataSet("CALL usp_listCategoriaVehiculo()",new Object[]{});
+                tabla = conex.executeDataSet("CALL usp_getDatosMarca(?)", 
+                        new Object[]{ modelo.getIdMar() });
+                indError = conex.getErrorSQL();
                 
+                if(!indError.equals("")) {
+                    errores.add(indError);
+                } else {
+                    while(tabla.next()) {
+                        modelo.setDesMar(tabla.getString("desMar"));
+                    }
+                    
+                    tabla = null;
+                    tabla = conex.executeDataSet("CALL usp_getDatosModelo(?,?)", 
+                            new Object[]{ modelo.getIdMar(),modelo.getIdModMar() });
+                    indError = conex.getErrorSQL();
+                    
+                    if(!indError.equals("")) {
+                        errores.add(indError);
+                    } else {
+                        while(tabla.next()) {
+                            modelo.setDesModMar(tabla.getString("desModMar"));
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            indError += "error";
+            errores.add(e.getMessage());
+        } finally {
+            try {
+                tabla.close();
+                conex.returnConnect();
+            } catch (Exception e) {
+            }
+        }
+    }
+
+    private void populateForm() {
+        helper conex = null;
+        ResultSet tabla = null;
+
+        try {
+            conex = new helper();
+            indError += conex.getErrorSQL();
+
+            if (!indError.equals("")) {
+                errores.add(indError);
+            } else {
+                tabla = null;
+                tabla = conex.executeDataSet("CALL usp_listCategoriaVehiculo()", new Object[]{});
+
                 if (!conex.getErrorSQL().equals("")) {
                     indError += "error";
                     errores.add(conex.getErrorSQL());
@@ -220,10 +302,10 @@ public class VersionesAction extends MasterAction implements ModelDriven<Version
                         listCatVehiculo.add(obj);
                     }
                 }
-                
+
                 tabla = null;
-                tabla = conex.executeDataSet("CALL usp_listClaseVehiculo()",new Object[]{});
-                
+                tabla = conex.executeDataSet("CALL usp_listClaseVehiculo()", new Object[]{});
+
                 if (!conex.getErrorSQL().equals("")) {
                     indError += "error";
                     errores.add(conex.getErrorSQL().trim());
@@ -236,10 +318,10 @@ public class VersionesAction extends MasterAction implements ModelDriven<Version
                         listClaVehiculo.add(obj);
                     }
                 }
-                
+
                 tabla = null;
-                tabla = conex.executeDataSet("CALL usp_listTipoCarroceria()",new Object[]{});
-                
+                tabla = conex.executeDataSet("CALL usp_listTipoCarroceria()", new Object[]{});
+
                 if (!conex.getErrorSQL().equals("")) {
                     indError = "error";
                     errores.add(conex.getErrorSQL().trim());
@@ -252,10 +334,10 @@ public class VersionesAction extends MasterAction implements ModelDriven<Version
                         listTipCarroceria.add(obj);
                     }
                 }
-                
+
                 tabla = null;
-                tabla = conex.executeDataSet("CALL usp_listTipoCombustible()",new Object[]{});
-                
+                tabla = conex.executeDataSet("CALL usp_listTipoCombustible()", new Object[]{});
+
                 if (!conex.getErrorSQL().equals("")) {
                     indError = "error";
                     errores.add(conex.getErrorSQL().trim());
@@ -268,10 +350,10 @@ public class VersionesAction extends MasterAction implements ModelDriven<Version
                         listTipCombustible.add(obj);
                     }
                 }
-                
+
                 tabla = null;
-                tabla = conex.executeDataSet("CALL usp_listTipoTrasmision()",new Object[]{});
-                
+                tabla = conex.executeDataSet("CALL usp_listTipoTrasmision()", new Object[]{});
+
                 if (!conex.getErrorSQL().equals("")) {
                     indError = "error";
                     errores.add(conex.getErrorSQL().trim());
@@ -284,10 +366,10 @@ public class VersionesAction extends MasterAction implements ModelDriven<Version
                         listTipTransmision.add(obj);
                     }
                 }
-                
+
                 tabla = null;
-                tabla = conex.executeDataSet("CALL usp_listTipoTraccion()",new Object[]{});
-                
+                tabla = conex.executeDataSet("CALL usp_listTipoTraccion()", new Object[]{});
+
                 if (!conex.getErrorSQL().equals("")) {
                     indError = "error";
                     errores.add(conex.getErrorSQL().trim());
@@ -320,150 +402,270 @@ public class VersionesAction extends MasterAction implements ModelDriven<Version
     public String grabar() {
         idAccion = 5;
         verifAccionTipoUsuario();
-        
+
         if (indErrAcc.equals("")) {
-            if(modelo.getIdVerMod().trim().equals("") || modelo.getIdVerMod().trim().equals("0")){
-                indError = "error";
+            if (modelo.getIdVerMod().trim().equals("") || modelo.getIdVerMod().trim().equals("0")) {
+                indError += "error";
                 errores.add("Ingrese el código de la versión.");
             }
-            if(getModelo().getDesVerMod().trim().equals("")){
-                indError = "error";
+            if (getModelo().getDesVerMod().trim().equals("")) {
+                indError += "error";
                 errores.add("Ingrese la descripción de la versión.");
             }
-            if(getModelo().getDesKat().trim().equalsIgnoreCase("")){
-                indError = "error";
+            if (getModelo().getDesKat().trim().equalsIgnoreCase("")) {
+                indError += "error";
                 errores.add("Ingrese la descripción del Katashiki.");
             }
-            if(getModelo().getDesPreCha().trim().equalsIgnoreCase("")){
-                indError = "error";
+            if (getModelo().getDesPreCha().trim().equalsIgnoreCase("")) {
+                indError += "error";
                 errores.add("Ingrese el prefijo de Chasis.");
             }
-            if(getModelo().getDesPreMot().trim().equalsIgnoreCase("")){
-                indError = "error";
+            if (getModelo().getDesPreMot().trim().equalsIgnoreCase("")) {
+                indError += "error";
                 errores.add("Ingrese el prefijo de Motor.");
             }
-            if(getModelo().getIdCatVeh() == 0){
-                indError = "error";
+            if (getModelo().getIdCatVeh() == 0) {
+                indError += "error";
                 errores.add("Seleccione la categoría del vehículo.");
             }
-            if(getModelo().getIdClaVeh() == 0){
-                indError = "error";
+            if (getModelo().getIdClaVeh() == 0) {
+                indError += "error";
                 errores.add("Seleccione la clase del vehículo.");
             }
-            if(getModelo().getIdTipCar() == 0){
-                indError = "error";
+            if (getModelo().getIdTipCar() == 0) {
+                indError += "error";
                 errores.add("Seleccione el tipo de carrocería.");
             }
-            if(getModelo().getIdTipCom() == 0){
-                indError = "error";
+            if (getModelo().getIdTipCom() == 0) {
+                indError += "error";
                 errores.add("Seleccione el tipo de combustible.");
             }
-            if(getModelo().getIdTipTras() == 0){
-                indError = "error";
+            if (getModelo().getIdTipTras() == 0) {
+                indError += "error";
                 errores.add("Seleccione el tipo de transmisión.");
             }
-            if(getModelo().getIdTipTrac() == 0){
-                indError = "error";
+            if (getModelo().getIdTipTrac() == 0) {
+                indError += "error";
                 errores.add("Seleccione el tipo de tracción.");
             }
-            if(getModelo().getDesPotMot().trim().equals("")){
-                indError = "error";
+            if (getModelo().getDesPotMot().trim().equals("")) {
+                indError += "error";
                 errores.add("Ingrese la potencia del motor.");
             }
-            if(getModelo().getNumCilVeh().trim().equals("")){
-                indError = "error";
+            if (getModelo().getNumCilVeh().trim().equals("")) {
+                indError += "error";
                 errores.add("Ingrese la cilindrada del vehículo.");
             } else {
-                if(!isInteger(getModelo().getNumCilVeh())) {
-                    indError = "error";
+                if (!isInteger(getModelo().getNumCilVeh())) {
+                    indError += "error";
                     errores.add("Cilindrada no válida.");
                 } else {
-                    if(Integer.parseInt(getModelo().getNumCilVeh())==0) {
-                        indError = "error";
+                    if (Integer.parseInt(getModelo().getNumCilVeh()) == 0) {
+                        indError += "error";
                         errores.add("Cilindrada no válida.");
                     }
                 }
             }
-            if(getModelo().getNumCil().trim().equals("")){
-                indError = "error";
+            if (getModelo().getNumCil().trim().equals("")) {
+                indError += "error";
                 errores.add("Ingrese el número de cilindros.");
             } else {
-                if(!isInteger(getModelo().getNumCil())) {
-                    indError = "error";
+                if (!isInteger(getModelo().getNumCil())) {
+                    indError += "error";
                     errores.add("Número de cilindros no válido.");
                 } else {
-                    if(Integer.parseInt(getModelo().getNumCil())==0) {
-                        indError = "error";
+                    if (Integer.parseInt(getModelo().getNumCil()) == 0) {
+                        indError += "error";
                         errores.add("Número de cilindros no válido.");
                     }
                 }
             }
-            if(getModelo().getNumAsiVeh().trim().equals("")){
-                indError = "error";
+            if (getModelo().getNumAsiVeh().trim().equals("")) {
+                indError += "error";
                 errores.add("Ingrese el número de asientos.");
+            } else {
+                if (!isInteger(getModelo().getNumAsiVeh())) {
+                    indError += "error";
+                    errores.add("Número de asientos no válido.");
+                } else {
+                    if (Integer.parseInt(getModelo().getNumAsiVeh()) == 0) {
+                        indError += "error";
+                        errores.add("Número de asientos no válido.");
+                    }
+                }
             }
-            if(getModelo().getNumPasVeh().trim().equals("")){
-                indError = "error";
+            if (getModelo().getNumPasVeh().trim().equals("")) {
+                indError += "error";
                 errores.add("Ingrese el número de pasajeros.");
+            } else {
+                if (!isInteger(getModelo().getNumPasVeh())) {
+                    indError += "error";
+                    errores.add("Número de pasajeros no válido.");
+                } else {
+                    if (Integer.parseInt(getModelo().getNumPasVeh()) == 0) {
+                        indError += "error";
+                        errores.add("Número de pasajeros no válido.");
+                    }
+                }
             }
-            if(getModelo().getNumPueVeh().trim().equals("")){
-                indError = "error";
+            if (getModelo().getNumPueVeh().trim().equals("")) {
+                indError += "error";
                 errores.add("Ingrese el número de puertas.");
+            } else {
+                if (!isInteger(getModelo().getNumPueVeh())) {
+                    indError += "error";
+                    errores.add("Número de puertas no válido.");
+                } else {
+                    if (Integer.parseInt(getModelo().getNumPueVeh()) == 0) {
+                        indError += "error";
+                        errores.add("Número de puertas no válido.");
+                    }
+                }
             }
-            if(getModelo().getNumEjeVeh().trim().equals("")){
-                indError = "error";
+            if (getModelo().getNumEjeVeh().trim().equals("")) {
+                indError += "error";
                 errores.add("Ingrese el número de ejes.");
+            } else {
+                if (!isInteger(getModelo().getNumEjeVeh())) {
+                    indError += "error";
+                    errores.add("Número de ejes no válido.");
+                } else {
+                    if (Integer.parseInt(getModelo().getNumEjeVeh()) == 0) {
+                        indError += "error";
+                        errores.add("Número de ejes no válido.");
+                    }
+                }
             }
-            if(getModelo().getNumRueVeh().trim().equals("")){
-                indError = "error";
+            if (getModelo().getNumRueVeh().trim().equals("")) {
+                indError += "error";
                 errores.add("Ingrese el número de ruedas.");
+            } else {
+                if (!isInteger(getModelo().getNumRueVeh())) {
+                    indError += "error";
+                    errores.add("Número de ruedas no válido.");
+                } else {
+                    if (Integer.parseInt(getModelo().getNumRueVeh()) == 0) {
+                        indError += "error";
+                        errores.add("Número de ruedas no válido.");
+                    }
+                }
             }
-            if(getModelo().getNumDisEje().trim().equals("")){
-                indError = "error";
+            if (getModelo().getNumDisEje().trim().equals("")) {
+                indError += "error";
                 errores.add("Ingrese la distancia entre ejes.");
+            } else {
+                if (!isInteger(getModelo().getNumDisEje())) {
+                    indError += "error";
+                    errores.add("Número de distancia entre ejes no válido.");
+                } else {
+                    if (Integer.parseInt(getModelo().getNumDisEje()) == 0) {
+                        indError += "error";
+                        errores.add("Número de distancia entre ejes no válido.");
+                    }
+                }
             }
-            if(getModelo().getNumMedLar().trim().equals("")){
-                indError = "error";
+            if (getModelo().getNumMedLar().trim().equals("")) {
+                indError += "error";
                 errores.add("Ingrese la medida de largo.");
+            } else {
+                if (!isInteger(getModelo().getNumMedLar())) {
+                    indError += "error";
+                    errores.add("Número de medida de largo no válido.");
+                } else {
+                    if (Integer.parseInt(getModelo().getNumMedLar()) == 0) {
+                        indError += "error";
+                        errores.add("Número de medida de largo no válido.");
+                    }
+                }
             }
-            if(getModelo().getNumMedAnc().trim().equals("")){
-                indError = "error";
+            if (getModelo().getNumMedAnc().trim().equals("")) {
+                indError += "error";
                 errores.add("Ingrese la medida de ancho.");
+            } else {
+                if (!isInteger(getModelo().getNumMedAnc())) {
+                    indError += "error";
+                    errores.add("Número de medida de ancho no válido.");
+                } else {
+                    if (Integer.parseInt(getModelo().getNumMedAnc()) == 0) {
+                        indError += "error";
+                        errores.add("Número de medida de ancho no válido.");
+                    }
+                }
             }
-            if(getModelo().getNumMedAlt().trim().equals("")){
-                indError = "error";
+            if (getModelo().getNumMedAlt().trim().equals("")) {
+                indError += "error";
                 errores.add("Ingrese la medida de alto.");
+            } else {
+                if (!isInteger(getModelo().getNumMedAlt())) {
+                    indError += "error";
+                    errores.add("Número de medida de alto no válido.");
+                } else {
+                    if (Integer.parseInt(getModelo().getNumMedAlt()) == 0) {
+                        indError += "error";
+                        errores.add("Número de medida de alto no válido.");
+                    }
+                }
             }
-            if(getModelo().getNumPesNet().trim().equals("")){
-                indError = "error";
+            if (getModelo().getNumPesNet().trim().equals("")) {
+                indError += "error";
                 errores.add("Ingrese el peso neto.");
+            } else {
+                if (!isInteger(getModelo().getNumPesNet())) {
+                    indError += "error";
+                    errores.add("Número del peso neto no válido.");
+                } else {
+                    if (Integer.parseInt(getModelo().getNumPesNet()) == 0) {
+                        indError += "error";
+                        errores.add("Número del peso neto no válido.");
+                    }
+                }
             }
-            if(getModelo().getNumPesBru().trim().equals("")){
-                indError = "error";
+            if (getModelo().getNumPesBru().trim().equals("")) {
+                indError += "error";
                 errores.add("Ingrese el peso bruto.");
+            } else {
+                if (!isInteger(getModelo().getNumPesBru())) {
+                    indError += "error";
+                    errores.add("Número del peso bruto no válido.");
+                } else {
+                    if (Integer.parseInt(getModelo().getNumPesBru()) == 0) {
+                        indError += "error";
+                        errores.add("Número del peso bruto no válido.");
+                    }
+                }
             }
-            if(getModelo().getNumCarUti().trim().equals("")){
-                indError = "error";
+            if (getModelo().getNumCarUti().trim().equals("")) {
+                indError += "error";
                 errores.add("Ingrese la carga util.");
+            } else {
+                if (!isInteger(getModelo().getNumCarUti())) {
+                    indError += "error";
+                    errores.add("Número de carga util no válido.");
+                } else {
+                    if (Integer.parseInt(getModelo().getNumCarUti()) == 0) {
+                        indError += "error";
+                        errores.add("Número de carga util no válido.");
+                    }
+                }
             }
             if (indError.equals("")) {
                 helper conex = null;
                 try {
                     conex = new helper();
                     indError = conex.getErrorSQL();
-                    
+
                     if (!indError.equals("")) {
                         errores.add(indError);
                     } else {
                         indError = conex.executeNonQuery("CALL usp_insVersiones(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
-                                new Object[]{ getModelo().getIdMar().trim(),getModelo().getIdModMar().trim(),getModelo().getIdVerMod(),
-                                    getModelo().getDesVerMod().trim(),getModelo().getDesKat().trim(),getModelo().getDesPreCha().trim(),
-                                    getModelo().getDesPreMot().trim(),getModelo().getIdCatVeh(),getModelo().getIdClaVeh(),getModelo().getIdTipCar(),
-                                    getModelo().getIdTipCom(),getModelo().getIdTipTras(),getModelo().getIdTipTrac(),getModelo().getDesPotMot().trim(),
-                                    getModelo().getNumCilVeh(),getModelo().getNumCil(),getModelo().getNumAsiVeh(),getModelo().getNumPasVeh(),
-                                    getModelo().getNumPueVeh(),getModelo().getNumEjeVeh(),getModelo().getNumRueVeh(),getModelo().getNumDisEje(),
-                                    getModelo().getNumMedLar(),getModelo().getNumMedAnc(),getModelo().getNumMedAlt(),getModelo().getNumPesNet(),
-                                    getModelo().getNumPesBru(),getModelo().getNumCarUti() });
+                                new Object[]{getModelo().getIdMar().trim(), getModelo().getIdModMar().trim(), getModelo().getIdVerMod(),
+                                    getModelo().getDesVerMod().trim(), getModelo().getDesKat().trim(), getModelo().getDesPreCha().trim(),
+                                    getModelo().getDesPreMot().trim(), getModelo().getIdCatVeh(), getModelo().getIdClaVeh(), getModelo().getIdTipCar(),
+                                    getModelo().getIdTipCom(), getModelo().getIdTipTras(), getModelo().getIdTipTrac(), getModelo().getDesPotMot().trim(),
+                                    getModelo().getNumCilVeh(), getModelo().getNumCil(), getModelo().getNumAsiVeh(), getModelo().getNumPasVeh(),
+                                    getModelo().getNumPueVeh(), getModelo().getNumEjeVeh(), getModelo().getNumRueVeh(), getModelo().getNumDisEje(),
+                                    getModelo().getNumMedLar(), getModelo().getNumMedAnc(), getModelo().getNumMedAlt(), getModelo().getNumPesNet(),
+                                    getModelo().getNumPesBru(), getModelo().getNumCarUti()});
                         if (!indError.equals("")) {
                             errores.add(indError);
                         }
@@ -483,105 +685,249 @@ public class VersionesAction extends MasterAction implements ModelDriven<Version
         idAccion = 6;
         verifAccionTipoUsuario();
         if (indErrAcc.equals("")) {
-            if(getModelo().getDesVerMod().trim().equals("")){
-                indError = "error";
+            if (modelo.getIdVerMod().trim().equals("") || modelo.getIdVerMod().trim().equals("0")) {
+                indError += "error";
+                errores.add("Ingrese el código de la versión.");
+            }
+            if (getModelo().getDesVerMod().trim().equals("")) {
+                indError += "error";
                 errores.add("Ingrese la descripción de la versión.");
             }
-            if(getModelo().getDesKat().trim().equals("")){
-                indError = "error";
+            if (getModelo().getDesKat().trim().equalsIgnoreCase("")) {
+                indError += "error";
                 errores.add("Ingrese la descripción del Katashiki.");
             }
-            if(getModelo().getDesPreCha().trim().equals("")){
-                indError = "error";
+            if (getModelo().getDesPreCha().trim().equalsIgnoreCase("")) {
+                indError += "error";
                 errores.add("Ingrese el prefijo de Chasis.");
             }
-            if(getModelo().getDesPreMot().trim().equals("")){
-                indError = "error";
+            if (getModelo().getDesPreMot().trim().equalsIgnoreCase("")) {
+                indError += "error";
                 errores.add("Ingrese el prefijo de Motor.");
             }
-            if(getModelo().getIdCatVeh() == 0){
-                indError = "error";
-                errores.add("Seleccione la categoria del vehículo.");
+            if (getModelo().getIdCatVeh() == 0) {
+                indError += "error";
+                errores.add("Seleccione la categoría del vehículo.");
             }
-            if(getModelo().getIdClaVeh() == 0){
-                indError = "error";
+            if (getModelo().getIdClaVeh() == 0) {
+                indError += "error";
                 errores.add("Seleccione la clase del vehículo.");
             }
-            if(getModelo().getIdTipCar() == 0){
-                indError = "error";
+            if (getModelo().getIdTipCar() == 0) {
+                indError += "error";
                 errores.add("Seleccione el tipo de carrocería.");
             }
-            if(getModelo().getIdTipCom() == 0){
-                indError = "error";
+            if (getModelo().getIdTipCom() == 0) {
+                indError += "error";
                 errores.add("Seleccione el tipo de combustible.");
             }
-            if(getModelo().getIdTipTras() == 0){
-                indError = "error";
+            if (getModelo().getIdTipTras() == 0) {
+                indError += "error";
                 errores.add("Seleccione el tipo de transmisión.");
             }
-            if(getModelo().getIdTipTrac() == 0){
-                indError = "error";
+            if (getModelo().getIdTipTrac() == 0) {
+                indError += "error";
                 errores.add("Seleccione el tipo de tracción.");
             }
-            if(getModelo().getDesPotMot().trim().equals("")){
-                indError = "error";
+            if (getModelo().getDesPotMot().trim().equals("")) {
+                indError += "error";
                 errores.add("Ingrese la potencia del motor.");
             }
-            if(getModelo().getNumCilVeh().trim().equals("")){
-                indError = "error";
-                errores.add("Ingrese las cilindradas del vehículo.");
+            if (getModelo().getNumCilVeh().trim().equals("")) {
+                indError += "error";
+                errores.add("Ingrese la cilindrada del vehículo.");
+            } else {
+                if (!isInteger(getModelo().getNumCilVeh())) {
+                    indError += "error";
+                    errores.add("Cilindrada no válida.");
+                } else {
+                    if (Integer.parseInt(getModelo().getNumCilVeh()) == 0) {
+                        indError += "error";
+                        errores.add("Cilindrada no válida.");
+                    }
+                }
             }
-            if(getModelo().getNumCil().trim().equals("")){
-                indError = "error";
+            if (getModelo().getNumCil().trim().equals("")) {
+                indError += "error";
                 errores.add("Ingrese el número de cilindros.");
+            } else {
+                if (!isInteger(getModelo().getNumCil())) {
+                    indError += "error";
+                    errores.add("Número de cilindros no válido.");
+                } else {
+                    if (Integer.parseInt(getModelo().getNumCil()) == 0) {
+                        indError += "error";
+                        errores.add("Número de cilindros no válido.");
+                    }
+                }
             }
-            if(getModelo().getNumAsiVeh().trim().equals("")){
-                indError = "error";
+            if (getModelo().getNumAsiVeh().trim().equals("")) {
+                indError += "error";
                 errores.add("Ingrese el número de asientos.");
+            } else {
+                if (!isInteger(getModelo().getNumAsiVeh())) {
+                    indError += "error";
+                    errores.add("Número de asientos no válido.");
+                } else {
+                    if (Integer.parseInt(getModelo().getNumAsiVeh()) == 0) {
+                        indError += "error";
+                        errores.add("Número de asientos no válido.");
+                    }
+                }
             }
-            if(getModelo().getNumPasVeh().trim().equals("")){
-                indError = "error";
+            if (getModelo().getNumPasVeh().trim().equals("")) {
+                indError += "error";
                 errores.add("Ingrese el número de pasajeros.");
+            } else {
+                if (!isInteger(getModelo().getNumPasVeh())) {
+                    indError += "error";
+                    errores.add("Número de pasajeros no válido.");
+                } else {
+                    if (Integer.parseInt(getModelo().getNumPasVeh()) == 0) {
+                        indError += "error";
+                        errores.add("Número de pasajeros no válido.");
+                    }
+                }
             }
-            if(getModelo().getNumPueVeh().trim().equals("")){
-                indError = "error";
+            if (getModelo().getNumPueVeh().trim().equals("")) {
+                indError += "error";
                 errores.add("Ingrese el número de puertas.");
+            } else {
+                if (!isInteger(getModelo().getNumPueVeh())) {
+                    indError += "error";
+                    errores.add("Número de puertas no válido.");
+                } else {
+                    if (Integer.parseInt(getModelo().getNumPueVeh()) == 0) {
+                        indError += "error";
+                        errores.add("Número de puertas no válido.");
+                    }
+                }
             }
-            if(getModelo().getNumEjeVeh().trim().equals("")){
-                indError = "error";
+            if (getModelo().getNumEjeVeh().trim().equals("")) {
+                indError += "error";
                 errores.add("Ingrese el número de ejes.");
+            } else {
+                if (!isInteger(getModelo().getNumEjeVeh())) {
+                    indError += "error";
+                    errores.add("Número de ejes no válido.");
+                } else {
+                    if (Integer.parseInt(getModelo().getNumEjeVeh()) == 0) {
+                        indError += "error";
+                        errores.add("Número de ejes no válido.");
+                    }
+                }
             }
-            if(getModelo().getNumRueVeh().trim().equals("")){
-                indError = "error";
+            if (getModelo().getNumRueVeh().trim().equals("")) {
+                indError += "error";
                 errores.add("Ingrese el número de ruedas.");
+            } else {
+                if (!isInteger(getModelo().getNumRueVeh())) {
+                    indError += "error";
+                    errores.add("Número de ruedas no válido.");
+                } else {
+                    if (Integer.parseInt(getModelo().getNumRueVeh()) == 0) {
+                        indError += "error";
+                        errores.add("Número de ruedas no válido.");
+                    }
+                }
             }
-            if(getModelo().getNumDisEje().trim().equals("")){
-                indError = "error";
+            if (getModelo().getNumDisEje().trim().equals("")) {
+                indError += "error";
                 errores.add("Ingrese la distancia entre ejes.");
+            } else {
+                if (!isInteger(getModelo().getNumDisEje())) {
+                    indError += "error";
+                    errores.add("Número de distancia entre ejes no válido.");
+                } else {
+                    if (Integer.parseInt(getModelo().getNumDisEje()) == 0) {
+                        indError += "error";
+                        errores.add("Número de distancia entre ejes no válido.");
+                    }
+                }
             }
-            if(getModelo().getNumMedLar().trim().equals("")){
-                indError = "error";
+            if (getModelo().getNumMedLar().trim().equals("")) {
+                indError += "error";
                 errores.add("Ingrese la medida de largo.");
+            } else {
+                if (!isInteger(getModelo().getNumMedLar())) {
+                    indError += "error";
+                    errores.add("Número de medida de largo no válido.");
+                } else {
+                    if (Integer.parseInt(getModelo().getNumMedLar()) == 0) {
+                        indError += "error";
+                        errores.add("Número de medida de largo no válido.");
+                    }
+                }
             }
-            if(getModelo().getNumMedAnc().trim().equals("")){
-                indError = "error";
+            if (getModelo().getNumMedAnc().trim().equals("")) {
+                indError += "error";
                 errores.add("Ingrese la medida de ancho.");
+            } else {
+                if (!isInteger(getModelo().getNumMedAnc())) {
+                    indError += "error";
+                    errores.add("Número de medida de ancho no válido.");
+                } else {
+                    if (Integer.parseInt(getModelo().getNumMedAnc()) == 0) {
+                        indError += "error";
+                        errores.add("Número de medida de ancho no válido.");
+                    }
+                }
             }
-            if(getModelo().getNumMedAlt().trim().equals("")){
-                indError = "error";
+            if (getModelo().getNumMedAlt().trim().equals("")) {
+                indError += "error";
                 errores.add("Ingrese la medida de alto.");
+            } else {
+                if (!isInteger(getModelo().getNumMedAlt())) {
+                    indError += "error";
+                    errores.add("Número de medida de alto no válido.");
+                } else {
+                    if (Integer.parseInt(getModelo().getNumMedAlt()) == 0) {
+                        indError += "error";
+                        errores.add("Número de medida de alto no válido.");
+                    }
+                }
             }
-            if(getModelo().getNumPesNet().trim().equals("")){
-                indError = "error";
+            if (getModelo().getNumPesNet().trim().equals("")) {
+                indError += "error";
                 errores.add("Ingrese el peso neto.");
+            } else {
+                if (!isInteger(getModelo().getNumPesNet())) {
+                    indError += "error";
+                    errores.add("Número del peso neto no válido.");
+                } else {
+                    if (Integer.parseInt(getModelo().getNumPesNet()) == 0) {
+                        indError += "error";
+                        errores.add("Número del peso neto no válido.");
+                    }
+                }
             }
-            if(getModelo().getNumPesBru().trim().equals("")){
-                indError = "error";
+            if (getModelo().getNumPesBru().trim().equals("")) {
+                indError += "error";
                 errores.add("Ingrese el peso bruto.");
+            } else {
+                if (!isInteger(getModelo().getNumPesBru())) {
+                    indError += "error";
+                    errores.add("Número del peso bruto no válido.");
+                } else {
+                    if (Integer.parseInt(getModelo().getNumPesBru()) == 0) {
+                        indError += "error";
+                        errores.add("Número del peso bruto no válido.");
+                    }
+                }
             }
-            if(getModelo().getNumCarUti().trim().equals("")){
-                indError = "error";
+            if (getModelo().getNumCarUti().trim().equals("")) {
+                indError += "error";
                 errores.add("Ingrese la carga util.");
+            } else {
+                if (!isInteger(getModelo().getNumCarUti())) {
+                    indError += "error";
+                    errores.add("Número de carga util no válido.");
+                } else {
+                    if (Integer.parseInt(getModelo().getNumCarUti()) == 0) {
+                        indError += "error";
+                        errores.add("Número de carga util no válido.");
+                    }
+                }
             }
             if (indError.equals("")) {
                 helper conex = null;
@@ -592,14 +938,14 @@ public class VersionesAction extends MasterAction implements ModelDriven<Version
                         errores.add(indError);
                     } else {
                         indError = conex.executeNonQuery("CALL usp_updVersiones(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
-                                new Object[]{ getModelo().getIdMar().trim(),getModelo().getIdModMar().trim(),getModelo().getIdVerMod(),
-                                    getModelo().getDesVerMod().trim(),getModelo().getDesKat().trim(),getModelo().getDesPreCha().trim(),
-                                    getModelo().getDesPreMot().trim(),getModelo().getIdCatVeh(),getModelo().getIdClaVeh(),getModelo().getIdTipCar(),
-                                    getModelo().getIdTipCom(),getModelo().getIdTipTras(),getModelo().getIdTipTrac(),getModelo().getDesPotMot().trim(),
-                                    getModelo().getNumCilVeh(),getModelo().getNumCil(),getModelo().getNumAsiVeh(),getModelo().getNumPasVeh(),
-                                    getModelo().getNumPueVeh(),getModelo().getNumEjeVeh(),getModelo().getNumRueVeh(),getModelo().getNumDisEje(),
-                                    getModelo().getNumMedLar(),getModelo().getNumMedAnc(),getModelo().getNumMedAlt(),getModelo().getNumPesNet(),
-                                    getModelo().getNumPesBru(),getModelo().getNumCarUti() });
+                                new Object[]{getModelo().getIdMar().trim(), getModelo().getIdModMar().trim(), getModelo().getIdVerMod(),
+                                    getModelo().getDesVerMod().trim(), getModelo().getDesKat().trim(), getModelo().getDesPreCha().trim(),
+                                    getModelo().getDesPreMot().trim(), getModelo().getIdCatVeh(), getModelo().getIdClaVeh(), getModelo().getIdTipCar(),
+                                    getModelo().getIdTipCom(), getModelo().getIdTipTras(), getModelo().getIdTipTrac(), getModelo().getDesPotMot().trim(),
+                                    getModelo().getNumCilVeh(), getModelo().getNumCil(), getModelo().getNumAsiVeh(), getModelo().getNumPasVeh(),
+                                    getModelo().getNumPueVeh(), getModelo().getNumEjeVeh(), getModelo().getNumRueVeh(), getModelo().getNumDisEje(),
+                                    getModelo().getNumMedLar(), getModelo().getNumMedAnc(), getModelo().getNumMedAlt(), getModelo().getNumPesNet(),
+                                    getModelo().getNumPesBru(), getModelo().getNumCarUti()});
                         if (!indError.equals("")) {
                             errores.add(indError);
                         }
@@ -618,23 +964,23 @@ public class VersionesAction extends MasterAction implements ModelDriven<Version
     public String eliminar() {
         idAccion = 7;
         verifAccionTipoUsuario();
-        
+
         if (indErrAcc.equals("")) {
             if (opcion.trim().equals("E")) {
                 helper conex = null;
                 ResultSet tabla = null;
-                
+
                 try {
                     conex = new helper();
-                    
+
                     indError = conex.getErrorSQL().trim();
-                
+
                     if (!indError.equals("")) {
                         errores.add(indError);
                     } else {
                         tabla = conex.executeDataSet("CALL usp_verifDependVersiones(?,?,?)",
-                                new Object[]{ getModelo().getIdMar(),getModelo().getIdModMar(),
-                                    Integer.parseInt(getModelo().getIdVerMod()) });
+                                new Object[]{getModelo().getIdMar(), getModelo().getIdModMar(),
+                                    Integer.parseInt(getModelo().getIdVerMod())});
                         indError = conex.getErrorSQL();
 
                         if (!indError.equals("")) {
@@ -648,8 +994,8 @@ public class VersionesAction extends MasterAction implements ModelDriven<Version
                             /* Si no tiene dependencias */
                             if (cant == 0) {
                                 indError = conex.executeNonQuery("CALL usp_dltVersiones(?,?,?)",
-                                        new Object[]{ getModelo().getIdMar().trim(),getModelo().getIdModMar().trim(),
-                                            getModelo().getIdVerMod() });
+                                        new Object[]{getModelo().getIdMar().trim(), getModelo().getIdModMar().trim(),
+                                            getModelo().getIdVerMod()});
                                 indError = indError.trim();
                                 if (indError.trim().equals("")) {
                                     errores.add(indError);
@@ -687,8 +1033,8 @@ public class VersionesAction extends MasterAction implements ModelDriven<Version
                 errores.add(indError);
             } else {
                 tabla = conex.executeDataSet("CALL usp_getDatosVersiones(?,?,?)",
-                        new Object[]{ getModelo().getIdMar(), getModelo().getIdModMar(), 
-                            getModelo().getIdVerMod() });
+                        new Object[]{getModelo().getIdMar(), getModelo().getIdModMar(),
+                            getModelo().getIdVerMod()});
 
                 indError = conex.getErrorSQL();
 

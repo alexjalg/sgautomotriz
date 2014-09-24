@@ -1,4 +1,12 @@
 $(document).ready(function() {
+    $('body').delegate('input[type=text],input[type=password],textarea,select','keypress',function(evt){
+        var charCode = (evt.which) ? evt.which : window.event.keyCode
+        if (charCode==13)
+            return false;
+        return true;
+    });
+    
+    
     /* Redimensiona el ancho de la lista de opciones del usuarios para mantener el icono y el texto en una sola línea */
     var _h_ou = $('.ul-options-user').outerWidth();
     $('.ul-options-user').width(_h_ou+26);
