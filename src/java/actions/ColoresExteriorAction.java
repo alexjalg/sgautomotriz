@@ -1,5 +1,5 @@
 /*
- * Action: Colores
+ * Action: Colores de exterior
  * Creado por: Angelo Ccoicca
  * Fecha de creación: 19-05-2014
  * Modificado por                   Fecha de Modificación

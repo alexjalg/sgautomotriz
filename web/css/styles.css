@@ -104,8 +104,8 @@ body
     padding-left: 3px;
     padding-right: 3px;
     position: relative;
-    height: 30px;
-    line-height: 32px;
+    height: 24px;
+    line-height: 26px;
     padding-top: 3px;
 }
 
@@ -116,8 +116,8 @@ body
 
 .d-cont-menu .ul-modulos li .ul-opciones li a, .d-cont-menu .ul-modulos li .ul-opciones li span
 {
-    height: 28px;
-    line-height: 28px;
+    height: 22px;
+    line-height: 22px;
     border: 1px solid #FFF;
     border-radius: 3px;
     padding-left: 11px;
@@ -491,8 +491,8 @@ body
 {
     height: 28px;
     display: inline-block;
-    margin-left: 10px;
     position: absolute;
+    left: 24px;
 }
 
 .d-content-grilla .d-content-grilla-footer .d-paging img
@@ -587,6 +587,7 @@ textarea.element-form
 {
     resize: none;
     padding: 5px;
+    margin-top: 3px;
 }
 
 .element-form:focus, .element-form-grid:focus
@@ -636,7 +637,7 @@ textarea.element-form
 .d-content-form .table-form tr td .d-block-form
 {
     position: relative;
-    font-size: 14px;
+    font-size: 13px;
     color: #476285;
     font-weight: bold;
     padding-bottom: 3px;
@@ -659,28 +660,30 @@ textarea.element-form
     z-index: 10;
 }
 
-.d-content-form .table-form tr td .d-block-form div.line-text-block
-{
+.d-content-form .table-form tr td .d-block-form div.line-text-block {
     position: absolute;
     left: 0px;
-    height: 10px;
+    height: 8px;
     width: 100%;
-    border-bottom: 2px solid #476285; 
+    border-bottom: 1px solid #476285; 
     z-index: 9;
 }
 
-.d-content-form .table-form tr td:first-child
-{
+.d-content-form .table-form tr td:first-child {
     padding-right: 10px;
 }
 
-.d-content-form .table-form tr td
-{
+.d-content-form .table-form tr td {
     height: 26px;
 }
 
-ul.error li
-{
+.header-subtitle-block {
+    font-size: 12px; 
+    color: #4282B7; 
+    font-weight: bold;
+}
+
+ul.error li {
     padding-top: 2px;
     padding-bottom: 2px;
 }

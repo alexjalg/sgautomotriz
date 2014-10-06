@@ -21,6 +21,9 @@
         <button id="btn-delete">
             Eliminar
         </button>
+        <button id="btn-adjuntos">
+            Adjuntos
+        </button>
         </s:if>
     </s:if>
 </div>
@@ -94,10 +97,6 @@
     $(document).ready(function() {
         /*Paginacion de grilla*/
         <s:property value="jsPaginacion" escape="false" />
-                
-        $('#btn-add').button();
-        $('#btn-edit').button();
-        $('#btn-delete').button();
     
         $('#DIVeliminar').dialog({
             autoOpen: false,
@@ -217,6 +216,34 @@
                             },
                             3
                         );
+                    }
+                },
+                2
+            );
+        });
+        
+        $('#btn-adjuntos').click(function() {
+            post(
+                '<s:property value="baseURL" /><s:url namespace="clientes" includeContext="false" action="vrfSeleccionCliente" />',
+                $('#frm_princ').serialize(),
+                function(resultado){
+                    var _error = validaRespuestaAjax(resultado);
+                    
+                    if(_error != -1)
+                    {
+                        $('#DIVverif').html(resultado);
+                        $('#DIVverif').dialog('open');
+                    }
+                    else
+                    {
+                        $('#opcion_h1').val('M');
+                        var href = $(location).attr('href');
+
+                        var _varret = $('#nivBandeja_f').val()+'%'+href+'%'+$('#mtu_h1').val()+'%'+$('#mmo_h1').val()+'%'+$('#mop_h1').val()+'%'+$('#mni_h1').val()+'%'+$('#mod_h1').val()+'%'+$('#curPag_f').val()+'%'+$('#idCli_f').val()+'%'+$('#desCli_f').val()+'|';
+                        $('#varReturn_f').val($('#varReturn_f').val()+_varret);
+
+                        $('#frm_princ').attr('action','<s:property value="baseURL" /><s:url namespace="adjuntosCliente" includeContext="false" action="AdjuntoCliente" />');
+                        $('#frm_princ').submit();
                     }
                 },
                 2

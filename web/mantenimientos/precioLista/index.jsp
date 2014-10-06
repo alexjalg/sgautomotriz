@@ -140,7 +140,7 @@
         $('#cbo_Marca').change(function() {
             var _idMar = $(this).val();
             $('#idMar_h1').val($(this).val());
-			$('#idModMar_h1').val("");
+            $('#idModMar_h1').val("");
             $.post("populateModeloPrecioLista.action",
                     {
                         idMar: _idMar
@@ -158,22 +158,12 @@
 
         $('#cbo_Anio').change(function() {
             $('#numAnoLis_h1').val($(this).val());
-            $('#frm_princ').submit();
+            if ($('#cbo_Modelo').val() != 0)
+            {
+                $('#frm_princ').submit();
+            }
         });
-
-
-        $('#btn-add').click(function() {
-            $('#opcion_h1').val('A');
-            var href = $(location).attr('href');
-            var _varret = $('#nivBandeja_f').val() + '%' + href + '%' + $('#mtu_h1').val() + '%' + $('#mmo_h1').val() + '%' + $('#mop_h1').val() + '%' + $('#mni_h1').val() + '%' + $('#mod_h1').val() + '%' + $('#curPag_f').val() + '%' + $('#idMar_h1').val() + '%' + $('#idModMar_h1').val() + '%' + $('#numAnoLis_h1').val() + '|';
-            $('#varReturn_f').val($('#varReturn_f').val() + _varret);
-            $('#frm_princ').attr('action', '<s:property value="baseURL" /><s:url namespace="precioLista" includeContext="false" action="adicionarPrecioLista" />');
-            $('#frm_princ').submit();
-        });
-
         $('#btn-edit').click(function() {
-            idMar = $('#cbo_Marca').val();
-            idModMar = $('#cbo_Modelo').val();
             post(
                     '<s:property value="baseURL" /><s:url namespace="precioLista" includeContext="false" action="vrfSeleccionPrecioLista" />',
                     $('#frm_princ').serialize(),
@@ -198,81 +188,6 @@
                         }
                     },
                     1
-                    );
-        });
-
-        $('#btn-delete').click(function() {
-            post(
-                    '<s:property value="baseURL" /><s:url namespace="tipoLocal" includeContext="false" action="vrfSeleccionTipoLocal" />',
-                    $('#frm_princ').serialize(),
-                    function(resultado) {
-                        var _error = validaRespuestaAjax(resultado);
-
-                        if (_error != -1)
-                        {
-                            $('#DIVverif').html(resultado);
-                            $('#DIVverif').dialog('open');
-                        }
-                        else
-                        {
-                            $('#opcion_h1').val('C');
-                            post(
-                                    '<s:property value="baseURL" /><s:url namespace="precioLista" includeContext="false" action="eliminarPrecioLista" />',
-                                    $('#frm_princ').serialize(),
-                                    function(resultado1)
-                                    {
-                                        var _error1 = validaRespuestaAjax(resultado1);
-
-                                        if (_error1 != -1)
-                                        {
-                                            $('#DIVerroresGen').html(resultado1);
-                                            $('#DIVerroresGen').dialog('open');
-                                        }
-                                        else
-                                        {
-                                            $('#DIVeliminar').dialog({
-                                                buttons: {
-                                                    "Confirmar": function() {
-                                                        $('#DIVeliminar').dialog('close');
-                                                        $('#opcion_h1').val('E');
-                                                        post(
-                                                                '<s:property value="baseURL" /><s:url namespace="tipoLocal" includeContext="false" action="eliminarTipoLocal" />',
-                                                                $('#frm_princ').serialize(),
-                                                                function(resultado2)
-                                                                {
-                                                                    var _error2 = validaRespuestaAjax(resultado2);
-
-                                                                    if (_error2 != -1)
-                                                                    {
-                                                                        $('#DIVerroresGen').html(resultado2);
-                                                                        $('#DIVerroresGen').dialog('open');
-                                                                    }
-                                                                    else
-                                                                    {
-                                                                        $('#DIVeliminar').dialog('close');
-                                                                        $('#frm_princ').attr('action', '<s:property value="baseURL" /><s:url namespace="precioLista" includeContext="false" action="PrecioLista" />');
-                                                                        $('#frm_princ').submit();
-                                                                    }
-                                                                },
-                                                                4
-                                                                );
-                                                    },
-                                                    "Cancelar": function() {
-                                                        $('#DIVeliminar').dialog("close");
-                                                        hideOverlay(function() {
-                                                        });
-                                                    }
-                                                }
-                                            });
-                                            $('#DIVeliminar').html(resultado1);
-                                            $('#DIVeliminar').dialog('open');
-                                        }
-                                    },
-                                    3
-                                    );
-                        }
-                    },
-                    2
                     );
         });
     });

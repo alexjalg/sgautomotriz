@@ -6,13 +6,18 @@
         <s:property value="tituloOpc" />
         <div class="d-subtitle-header"></div>
     </div>
-    <!--<div class="d-subheader">
-        <div class="d-back">
-            <a href="javascript:void(0)" class="back">Volver</a>
-        </div>
-    </div>-->
+    <div class="d-header-filters">
+        <table>
+            <tr>
+                <td class="">Origen: </td>
+                <td class="">
+                    <s:select name="idOriCam" id="idOriCam_f1" list="listTipOri" listKey="idOriCam" listValue="desOriCam"
+                              cssClass="element-form" cssStyle="width: 120px;"/>
+                </td>
+            </tr>
+        </table>
+    </div>
 </div>
-
 
 <!-- modelo de grilla -->
 <div class="d-buttons-grid">
@@ -32,6 +37,7 @@
 </div>
 <div class="d-content-grilla" style="min-width: 660px;">
     <form id="frm_princ" method="POST" action="<s:property value="baseURL" /><s:property value="urlPaginacion" />">
+        <s:hidden name="idOriCam" id="idOriCam_h1" />
         <s:property value="datosOblig" escape="false" />
 
         <div class="d-grilla" style="overflow: hidden;">
@@ -43,15 +49,25 @@
                             Código
                         </td>
                         <td style="">
-                            Campaña
+                            Descripción
+                        </td>
+                        <td style="width:220px; text-align: center;">
+                            Descripción para Impresión
+                        </td>
+                        <td style="width:60px; text-align: center;">
+                            Moneda
+                        </td>
+                        <td style="width:90px; text-align: center;">
+                            Importe
                         </td>
                     </tr>
                     <tr class="tr-head">
                         <td style="width: 24px;"></td>
-                        <td style="width:60px; text-align: center;">
-                        </td>
-                        <td style="">
-                        </td>
+                        <td style="width:60px; text-align: center;"></td>
+                        <td style=""></td>
+                        <td style="width:220px; text-align: center;"></td>
+                        <td style="width:60px; text-align: center;"></td>
+                        <td style="width:90px; text-align: center;"></td>
                     </tr>
                 </table>
             </div>
@@ -65,9 +81,22 @@
                             <td style="width:60px; text-align: center;">
                                 <s:property value="idCam" />
                             </td>
-                            <!--<td style="width:90px; text-align: center;">!-->
                             <td style="">
                                 <s:property value="desCam" />
+                            </td>
+                            <td style="width:220px; text-align: center;">
+                                <s:property value="desCamImp" />
+                            </td>
+                            <td style="width:60px; text-align: center;">
+                                <s:if test='%{codMonCam==1}'>
+                                    Soles
+                                </s:if>
+                                <s:if test='%{codMonCam==2}'>
+                                    Dolares
+                                </s:if>
+                            </td>
+                            <td style="width:90px; text-align: center;">
+                                <s:property value="impRelCam" />
                             </td>
                         </tr>
                     </s:iterator>
@@ -93,6 +122,8 @@
         $('#btn-edit').button();
         $('#btn-delete').button();
 
+        $('#btn_search').css('visibility', 'hidden');
+
         $('#DIVeliminar').dialog({
             autoOpen: false,
             width: 400,
@@ -106,10 +137,15 @@
             resizable: false
         });
 
+        $('#idOriCam_f1').change(function() {
+            $('#idOriCam_h1').val($(this).val());
+            $('#frm_princ').submit();
+        });
+
         $('#btn-add').click(function() {
             $('#opcion_h1').val('A');
             var href = $(location).attr('href');
-            var _varret = $('#nivBandeja_f').val()+'%'+href+'%'+$('#mtu_h1').val()+'%'+$('#mmo_h1').val()+'%'+$('#mop_h1').val()+'%'+$('#mni_h1').val()+'%'+$('#mod_h1').val()+'%'+$('#curPag_f').val()+'|';
+            var _varret = $('#nivBandeja_f').val() + '%' + href + '%' + $('#mtu_h1').val() + '%' + $('#mmo_h1').val() + '%' + $('#mop_h1').val() + '%' + $('#mni_h1').val() + '%' + $('#mod_h1').val() + '%' + $('#curPag_f').val() + '%' + $('#idOriCam_h1').val() + '|';
             $('#varReturn_f').val($('#varReturn_f').val() + _varret);
             $('#frm_princ').attr('action', '<s:property value="baseURL" /><s:url namespace="campania" includeContext="false" action="adicionarCampania" />');
             $('#frm_princ').submit();
@@ -131,8 +167,8 @@
                         {
                             $('#opcion_h1').val('M');
                             var href = $(location).attr('href');
-                            
-                            var _varret = $('#nivBandeja_f').val()+'%'+href+'%'+$('#mtu_h1').val()+'%'+$('#mmo_h1').val()+'%'+$('#mop_h1').val()+'%'+$('#mni_h1').val()+'%'+$('#mod_h1').val()+'%'+$('#curPag_f').val()+'|';
+
+                            var _varret = $('#nivBandeja_f').val() + '%' + href + '%' + $('#mtu_h1').val() + '%' + $('#mmo_h1').val() + '%' + $('#mop_h1').val() + '%' + $('#mni_h1').val() + '%' + $('#mod_h1').val() + '%' + $('#curPag_f').val() + '%' + $('#idOriCam_h1').val() + '|';
                             $('#varReturn_f').val($('#varReturn_f').val() + _varret);
 
                             $('#frm_princ').attr('action', '<s:property value="baseURL" /><s:url namespace="campania" includeContext="false" action="modificarCampania" />');

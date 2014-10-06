@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+    <package name="vehiculos" namespace="/vehiculos" extends="struts-default">
+        <result-types>
+            <result-type name="tiles" class="org.apache.struts2.views.tiles.TilesResult" />
+        </result-types>
+
+        <action name="*Vehiculo" method="{1}" class="actions.VehiculosAction">
+            <result name="success" type="tiles">mant-vehiculos-index</result>
+            <result name="adicionar" type="tiles">mant-vehiculo-adicionar</result>
+            <result name="modificar" type="tiles">mant-vehiculo-adicionar</result>
+            <result name="grabar" type="tiles">mant-vehiculo-grabar</result>
+            <result name="actualizar" type="tiles">mant-vehiculo-grabar</result>
+            <result name="vrfSeleccion" type="tiles">mant-vehiculo-grabar</result>
+
+            <result name="eliminar" type="tiles">mant-vehiculo-eliminar</result>
+            <result name="listclientes" type="tiles">mant-vehiculos-listClientes</result>
+            
+            
+            <result name="modelos" >/mantenimientos/vehiculos/listaModelos.jsp</result>
+            <result name="versiones" >/mantenimientos/vehiculos/listaVersiones.jsp</result>
+            <result name="coloresext" >/mantenimientos/vehiculos/listColoresExt.jsp</result>
+            <result name="ubicaciones">/mantenimientos/vehiculos/listaUbicaciones.jsp</result>
+            <result name="locales">/mantenimientos/vehiculos/listaLocales.jsp</result>
+            <result name="obtdescli">/mantenimientos/vehiculos/obtdescli.jsp</result>
+            <result name="precventasi">/mantenimientos/vehiculos/obtPrecVentAsi.jsp</result>
+            
+            
+        </action>
+    </package>
+</struts>

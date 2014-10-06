@@ -10,21 +10,47 @@
             <a href="javascript:void(0)" class="back">Volver</a>
         </div>
     </div>
+    <div class="d-header-labels">
+        <table>
+            <tr>
+                <td class="lbl-concept">Origen :  </td>
+                <td class="lbl-value"><span><s:property value="desOriCam" /><span></td>
+            </tr>
+        </table>
+    </div>
 </div>
             
 <form method="POST" id="frm_campania_back" action="<s:property value="backURL" />">
-    <!--s:hidden name="varReturn" id="varReturn_f" />!-->
     <s:property value="datosOblig" escape="false" />
 </form>
         
 <div class="d-content-form">
     <s:form id="frm_campania" action='javascript:void(0)' theme="simple">
+        <s:hidden name="idOriCam" />
         <s:hidden name="idCam" />
         <table border="0" cellpadding="0" cellspacing="0" class="table-form">
             <tr>
-                <td style="width: 70px;">Campaña<span class="required">*</span></td>
+                <td style="width: 70px;">Descripción<span class="required">*</span></td>
                 <td>
-                    <s:textfield name="desCam" cssClass="element-form" cssStyle="width:350px;" maxLength="120" />
+                    <s:textfield name="desCam" cssClass="element-form" cssStyle="width:500px;" maxLength="120" />
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 162px;">Descripción para Impresión<span class="required">*</span></td>
+                <td>
+                    <s:textfield name="desCamImp" cssClass="element-form" cssStyle="width:280px;" maxLength="40" />
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 70px;">Moneda<span class="required">*</span></td>
+                <td>
+                    <s:select name="codMonCam" id="cbo_codMonCam" cssClass="element-form" list="#{'0':'-Seleccione-','1':'Soles','2':'Dolares'}"/>
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 70px;">Importe<span class="required">*</span></td>
+                <td>
+                    <s:textfield name="impRelCam" cssClass="element-form" cssStyle="width:150px;" maxLength="11" />
                 </td>
             </tr>
             <tr>

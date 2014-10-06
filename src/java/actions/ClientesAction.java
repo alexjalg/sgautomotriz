@@ -137,8 +137,9 @@ public class ClientesAction extends MasterAction implements ModelDriven<Clientes
             }
             else
             {
-                tabla = conex.executeDataSet("CALL usp_listClientesIndex(?,?)", 
-                        new Object[]{ cliente.getIdCli_f(),cliente.getDesCli_f() });
+                tabla = conex.executeDataSet("CALL usp_listClientesIndex(?,?,?,?)", 
+                        new Object[]{ cliente.getIdCli_f(),cliente.getDesCli_f(),
+                            (getCurPag()) * getRegPag(), getRegPag() });
 
                 indError += conex.getErrorSQL();
 

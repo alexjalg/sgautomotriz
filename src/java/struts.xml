@@ -51,6 +51,7 @@
         <include file="tipoDocumento.xml" />
         <include file="grupoCliente.xml" />
         <include file="clientes.xml" />
+        <include file="adjuntosCliente.xml" />
         <include file="formaPago.xml" />
         
         <include file="tipoCombustible.xml" />
@@ -68,4 +69,12 @@
         
         <include file="ambienteUbicacion.xml" />
         <include file="ubicacionAmbiente.xml" />
+        
+        
+        <include file="registroVentas.xml" />
+        <include file="modalidadVenta.xml" />
+        
+        
+        <include file="cargaDatosVehiculos.xml" />
+        <include file="vehiculos.xml" />
 </struts>

@@ -7,6 +7,7 @@ package actions;
 import com.opensymphony.xwork2.ModelDriven;
 import conexion.helper;
 import entities.Campania;
+import entities.TipoOrigenCampania;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
@@ -14,6 +15,7 @@ public class CampaniaAction extends MasterAction implements ModelDriven<Campania
 
     private Campania modelo = new Campania();
     private ArrayList<Campania> listCam = new ArrayList<Campania>();
+    private ArrayList<TipoOrigenCampania> listTipOri = new ArrayList<TipoOrigenCampania>();
 
     @Override
     public Campania getModel() {
@@ -26,7 +28,7 @@ public class CampaniaAction extends MasterAction implements ModelDriven<Campania
         idAccion = 1;
         verifAccionTipoUsuario();
         if (indErrAcc.equals("")) {
-            if (modelo.getIdCam()== 0) {
+            if (modelo.getIdCam() == 0) {
                 indError = "error";
                 errores.add("No ha seleccionado ningun registro");
             }
@@ -46,13 +48,25 @@ public class CampaniaAction extends MasterAction implements ModelDriven<Campania
             varReturnProcess(0);
             if (!listVarReturn.isEmpty()) {
                 curPagVis = Integer.parseInt(listVarReturn.get(0).toString().trim());
+                modelo.setIdOriCam(Integer.parseInt(listVarReturn.get(1).toString().trim()));
             }
+            populateOrigen();
             cantCampaniaIndex();
             verifPag();
             listCampaniaIndex();
-
         }
         return "success";
+    }
+
+    private void populateOrigen() {
+
+        getListTipOri().add(new TipoOrigenCampania(1, "Toyota"));
+        getListTipOri().add(new TipoOrigenCampania(2, "MAF"));
+        getListTipOri().add(new TipoOrigenCampania(3, "Concesionario"));
+
+        if (modelo.getIdOriCam() == 0) {
+            modelo.setIdOriCam(1);
+        }
     }
 
     private void cantCampaniaIndex() {
@@ -65,7 +79,7 @@ public class CampaniaAction extends MasterAction implements ModelDriven<Campania
             if (!indError.trim().equals("")) {
                 errores.add(indError);
             } else {
-                tabla = conex.executeDataSet("CALL usp_cantCampaniaIndex()", new Object[]{});
+                tabla = conex.executeDataSet("CALL usp_cantCampaniaIndex(?)", new Object[]{modelo.getIdOriCam()});
                 indError = conex.getErrorSQL();
 
                 if (!indError.equals("")) {
@@ -99,8 +113,8 @@ public class CampaniaAction extends MasterAction implements ModelDriven<Campania
             if (!indError.equals("")) {
                 errores.add(indError);
             } else {
-                tabla = conex.executeDataSet("CALL usp_listCampaniaIndex(?,?)",
-                        new Object[]{(getCurPag()) * getRegPag(), getRegPag()});
+                tabla = conex.executeDataSet("CALL usp_listCampaniaIndex(?,?,?)",
+                        new Object[]{modelo.getIdOriCam(), (getCurPag()) * getRegPag(), getRegPag()});
 
                 indError = conex.getErrorSQL();
 
@@ -112,6 +126,9 @@ public class CampaniaAction extends MasterAction implements ModelDriven<Campania
                         obj = new Campania();
                         obj.setIdCam(tabla.getInt("idCam"));
                         obj.setDesCam(tabla.getString("desCam"));
+                        obj.setDesCamImp(tabla.getString("desCamImp"));
+                        obj.setImpRelCam(tabla.getString("impRelCam"));
+                        obj.setCodMonCam(tabla.getInt("codMonCam"));
                         listCam.add(obj);
                     }
                 }
@@ -139,8 +156,8 @@ public class CampaniaAction extends MasterAction implements ModelDriven<Campania
             if (!indError.equals("")) {
                 errores.add(indError);
             } else {
-                tabla = conex.executeDataSet("CALL usp_getDatosCampania(?)",
-                        new Object[]{modelo.getIdCam()});
+                tabla = conex.executeDataSet("CALL usp_getDatosCampania(?,?)",
+                        new Object[]{modelo.getIdOriCam(), modelo.getIdCam()});
 
                 indError = conex.getErrorSQL();
 
@@ -149,6 +166,9 @@ public class CampaniaAction extends MasterAction implements ModelDriven<Campania
                 } else {
                     while (tabla.next()) {
                         modelo.setDesCam(tabla.getString("desCam"));
+                        modelo.setDesCamImp(tabla.getString("desCamImp"));
+                        modelo.setImpRelCam(tabla.getString("impRelCam"));
+                        modelo.setCodMonCam(tabla.getInt("codMonCam"));
                     }
                 }
             }
@@ -174,8 +194,9 @@ public class CampaniaAction extends MasterAction implements ModelDriven<Campania
                 indErrParm = "error";
             } else {
                 varReturnProcess(1);
-
+                getDescripcionOrigen();
                 if (opcion.equals("A")) {
+                    modelo.setImpRelCam(".00");
                     formURL = baseURL + "campania/grabarCampania";
                 }
             }
@@ -195,9 +216,10 @@ public class CampaniaAction extends MasterAction implements ModelDriven<Campania
                 varReturnProcess(1);
 
                 if (opcion.equals("M")) {
-                    if (modelo.getIdCam()== 0) {
+                    if (modelo.getIdCam() == 0) {
                         indErrParm = "error";
                     } else {
+                        getDescripcionOrigen();
                         getDatosCampania();
                         formURL = baseURL + "campania/actualizarCampania";
                     }
@@ -208,15 +230,44 @@ public class CampaniaAction extends MasterAction implements ModelDriven<Campania
         return "adicionar";
     }
 
+    private void getDescripcionOrigen() {
+        if (modelo.getIdOriCam() == 1) {
+            modelo.setDesOriCam("Toyota");
+        } else if (modelo.getIdOriCam() == 2) {
+            modelo.setDesOriCam("MAF");
+        } else if (modelo.getIdOriCam() == 3) {
+            modelo.setDesOriCam("Consecionario");
+        }
+    }
+
     public String grabar() {
         idAccion = 5;
         verifAccionTipoUsuario();
         if (indErrAcc.equals("")) {
             modelo.setDesCam(modelo.getDesCam().trim());
+            modelo.setDesCamImp(modelo.getDesCamImp().trim());
+            modelo.setImpRelCam(modelo.getImpRelCam().trim());
 
             if (modelo.getDesCam().equals("")) {
-                indError = "Debe ingresar la campania";
-                errores.add(indError);
+                indError += "error";
+                errores.add("Debe ingresar la descripción");
+            }
+            if (modelo.getDesCamImp().equals("")) {
+                indError += "error";
+                errores.add("Debe ingresar la descripción para impresión");
+            }
+            if (modelo.getCodMonCam() == 0) {
+                indError += "error";
+                errores.add("Debe seleccionar el tipo de moneda");
+            }
+            if (modelo.getImpRelCam().equals("")) {
+                indError += "error";
+                errores.add("Debe ingresar el importe");
+            } else {
+                if (Double.parseDouble(modelo.getImpRelCam().toString()) == 0) {
+                    indError += "error";
+                    errores.add("Importe debe ser mayor a cero");
+                }
             }
 
             if (indError.equals("")) {
@@ -229,8 +280,8 @@ public class CampaniaAction extends MasterAction implements ModelDriven<Campania
                     if (!indError.equals("")) {
                         errores.add(indError);
                     } else {
-                        indError = conex.executeNonQuery("CALL usp_insCampania(?)",
-                                new Object[]{modelo.getDesCam()});
+                        indError = conex.executeNonQuery("CALL usp_insCampania(?,?,?,?,?)",
+                                new Object[]{modelo.getIdOriCam(), modelo.getDesCam(), modelo.getDesCamImp(), modelo.getImpRelCam(), modelo.getCodMonCam()});
 
                         if (!indError.equals("")) {
                             errores.add(indError);
@@ -254,10 +305,30 @@ public class CampaniaAction extends MasterAction implements ModelDriven<Campania
 
         if (indErrAcc.equals("")) {
             modelo.setDesCam(modelo.getDesCam().trim());
+            modelo.setDesCamImp(modelo.getDesCamImp().trim());
+            modelo.setImpRelCam(modelo.getImpRelCam().trim());
 
             if (modelo.getDesCam().equals("")) {
-                indError = "Debe ingresar la Campaña";
-                errores.add(indError);
+                indError += "error";
+                errores.add("Debe ingresar la descripción");
+            }
+            if (modelo.getDesCamImp().equals("")) {
+                indError += "error";
+                errores.add("Debe ingresar la descripción para impresión");
+            }
+            if (modelo.getCodMonCam() == 0) {
+                indError += "error";
+                errores.add("Debe seleccionar el tipo de moneda");
+            }
+
+            if (modelo.getImpRelCam().equals("")) {
+                indError += "error";
+                errores.add("Debe ingresar el importe");
+            } else {
+                if (Double.parseDouble(modelo.getImpRelCam().toString()) == 0) {
+                    indError += "error";
+                    errores.add("Importe debe ser mayor a cero");
+                }
             }
 
             if (indError.equals("")) {
@@ -270,8 +341,8 @@ public class CampaniaAction extends MasterAction implements ModelDriven<Campania
                     if (!indError.equals("")) {
                         errores.add(indError);
                     } else {
-                        indError = conex.executeNonQuery("CALL usp_updCampania(?,?)",
-                                new Object[]{modelo.getIdCam(), modelo.getDesCam()});
+                        indError = conex.executeNonQuery("CALL usp_updCampania(?,?,?,?,?,?)",
+                                new Object[]{modelo.getIdOriCam(), modelo.getIdCam(), modelo.getDesCam(), modelo.getDesCamImp(), modelo.getImpRelCam(), modelo.getCodMonCam()});
 
                         if (!indError.equals("")) {
                             errores.add(indError);
@@ -302,8 +373,8 @@ public class CampaniaAction extends MasterAction implements ModelDriven<Campania
                 } else {
                     ResultSet tabla = null;
                     try {
-                        tabla = conex.executeDataSet("CALL usp_verifDependCam(?)",
-                                new Object[]{modelo.getIdCam()});
+                        tabla = conex.executeDataSet("CALL usp_verifDependCam(?,?)",
+                                new Object[]{modelo.getIdOriCam(), modelo.getIdCam()});
                         indError = conex.getErrorSQL();
 
                         if (!indError.equals("")) {
@@ -365,5 +436,19 @@ public class CampaniaAction extends MasterAction implements ModelDriven<Campania
      */
     public void setListCam(ArrayList<Campania> listCam) {
         this.listCam = listCam;
+    }
+
+    /**
+     * @return the listTipOri
+     */
+    public ArrayList<TipoOrigenCampania> getListTipOri() {
+        return listTipOri;
+    }
+
+    /**
+     * @param listTipOri the listTipOri to set
+     */
+    public void setListTipOri(ArrayList<TipoOrigenCampania> listTipOri) {
+        this.listTipOri = listTipOri;
     }
 }

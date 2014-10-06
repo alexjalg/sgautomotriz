@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+    <package name="registroVentas" namespace="/registroVentas" extends="struts-default">
+        <result-types>
+            <result-type name="tiles" class="org.apache.struts2.views.tiles.TilesResult" />
+        </result-types>
+
+        <action name="*RegistroVenta" method="{1}" class="actions.RegistroVentasAction">
+            <result name="success" type="tiles">mant-registroVentas-index</result>
+            <result name="adicionar" type="tiles">mant-registroVentas-adicionar</result>
+            <result name="detalle" type="tiles">mant-registroVentas-detalle</result>
+            <result name="getTiposDocumentoVentaCliente" type="tiles">mant-registroVentas-getTipoDocVentaCliente</result>
+            <result name="getDatosCliente" type="tiles">mant-registroVentas-getDatosCliente</result>
+            <result name="getDatosVehiculo" type="tiles">mant-registroVentas-getDatosVehiculo</result>
+            <result name="listClientes" type="tiles">mant-registroVentas-listClientes</result>
+            <result name="grabar" type="tiles">mant-registroVentas-grabar</result>
+            <result name="actualizar" type="tiles">mant-registroVentas-grabar</result>
+            <result name="vrfSeleccion" type="tiles">mant-registroVentas-grabar</result>
+            <result name="eliminar" type="tiles">mant-registroVentas-eliminar</result>
+        </action>
+    </package>
+</struts>

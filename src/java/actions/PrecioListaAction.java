@@ -53,9 +53,10 @@ public class PrecioListaAction extends MasterAction implements ModelDriven<Preci
                 modelo.setIdModMar(listVarReturn.get(2).toString().trim());
                 modelo.setNumAnoLis(Integer.parseInt(listVarReturn.get(3).toString().trim()));
             }
-			if (modelo.getNumAnoLis() == 0) {
+            if (modelo.getNumAnoLis() == 0) {
                 modelo.setNumAnoLis(Integer.parseInt(getCurYear()));
             }
+
 
             listarMarcas();
             listarModelosPorMarcas();
@@ -102,7 +103,7 @@ public class PrecioListaAction extends MasterAction implements ModelDriven<Preci
         if (indErrAcc.equals("")) {
             nivBandeja = 1;
 
-            if (!opcion.trim().equals("A") && !opcion.trim().equals("M")) {
+            if (!opcion.trim().equals("A") && !opcion.trim().equals("M")  || modelo.getIdMar().trim().equals("") || modelo.getIdModMar().trim().equals("") || modelo.getNumAnoLis() == 0) {
                 indErrParm = "error";
             } else {
                 varReturnProcess(1);

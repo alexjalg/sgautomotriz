@@ -38,7 +38,7 @@
                     <s:if test='%{indErrAcc!=""}'>
                         <div class="ui-state-error ui-corner-all" style="padding: 0 .7em; padding-top: 5px; width: 300px; margin: auto; margin-top: 40px;">
                             <span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>
-                            <span style="color: #C60200; font-weight: bold; font-size: 13px;">Error</span>
+                            <span style="color: #C60200; font-weight: bold; font-size: 12px;">Error</span>
                             <span style="display: block; color: #C60200; margin-top: 10px; margin-bottom: 20px;">
                                 No cuenta con permisos para realizar esta acción.
                                 <br />

@@ -48,7 +48,7 @@
                             <td>Nombres<span class="required">*</span></td>
                             <td>
                                 <s:textfield name="desNomUsu" cssClass="element-form" cssStyle="width:300px;" maxLength="30"
-                                             onkeypress="return isCharacterKey(event)"/>
+                                             onkeypress="return isCharacterKey(event)" />
                             </td>
                         </tr>
                         <tr>

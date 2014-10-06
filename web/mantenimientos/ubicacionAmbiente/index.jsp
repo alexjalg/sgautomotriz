@@ -50,7 +50,7 @@
             <table border="0" cellpadding="0" cellspacing="0" style="">
                 <tr class="tr-head">
                     <td style="width: 24px;"></td>
-                    <td style="width: 50px;">
+                    <td style="width:60px; text-align: center;">
                         Código
                     </td>
                     <td style="">
@@ -71,7 +71,7 @@
                     <td style="width: 24px;">
                         <input type="radio" name="idUbiAmb" id="rbt_idUbiAmb" value="<s:property value="idUbiAmb" />" class="select_rec" />
                     </td>
-                    <td style="width: 50px;">
+                    <td style="width:60px; text-align: center;">
                         <s:property value="idUbiAmb" />
                     </td>
                     <td style="">

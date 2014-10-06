@@ -258,7 +258,7 @@ function resizeContGrilla(cantReg)
         $('.d-content-grilla-body').css('height',cantReg*23);
         
         if(indic_resize<0)
-            $('.d-content-grilla-body').parent().css('height',24+27+cantReg*23+36+18);
+            $('.d-content-grilla-body').parent().css('height',24+27+cantReg*23+36+16);
         else
             $('.d-content-grilla-body').parent().css('height',24+27+cantReg*23+36);
     }
@@ -366,8 +366,7 @@ function closeDialog()
 
 /*Funciones para validar ingreso de datos */
 
-function isNumberKey(evt)  //Numeros con punto decimal
-{
+function isNumberKey(evt) { //Numeros con punto decimal
     var charCode = (evt.which) ? evt.which : window.event.keyCode;
     
     if((charCode >= 48 && charCode <= 57) || charCode==46 || charCode==8 || charCode==0)
@@ -376,8 +375,16 @@ function isNumberKey(evt)  //Numeros con punto decimal
     return false;
 }
 
-function isNumberIntegerKey(evt) //Solo numeros (entero)
-{
+function isNumberKeyWithIntro(evt) { //Numeros con punto decimal, tambien acepta la tecla enter
+    var charCode = (evt.which) ? evt.which : window.event.keyCode;
+    
+    if((charCode >= 48 && charCode <= 57) || charCode==46 || charCode==8 || charCode==13 || charCode==0)
+        return true;
+    
+    return false;
+}
+
+function isNumberIntegerKey(evt) { //Solo numeros (entero)
     var charCode = (evt.which) ? evt.which : window.event.keyCode;
     
     if((charCode >= 48 && charCode <= 57) || charCode==8  || charCode==0)
@@ -386,12 +393,47 @@ function isNumberIntegerKey(evt) //Solo numeros (entero)
     return false;
 }
 
-function isCharacterKey(evt)
-{
+function isNumberIntegerKeyWithIntro(evt) { //Solo numeros (entero), también acepta la tecla enter
+    var charCode = (evt.which) ? evt.which : window.event.keyCode;
+    
+    if((charCode >= 48 && charCode <= 57) || charCode==8 || charCode==13 || charCode==0)
+        return true;
+    
+    return false;
+}
+
+function isCharacterKey(evt) {
     var charCode = (evt.which) ? evt.which : window.event.keyCode
     if (charCode > 32 && charCode<39 || charCode>39 && (charCode < 65 || charCode > 90) && (charCode < 97 || charCode > 122) && (charCode<165) || charCode==13 || charCode==0  )
         return false;
+    
     return true;
+}
+
+function isCharacterKeyWithIntro(evt) {
+    var charCode = (evt.which) ? evt.which : window.event.keyCode
+    if (charCode > 32 && charCode<39 || charCode>39 && (charCode < 65 || charCode > 90) && (charCode < 97 || charCode > 122) && (charCode<165) || charCode==0  )
+        return false;
+    
+    return true;
+}
+
+function idCharacterNumberKey(evt) {
+    var charCode = (evt.which) ? evt.which : window.event.keyCode
+    if(charCode==8 || charCode==32 || charCode==39 || (charCode >= 48 && charCode <= 57) || (charCode>=65 && charCode<=90) || (charCode>=97 && charCode<=122) || charCode==164 || charCode==165) {
+        return true;
+    }
+    
+    return false;
+}
+
+function idCharacterNumberKeyWithIntro(evt) {
+    var charCode = (evt.which) ? evt.which : window.event.keyCode
+    if(charCode==8 || charCode==13 || charCode==32 || charCode==39 || (charCode >= 48 && charCode <= 57) || (charCode>=65 && charCode<=90) || (charCode>=97 && charCode<=122) || charCode==164 || charCode==165) {
+        return true;
+    }
+    
+    return false;
 }
 
 function validaRespuestaAjax(resultado)

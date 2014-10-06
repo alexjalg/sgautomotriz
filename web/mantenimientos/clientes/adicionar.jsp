@@ -189,7 +189,8 @@
                                                             Direcci&oacute;n <span class="required">*</span>
                                                         </td>
                                                         <td>
-                                                            <s:textarea name="desDirCon" maxLength="70" style="border:1px solid #999999; width:206px; height:51px; resize:none;" onkeypress="return event.keyCode!=13" />
+                                                            <s:textarea name="desDirCon" maxLength="70" style="width:206px; height:51px;" 
+                                                                        cssClass="element-form" onkeypress="return event.keyCode!=13" />
                                                         </td>
                                                     </tr>
                                                     <tr>
