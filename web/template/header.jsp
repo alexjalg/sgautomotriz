@@ -35,6 +35,9 @@
 </s:if>
 </ul>
 <div class="d-datos-user ui-state-default">
+    <span class="name-user" style="padding-right: 15px;">
+        T.C.:&nbsp;&nbsp;<s:property value="#session.ses_tipcam" />
+    </span>
     <span class="ui-icon ui-icon-person"></span> 
     <span class="name-user"><s:property value="#session.ses_desusu" /></span>
     <div id="d-option-user">

@@ -112,6 +112,7 @@ public class LoginAction extends MasterAction implements ModelDriven<Usuarios> {
                                 sesion_sga.put("ses_indclares", tabla.getString("indClaRes"));
                                 sesion_sga.put("ses_indmencad", tabla.getString("indMenCadCla"));
                                 sesion_sga.put("ses_candiacad", tabla.getInt("diasCadCla"));
+                                sesion_sga.put("ses_tipcam", tabla.getString("tipoCambio"));
 
                                 getModuOpcPerfil();
                                 sesion_sga.put("ses_listmodumaster", listModuMaster);

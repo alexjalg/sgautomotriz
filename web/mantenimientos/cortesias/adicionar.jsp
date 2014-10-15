@@ -17,6 +17,8 @@
                 <td class="lbl-value"><span><s:property value="desCon" /><span></td>
                 <td class="lbl-concept">Marca: </td>
                 <td class="lbl-value"><span><s:property value="desMar" /><span></td>
+                <td class="lbl-concept">Modelo: </td>
+                <td class="lbl-value"><span><s:property value="desModMar" /><span></td>
             </tr>
         </table>
     </div>
@@ -30,14 +32,15 @@
     <s:form id="frm_cortesia" action='javascript:void(0)' theme="simple">
         <s:hidden name="idCon" />
         <s:hidden name="idMar" />
+        <s:hidden name="idModMar" />
         <s:if test='%{opcion=="M"}'>
             <s:hidden name="idCorMar" />    
         </s:if>
         <table border="0" cellpadding="0" cellspacing="0" class="table-form">
             <tr>
-                <td style="width: 50px; vertical-align: top;">Descripción<span class="required">*</span></td>
+                <td style="width: 80px;">Descripción<span class="required">*</span></td>
                 <td>
-                    <s:textarea name="desCorMar" cssClass="element-form" cssStyle="width: 300px; height: 80px; resize: none;" />
+                    <s:textfield name="desCorMar" cssClass="element-form" cssStyle="width: 500px;" maxLength="100" />
                 </td>
             </tr>
             <tr>

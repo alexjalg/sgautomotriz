@@ -14,6 +14,7 @@ import com.opensymphony.xwork2.ModelDriven;
 import conexion.helper;
 import entities.Cortesias;
 import entities.Marcas;
+import entities.Modelos;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
@@ -21,6 +22,7 @@ public class CortesiasAction extends MasterAction implements ModelDriven<Cortesi
     private Cortesias modelo = new Cortesias();
     private ArrayList<Cortesias> listCortesias = new ArrayList<Cortesias>();
     private ArrayList<Marcas> listMarcas = new ArrayList<Marcas>();
+    private ArrayList<Modelos> listModelos = new ArrayList<Modelos>();
 
     @Override
     public Cortesias getModel() {
@@ -62,8 +64,9 @@ public class CortesiasAction extends MasterAction implements ModelDriven<Cortesi
             if (modelo.getIdCon()==0) {
                 indErrParm = "error";
             } else {
-                getDatosConcesionarioMarca();
+                getDatosConcesionarioMarcaModelo();
                 listMarcas();
+                listModelos();
                 
                 regPag = 13;
                 urlPaginacion = "cortesias/Cortesia";
@@ -86,8 +89,8 @@ public class CortesiasAction extends MasterAction implements ModelDriven<Cortesi
             if (!indError.equals("")) {
                 errores.add(indError);
             } else {
-                tabla = conex.executeDataSet("CALL usp_cantCortesiasMarcaConcesIndex(?,?)", 
-                        new Object[]{ getModelo().getIdCon(),getModelo().getIdMar() });
+                tabla = conex.executeDataSet("CALL usp_cantCortesiasMarcaConcesIndex(?,?,?)", 
+                        new Object[]{ modelo.getIdCon(),modelo.getIdMar(),modelo.getIdModMar() });
 
                 indError += conex.getErrorSQL();
                 if (!indError.equals("")) {
@@ -119,8 +122,8 @@ public class CortesiasAction extends MasterAction implements ModelDriven<Cortesi
             if (!indError.equals("")) {
                 errores.add(indError);
             } else {
-                tabla = conex.executeDataSet("CALL usp_listCortesiasMarcaConcesIndex(?,?,?,?)",
-                        new Object[]{ getModelo().getIdCon(),getModelo().getIdMar(),
+                tabla = conex.executeDataSet("CALL usp_listCortesiasMarcaConcesIndex(?,?,?,?,?)",
+                        new Object[]{ modelo.getIdCon(),modelo.getIdMar(),modelo.getIdModMar(),
                             getCurPag()*regPag, regPag });
                 indError += conex.getErrorSQL();
                 if (!indError.equals("")) {
@@ -148,7 +151,7 @@ public class CortesiasAction extends MasterAction implements ModelDriven<Cortesi
         }
     }
     
-    private void getDatosConcesionarioMarca() {
+    private void getDatosConcesionarioMarcaModelo() {
         helper conex = null;
         ResultSet tabla = null;
         
@@ -160,27 +163,40 @@ public class CortesiasAction extends MasterAction implements ModelDriven<Cortesi
                 errores.add(indError);
             } else {
                 tabla = conex.executeDataSet("CALL usp_getDatosConcesionario(?)", 
-                        new Object[]{ getModelo().getIdCon() });
+                        new Object[]{ modelo.getIdCon() });
                 indError += conex.getErrorSQL();
                 
                 if(!indError.equals("")) {
                     errores.add(indError);
                 } else {
                     while(tabla.next()) {
-                        getModelo().setDesCon(tabla.getString("desCon"));
+                        modelo.setDesCon(tabla.getString("desCon"));
                     }
                 }
                 
                 tabla = null;
                 tabla = conex.executeDataSet("CALL usp_getDatosMarca(?)", 
-                        new Object[]{ getModelo().getIdMar() });
+                        new Object[]{ modelo.getIdMar() });
                 indError += conex.getErrorSQL();
                 
                 if(!indError.equals("")) {
                     errores.add(indError);
                 } else {
                     while(tabla.next()) {
-                        getModelo().setDesMar(tabla.getString("desMar"));
+                        modelo.setDesMar(tabla.getString("desMar"));
+                    }
+                    
+                    tabla = null;
+                    tabla = conex.executeDataSet("CALL usp_getDatosModelo(?,?)", 
+                            new Object[]{ modelo.getIdMar(),modelo.getIdModMar() });
+                    indError += conex.getErrorSQL();
+                    
+                    if(!indError.equals("")) {
+                        errores.add(indError);
+                    } else {
+                        while(tabla.next()) {
+                            modelo.setDesModMar(tabla.getString("desModMar"));
+                        }
                     }
                 }
             }
@@ -237,6 +253,48 @@ public class CortesiasAction extends MasterAction implements ModelDriven<Cortesi
         }
     }
     
+    public void listModelos () {
+        helper conex = null;
+        ResultSet tabla = null;
+
+        try {
+            conex = new helper();
+            indError += conex.getErrorSQL();
+
+            if(!indError.equals("")) {
+                errores.add(indError);
+            } else {
+                tabla = conex.executeDataSet("CALL usp_listModeloxMarca2(?)", 
+                        new Object[]{ modelo.getIdMar() });
+                indError = conex.getErrorSQL();
+
+                if(!indError.equals("")) {
+                    errores.add(indError);
+                } else {
+                    Modelos obj;
+                    while(tabla.next()) {
+                        obj = new Modelos();
+                        obj.setIdModMar(tabla.getString("idModMar"));
+                        if(modelo.getIdModMar().equals("")) {
+                            modelo.setIdModMar(obj.getIdModMar());
+                        }
+                        obj.setDesModMar(tabla.getString("desModMar"));
+                        listModelos.add(obj);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            indError += "error";
+            errores.add(e.getMessage());
+        } finally {
+            try {
+                tabla.close();
+                conex.returnConnect();
+            } catch (Exception e) {
+            }
+        }
+    }
+    
     public String adicionar() {
         idAccion = 3;
         verifAccionTipoUsuario();
@@ -249,7 +307,7 @@ public class CortesiasAction extends MasterAction implements ModelDriven<Cortesi
                 varReturnProcess(1);
                 if (opcion.equals("A")) {
                     getModelo().setIdCorMar(0);
-                    getDatosConcesionarioMarca();
+                    getDatosConcesionarioMarcaModelo();
                     
                     formURL = baseURL + "cortesias/grabarCortesia";
                 }
@@ -270,8 +328,9 @@ public class CortesiasAction extends MasterAction implements ModelDriven<Cortesi
             if(!indError.equals("")) {
                 errores.add(indError);
             } else {
-                tabla = conex.executeDataSet("CALL usp_getDatosCortesia(?,?,?)", 
-                        new Object[]{ getModelo().getIdCon(),getModelo().getIdMar(),getModelo().getIdCorMar() });
+                tabla = conex.executeDataSet("CALL usp_getDatosCortesia(?,?,?,?)", 
+                        new Object[]{ modelo.getIdCon(),modelo.getIdMar(),modelo.getIdModMar(),
+                            modelo.getIdCorMar() });
                 indError = conex.getErrorSQL();
 
                 if(!indError.equals("")) {
@@ -308,7 +367,7 @@ public class CortesiasAction extends MasterAction implements ModelDriven<Cortesi
                 varReturnProcess(1);
                 if (opcion.equals("M")) {
                     getDatosCortesia();
-                    getDatosConcesionarioMarca();
+                    getDatosConcesionarioMarcaModelo();
                     
                     formURL = baseURL + "cortesias/actualizarCortesia";
                 }
@@ -342,9 +401,9 @@ public class CortesiasAction extends MasterAction implements ModelDriven<Cortesi
                         if(getModelo().getDesCorMar().length()>100) 
                             getModelo().setDesCorMar(getModelo().getDesCorMar().substring(0,100));
                         
-                        indError += conex.executeNonQuery("CALL usp_insCortesiaConcesMarca(?,?,?)",
-                                new Object[]{ getModelo().getIdCon(),getModelo().getIdMar(),
-                                    getModelo().getDesCorMar() });
+                        indError += conex.executeNonQuery("CALL usp_insCortesiaConcesMarca(?,?,?,?)",
+                                new Object[]{ modelo.getIdCon(),modelo.getIdMar(),modelo.getIdModMar(),
+                                    modelo.getDesCorMar() });
 
                         if (!indError.equals("")) {
                             errores.add(indError);
@@ -390,9 +449,9 @@ public class CortesiasAction extends MasterAction implements ModelDriven<Cortesi
                         if(getModelo().getDesCorMar().length()>100) 
                             getModelo().setDesCorMar(getModelo().getDesCorMar().substring(0,100));
                         
-                        indError += conex.executeNonQuery("CALL usp_updCortesiaConcesMarca(?,?,?,?)",
-                                new Object[]{ getModelo().getIdCon(),getModelo().getIdMar(),getModelo().getIdCorMar(),
-                                    getModelo().getDesCorMar() });
+                        indError += conex.executeNonQuery("CALL usp_updCortesiaConcesMarca(?,?,?,?,?)",
+                                new Object[]{ modelo.getIdCon(),modelo.getIdMar(),modelo.getIdModMar(),
+                                    modelo.getIdCorMar(),modelo.getDesCorMar() });
 
                         if (!indError.equals("")) {
                             errores.add(indError);
@@ -430,9 +489,9 @@ public class CortesiasAction extends MasterAction implements ModelDriven<Cortesi
                     if (!indError.equals("")) {
                         errores.add(indError);
                     } else {
-                        indError += conex.executeNonQuery("CALL usp_updEstadoCortesiaConcesMarca(?,?,?,?)",
-                                new Object[]{ getModelo().getIdCon(),getModelo().getIdMar(),getModelo().getIdCorMar(),
-                                    getModelo().getEdoCorMar() });
+                        indError += conex.executeNonQuery("CALL usp_updEstadoCortesiaConcesMarca(?,?,?,?,?)",
+                                new Object[]{ modelo.getIdCon(),modelo.getIdMar(),modelo.getIdModMar(),
+                                    modelo.getIdCorMar(),modelo.getEdoCorMar() });
 
                         if (!indError.equals("")) {
                             errores.add(indError);
@@ -470,8 +529,9 @@ public class CortesiasAction extends MasterAction implements ModelDriven<Cortesi
                     if (!indError.equals("")) {
                         errores.add(indError);
                     } else {
-                        tabla = conex.executeDataSet("CALL usp_verifDependCortesia(?,?,?)",
-                                new Object[]{ getModelo().getIdCon(),getModelo().getIdMar(),getModelo().getIdCorMar() });
+                        tabla = conex.executeDataSet("CALL usp_verifDependCortesia(?,?,?,?)",
+                                new Object[]{ modelo.getIdCon(),modelo.getIdMar(),modelo.getIdModMar(),
+                                    modelo.getIdCorMar() });
                         indError = conex.getErrorSQL();
 
                         if (!indError.equals("")) {
@@ -484,8 +544,9 @@ public class CortesiasAction extends MasterAction implements ModelDriven<Cortesi
 
                             /* Si no tiene dependencias */
                             if (cant == 0) {
-                                indError = conex.executeNonQuery("CALL usp_dltCortesiaConcesMarca(?,?,?)",
-                                        new Object[]{ getModelo().getIdCon(),getModelo().getIdMar(),getModelo().getIdCorMar() });
+                                indError = conex.executeNonQuery("CALL usp_dltCortesiaConcesMarca(?,?,?,?)",
+                                        new Object[]{ modelo.getIdCon(),modelo.getIdMar(),modelo.getIdModMar(),
+                                            modelo.getIdCorMar() });
 
                                 indError = indError.trim();
                                 if (indError.trim().equals("")) {
@@ -493,7 +554,7 @@ public class CortesiasAction extends MasterAction implements ModelDriven<Cortesi
                                 }
                             } else /* si tiene dependencias */ {
                                 indError = "error";
-                                errores.add("Existen registros dependientes de la cortesía");
+                                errores.add("Existen registros dependientes de la cortesia");
                             }
                         }
                     }
@@ -539,5 +600,9 @@ public class CortesiasAction extends MasterAction implements ModelDriven<Cortesi
      */
     public ArrayList<Marcas> getListMarcas() {
         return listMarcas;
+    }
+
+    public ArrayList<Modelos> getListModelos() {
+        return listModelos;
     }
 }

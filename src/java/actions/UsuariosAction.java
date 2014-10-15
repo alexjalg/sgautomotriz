@@ -388,46 +388,41 @@ public class UsuariosAction extends MasterAction implements ModelDriven<Usuarios
     }
         
     public String getLocales() {
-        idAccion = 5;
-        verifAccionTipoUsuario();
+        helper conex = null;
+        ResultSet tabla = null;
 
-        if (indErrAcc.equals("")) {
-            helper conex = null;
-            ResultSet tabla = null;
+        try {
+            conex = new helper();
+            indError = conex.getErrorSQL();
 
-            try {
-                conex = new helper();
+            if (!indError.equals("")) {
+                errores.add(indError);
+            } else {
+                tabla = conex.executeDataSet("CALL usp_listLocalesConces(?)",
+                        new Object[]{modelo.getIdCon()});
+
                 indError = conex.getErrorSQL();
 
                 if (!indError.equals("")) {
                     errores.add(indError);
                 } else {
-                    tabla = conex.executeDataSet("CALL usp_listLocalesConces(?)",
-                            new Object[]{modelo.getIdCon()});
-
-                    indError = conex.getErrorSQL();
-
-                    if (!indError.equals("")) {
-                        errores.add(indError);
-                    } else {
-                        Locales obj;
-                        while (tabla.next()) {
-                            obj = new Locales();
-                            obj.setIdLocCon(tabla.getString("idLocCon"));
-                            obj.setDesLocCon(tabla.getString("desLocCon"));
-                            listLocales.add(obj);
-                        }
+                    Locales obj;
+                    while (tabla.next()) {
+                        obj = new Locales();
+                        obj.setIdLocCon(tabla.getString("idLocCon"));
+                        obj.setDesLocCon(tabla.getString("desLocCon"));
+                        listLocales.add(obj);
                     }
                 }
+            }
+        } catch (Exception e) {
+            indError = "error";
+            errores.add(e.getMessage());
+        } finally {
+            try {
+                tabla.close();
+                conex.returnConnect();
             } catch (Exception e) {
-                indError = "error";
-                errores.add(e.getMessage());
-            } finally {
-                try {
-                    tabla.close();
-                    conex.returnConnect();
-                } catch (Exception e) {
-                }
             }
         }
 
@@ -435,7 +430,7 @@ public class UsuariosAction extends MasterAction implements ModelDriven<Usuarios
     }
 
     public String grabar() {
-        idAccion = 6;
+        idAccion = 5;
         verifAccionTipoUsuario();
 
         if (indErrAcc.equals("")) {
@@ -622,7 +617,7 @@ public class UsuariosAction extends MasterAction implements ModelDriven<Usuarios
     }
 
     public String actualizar() {
-        idAccion = 7;
+        idAccion = 6;
         verifAccionTipoUsuario();
 
         if (indErrAcc.equals("")) {
@@ -796,7 +791,7 @@ public class UsuariosAction extends MasterAction implements ModelDriven<Usuarios
     }
 
     public String actEstado() {
-        idAccion = 8;
+        idAccion = 7;
         verifAccionTipoUsuario();
 
         if (indErrAcc.equals("")) {
@@ -832,7 +827,7 @@ public class UsuariosAction extends MasterAction implements ModelDriven<Usuarios
     }
 
     public String eliminar() {
-        idAccion = 9;
+        idAccion = 8;
         verifAccionTipoUsuario();
 
         if (indErrAcc.equals("")) {
@@ -868,111 +863,106 @@ public class UsuariosAction extends MasterAction implements ModelDriven<Usuarios
     }
 
     public String updPassword() {
-        idAccion = 10;
-        verifAccionTipoUsuario();
-
-        if (indErrAcc.equals("")) {
-            if (!opcion.equals("F")) {
-                if(!sesion_sga.get("ses_indclares").equals("R")) {
-                    if (modelo.getOtrClaUsu().trim().equals("")) {
-                        errores.add("Ingrese la contraseña actual");
-                        indError += "error";
-                    }
-                }
-                
-                if (modelo.getOtrNueClaUsu().trim().equals("")) {
-                    errores.add("Ingrese la nueva contraseña");
+        if (!opcion.equals("F")) {
+            if(!sesion_sga.get("ses_indclares").equals("R")) {
+                if (modelo.getOtrClaUsu().trim().equals("")) {
+                    errores.add("Ingrese la contraseña actual");
                     indError += "error";
                 }
-                if (modelo.getOtrNueClaUsu2().trim().equals("")) {
-                    errores.add("Confirme la nueva contraseña");
-                    indError += "error";
-                }
+            }
 
-                if (indError.trim().equals("")) {
-                    helper conex = null;
-                    ResultSet tabla = null;
+            if (modelo.getOtrNueClaUsu().trim().equals("")) {
+                errores.add("Ingrese la nueva contraseña");
+                indError += "error";
+            }
+            if (modelo.getOtrNueClaUsu2().trim().equals("")) {
+                errores.add("Confirme la nueva contraseña");
+                indError += "error";
+            }
 
-                    try {
-                        conex = new helper();
-                        
-                        if(!sesion_sga.get("ses_indclares").equals("R")) {
-                            String clave = "";
-                            byte[] md5_bytes_cla = Codificador.getEncoded(modelo.getOtrClaUsu().trim(), "md5").getBytes();
-                            for (byte b : md5_bytes_cla) {
-                                clave += Integer.toHexString(Integer.parseInt(Byte.toString((byte) ((b & 0x0F0) >> 4)))).toString();
-                            }
+            if (indError.trim().equals("")) {
+                helper conex = null;
+                ResultSet tabla = null;
 
-                            tabla = null;
-                            tabla = conex.executeDataSet("CALL usp_verifUsuarioPassword(?,?)",
-                                    new Object[]{sesion_sga.get("ses_idusu"), clave});
-                            while (tabla.next()) {
-                                if (tabla.getInt(1) == 0) {
-                                    errores.add("La contraseña actual no es correcta");
-                                    indError += "error";
-                                }
-                            }
+                try {
+                    conex = new helper();
+
+                    if(!sesion_sga.get("ses_indclares").equals("R")) {
+                        String clave = "";
+                        byte[] md5_bytes_cla = Codificador.getEncoded(modelo.getOtrClaUsu().trim(), "md5").getBytes();
+                        for (byte b : md5_bytes_cla) {
+                            clave += Integer.toHexString(Integer.parseInt(Byte.toString((byte) ((b & 0x0F0) >> 4)))).toString();
                         }
 
-                        if (modelo.getOtrNueClaUsu().trim().length() < 8 || modelo.getOtrNueClaUsu2().trim().length() < 8) {
-                            errores.add("La nueva contraseña debe tener al menos 8 caracteres");
-                            indError += "error";
-                        } else {
-                            Pattern pat = null;
-                            Matcher mat = null;
-                            pat = Pattern.compile("^[a-z0-9]{8,}$");
-
-                            mat = pat.matcher(modelo.getOtrNueClaUsu().trim());
-                            if (!mat.find()) {
-                                errores.add("La nueva contraseña ingresada no es válida");
+                        tabla = null;
+                        tabla = conex.executeDataSet("CALL usp_verifUsuarioPassword(?,?)",
+                                new Object[]{sesion_sga.get("ses_idusu"), clave});
+                        while (tabla.next()) {
+                            if (tabla.getInt(1) == 0) {
+                                errores.add("La contraseña actual no es correcta");
                                 indError += "error";
                             }
+                        }
+                    }
+
+                    if (modelo.getOtrNueClaUsu().trim().length() < 8 || modelo.getOtrNueClaUsu2().trim().length() < 8) {
+                        errores.add("La nueva contraseña debe tener al menos 8 caracteres");
+                        indError += "error";
+                    } else {
+                        Pattern pat = null;
+                        Matcher mat = null;
+                        pat = Pattern.compile("^[a-z0-9]{8,}$");
+
+                        mat = pat.matcher(modelo.getOtrNueClaUsu().trim());
+                        if (!mat.find()) {
+                            errores.add("La nueva contraseña ingresada no es válida");
+                            indError += "error";
+                        }
+                    }
+
+                    if (indError.trim().equals("")) {
+                        if (!modelo.getOtrNueClaUsu().trim().equals(modelo.getOtrNueClaUsu2().trim())) {
+                            errores.add("La nueva contraseña ingresada no es correcta");
+                            indError += "error";
                         }
 
                         if (indError.trim().equals("")) {
-                            if (!modelo.getOtrNueClaUsu().trim().equals(modelo.getOtrNueClaUsu2().trim())) {
-                                errores.add("La nueva contraseña ingresada no es correcta");
+                            String clavechg = "";
+                            byte[] md5_bytes_chg = Codificador.getEncoded(modelo.getOtrNueClaUsu().trim(), "md5").getBytes();
+                            for (byte b : md5_bytes_chg) {
+                                clavechg += Integer.toHexString(Integer.parseInt(Byte.toString((byte) ((b & 0x0F0) >> 4)))).toString();
+                            }
+
+                            tabla = null;
+                            tabla = conex.executeDataSet("CALL usp_verifUltPassUsu(?,?)",
+                                    new Object[]{sesion_sga.get("ses_idusu"), clavechg});
+                            int indicador = 0;
+                            while (tabla.next()) {
+                                indicador = tabla.getInt(1);
+                            }
+
+                            if (indicador == 0) {
+                                indError += conex.executeNonQuery("CALL usp_updPasswordUsuario(?,?)",
+                                        new Object[]{sesion_sga.get("ses_idusu"), clavechg});
+
+                                if (!indError.trim().equals("")) {
+                                    errores.add(indError);
+                                }
+                            } else {
+                                //errores.add("No puede utilizar una contraseña que haya registrado antes");
+                                errores.add("La contraseña no puede ser igual a las 3 últimas");
                                 indError += "error";
                             }
-
-                            if (indError.trim().equals("")) {
-                                String clavechg = "";
-                                byte[] md5_bytes_chg = Codificador.getEncoded(modelo.getOtrNueClaUsu().trim(), "md5").getBytes();
-                                for (byte b : md5_bytes_chg) {
-                                    clavechg += Integer.toHexString(Integer.parseInt(Byte.toString((byte) ((b & 0x0F0) >> 4)))).toString();
-                                }
-
-                                tabla = null;
-                                tabla = conex.executeDataSet("CALL usp_verifUltPassUsu(?,?)",
-                                        new Object[]{sesion_sga.get("ses_idusu"), clavechg});
-                                int indicador = 0;
-                                while (tabla.next()) {
-                                    indicador = tabla.getInt(1);
-                                }
-
-                                if (indicador == 0) {
-                                    indError += conex.executeNonQuery("CALL usp_updPasswordUsuario(?,?)",
-                                            new Object[]{sesion_sga.get("ses_idusu"), clavechg});
-
-                                    if (!indError.trim().equals("")) {
-                                        errores.add(indError);
-                                    }
-                                } else {
-                                    //errores.add("No puede utilizar una contraseña que haya registrado antes");
-                                    errores.add("La contraseña no puede ser igual a las 3 últimas");
-                                    indError += "error";
-                                }
-                            }
                         }
-                    } catch (Exception ex) {
-                        errores.add(ex.getMessage());
-                        indError += "error";
-                    } finally {
-                        try {
-                            tabla.close();
-                            conex.returnConnect();
-                        } catch (Exception e) {
-                        }
+                    }
+                } catch (Exception ex) {
+                    errores.add(ex.getMessage());
+                    indError += "error";
+                } finally {
+                    try {
+                        tabla.close();
+                        conex.returnConnect();
+                    } catch (Exception e) {
                     }
                 }
             }
@@ -982,14 +972,9 @@ public class UsuariosAction extends MasterAction implements ModelDriven<Usuarios
     }
 
     public String updVarSesionCaducCla() {
-        idAccion = 11;
-        verifAccionTipoUsuario();
-
-        if (indErrAcc.equals("")) {
-            sesion_sga.put("ses_indclares", "");
-            sesion_sga.put("ses_indmencad", "");
-            sesion_sga.put("ses_candiacad", 0);
-        }
+        sesion_sga.put("ses_indclares", "");
+        sesion_sga.put("ses_indmencad", "");
+        sesion_sga.put("ses_candiacad", 0);
 
         return "updVarSesionCaducCla";
     }

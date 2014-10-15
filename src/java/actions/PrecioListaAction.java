@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package actions;
 
 import com.opensymphony.xwork2.ModelDriven;
@@ -53,6 +49,9 @@ public class PrecioListaAction extends MasterAction implements ModelDriven<Preci
                 modelo.setIdModMar(listVarReturn.get(2).toString().trim());
                 modelo.setNumAnoLis(Integer.parseInt(listVarReturn.get(3).toString().trim()));
             }
+            
+            setListAnios();
+            
             if (modelo.getNumAnoLis() == 0) {
                 modelo.setNumAnoLis(Integer.parseInt(getCurYear()));
             }
@@ -67,9 +66,82 @@ public class PrecioListaAction extends MasterAction implements ModelDriven<Preci
         }
         return "success";
     }
+    
+    private void cantPrecioListaIndex() {
+        helper conex = null;
+        ResultSet tabla = null;
+        try {
+            conex = new helper();
+            indError += conex.getErrorSQL();
+
+            if (!indError.equals("")) {
+                errores.add(indError);
+            } else {
+                tabla = conex.executeDataSet("CALL usp_cantPrecioListaIndex(?,?,?)",
+                        new Object[]{modelo.getIdMar(), modelo.getIdModMar(), modelo.getNumAnoLis()});
+
+                indError += conex.getErrorSQL();
+                if (!indError.equals("")) {
+                    errores.add(indError);
+                } else {
+                    while (tabla.next()) {
+                        cantReg = tabla.getInt(1);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            indError += "error";
+            errores.add(e.getMessage());
+        } finally {
+            try {
+                tabla.close();
+                conex.returnConnect();
+            } catch (Exception e) {
+            }
+        }
+    }
+
+    private void listPrecioListaIndex() {
+        helper conex = null;
+        ResultSet tabla = null;
+        try {
+            conex = new helper();
+            indError += conex.getErrorSQL();
+            if (!indError.equals("")) {
+                errores.add(indError);
+            } else {
+                tabla = conex.executeDataSet("CALL usp_listPrecioListaIndex(?,?,?,?,?)",
+                        new Object[]{modelo.getIdMar(), modelo.getIdModMar(), modelo.getNumAnoLis(),
+                    getCurPag() * regPag, regPag});
+                indError += conex.getErrorSQL();
+                if (!indError.equals("")) {
+                    errores.add(indError);
+                } else {
+                    PrecioLista obj;
+                    while (tabla.next()) {
+                        obj = new PrecioLista();
+                        obj.setIdVerMod(tabla.getInt("idVerMod"));
+                        obj.setDesVerMod(tabla.getString("desVerMod"));
+                        obj.setImpPreLis(tabla.getString("impPreLis"));
+                        obj.setImpPreMin(tabla.getString("impPreMin"));
+                        obj.setImpPreFlo(tabla.getString("impPreFlo"));
+                        listPrecioLista.add(obj);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            indError += "error";
+            errores.add(e.getMessage());
+        } finally {
+            try {
+                tabla.close();
+                conex.returnConnect();
+            } catch (Exception e) {
+            }
+        }
+    }
 
     public String populateModelo() {
-        idAccion = 3;
         helper conex = new helper();
         ResultSet tabla = null;
 
@@ -98,8 +170,9 @@ public class PrecioListaAction extends MasterAction implements ModelDriven<Preci
     }
 
     public String modificar() {
-        idAccion = 4;
+        idAccion = 3;
         verifAccionTipoUsuario();
+        
         if (indErrAcc.equals("")) {
             nivBandeja = 1;
 
@@ -112,6 +185,8 @@ public class PrecioListaAction extends MasterAction implements ModelDriven<Preci
                     if (modelo.getIdVerMod() == 0) {
                         indErrParm = "error";
                     } else {
+                        getDatosMarcaModelVersion();
+                        
                         getDatosPrecioLista();
                         formURL = baseURL + "precioLista/actualizarPrecioLista";
                     }
@@ -121,9 +196,70 @@ public class PrecioListaAction extends MasterAction implements ModelDriven<Preci
 
         return "adicionar";
     }
+    
+    public void getDatosMarcaModelVersion() {
+        helper conex = null;
+        ResultSet tabla = null;
+        try {
+            conex = new helper();
+            indError += conex.getErrorSQL();
+            
+            if(!indError.equals("")) {
+                errores.add(indError);
+            } else {
+                tabla = conex.executeDataSet("call usp_getDatosMarca(?)", 
+                    new Object[]{ modelo.getIdMar() });
+                indError += conex.getErrorSQL();
+                
+                if(!indError.equals("")) {
+                    errores.add(indError);
+                } else {
+                    while (tabla.next()) {
+                        modelo.setDesMar(tabla.getString("desMar"));
+                    }
+                    
+                    tabla = null;
+                    tabla = conex.executeDataSet("CALL usp_getDatosModelo(?,?)", 
+                            new Object[]{ modelo.getIdMar(),modelo.getIdModMar() });
+                    indError += conex.getErrorSQL();
+                    
+                    if(!indError.equals("")) {
+                        errores.add(indError);
+                    } else {
+                        while(tabla.next()) {
+                            modelo.setDesModMar(tabla.getString("desModMar"));
+                        }
+                        
+                        tabla = null;
+                        tabla = conex.executeDataSet("CALL usp_getDatosVersiones(?,?,?)", 
+                                new Object[]{ modelo.getIdMar(),modelo.getIdModMar(),modelo.getIdVerMod() });
+                        indError += conex.getErrorSQL();
+                        
+                        if(!indError.equals("")) {
+                            errores.add(indError);
+                        } else {
+                            while(tabla.next()) {
+                                modelo.setDesVerMod(tabla.getString("desVerMod"));
+                            }
+                        }
+                        
+                    }
+                }
+            }
+        } catch (Exception e) {
+            indError += "error";
+            errores.add(e.getMessage());
+        } finally {
+            try {
+                tabla.close();
+                conex.returnConnect();
+            } catch (Exception e) {
+            }
+        }
+    }
 
     public String actualizar() {
-        idAccion = 5;
+        idAccion = 4;
         verifAccionTipoUsuario();
 
         if (indErrAcc.equals("")) {
@@ -232,80 +368,6 @@ public class PrecioListaAction extends MasterAction implements ModelDriven<Preci
                 listMarcas.add(obj);
             }
         } catch (Exception e) {
-        } finally {
-            try {
-                tabla.close();
-                conex.returnConnect();
-            } catch (Exception e) {
-            }
-        }
-    }
-
-    private void cantPrecioListaIndex() {
-        helper conex = null;
-        ResultSet tabla = null;
-        try {
-            conex = new helper();
-            indError += conex.getErrorSQL();
-
-            if (!indError.equals("")) {
-                errores.add(indError);
-            } else {
-                tabla = conex.executeDataSet("CALL usp_cantPrecioListaIndex(?,?,?)",
-                        new Object[]{modelo.getIdMar(), modelo.getIdModMar(), modelo.getNumAnoLis()});
-
-                indError += conex.getErrorSQL();
-                if (!indError.equals("")) {
-                    errores.add(indError);
-                } else {
-                    while (tabla.next()) {
-                        cantReg = tabla.getInt(1);
-                    }
-                }
-            }
-        } catch (Exception e) {
-            indError += "error";
-            errores.add(e.getMessage());
-        } finally {
-            try {
-                tabla.close();
-                conex.returnConnect();
-            } catch (Exception e) {
-            }
-        }
-    }
-
-    private void listPrecioListaIndex() {
-        helper conex = null;
-        ResultSet tabla = null;
-        try {
-            conex = new helper();
-            indError += conex.getErrorSQL();
-            if (!indError.equals("")) {
-                errores.add(indError);
-            } else {
-                tabla = conex.executeDataSet("CALL usp_listPrecioListaIndex(?,?,?,?,?)",
-                        new Object[]{modelo.getIdMar(), modelo.getIdModMar(), modelo.getNumAnoLis(),
-                    getCurPag() * regPag, regPag});
-                indError += conex.getErrorSQL();
-                if (!indError.equals("")) {
-                    errores.add(indError);
-                } else {
-                    PrecioLista obj;
-                    while (tabla.next()) {
-                        obj = new PrecioLista();
-                        obj.setIdVerMod(tabla.getInt("idVerMod"));
-                        obj.setDesVerMod(tabla.getString("desVerMod"));
-                        obj.setImpPreLis(tabla.getString("impPreLis"));
-                        obj.setImpPreMin(tabla.getString("impPreMin"));
-                        obj.setImpPreFlo(tabla.getString("impPreFlo"));
-                        listPrecioLista.add(obj);
-                    }
-                }
-            }
-        } catch (Exception e) {
-            indError += "error";
-            errores.add(e.getMessage());
         } finally {
             try {
                 tabla.close();

@@ -12,6 +12,6 @@
           username="root"
           password="123456"
           driverClassName="com.mysql.jdbc.Driver"
-          url="jdbc:mysql://cotizador.toyota.local:3306/sgautomotriz?noAccessToProcedureBodies=true&amp;autoReconnect=true" />
+          url="jdbc:mysql://sgautomotriz.mopal.local:3306/sgautomotriz?noAccessToProcedureBodies=true&amp;autoReconnect=true" />
 </Context>
 

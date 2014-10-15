@@ -28,7 +28,7 @@ public class UbicacionAmbienteAction extends MasterAction implements ModelDriven
         verifAccionTipoUsuario();
         
         if (indErrAcc.equals("")) {
-            if (modelo.getIdUbiAmb() == 0) {
+            if (modelo.getIdUbiAmb() == 99) {
                 indError = "error";
                 errores.add("No ha seleccionado ningun registro");
             }
@@ -199,7 +199,7 @@ public class UbicacionAmbienteAction extends MasterAction implements ModelDriven
                     modelo.setIdAmbUbi(Integer.parseInt(listVarReturn.get(1).toString().trim()));
                 }
                 
-                if (modelo.getIdAmbUbi() == 0) {
+                if (modelo.getIdAmbUbi() == 99) {
                     indErrParm = "error";
                 } else {
                     urlPaginacion = "ubicacionAmbiente/UbicacionAmbiente";
@@ -222,7 +222,7 @@ public class UbicacionAmbienteAction extends MasterAction implements ModelDriven
         if (indErrAcc.equals("")) {
             nivBandeja = 2;
             
-            if ((!opcion.trim().equals("A") && !opcion.trim().equals("M")) || modelo.getIdAmbUbi() == 0) {
+            if ((!opcion.trim().equals("A") && !opcion.trim().equals("M")) || modelo.getIdAmbUbi() == 99) {
                 indErrParm = "error";
             } else {
                 varReturnProcess(1);
@@ -245,7 +245,7 @@ public class UbicacionAmbienteAction extends MasterAction implements ModelDriven
         if (indErrAcc.equals("")) {
             nivBandeja = 2;
             
-            if ((!opcion.trim().equals("A") && !opcion.trim().equals("M")) || modelo.getIdAmbUbi() == 0) {
+            if ((!opcion.trim().equals("A") && !opcion.trim().equals("M")) || modelo.getIdAmbUbi() == 99) {
                 indErrParm = "error";
             } else {
                 getDatosAmbientesUbicacion();

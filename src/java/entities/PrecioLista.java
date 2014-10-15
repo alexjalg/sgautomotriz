@@ -11,9 +11,11 @@ package entities;
 public class PrecioLista {
 
     private String idMar="";
-    private String idModMar;
-    private String desVerMod;
-    private int idVerMod;
+    private String desMar="";
+    private String idModMar="";
+    private String desModMar="";
+    private int idVerMod=0;
+    private String desVerMod="";
     private int numAnoLis;
     private String impPreLis;
     private String impPreMin;
@@ -137,6 +139,22 @@ public class PrecioLista {
      */
     public void setImpPreFlo(String impPreFlo) {
         this.impPreFlo = impPreFlo;
+    }
+
+    public String getDesMar() {
+        return desMar;
+    }
+
+    public void setDesMar(String desMar) {
+        this.desMar = desMar;
+    }
+
+    public String getDesModMar() {
+        return desModMar;
+    }
+
+    public void setDesModMar(String desModMar) {
+        this.desModMar = desModMar;
     }
 
 

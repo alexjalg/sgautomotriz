@@ -140,28 +140,44 @@
         $('#cbo_Marca').change(function() {
             var _idMar = $(this).val();
             $('#idMar_h1').val($(this).val());
-            $('#idModMar_h1').val("");
-            $.post("populateModeloPrecioLista.action",
-                    {
-                        idMar: _idMar
-                    }, function(resultado) {
-                $('#td_Modelo').css('text-align', 'left');
-                $('#td_Modelo').html(resultado);
-            });
+            $('#idModMar_h1').val($('#cbo_Modelo').val());
+            $('#numAnoLis_h1').val($('#cbo_Anio').val());
+            
+            //$('#idModMar_h1').val("");
+            /*$.post(
+                "populateModeloPrecioLista.action",
+                {
+                    idMar: _idMar
+                }, 
+                function(resultado) {
+                    $('#td_Modelo').css('text-align', 'left');
+                    $('#td_Modelo').html(resultado);
+                    
+                    
+                }
+            );*/
+        
+            $('#frm_princ').submit();
+            
         });
 
 
         $('#cbo_Modelo').change(function() {
+            $('#idMar_h1').val($('#cbo_Marca').val());
             $('#idModMar_h1').val($(this).val());
+            $('#numAnoLis_h1').val($('#cbo_Anio').val());
+            
             $('#frm_princ').submit();
         });
 
         $('#cbo_Anio').change(function() {
+            $('#idMar_h1').val($('#cbo_Marca').val());
+            $('#idModMar_h1').val($('#cbo_Modelo').val());
+        
             $('#numAnoLis_h1').val($(this).val());
-            if ($('#cbo_Modelo').val() != 0)
-            {
+            //if ($('#cbo_Modelo').val() != 0) {
                 $('#frm_princ').submit();
-            }
+            //}
         });
         $('#btn-edit').click(function() {
             post(

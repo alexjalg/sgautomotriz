@@ -10,6 +10,20 @@
             <a href="javascript:void(0)" class="back">Volver</a>
         </div>
     </div>
+    <div class="d-header-labels">
+        <table>
+            <tr>
+                <td class="lbl-concept">Marca: </td>
+                <td class="lbl-value"><span><s:property value="desMar" /><span></td>
+                <td class="lbl-concept">Modelo: </td>
+                <td class="lbl-value"><span><s:property value="desModMar" /><span></td>
+                <td class="lbl-concept">Versión: </td>
+                <td class="lbl-value"><span><s:property value="desVerMod" /><span></td>
+                <td class="lbl-concept" title="Año de fabricación">Año fab.: </td>
+                <td class="lbl-value"><span><s:property value="numAnoLis" /><span></td>
+            </tr>
+        </table>
+    </div>
 </div>
 
 <form method="POST" id="frm_preciolista_back" action="<s:property value="backURL" />">

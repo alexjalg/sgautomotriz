@@ -11,10 +11,12 @@
 
         <action name="*Cortesia" method="{1}" class="actions.CortesiasAction">
             <result name="success" type="tiles">mant-cortesia-index</result>
+            <result name="listModelos">/mantenimientos/cortesias/listModelos.jsp</result>
             <result name="adicionar" type="tiles">mant-cortesia-adicionar</result>
             <result name="modificar" type="tiles">mant-cortesia-adicionar</result>
             <result name="grabar" type="tiles">mant-cortesia-grabar</result>
             <result name="actualizar" type="tiles">mant-cortesia-grabar</result>
+            <result name="actualizarEstado" type="tiles">mant-cortesia-grabar</result>
             <result name="vrfSeleccion" type="tiles">mant-cortesia-grabar</result>
             <result name="eliminar" type="tiles">mant-cortesia-eliminar</result>
         </action>

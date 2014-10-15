@@ -159,6 +159,7 @@ public class ModelosAction extends MasterAction implements ModelDriven<Modelos> 
             if ((!opcion.trim().equals("A") && !opcion.trim().equals("M")) || modelo.getIdMar().equals("")) {
                 indErrParm = "error";
             } else {
+                modelo.setIdModMar("");
                 getDatosMarca();
 
                 varReturnProcess(1);

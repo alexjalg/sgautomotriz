@@ -53,12 +53,16 @@
             <table border="0" cellpadding="0" cellspacing="0" style="">
                 <tr class="tr-head">
                     <td style="width: 24px;"></td>
+                    <td style="width:50px; text-align: center;">
+                        Código
+                    </td>
                     <td style="<s:if test='%{desProv_f!=""}'> background-color: #B5CCED; </s:if>">
                         Provincia
                     </td>
                 </tr>
                 <tr class="tr-head">
                     <td style="width: 24px;"></td>
+                    <td></td>
                     <td style="<s:if test='%{desProv_f!=""}'> background-color: #B5CCED; </s:if>">
                         <s:textfield name="desProv_f" cssClass="element-form-grid" cssStyle="width: 400px;" />
                     </td>
@@ -71,6 +75,9 @@
                 <tr>
                     <td style="width: 24px;">
                         <input type="radio" name="idPrvDep" id="rbt_idPrvDep" value="<s:property value="idPrvDep" />" class="select_rec" />
+                    </td>
+                    <td style="width:50px; text-align: center;">
+                        <s:property value="idPrvDep" />
                     </td>
                     <td style="">
                         <s:property value="desProv" />

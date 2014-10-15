@@ -24,11 +24,11 @@ import java.util.Calendar;
 public class MasterAction extends ActionSupport implements ServletRequestAware {
     //Variable que nos va a permitir obtener la ruta absoluta del proyecto 
     //y asi nosotros trabajar como si fueran rutas relativas
-
     protected HttpServletRequest servletRequest;
+    
     //URL para los recursos, redireccionamientos y demas
-    //protected String baseURL = "http://192.168.0.22:8080/sgautomotriz/";
-    protected String baseURL = "http://192.168.0.22:8080/sgautomotriz/";
+    protected String baseURL = "http://192.168.0.22:8080/sgautomotriz/";  //Desarrollo
+    //protected String baseURL = "http://192.168.10.15:8080/sgautomotriz/";  //Mopal
     protected String urlRedirect = "";   //url a la cual se quiere redireccionar
     protected String inicioURL = baseURL+"Inicio";  //URL a la cual redireccionar si en la peticiona de pagina falta un parametro obligatorio
     protected String indErrParm = "";
@@ -520,6 +520,10 @@ public class MasterAction extends ActionSupport implements ServletRequestAware {
     public String getPaginacion() {
         paginacion += "";
         
+        /*paginacion += "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"width: 100%\">";
+        paginacion += "<tr>";
+        paginacion += "<td style=\"width: 350px; padding-left: 10px;\">";*/
+        
         if(curPagVis==1 || curPagVis==0)
             paginacion += "<button id=\"prev_pag\" style=\"cursor: default;\"><span class=\"ui-icon ui-icon-carat-1-w\"></span></button>";
         else
@@ -544,6 +548,17 @@ public class MasterAction extends ActionSupport implements ServletRequestAware {
             paginacion += "<button id=\"next_pag\" style=\"cursor: default;\"><span class=\"ui-icon ui-icon-carat-1-e\"></span></button>";
         
         paginacion += "<button type=\"submit\" id=\"btn_search\" style=\"margin-left: 20px;\"><span class=\"ui-icon ui-icon-search\" style=\"display: inline-block; height: 13px;\"></span> Buscar</button>";
+        
+        /*paginacion += "</td>";
+        paginacion += "<td>";
+        paginacion += "</td>";
+        paginacion += "<td style=\"width: 350px; padding-right: 10px; text-align: right;\">";*/
+        paginacion += "<div style=\"float: right; padding-top: 8px;\">";
+        paginacion += "<div class=\"text_pag\">"+sesion_sga.get("ses_descon")+"&nbsp;&nbsp;-&nbsp;&nbsp;"+sesion_sga.get("ses_desloccon")+"</div>";
+        paginacion += "</div>";
+        /*paginacion += "</td>";
+        paginacion += "</tr>";
+        paginacion += "</table>";*/
         
         return paginacion;
     }
@@ -606,6 +621,7 @@ public class MasterAction extends ActionSupport implements ServletRequestAware {
         //jsPaginacion += " $('#first_pag').click(function(){ $('#curPag_f').val(1); $('#frm_usu_princ').attr('action','"+baseURL+urlPaginacion+"'); $('#frm_usu_princ').submit(); }); ";
         jsPaginacion += " $('#prev_pag').click(function(){ $('#curPag_f').val("+ (curPagVis-1) +"); $('#frm_princ').attr('action','"+baseURL+urlPaginacion+"'); $('#frm_princ').submit(); }); ";
         jsPaginacion += " $('#next_pag').click(function(){ $('#curPag_f').val("+ (curPagVis+1) +"); $('#frm_princ').attr('action','"+baseURL+urlPaginacion+"'); $('#frm_princ').submit(); }); ";
+        jsPaginacion += " $('#btn_search').click(function(){ $('#curPag_f').val(1); }); ";
         //jsPaginacion += " $('#last_pag').click(function(){ $('#curPag_f').val("+ getUltPag() +"); $('#frm_usu_princ').attr('action','"+baseURL+urlPaginacion+"'); $('#frm_usu_princ').submit(); }); ";
         
         return jsPaginacion;
@@ -1109,6 +1125,10 @@ public class MasterAction extends ActionSupport implements ServletRequestAware {
      * @return the listAnios
      */
     public ArrayList<Anios> getListAnios() {
+        return listAnios;
+    }
+    
+    public void setListAnios() {
         Calendar cal = Calendar.getInstance();
         
         int anio = cal.getTime().getYear()+1900;
@@ -1116,11 +1136,9 @@ public class MasterAction extends ActionSupport implements ServletRequestAware {
         for(int i=anio-5;i<=anio;i++) {
             listAnios.add(new Anios(i));
         }
-        
-        return listAnios;
     }
     
-    public ArrayList<Anios> getListAniosCustom(int antes, int despues) {
+    public ArrayList<Anios> setListAniosCustom(int antes, int despues) {
         Calendar cal = Calendar.getInstance();
         
         int anio = cal.getTime().getYear()+1900;

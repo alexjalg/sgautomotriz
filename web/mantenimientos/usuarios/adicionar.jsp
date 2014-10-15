@@ -277,18 +277,5 @@
                 1
             );
         });
-        
-        $('#btn_imprimir').click(function(){
-            abrir_ventana('<s:property value="baseURL" /><s:url action="imprimirUsuario" namespace="usuarios" includeContext="false" />');
-        });
     });
-    
-    function abrir_ventana(url)
-    {	
-        //var opc = "location=0,directories=0,titlebar=0,toolbar=0,location=1,status=0,menubar=0,scrollbars=1,width=" + screen.availWidth + ",height=" + screen.availHeight;
-        var opc = "location=0,directories=0,titlebar=0,toolbar=0,location=1,status=0,menubar=0,scrollbars=1,width=300,height=150";
-        mywindow = window.open(url, "", opc);
-        mywindow.moveTo(100, 100);
-        setTimeout('mywindow.close()',7000);
-    }
 </script>

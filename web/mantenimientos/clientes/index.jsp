@@ -73,7 +73,7 @@
                         <s:property value="desCli" />
                     </td>
                     <td style="width: 100px; text-align: center;">
-                        <s:property value="numTelFig" />
+                        <s:property value="numTelFij" />
                     </td>
                     <td style="width: 100px; text-align: center;">
                         <s:property value="numTelMov" />

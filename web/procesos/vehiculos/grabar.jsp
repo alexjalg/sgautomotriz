@@ -11,6 +11,3 @@
         </ul>
     </div>
 </s:if>
-<s:else>
-    <s:property value="desCli" />        
-</s:else>

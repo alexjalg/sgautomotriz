@@ -32,6 +32,9 @@
             <button id="btn-delete">
                 Eliminar
             </button>
+            <button id="btn-condiciones">
+                Condiciones
+            </button>
         </s:if>
     </s:if>
 </div>
@@ -121,6 +124,7 @@
         $('#btn-add').button();
         $('#btn-edit').button();
         $('#btn-delete').button();
+        $('#btn-condiciones').button();
 
         $('#btn_search').css('visibility', 'hidden');
 
@@ -251,6 +255,31 @@
                         }
                     },
                     2
+                    );
+        });
+        $('#btn-condiciones').click(function() {
+            post(
+                    '<s:property value="baseURL" /><s:url namespace="campania" includeContext="false" action="vrfSeleccionCampania" />',
+                    $('#frm_princ').serialize(),
+                    function(resultado) {
+                        resultado = $.trim(resultado);
+                        var _error = resultado.indexOf("error");
+                        if (_error != -1)
+                        {
+                            $('#DIVverif').html(resultado);
+                            $('#DIVverif').dialog('open');
+                        }
+                        else
+                        {
+                            var href = $(location).attr('href');
+                            var _varret = $('#nivBandeja_f').val() + '%' + href + '%' + $('#mtu_h1').val() + '%' + $('#mmo_h1').val() + '%' + $('#mop_h1').val() + '%' + $('#mni_h1').val() + '%' + $('#mod_h1').val() + '%' + $('#curPag_f').val() + '%' + $('#idOriCam_h1').val() + '|';
+                            $('#varReturn_f').val($('#varReturn_f').val() + _varret);
+                            $('#curPag_f').val(1);
+                            $('#frm_princ').attr('action', '<s:property value="baseURL" /><s:url namespace="condicionCampania" includeContext="false" action="CondicionCampania" />');
+                            $('#frm_princ').submit();
+                        }
+                    },
+                    1
                     );
         });
     });

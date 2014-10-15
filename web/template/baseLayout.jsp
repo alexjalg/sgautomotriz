@@ -51,6 +51,20 @@
                         <tiles:insertAttribute name="body" />		
                     </s:else>
                 </div>
+                <div class="d-footer">
+                    <table border="0" cellpadding="0" cellspacing="0" style="width: 100%">
+                        <tr>
+                            <td style="width: 350px;">
+                                &copy; <s:property value="#session.ses_descon" />. Todos los derechos reservados.
+                            </td>
+                            <td></td>
+                            <td style="width: 350px; text-align: right">
+                                Desarrollado por 3P Soluciones Integrales
+                            </td>
+                        </tr>
+                    </table>
+                    
+                </div>
             </div>
             <div class="overlay">
                 <div class="load-container">

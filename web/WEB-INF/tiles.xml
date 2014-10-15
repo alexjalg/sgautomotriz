@@ -496,6 +496,16 @@
         <put-attribute name="body" value="/mantenimientos/campania/eliminar.jsp" />
     </definition>
     
+    <!-- CONDICIONES DE CAMPAÑA -->    
+    <definition name="mant-condicionCampania-index" extends="baseLayout">
+        <put-attribute name="body" value="/mantenimientos/condicionCampania/index.jsp" />
+    </definition>
+    <definition name="mant-condicionCampania-grabar" extends="baseLayoutPopUp">
+        <put-attribute name="body" value="/mantenimientos/condicionCampania/grabar.jsp" />
+    </definition>  
+    <definition name="mant-condicionCampania-listVersiones" extends="baseLayoutPopUp">
+        <put-attribute name="body" value="/mantenimientos/condicionCampania/listVersiones.jsp" />
+    </definition>
     
      <!-- TIPO DE DOCUMENTO DE VENTA -->
     <definition name="mant-tipoDocumentoVenta-index" extends="baseLayout">
@@ -555,31 +565,31 @@
     
     <!-- REGISTROS DE VENTA -->
     <definition name="mant-registroVentas-index" extends="baseLayout">
-        <put-attribute name="body" value="/mantenimientos/registroVentas/index.jsp" />
+        <put-attribute name="body" value="/procesos/registroVentas/index.jsp" />
     </definition>    
     <definition name="mant-registroVentas-adicionar" extends="baseLayout">
-        <put-attribute name="body" value="/mantenimientos/registroVentas/adicionar.jsp" />
+        <put-attribute name="body" value="/procesos/registroVentas/adicionar.jsp" />
     </definition>
     <definition name="mant-registroVentas-detalle" extends="baseLayout">
-        <put-attribute name="body" value="/mantenimientos/registroVentas/detalle.jsp" />
+        <put-attribute name="body" value="/procesos/registroVentas/detalle.jsp" />
     </definition>
     <definition name="mant-registroVentas-grabar" extends="baseLayoutPopUp">
-        <put-attribute name="body" value="/mantenimientos/registroVentas/grabar.jsp" />
+        <put-attribute name="body" value="/procesos/registroVentas/grabar.jsp" />
     </definition>
     <definition name="mant-registroVentas-eliminar" extends="baseLayoutPopUp">
-        <put-attribute name="body" value="/mantenimientos/registroVentas/eliminar.jsp" />
+        <put-attribute name="body" value="/procesos/registroVentas/eliminar.jsp" />
     </definition>
     <definition name="mant-registroVentas-getTipoDocVentaCliente" extends="baseLayoutPopUp">
-        <put-attribute name="body" value="/mantenimientos/registroVentas/getTipoDocumentoVenta.jsp" />
+        <put-attribute name="body" value="/procesos/registroVentas/getTipoDocumentoVenta.jsp" />
     </definition>
     <definition name="mant-registroVentas-getDatosCliente" extends="baseLayoutPopUp">
-        <put-attribute name="body" value="/mantenimientos/registroVentas/getDatosCliente.jsp" />
+        <put-attribute name="body" value="/procesos/registroVentas/getDatosCliente.jsp" />
     </definition>
     <definition name="mant-registroVentas-getDatosVehiculo" extends="baseLayoutPopUp">
-        <put-attribute name="body" value="/mantenimientos/registroVentas/getDatosVehiculo.jsp" />
+        <put-attribute name="body" value="/procesos/registroVentas/getDatosVehiculo.jsp" />
     </definition>
     <definition name="mant-registroVentas-listClientes" extends="baseLayoutPopUp">
-        <put-attribute name="body" value="/mantenimientos/registroVentas/listClientes.jsp" />
+        <put-attribute name="body" value="/procesos/registroVentas/listClientes.jsp" />
     </definition>
     
     <!-- MODALIDAD DE VENTA -->    
@@ -607,19 +617,28 @@
     
     <!-- VEHICULOS -->
     <definition name="mant-vehiculos-index" extends="baseLayout">
-        <put-attribute name="body" value="/mantenimientos/vehiculos/index.jsp" />
+        <put-attribute name="body" value="/procesos/vehiculos/index.jsp" />
     </definition>  
     <definition name="mant-vehiculo-adicionar" extends="baseLayout">
-        <put-attribute name="body" value="/mantenimientos/vehiculos/adicionar.jsp" />
+        <put-attribute name="body" value="/procesos/vehiculos/adicionar.jsp" />
+    </definition>
+    <definition name="mant-vehiculo-detalle" extends="baseLayout">
+        <put-attribute name="body" value="/procesos/vehiculos/detalle.jsp" />
     </definition> 
     <definition name="mant-vehiculo-grabar" extends="baseLayoutPopUp">
-        <put-attribute name="body" value="/mantenimientos/vehiculos/grabar.jsp" />
-    </definition> 
-    <definition name="mant-vehiculos-listClientes" extends="baseLayoutPopUp">
-        <put-attribute name="body" value="/mantenimientos/vehiculos/listVehClientes.jsp" />
+        <put-attribute name="body" value="/procesos/vehiculos/grabar.jsp" />
     </definition> 
     <definition name="mant-vehiculo-eliminar" extends="baseLayoutPopUp">
-        <put-attribute name="body" value="/mantenimientos/vehiculos/eliminar.jsp" />
-    </definition>
+        <put-attribute name="body" value="/procesos/vehiculos/eliminar.jsp" />
+    </definition> 
+    
+    
+    <!-- CARGA DATOS DE CLIENTES -->
+    <definition name="imp-cargaDatosClientes-index" extends="baseLayout">
+        <put-attribute name="body" value="/importaciones/cargaDatosClientes/index.jsp" />
+    </definition> 
+    <definition name="imp-cargaDatosClientes-verificar" extends="baseLayoutPopUp">
+        <put-attribute name="body" value="/importaciones/cargaDatosClientes/grabar.jsp" />
+    </definition> 
     
 </tiles-definitions>

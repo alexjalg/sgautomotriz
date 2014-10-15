@@ -63,6 +63,7 @@ public class CampaniaAction extends MasterAction implements ModelDriven<Campania
         getListTipOri().add(new TipoOrigenCampania(1, "Toyota"));
         getListTipOri().add(new TipoOrigenCampania(2, "MAF"));
         getListTipOri().add(new TipoOrigenCampania(3, "Concesionario"));
+        getListTipOri().add(new TipoOrigenCampania(4, "Acuerdos"));
 
         if (modelo.getIdOriCam() == 0) {
             modelo.setIdOriCam(1);

@@ -345,46 +345,40 @@ public class RegistroVentasAction extends MasterAction implements ModelDriven<Re
     }
     
     public String getTiposDocumentoVentaCliente() {
-        idAccion = 6;
+        helper conex = null;
+        ResultSet tabla = null;
 
-        verifAccionTipoUsuario();
+        try {
+            conex = new helper();
+            indError = conex.getErrorSQL();
 
-        if (indErrAcc.equals("")) {
-            helper conex = null;
-            ResultSet tabla = null;
-
-            try {
-                conex = new helper();
-                indError = conex.getErrorSQL();
+            if(!indError.equals("")) {
+                errores.add(indError);
+            } else {
+                tabla = conex.executeDataSet("CALL usp_listTipoDocVentaCliente(?)", 
+                        new Object[]{ modelo.getIdCli() });
+                indError += conex.getErrorSQL();
 
                 if(!indError.equals("")) {
                     errores.add(indError);
                 } else {
-                    tabla = conex.executeDataSet("CALL usp_listTipoDocVentaCliente(?)", 
-                            new Object[]{ modelo.getIdCli() });
-                    indError += conex.getErrorSQL();
-
-                    if(!indError.equals("")) {
-                        errores.add(indError);
-                    } else {
-                        TipoDocumentoVenta obj;
-                        while(tabla.next()) {
-                            obj = new TipoDocumentoVenta();
-                            obj.setIdTipDocVen(tabla.getString("idTipDocVen"));
-                            obj.setDesTipDocVen(tabla.getString("desTipDocVen"));
-                            listTiposDocumentoVenta.add(obj);
-                        }
+                    TipoDocumentoVenta obj;
+                    while(tabla.next()) {
+                        obj = new TipoDocumentoVenta();
+                        obj.setIdTipDocVen(tabla.getString("idTipDocVen"));
+                        obj.setDesTipDocVen(tabla.getString("desTipDocVen"));
+                        listTiposDocumentoVenta.add(obj);
                     }
                 }
+            }
+        } catch (Exception e) {
+            indError = "error";
+            errores.add(e.getMessage());
+        } finally {
+            try {
+                tabla.close();
+                conex.returnConnect();
             } catch (Exception e) {
-                indError = "error";
-                errores.add(e.getMessage());
-            } finally {
-                try {
-                    tabla.close();
-                    conex.returnConnect();
-                } catch (Exception e) {
-                }
             }
         }
         
@@ -468,7 +462,7 @@ public class RegistroVentasAction extends MasterAction implements ModelDriven<Re
     }
     
     public String listClientes() {
-        idAccion = 7;
+        idAccion = 6;
 
         verifAccionTipoUsuario();
 
@@ -610,7 +604,7 @@ public class RegistroVentasAction extends MasterAction implements ModelDriven<Re
     }
     
     public String grabar() {
-        idAccion = 8;
+        idAccion = 7;
 
         verifAccionTipoUsuario();
 

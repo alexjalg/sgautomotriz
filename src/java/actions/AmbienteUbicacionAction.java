@@ -28,7 +28,7 @@ public class AmbienteUbicacionAction extends MasterAction implements ModelDriven
         idAccion = 1;
         verifAccionTipoUsuario();
         if (indErrAcc.equals("")) {
-            if (modelo.getIdAmbUbi() == 0) {
+            if (modelo.getIdAmbUbi() == 99) {
                 indError = "error";
                 errores.add("No ha seleccionado ningun registro");
             }
@@ -175,7 +175,7 @@ public class AmbienteUbicacionAction extends MasterAction implements ModelDriven
         if (indErrAcc.equals("")) {
             nivBandeja = 1;
 
-            if (!opcion.trim().equals("A") && !opcion.trim().equals("M")) {
+            if (!opcion.trim().equals("A")) {
                 indErrParm = "error";
             } else {
                 varReturnProcess(1);
@@ -196,22 +196,18 @@ public class AmbienteUbicacionAction extends MasterAction implements ModelDriven
         verifAccionTipoUsuario();
         if (indErrAcc.equals("")) {
             nivBandeja = 1;
-            if (!opcion.trim().equals("A") && !opcion.trim().equals("M")) {
+            if (!opcion.trim().equals("M") || modelo.getIdAmbUbi() == 99) {
                 indErrParm = "error";
             } else {
                 varReturnProcess(1);
 
                 if (opcion.equals("M")) {
-                    if (modelo.getIdAmbUbi() == 0) {
-                        indErrParm = "error";
-                    } else {
-                        getListTipAmbUbi().add(new TipoAmbienteUbicacion("R", "Almacen Repuestos"));
-                        getListTipAmbUbi().add(new TipoAmbienteUbicacion("T", "Taller Servicios"));
-                        getListTipAmbUbi().add(new TipoAmbienteUbicacion("V", "Almacen Vehículos"));
-                        getListTipAmbUbi().add(new TipoAmbienteUbicacion("I", "Almacen Virtual"));
-                        getDatosAmbienteUbicacion();
-                        formURL = baseURL + "ambienteUbicacion/actualizarAmbienteUbicacion";
-                    }
+                    getListTipAmbUbi().add(new TipoAmbienteUbicacion("R", "Almacen Repuestos"));
+                    getListTipAmbUbi().add(new TipoAmbienteUbicacion("T", "Taller Servicios"));
+                    getListTipAmbUbi().add(new TipoAmbienteUbicacion("V", "Almacen Vehículos"));
+                    getListTipAmbUbi().add(new TipoAmbienteUbicacion("I", "Almacen Virtual"));
+                    getDatosAmbienteUbicacion();
+                    formURL = baseURL + "ambienteUbicacion/actualizarAmbienteUbicacion";
                 }
             }
         }

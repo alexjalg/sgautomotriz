@@ -51,6 +51,7 @@
         <include file="tipoDocumento.xml" />
         <include file="grupoCliente.xml" />
         <include file="clientes.xml" />
+        <include file="cargaDatosClientes.xml" />
         <include file="adjuntosCliente.xml" />
         <include file="formaPago.xml" />
         
@@ -63,6 +64,7 @@
         
         
         <include file="campania.xml" />
+        <include file="condicionCampania.xml" />
         <include file="cortesias.xml" />
         <include file="tipoDocumentoVenta.xml" />
         

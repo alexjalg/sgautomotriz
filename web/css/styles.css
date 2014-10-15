@@ -427,7 +427,7 @@ body
     background: url(../images/bg-head-grid.gif);
 }
 
-.d-content-grilla .d-content-grilla-head table, .d-content-grilla .d-content-grilla-body table
+.d-content-grilla .d-content-grilla-head table, .d-content-grilla .d-content-grilla-body table, .d-content-grilla .d-content-grilla-body-multiple table
 {
     width: 100%;
 }
@@ -461,7 +461,7 @@ body
     height: 30px;
 }
 
-.d-content-grilla .d-content-grilla-body td 
+.d-content-grilla .d-content-grilla-body td, .d-content-grilla .d-content-grilla-body-multiple td
 {
     border-right: 1px solid #C8DCFF;
     border-bottom: 1px solid #C8DCFF;
@@ -469,12 +469,12 @@ body
     height: 18px;
 }
 
-.d-content-grilla .d-content-grilla-body .on-over-tr
+.d-content-grilla .d-content-grilla-body .on-over-tr, .d-content-grilla .d-content-grilla-body-multiple .on-over-tr
 {
     background-color: #FDF5D9;
 }
 
-.d-content-grilla .d-content-grilla-body .selected-tr
+.d-content-grilla .d-content-grilla-body .selected-tr, .d-content-grilla .d-content-grilla-body-multiple .selected-tr
 {
     background-color: #FCE594;
 }
@@ -492,7 +492,7 @@ body
     height: 28px;
     display: inline-block;
     position: absolute;
-    left: 24px;
+    left: 28px;
 }
 
 .d-content-grilla .d-content-grilla-footer .d-paging img
@@ -588,6 +588,7 @@ textarea.element-form
     resize: none;
     padding: 5px;
     margin-top: 3px;
+    margin-bottom: 3px;
 }
 
 .element-form:focus, .element-form-grid:focus
@@ -634,24 +635,23 @@ textarea.element-form
     width: 100%;
 }
 
-.d-content-form .table-form tr td .d-block-form
+.d-content-form .d-block-form
 {
     position: relative;
     font-size: 13px;
     color: #476285;
     font-weight: bold;
     padding-bottom: 3px;
-    margin-bottom: 5px;
     height: 20px;
 
 }
 
-.d-content-form .table-form tr td .d-block-form div
+.d-content-form .d-block-form div
 {
 
 }
 
-.d-content-form .table-form tr td .d-block-form div.text-block
+.d-content-form .d-block-form div.text-block
 {
     position: absolute;
     left: 0px;
@@ -660,7 +660,7 @@ textarea.element-form
     z-index: 10;
 }
 
-.d-content-form .table-form tr td .d-block-form div.line-text-block {
+.d-content-form .d-block-form div.line-text-block {
     position: absolute;
     left: 0px;
     height: 8px;
@@ -690,4 +690,12 @@ ul.error li {
 
 /*************************************************************************************/
 
+/********************************* Pie de pagina ********************************/
+.d-footer {
+    margin: 24px 15px 10px 15px;
+    border-top: 2px solid #476285;
+    padding: 3px 8px 0px 8px;
+    color: #354c77;
+}
 
+/*************************************************************************************/

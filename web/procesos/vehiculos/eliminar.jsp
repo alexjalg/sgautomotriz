@@ -6,7 +6,7 @@
             <div class="both"></div>
         </div>
         <div style="padding: 0px 10px 15px 10px; text-align: center;">
-            ¿Desea eliminar al vehículo?
+            ¿Desea eliminar el vehículo?
         </div>
     </div>
 </s:if>

@@ -9,9 +9,7 @@
 package actions;
 
 import com.opensymphony.xwork2.ModelDriven;
-import com.sun.org.apache.bcel.internal.generic.AALOAD;
 import conexion.helper;
-import entities.Concesionarios;
 import entities.Departamentos;
 import entities.Distritos;
 import entities.Locales;
@@ -326,46 +324,40 @@ public class LocalesAction extends MasterAction implements ModelDriven<Locales> 
     }
 
     public String getProvincias() {
-        idAccion = 5;
+        helper conex = null;
+        ResultSet tabla = null;
 
-        verifAccionTipoUsuario();
+        try {
+            conex = new helper();
+            indError += conex.getErrorSQL();
 
-        if (indErrAcc.equals("")) {
-            helper conex = null;
-            ResultSet tabla = null;
-
-            try {
-                conex = new helper();
+            if (!indError.equals("")) {
+                errores.add(indError);
+            } else {
+                tabla = conex.executeDataSet("CALL usp_listProvincias(?)",
+                        new Object[]{modelo.getIdDep()});
                 indError += conex.getErrorSQL();
 
                 if (!indError.equals("")) {
                     errores.add(indError);
                 } else {
-                    tabla = conex.executeDataSet("CALL usp_listProvincias(?)",
-                            new Object[]{modelo.getIdDep()});
-                    indError += conex.getErrorSQL();
-
-                    if (!indError.equals("")) {
-                        errores.add(indError);
-                    } else {
-                        Provincias obj;
-                        while (tabla.next()) {
-                            obj = new Provincias();
-                            obj.setIdPrvDep(tabla.getInt("idPrvDep"));
-                            obj.setDesProv(tabla.getString("desProv"));
-                            listProvincias.add(obj);
-                        }
+                    Provincias obj;
+                    while (tabla.next()) {
+                        obj = new Provincias();
+                        obj.setIdPrvDep(tabla.getInt("idPrvDep"));
+                        obj.setDesProv(tabla.getString("desProv"));
+                        listProvincias.add(obj);
                     }
                 }
+            }
+        } catch (Exception e) {
+            indError += "error";
+            errores.add(e.getMessage());
+        } finally {
+            try {
+                tabla.close();
+                conex.returnConnect();
             } catch (Exception e) {
-                indError += "error";
-                errores.add(e.getMessage());
-            } finally {
-                try {
-                    tabla.close();
-                    conex.returnConnect();
-                } catch (Exception e) {
-                }
             }
         }
 
@@ -373,46 +365,40 @@ public class LocalesAction extends MasterAction implements ModelDriven<Locales> 
     }
 
     public String getDistritos() {
-        idAccion = 6;
+        helper conex = null;
+        ResultSet tabla = null;
 
-        verifAccionTipoUsuario();
+        try {
+            conex = new helper();
+            indError += conex.getErrorSQL();
 
-        if (indErrAcc.equals("")) {
-            helper conex = null;
-            ResultSet tabla = null;
-
-            try {
-                conex = new helper();
+            if (!indError.equals("")) {
+                errores.add(indError);
+            } else {
+                tabla = conex.executeDataSet("CALL usp_listDistritos(?,?)",
+                        new Object[]{modelo.getIdDep(), modelo.getIdPrvDep()});
                 indError += conex.getErrorSQL();
 
                 if (!indError.equals("")) {
                     errores.add(indError);
                 } else {
-                    tabla = conex.executeDataSet("CALL usp_listDistritos(?,?)",
-                            new Object[]{modelo.getIdDep(), modelo.getIdPrvDep()});
-                    indError += conex.getErrorSQL();
-
-                    if (!indError.equals("")) {
-                        errores.add(indError);
-                    } else {
-                        Distritos obj;
-                        while (tabla.next()) {
-                            obj = new Distritos();
-                            obj.setIdDisPrv(tabla.getInt("idDisPrv"));
-                            obj.setDesDis(tabla.getString("desDis"));
-                            listDistritos.add(obj);
-                        }
+                    Distritos obj;
+                    while (tabla.next()) {
+                        obj = new Distritos();
+                        obj.setIdDisPrv(tabla.getInt("idDisPrv"));
+                        obj.setDesDis(tabla.getString("desDis"));
+                        listDistritos.add(obj);
                     }
                 }
+            }
+        } catch (Exception e) {
+            indError += "error";
+            errores.add(e.getMessage());
+        } finally {
+            try {
+                tabla.close();
+                conex.returnConnect();
             } catch (Exception e) {
-                indError += "error";
-                errores.add(e.getMessage());
-            } finally {
-                try {
-                    tabla.close();
-                    conex.returnConnect();
-                } catch (Exception e) {
-                }
             }
         }
 
@@ -501,7 +487,7 @@ public class LocalesAction extends MasterAction implements ModelDriven<Locales> 
     }
 
     public String grabar() {
-        idAccion = 7;
+        idAccion = 5;
         verifAccionTipoUsuario();
 
         if (indErrAcc.equals("")) {
@@ -585,7 +571,7 @@ public class LocalesAction extends MasterAction implements ModelDriven<Locales> 
     }
 
     public String actualizar() {
-        idAccion = 8;
+        idAccion = 6;
 
         verifAccionTipoUsuario();
 
@@ -670,7 +656,7 @@ public class LocalesAction extends MasterAction implements ModelDriven<Locales> 
     }
 
     public String eliminar() {
-        idAccion = 9;
+        idAccion = 7;
 
         verifAccionTipoUsuario();
 

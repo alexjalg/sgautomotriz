@@ -14,6 +14,8 @@ public class Cortesias {
     private String desCon="";
     private String idMar = "";
     private String desMar="";
+    private String idModMar="";
+    private String desModMar="";
     private int idCorMar = 0;
     private String desCorMar="";
     private String edoCorMar="";
@@ -122,5 +124,21 @@ public class Cortesias {
         desMar = desMar.trim();
         
         this.desMar = desMar;
+    }
+
+    public String getIdModMar() {
+        return idModMar;
+    }
+
+    public void setIdModMar(String idModMar) {
+        this.idModMar = idModMar;
+    }
+
+    public String getDesModMar() {
+        return desModMar;
+    }
+
+    public void setDesModMar(String desModMar) {
+        this.desModMar = desModMar;
     }
 }

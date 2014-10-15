@@ -30,6 +30,11 @@
                     <s:select name="idMar" id="idMar_f1" list="listMarcas" listKey="idMar" listValue="desMar"
                               cssClass="element-form" cssStyle="width: 120px;"/>
                 </td>
+                <td class="" style="padding-left: 20px;">Modelo: </td>
+                <td class="" id="td_modelos">
+                    <s:select name="idModMar" id="idModMar_f1" list="listModelos" listKey="idModMar" listValue="desModMar"
+                              cssClass="element-form" cssStyle="width: 180px;" />
+                </td>
             </tr>
         </table>
     </div>
@@ -55,6 +60,7 @@
     <form id="frm_princ" method="POST" action="<s:property value="baseURL" /><s:property value="urlPaginacion" />">
     <s:hidden name="idCon" id="idCon_h1" />
     <s:hidden name="idMar" id="idMar_h1" />
+    <s:hidden name="idModMar" id="idModMar_h1" />
     <s:property value="datosOblig" escape="false" />
     
     <div class="d-grilla" style="overflow: hidden;">
@@ -94,7 +100,7 @@
                         <s:property value="desCorMar" />
                     </td>
                     <td style="width: 54px; text-align: center;">
-                        <input type="checkbox" id="chk_edousu" <s:if test='%{edoCorMar=="A"}'> checked="checked" class="chk_edocormar check_grid_on" </s:if><s:else> class="chk_edocormar" </s:else> />
+                        <input type="checkbox" id="chk_edocor" <s:if test='%{edoCorMar=="A"}'> checked="checked" class="chk_edocormar check_grid_on" </s:if><s:else> class="chk_edocormar" </s:else> />
                         <input type="hidden" value="<s:property value="idCorMar" />" />
                     </td>
                 </tr>
@@ -111,9 +117,6 @@
     </form>
 </div>
 <div id="DIVeliminar" title="<s:property value="titleDialog" />" class="alerta"></div>
-<s:iterator value="errores">
-    <s:property />
-</s:iterator>
         
 <script type="text/javascript">
     $(document).ready(function() {
@@ -124,6 +127,13 @@
         
         $('#idMar_f1').change(function(){
             $('#idMar_h1').val($(this).val());
+            $('#idModMar_h1').val('');
+            
+            $('#frm_princ').submit();
+        });
+        
+        $('#idModMar_f1').change(function(){
+            $('#idModMar_h1').val($(this).val());
             $('#frm_princ').submit();
         });
     
@@ -142,7 +152,7 @@
             $('#opcion_h1').val('A');
             var href = $(location).attr('href');
             
-            var _varret = $('#nivBandeja_f').val()+'%'+href+'%'+$('#mtu_h1').val()+'%'+$('#mmo_h1').val()+'%'+$('#mop_h1').val()+'%'+$('#mni_h1').val()+'%'+$('#mod_h1').val()+'%'+$('#curPag_f').val()+'%'+$('#idCon_h1').val()+'%'+$('#idMar_h1').val()+'|';
+            var _varret = $('#nivBandeja_f').val()+'%'+href+'%'+$('#mtu_h1').val()+'%'+$('#mmo_h1').val()+'%'+$('#mop_h1').val()+'%'+$('#mni_h1').val()+'%'+$('#mod_h1').val()+'%'+$('#curPag_f').val()+'%'+$('#idCon_h1').val()+'%'+$('#idMar_h1').val()+'%'+$('#idModMar_h1').val()+'|';
             $('#varReturn_f').val($('#varReturn_f').val()+_varret);
             
             $('#frm_princ').attr('action','<s:property value="baseURL" /><s:url namespace="cortesias" includeContext="false" action="adicionarCortesia" />');
@@ -166,7 +176,7 @@
                         $('#opcion_h1').val('M');
                         var href = $(location).attr('href');
                         
-                        var _varret = $('#nivBandeja_f').val()+'%'+href+'%'+$('#mtu_h1').val()+'%'+$('#mmo_h1').val()+'%'+$('#mop_h1').val()+'%'+$('#mni_h1').val()+'%'+$('#mod_h1').val()+'%'+$('#curPag_f').val()+'%'+$('#idCon_h1').val()+'%'+$('#idMar_h1').val()+'|';
+                        var _varret = $('#nivBandeja_f').val()+'%'+href+'%'+$('#mtu_h1').val()+'%'+$('#mmo_h1').val()+'%'+$('#mop_h1').val()+'%'+$('#mni_h1').val()+'%'+$('#mod_h1').val()+'%'+$('#curPag_f').val()+'%'+$('#idCon_h1').val()+'%'+$('#idMar_h1').val()+'%'+$('#idModMar_h1').val()+'|';
                         $('#varReturn_f').val($('#varReturn_f').val()+_varret);
                         
                         $('#frm_princ').attr('action','<s:property value="baseURL" /><s:url namespace="cortesias" includeContext="false" action="modificarCortesia" />');
@@ -248,6 +258,65 @@
                     }
                 },
                 2
+            );
+        });
+        
+        $('.chk_edocormar').click(function(){
+            var _edo = 'A';
+            var _chk = $(this);
+            var _idcormar = $(this).next().val();
+            
+            if($(this).hasClass('check_grid_on'))
+                _edo = 'D';
+            
+            if($(this).hasClass('check_grid_on'))
+                $(this).removeClass('check_grid_on');
+            else
+                $(this).addClass('check_grid_on');
+            
+            post(
+                '<s:property value="baseURL" /><s:url namespace="cortesias" includeContext="false" action="actualizarEstadoCortesia" />',
+                {
+                    idCon:$('#idCon_h1').val(),
+                    idMar:$('#idMar_h1').val(),
+                    idModMar:$('#idModMar_h1').val(),
+                    idCorMar:_idcormar,
+                    edoCorMar:_edo
+                },
+                function(resultado){
+                    var _error = validaRespuestaAjax(resultado);
+                    
+                    if(_error != -1)
+                    {
+                        $('#DIVeliminar').html(resultado);
+                        $('#DIVeliminar').dialog({
+                            buttons:{
+                                "Aceptar":function(){
+                                    $('#DIVeliminar').dialog("close");
+                                    $('.overlay').animate({'opacity':'0'},250,'swing',function(){
+                                       $('.overlay').css({'z-index':'-1'}); 
+                                    });
+                                }
+                            }
+                        });
+                        
+                        displayOverlay(function(){
+                            $('#DIVeliminar').dialog('open');
+                            
+                            if($(_chk).hasClass('check_grid_on'))
+                            {
+                                $(_chk).removeClass('check_grid_on');
+                                $(_chk).prop('checked',false);
+                            }
+                            else
+                            {
+                                $(_chk).addClass('check_grid_on');
+                                $(_chk).prop('checked',true);
+                            }
+                        });
+                    }
+                },
+                1
             );
         });
         

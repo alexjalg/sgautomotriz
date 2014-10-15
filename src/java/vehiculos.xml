@@ -13,23 +13,18 @@
             <result name="success" type="tiles">mant-vehiculos-index</result>
             <result name="adicionar" type="tiles">mant-vehiculo-adicionar</result>
             <result name="modificar" type="tiles">mant-vehiculo-adicionar</result>
+            <result name="detalle" type="tiles">mant-vehiculo-detalle</result>
             <result name="grabar" type="tiles">mant-vehiculo-grabar</result>
             <result name="actualizar" type="tiles">mant-vehiculo-grabar</result>
             <result name="vrfSeleccion" type="tiles">mant-vehiculo-grabar</result>
 
-            <result name="eliminar" type="tiles">mant-vehiculo-eliminar</result>
-            <result name="listclientes" type="tiles">mant-vehiculos-listClientes</result>
+            <result name="eliminar" type="tiles">mant-vehiculo-eliminar</result>          
             
-            
-            <result name="modelos" >/mantenimientos/vehiculos/listaModelos.jsp</result>
-            <result name="versiones" >/mantenimientos/vehiculos/listaVersiones.jsp</result>
-            <result name="coloresext" >/mantenimientos/vehiculos/listColoresExt.jsp</result>
-            <result name="ubicaciones">/mantenimientos/vehiculos/listaUbicaciones.jsp</result>
-            <result name="locales">/mantenimientos/vehiculos/listaLocales.jsp</result>
-            <result name="obtdescli">/mantenimientos/vehiculos/obtdescli.jsp</result>
-            <result name="precventasi">/mantenimientos/vehiculos/obtPrecVentAsi.jsp</result>
-            
-            
+            <result name="modelos" >/procesos/vehiculos/listaModelos.jsp</result>
+            <result name="versiones" >/procesos/vehiculos/listaVersiones.jsp</result>
+            <result name="coloresext" >/procesos/vehiculos/listColoresExt.jsp</result>
+            <result name="ubicaciones">/procesos/vehiculos/listaUbicaciones.jsp</result>
+            <result name="precventasi">/procesos/vehiculos/obtPrecVentAsi.jsp</result>
         </action>
     </package>
 </struts>
