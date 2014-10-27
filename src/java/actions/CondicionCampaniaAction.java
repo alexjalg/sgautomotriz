@@ -121,6 +121,7 @@ public class CondicionCampaniaAction extends MasterAction implements ModelDriven
                         obj.setIdVerMod(tabla.getInt("idVerMod"));
                         obj.setDesVerExt(tabla.getString("desVerMod"));
                         obj.setEdoConCam(tabla.getString("edoConCam"));
+                        obj.setNumAnoFab(tabla.getInt("numAnoFab"));
                         listCondicionCampania.add(obj);
                     }
                 }
@@ -144,7 +145,7 @@ public class CondicionCampaniaAction extends MasterAction implements ModelDriven
             modelo.setDesOriCam("MAF");
         } else if (modelo.getIdOriCam() == 3) {
             modelo.setDesOriCam("Consecionario");
-        } else if (modelo.getIdOriCam() == 4){
+        } else if (modelo.getIdOriCam() == 4) {
             modelo.setDesOriCam("Acuerdos");
         }
     }
@@ -185,6 +186,7 @@ public class CondicionCampaniaAction extends MasterAction implements ModelDriven
             }
         }
     }
+
     public String listVersiones() {
         idAccion = 2;
 
@@ -194,10 +196,15 @@ public class CondicionCampaniaAction extends MasterAction implements ModelDriven
             regPag = 13;
             urlPaginacion = "condicionCampania/listVersionesCondicionCampania";
             divPopUp = "DIVversiones";
-            
+
+            setListAnios();
+            if (modelo.getNumAnoFab() == 0) {
+                modelo.setNumAnoFab(Integer.parseInt(getCurYear()));
+            }
+
             listarMarcas();
             listarModelosPorMarcas();
-            
+
             cantVersionesIndex();
             verifPag();
             listVersionesIndex();
@@ -329,30 +336,29 @@ public class CondicionCampaniaAction extends MasterAction implements ModelDriven
             } catch (Exception e) {
             }
         }
-    }   
-    
+    }
+
     public String grabar() {
         idAccion = 3;
 
         verifAccionTipoUsuario();
 
         if (indErrAcc.equals("")) {
-            if(listIdVerMod.size()>0) {
+            if (listIdVerMod.size() > 0) {
                 helper conex = null;
 
                 try {
                     conex = new helper();
 
                     indError += conex.getErrorSQL();
-
-                    if(!indError.equals("")) {
+                    if (!indError.equals("")) {
                         errores.add(indError);
                     } else {
-                        for(int i=0; i<listIdVerMod.size(); i++) {
-                            indError += conex.executeNonQuery("CALL usp_insCondicionCampania(?,?,?,?,?)", 
-                                    new Object[]{ modelo.getIdOriCam(),modelo.getIdCam(),modelo.getIdMar(),
-                                        modelo.getIdModMar(),listIdVerMod.get(i) });
-                            if(!indError.equals("")) {
+                        for (int i = 0; i < listIdVerMod.size(); i++) {
+                            indError += conex.executeNonQuery("CALL usp_insCondicionCampania(?,?,?,?,?,?)",
+                                    new Object[]{modelo.getIdOriCam(), modelo.getIdCam(), modelo.getIdMar(),
+                                modelo.getIdModMar(), listIdVerMod.get(i),modelo.getNumAnoFab()});
+                            if (!indError.equals("")) {
                                 errores.add(indError);
                             }
                         }
@@ -365,11 +371,10 @@ public class CondicionCampaniaAction extends MasterAction implements ModelDriven
                 }
             }
         }
-        
+
         return "grabar";
     }
-    
-    
+
     public String actualizarEstado() {
         idAccion = 4;
         verifAccionTipoUsuario();
@@ -386,9 +391,9 @@ public class CondicionCampaniaAction extends MasterAction implements ModelDriven
                     if (!indError.equals("")) {
                         errores.add(indError);
                     } else {
-                        indError += conex.executeNonQuery("CALL usp_updEstadoCondicionCampania(?,?,?,?,?,?)",
-                                new Object[]{ modelo.getIdOriCam(),modelo.getIdCam(),modelo.getIdMar(),modelo.getIdModMar(),
-                                    modelo.getIdVerMod(),modelo.getEdoConCam() });
+                        indError += conex.executeNonQuery("CALL usp_updEstadoCondicionCampania(?,?,?,?,?,?,?)",
+                                new Object[]{modelo.getIdOriCam(), modelo.getIdCam(), modelo.getIdMar(), modelo.getIdModMar(),
+                            modelo.getIdVerMod(), modelo.getNumAnoFab(),modelo.getEdoConCam()});
 
                         if (!indError.equals("")) {
                             errores.add(indError);
@@ -406,10 +411,10 @@ public class CondicionCampaniaAction extends MasterAction implements ModelDriven
                 }
             }
         }
-        
+
         return "actualizarEstado";
     }
-    
+
     /**
      * @return the modelo
      */

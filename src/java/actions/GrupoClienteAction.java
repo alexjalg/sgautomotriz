@@ -35,6 +35,7 @@ public class GrupoClienteAction extends MasterAction implements ModelDriven<Grup
     public String execute() {
         idAccion = 2;
         verifAccionTipoUsuario();
+        
         if (indErrAcc.equals("")) {
             nivBandeja = 1;
             urlPaginacion = "grupoCliente/GrupoCliente";
@@ -46,23 +47,25 @@ public class GrupoClienteAction extends MasterAction implements ModelDriven<Grup
             verifPag();
             listGrupoClienteIndex();
         }
+        
         return SUCCESS;
     }
 
     public String adicionar() {
         idAccion = 3;
         verifAccionTipoUsuario();
+        
         if (indErrAcc.equals("")) {
             nivBandeja = 1;
 
-            if (!opcion.trim().equals("A") && !opcion.trim().equals("M")) {
+            if (!opcion.trim().equals("A")) {
                 indErrParm = "error";
             } else {
                 varReturnProcess(1);
 
-                if (opcion.equals("A")) {
-                    formURL = baseURL + "grupoCliente/grabarGrupoCliente";
-                }
+                accion = "Adicionar";
+                
+                formURL = baseURL + "grupoCliente/grabarGrupoCliente";
             }
         }
         return "adicionar";
@@ -71,19 +74,21 @@ public class GrupoClienteAction extends MasterAction implements ModelDriven<Grup
     public String modificar() {
         idAccion = 4;
         verifAccionTipoUsuario();
+        
         if (indErrAcc.equals("")) {
             nivBandeja = 1;
-            if (!opcion.trim().equals("A") && !opcion.trim().equals("M")) {
+            if (!opcion.trim().equals("M")) {
                 indErrParm = "error";
             } else {
                 varReturnProcess(1);
-                if (opcion.equals("M")) {
-                    if (getModelo().getIdGrpCli() == 0) {
-                        indErrParm = "error";
-                    } else {
-                        getDatosTipoCliente();
-                        formURL = baseURL + "grupoCliente/actualizarGrupoCliente";
-                    }
+                
+                accion = "Modificar";
+                
+                if (getModelo().getIdGrpCli() == 0) {
+                    indErrParm = "error";
+                } else {
+                    getDatosTipoCliente();
+                    formURL = baseURL + "grupoCliente/actualizarGrupoCliente";
                 }
             }
         }

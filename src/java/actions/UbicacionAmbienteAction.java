@@ -222,16 +222,15 @@ public class UbicacionAmbienteAction extends MasterAction implements ModelDriven
         if (indErrAcc.equals("")) {
             nivBandeja = 2;
             
-            if ((!opcion.trim().equals("A") && !opcion.trim().equals("M")) || modelo.getIdAmbUbi() == 99) {
+            if (!opcion.trim().equals("A") || modelo.getIdAmbUbi() == 99) {
                 indErrParm = "error";
             } else {
                 varReturnProcess(1);
                 
-                getDatosAmbientesUbicacion();
+                accion = "Adicionar";
                 
-                if (opcion.equals("A")) {
-                    formURL = baseURL + "ubicacionAmbiente/grabarUbicacionAmbiente";
-                }
+                getDatosAmbientesUbicacion();
+                formURL = baseURL + "ubicacionAmbiente/grabarUbicacionAmbiente";
             }
         }
         
@@ -245,19 +244,19 @@ public class UbicacionAmbienteAction extends MasterAction implements ModelDriven
         if (indErrAcc.equals("")) {
             nivBandeja = 2;
             
-            if ((!opcion.trim().equals("A") && !opcion.trim().equals("M")) || modelo.getIdAmbUbi() == 99) {
+            if (!opcion.trim().equals("M") || modelo.getIdAmbUbi() == 99) {
                 indErrParm = "error";
             } else {
                 getDatosAmbientesUbicacion();
                 varReturnProcess(1);
                 
-                if (opcion.equals("M")) {
-                    if (modelo.getIdAmbUbi() == 0) {
-                        indErrParm = "error";
-                    } else {
-                        getDatosUbicacionPorAmbiente();
-                        formURL = baseURL + "ubicacionAmbiente/actualizarUbicacionAmbiente";
-                    }
+                accion = "Modificar";
+                
+                if (modelo.getIdAmbUbi() == 0) {
+                    indErrParm = "error";
+                } else {
+                    getDatosUbicacionPorAmbiente();
+                    formURL = baseURL + "ubicacionAmbiente/actualizarUbicacionAmbiente";
                 }
             }
         }

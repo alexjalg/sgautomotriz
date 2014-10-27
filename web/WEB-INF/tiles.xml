@@ -619,6 +619,9 @@
     <definition name="mant-vehiculos-index" extends="baseLayout">
         <put-attribute name="body" value="/procesos/vehiculos/index.jsp" />
     </definition>  
+    <definition name="mant-vehiculos-listadoPropositosVarios" extends="baseLayout">
+        <put-attribute name="body" value="/procesos/vehiculos/listadoPropositosVarios.jsp" />
+    </definition>
     <definition name="mant-vehiculo-adicionar" extends="baseLayout">
         <put-attribute name="body" value="/procesos/vehiculos/adicionar.jsp" />
     </definition>

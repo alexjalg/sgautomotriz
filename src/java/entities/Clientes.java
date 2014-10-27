@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package entities;
 
 /**
@@ -15,14 +11,15 @@ private String idCli="";
 private String idCli_f="";
 private int idTipDoc=0;
 private String otrTipCli="" ;
+private String desTipCli="";
 private String	desCli="" ;
 private String desCli_f="";
 private String	desApeCon="" ;
 private String	desNomCon="" ;
 private String	desDirCon="" ;
-private int	idDep=0;
-private int	idPrvDep=0 ;
-private int	idDisPrv=0 ;
+private int idDep=0;
+private int idPrvDep=0 ;
+private int idDisPrv=0 ;
 private String	numTelFij="" ;
 private String	numTelMov="" ;
 private String	numTelOfi="" ;
@@ -475,6 +472,14 @@ private String	idUsu="" ;
      */
     public void setDesCli_f(String desCli_f) {
         this.desCli_f = desCli_f;
+    }
+
+    public String getDesTipCli() {
+        return desTipCli;
+    }
+
+    public void setDesTipCli(String desTipCli) {
+        this.desTipCli = desTipCli;
     }
     
 }

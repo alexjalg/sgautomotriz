@@ -154,14 +154,14 @@ public class DepartamentosAction extends MasterAction implements ModelDriven<Dep
         if (indErrAcc.equals("")) {
             nivBandeja = 1;
 
-            if (!opcion.trim().equals("A") && !opcion.trim().equals("M")) {
+            if (!opcion.trim().equals("A")) {
                 indErrParm = "error";
             } else {
                 varReturnProcess(1);
-
-                if (opcion.equals("A")) {
-                    formURL = baseURL + "departamentos/grabarDepartamento";
-                }
+                
+                accion = "Adicionar";
+                
+                formURL = baseURL + "departamentos/grabarDepartamento";
             }
         }
 
@@ -176,18 +176,18 @@ public class DepartamentosAction extends MasterAction implements ModelDriven<Dep
         if (indErrAcc.equals("")) {
             nivBandeja = 1;
 
-            if (!opcion.trim().equals("A") && !opcion.trim().equals("M")) {
+            if (!opcion.trim().equals("M")) {
                 indErrParm = "error";
             } else {
                 varReturnProcess(1);
 
-                if (opcion.equals("M")) {
-                    if (modelo.getIdDep() == 0) {
-                        indErrParm = "error";
-                    } else {
-                        getDatosDepartamento();
-                        formURL = baseURL + "departamentos/actualizarDepartamento";
-                    }
+                accion = "Modificar";
+                
+                if (modelo.getIdDep() == 0) {
+                    indErrParm = "error";
+                } else {
+                    getDatosDepartamento();
+                    formURL = baseURL + "departamentos/actualizarDepartamento";
                 }
             }
         }

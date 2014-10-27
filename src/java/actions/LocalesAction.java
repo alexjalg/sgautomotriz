@@ -166,26 +166,18 @@ public class LocalesAction extends MasterAction implements ModelDriven<Locales> 
         if (indErrAcc.equals("")) {
             nivBandeja = 2;
 
-            if ((!opcion.trim().equals("A") && !opcion.trim().equals("M"))) {
+            if (!opcion.trim().equals("A")) {
                 indErrParm = "error";
             } else {
                 varReturnProcess(1);
+                
+                accion = "Adicionar";
 
                 if (modelo.getIdCon().equals("") || modelo.getIdCon().equals("0")) {
                     indErrParm = "error";
                 } else {
                     getDatosConcesionario();
-
-                    if (opcion.equals("A")) {
-                        formURL = baseURL + "locales/grabarLocal";
-                    }
-
-                    if (opcion.equals("M")) {
-
-                        getDatosLocalConcesionario();
-                        formURL = baseURL + "locales/actualizarLocal";
-                    }
-
+                    formURL = baseURL + "locales/grabarLocal";
                     populateForm();
                 }
             }
@@ -202,25 +194,19 @@ public class LocalesAction extends MasterAction implements ModelDriven<Locales> 
         if (indErrAcc.equals("")) {
             nivBandeja = 2;
 
-            if ((!opcion.trim().equals("A") && !opcion.trim().equals("M"))) {
+            if (!opcion.trim().equals("M")) {
                 indErrParm = "error";
             } else {
                 varReturnProcess(1);
+                
+                accion = "Modificar";
 
                 if (modelo.getIdCon().equals("") || modelo.getIdCon().equals("0")) {
                     indErrParm = "error";
                 } else {
                     getDatosConcesionario();
-
-                    if (opcion.equals("A")) {
-                        formURL = baseURL + "locales/grabarLocal";
-                    }
-
-                    if (opcion.equals("M")) {
-
-                        getDatosLocalConcesionario();
-                        formURL = baseURL + "locales/actualizarLocal";
-                    }
+                    getDatosLocalConcesionario();
+                    formURL = baseURL + "locales/actualizarLocal";
 
                     populateForm();
                 }

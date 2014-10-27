@@ -173,14 +173,14 @@ public class TipoDocumentoAction extends MasterAction implements ModelDriven<Tip
         if (indErrAcc.equals("")) {
             nivBandeja = 1;
 
-            if (!opcion.trim().equals("A") && !opcion.trim().equals("M")) {
+            if (!opcion.trim().equals("A")) {
                 indErrParm = "error";
             } else {
                 varReturnProcess(1);
 
-                if (opcion.equals("A")) {
-                    formURL = baseURL + "tipoDocumento/grabarTipoDocumento";
-                }
+                accion = "Adicionar";
+                
+                formURL = baseURL + "tipoDocumento/grabarTipoDocumento";
             }
         }
         return "adicionar";
@@ -192,18 +192,18 @@ public class TipoDocumentoAction extends MasterAction implements ModelDriven<Tip
         if (indErrAcc.equals("")) {
             nivBandeja = 1;
 
-            if (!opcion.trim().equals("A") && !opcion.trim().equals("M")) {
+            if (!opcion.trim().equals("M")) {
                 indErrParm = "error";
             } else {
                 varReturnProcess(1);
 
-                if (opcion.equals("M")) {
-                    if (modelo.getIdTipDoc() == 0) {
-                        indErrParm = "error";
-                    } else {
-                        getDatosTipoDocumento();
-                        formURL = baseURL + "tipoDocumento/actualizarTipoDocumento";
-                    }
+                accion = "Modificar";
+               
+                if (modelo.getIdTipDoc() == 0) {
+                    indErrParm = "error";
+                } else {
+                    getDatosTipoDocumento();
+                    formURL = baseURL + "tipoDocumento/actualizarTipoDocumento";
                 }
             }
         }

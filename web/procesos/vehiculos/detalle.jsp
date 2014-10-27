@@ -3,7 +3,9 @@
 <div class="d-header">
     <div class="d-title-header">
         <s:property value="tituloOpc" />
-        <div class="d-subtitle-header"></div>
+        <div class="d-subtitle-header">
+            <s:property value="accion" />
+        </div>
     </div>
     <div class="d-subheader">
         <div class="d-back">
@@ -19,7 +21,7 @@
 <div class="d-content-form">
     <table border="0" cellpadding="0" cellspacing="0">
         <tr>
-            <td style="width: 580px;">
+            <td style="">
                 <table border="0" cellpadding="0" cellspacing="0" style="width: 100%">
                     <tr>
                         <td colspan="2" style="height: 28px; padding-right: 0px;">
@@ -101,7 +103,7 @@
                         <td style="vertical-align: top; padding-left: 50px;">
                             <table border="0" cellpadding="0" cellspacing="0" class="table-form">
                                 <tr>
-                                    <td>Nº Chasis:</td>
+                                    <td style="width: 108px;">Nº Chasis:</td>
                                     <td>
                                         <span style="font-weight: bold;">
                                             <s:property value="desNumCha" />
@@ -117,7 +119,7 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td style="height: 28px; width: 108px;">Precio de venta:</td>
+                                    <td>Precio de venta:</td>
                                     <td>
                                         <span style="font-weight: bold;">
                                             <s:property value="impPreVenAsi" />

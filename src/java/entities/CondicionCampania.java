@@ -21,6 +21,7 @@ public class CondicionCampania {
     private int idVerMod=0;
     private String desVerExt="";
     private String edoConCam="";
+    private int numAnoFab;
 
     /**
      * @return the idOriCam
@@ -174,6 +175,20 @@ public class CondicionCampania {
      */
     public void setDesCam(String desCam) {
         this.desCam = desCam;
+    }
+
+    /**
+     * @return the numAnoFab
+     */
+    public int getNumAnoFab() {
+        return numAnoFab;
+    }
+
+    /**
+     * @param numAnoFab the numAnoFab to set
+     */
+    public void setNumAnoFab(int numAnoFab) {
+        this.numAnoFab = numAnoFab;
     }
     
 }

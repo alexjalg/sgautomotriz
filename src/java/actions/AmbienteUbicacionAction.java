@@ -21,18 +21,21 @@ public class AmbienteUbicacionAction extends MasterAction implements ModelDriven
     public AmbienteUbicacion getModel() {
         tituloOpc = "Ambientes de Ubicación";
         idClaseAccion = 33;
+        
         return modelo;
     }
 
     public String vrfSeleccion() {
         idAccion = 1;
         verifAccionTipoUsuario();
+        
         if (indErrAcc.equals("")) {
             if (modelo.getIdAmbUbi() == 99) {
                 indError = "error";
                 errores.add("No ha seleccionado ningun registro");
             }
         }
+        
         return "vrfSeleccion";
     }
 
@@ -40,6 +43,7 @@ public class AmbienteUbicacionAction extends MasterAction implements ModelDriven
     public String execute() {
         idAccion = 2;
         verifAccionTipoUsuario();
+        
         if (indErrAcc.equals("")) {
             nivBandeja = 1;
 
@@ -53,7 +57,8 @@ public class AmbienteUbicacionAction extends MasterAction implements ModelDriven
             verifPag();
             listAmbientesUbicacionIndex();
         }
-        return "success";
+        
+        return SUCCESS;
     }
 
     private void cantAmbientesUbicacionaIndex() {
@@ -172,6 +177,7 @@ public class AmbienteUbicacionAction extends MasterAction implements ModelDriven
     public String adicionar() {
         idAccion = 3;
         verifAccionTipoUsuario();
+        
         if (indErrAcc.equals("")) {
             nivBandeja = 1;
 
@@ -179,13 +185,14 @@ public class AmbienteUbicacionAction extends MasterAction implements ModelDriven
                 indErrParm = "error";
             } else {
                 varReturnProcess(1);
-                if (opcion.equals("A")) {
-                    getListTipAmbUbi().add(new TipoAmbienteUbicacion("R", "Almacen Repuestos"));
-                    getListTipAmbUbi().add(new TipoAmbienteUbicacion("T", "Taller Servicios"));
-                    getListTipAmbUbi().add(new TipoAmbienteUbicacion("V", "Almacen Vehículos"));
-                    getListTipAmbUbi().add(new TipoAmbienteUbicacion("I", "Almacen Virtual"));
-                    formURL = baseURL + "ambienteUbicacion/grabarAmbienteUbicacion";
-                }
+                
+                accion = "Adicionar";
+                
+                getListTipAmbUbi().add(new TipoAmbienteUbicacion("R", "Almacen Repuestos"));
+                getListTipAmbUbi().add(new TipoAmbienteUbicacion("T", "Taller Servicios"));
+                getListTipAmbUbi().add(new TipoAmbienteUbicacion("V", "Almacen Vehículos"));
+                getListTipAmbUbi().add(new TipoAmbienteUbicacion("I", "Almacen Virtual"));
+                formURL = baseURL + "ambienteUbicacion/grabarAmbienteUbicacion";
             }
         }
         return "adicionar";
@@ -201,14 +208,14 @@ public class AmbienteUbicacionAction extends MasterAction implements ModelDriven
             } else {
                 varReturnProcess(1);
 
-                if (opcion.equals("M")) {
-                    getListTipAmbUbi().add(new TipoAmbienteUbicacion("R", "Almacen Repuestos"));
-                    getListTipAmbUbi().add(new TipoAmbienteUbicacion("T", "Taller Servicios"));
-                    getListTipAmbUbi().add(new TipoAmbienteUbicacion("V", "Almacen Vehículos"));
-                    getListTipAmbUbi().add(new TipoAmbienteUbicacion("I", "Almacen Virtual"));
-                    getDatosAmbienteUbicacion();
-                    formURL = baseURL + "ambienteUbicacion/actualizarAmbienteUbicacion";
-                }
+                accion = "Modificar";
+                
+                getListTipAmbUbi().add(new TipoAmbienteUbicacion("R", "Almacen Repuestos"));
+                getListTipAmbUbi().add(new TipoAmbienteUbicacion("T", "Taller Servicios"));
+                getListTipAmbUbi().add(new TipoAmbienteUbicacion("V", "Almacen Vehículos"));
+                getListTipAmbUbi().add(new TipoAmbienteUbicacion("I", "Almacen Virtual"));
+                getDatosAmbienteUbicacion();
+                formURL = baseURL + "ambienteUbicacion/actualizarAmbienteUbicacion";
             }
         }
 

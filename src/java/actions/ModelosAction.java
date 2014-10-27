@@ -11,7 +11,6 @@ package actions;
 import static com.opensymphony.xwork2.Action.SUCCESS;
 import com.opensymphony.xwork2.ModelDriven;
 import conexion.helper;
-import entities.Marcas;
 import entities.Modelos;
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -156,17 +155,17 @@ public class ModelosAction extends MasterAction implements ModelDriven<Modelos> 
         if (indErrAcc.equals("")) {
             nivBandeja = 2;
 
-            if ((!opcion.trim().equals("A") && !opcion.trim().equals("M")) || modelo.getIdMar().equals("")) {
+            if (!opcion.trim().equals("A") || modelo.getIdMar().equals("")) {
                 indErrParm = "error";
             } else {
                 modelo.setIdModMar("");
                 getDatosMarca();
 
                 varReturnProcess(1);
-
-                if (opcion.equals("A")) {
-                    formURL = baseURL + "modelos/grabarModelo";
-                }
+                
+                accion = "Adicionar";
+                
+                formURL = baseURL + "modelos/grabarModelo";
             }
         }
 
@@ -180,18 +179,17 @@ public class ModelosAction extends MasterAction implements ModelDriven<Modelos> 
         if (indErrAcc.equals("")) {
             nivBandeja = 2;
 
-            if ((!opcion.trim().equals("A") && !opcion.trim().equals("M")) || modelo.getIdMar().equals("")) {
+            if (!opcion.trim().equals("M") || modelo.getIdMar().equals("")) {
                 indErrParm = "error";
             } else {
                 getDatosMarca();
 
                 varReturnProcess(1);
-
-                if (opcion.equals("M")) {
-                    getDatosModelo();
-                    formURL = baseURL + "modelos/actualizarModelo";
-
-                }
+                
+                accion = "Modificar";
+                
+                getDatosModelo();
+                formURL = baseURL + "modelos/actualizarModelo";
             }
         }
 

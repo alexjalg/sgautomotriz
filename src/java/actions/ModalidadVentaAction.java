@@ -19,6 +19,7 @@ public class ModalidadVentaAction extends MasterAction implements ModelDriven<Mo
     public ModalidadVenta getModel() {
         tituloOpc = "Modalidad de Venta";
         idClaseAccion = 38;
+        
         return modelo;
     }
 
@@ -40,6 +41,7 @@ public class ModalidadVentaAction extends MasterAction implements ModelDriven<Mo
     public String execute() {
         idAccion = 2;
         verifAccionTipoUsuario();
+        
         if (indErrAcc.equals("")) {
             nivBandeja = 1;
 
@@ -52,9 +54,9 @@ public class ModalidadVentaAction extends MasterAction implements ModelDriven<Mo
             cantModalidadVentaIndex();
             verifPag();
             listModalidadVentaIndex();
-
         }
-        return "success";
+        
+        return SUCCESS;
     }
 
     private void cantModalidadVentaIndex() {
@@ -135,17 +137,18 @@ public class ModalidadVentaAction extends MasterAction implements ModelDriven<Mo
     public String adicionar() {
         idAccion = 3;
         verifAccionTipoUsuario();
+        
         if (indErrAcc.equals("")) {
             nivBandeja = 1;
 
-            if (!opcion.trim().equals("A") && !opcion.trim().equals("M")) {
+            if (!opcion.trim().equals("A")) {
                 indErrParm = "error";
             } else {
                 varReturnProcess(1);
-
-                if (opcion.equals("A")) {
-                    formURL = baseURL + "modalidadVenta/grabarModalidadVenta";
-                }
+                
+                accion = "Adicionar";
+                
+                formURL = baseURL + "modalidadVenta/grabarModalidadVenta";
             }
         }
         return "adicionar";
@@ -154,21 +157,22 @@ public class ModalidadVentaAction extends MasterAction implements ModelDriven<Mo
     public String modificar() {
         idAccion = 4;
         verifAccionTipoUsuario();
+        
         if (indErrAcc.equals("")) {
             nivBandeja = 1;
 
-            if (!opcion.trim().equals("A") && !opcion.trim().equals("M")) {
+            if (!opcion.trim().equals("M")) {
                 indErrParm = "error";
             } else {
                 varReturnProcess(1);
 
-                if (opcion.equals("M")) {
-                    if (modelo.getIdModVen() == 0) {
-                        indErrParm = "error";
-                    } else {
-                        getDatosModalidadVenta();
-                        formURL = baseURL + "modalidadVenta/actualizarModalidadVenta";
-                    }
+                accion = "Modificar";
+                
+                if (modelo.getIdModVen() == 0) {
+                    indErrParm = "error";
+                } else {
+                    getDatosModalidadVenta();
+                    formURL = baseURL + "modalidadVenta/actualizarModalidadVenta";
                 }
             }
         }

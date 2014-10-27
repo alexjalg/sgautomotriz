@@ -17,8 +17,9 @@
             <result name="grabar" type="tiles">mant-vehiculo-grabar</result>
             <result name="actualizar" type="tiles">mant-vehiculo-grabar</result>
             <result name="vrfSeleccion" type="tiles">mant-vehiculo-grabar</result>
-
-            <result name="eliminar" type="tiles">mant-vehiculo-eliminar</result>          
+            <result name="eliminar" type="tiles">mant-vehiculo-eliminar</result>  
+            
+            <result name="listadoPropositosVarios" type="tiles">mant-vehiculos-listadoPropositosVarios</result>
             
             <result name="modelos" >/procesos/vehiculos/listaModelos.jsp</result>
             <result name="versiones" >/procesos/vehiculos/listaVersiones.jsp</result>

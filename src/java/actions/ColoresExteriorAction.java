@@ -152,10 +152,10 @@ public class ColoresExteriorAction extends MasterAction implements ModelDriven<C
             } else {
                 varReturnProcess(1);
 
-                if (opcion.equals("A")) {
-                    modelo.setIdColExt("");
-                    formURL = baseURL + "coloresExterior/grabarColorExterior";
-                }
+                accion = "Adicionar";
+                
+                modelo.setIdColExt("");
+                formURL = baseURL + "coloresExterior/grabarColorExterior";
             }
         }
 
@@ -174,11 +174,10 @@ public class ColoresExteriorAction extends MasterAction implements ModelDriven<C
             } else {
                 varReturnProcess(1);
 
-                if (opcion.equals("M")) {
-                    getDatosColor();
-                    formURL = baseURL + "coloresExterior/actualizarColorExterior";
-
-                }
+                accion = "Modificar";
+                
+                getDatosColor();
+                formURL = baseURL + "coloresExterior/actualizarColorExterior";
             }
         }
 

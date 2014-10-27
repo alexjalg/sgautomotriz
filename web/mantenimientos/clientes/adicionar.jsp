@@ -3,7 +3,9 @@
 <div class="d-header">
     <div class="d-title-header">
         <s:property value="tituloOpc" />
-        <div class="d-subtitle-header"></div>
+        <div class="d-subtitle-header">
+            <s:property value="accion" />
+        </div>
     </div>
     <div class="d-subheader">
         <div class="d-back">
@@ -26,14 +28,15 @@
                             <td>
                                 <table border="0" cellpadding="0" cellspacing="0" class="table-form">
                                     <tr>
-                                        <td style="width: 104px;">Tipo Cliente</td>
+                                        <td style="width: 104px; height: 28px;">Tipo Cliente</td>
                                         <td>
                                             <div id="d_rbt_tipcli">
                                             <s:if test='%{idCli!=""}'>
-                                                <s:radio cssClass="r_tipcli" disabled="true" id="otrTipCli" name="otrTipCli" list="listTipCli" listKey="idTipCli" listValue="desTipCli" onkeypress="return event.keyCode!=13" />
+                                                <span style="font-weight: bold;"><s:property value="desTipCli" /></span>
+                                                <s:hidden name="otrTipCli" />
                                             </s:if>
                                             <s:else>
-                                                <s:radio cssClass="r_tipcli" id="otrTipCli" name="otrTipCli" list="listTipCli" listKey="idTipCli" listValue="desTipCli" onkeypress="return event.keyCode!=13" />
+                                                <s:radio name="otrTipCli" id="otrTipCli" list="listTipCli" listKey="idTipCli" listValue="desTipCli" cssClass="r_tipcli" />
                                             </s:else>
                                             </div>
                                         </td>
@@ -122,7 +125,6 @@
                                             <div id="d_rbt_gencon">
                                                 <s:radio name="otrGenCon" list="listGenero" listKey="idGen" listValue="desGen" onkeypress="return even.keyCode!=13" />
                                             </div>
-                                            <s:property value="otrGenCon" />
                                         </td>
                                     </tr>
                                     <tr>
@@ -327,11 +329,18 @@
 </table>
 </s:form>
 </div>
+<!--<ul>
+    <s:iterator value="errores">
+        <li><s:property /></li>
+    </s:iterator>
+</ul>-->
 <div id="DIVgrabar" title="<s:property value="titleDialog" />" class="alerta"></div>
 
 
 <script type="text/javascript">
     $(document).ready(function() {
+        resizeContForm();
+    
         $('#d_rbt_tipcli,#d_rbt_gencon').buttonset();
         //<----- DatePicker's  ------>
         $('#fecNacCon').datepicker({

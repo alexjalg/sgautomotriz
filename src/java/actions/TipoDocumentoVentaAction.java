@@ -16,12 +16,14 @@ public class TipoDocumentoVentaAction extends MasterAction implements ModelDrive
     public TipoDocumentoVenta getModel() {
         tituloOpc = "Tipo de documento de venta";
         idClaseAccion = 30;
+        
         return modelo;
     }
 
     public String vrfSeleccion() {
         idAccion = 1;
         verifAccionTipoUsuario();
+        
         if (indErrAcc.equals("")) {
             if (modelo.getIdTipDocVen().trim().equalsIgnoreCase("")) {
                 indError = "error";
@@ -35,34 +37,39 @@ public class TipoDocumentoVentaAction extends MasterAction implements ModelDrive
     public String execute() {
         idAccion = 2;
         verifAccionTipoUsuario();
+        
         if (indErrAcc.equals("")) {
             nivBandeja = 1;
             urlPaginacion = "tipoDocumentoVenta/TipoDocumentoVenta";
             varReturnProcess(0);
+            
             if (!listVarReturn.isEmpty()) {
                 curPagVis = Integer.parseInt(listVarReturn.get(0).toString().trim());
             }
+            
             cantTipoDocumentoVentaIndex();
             verifPag();
             listTipoDocumentoVentaIndex();
         }
+        
         return SUCCESS;
     }
 
     public String adicionar() {
         idAccion = 3;
         verifAccionTipoUsuario();
+        
         if (indErrAcc.equals("")) {
             nivBandeja = 1;
 
-            if (!opcion.trim().equals("A") && !opcion.trim().equals("M")) {
+            if (!opcion.trim().equals("A")) {
                 indErrParm = "error";
             } else {
                 varReturnProcess(1);
-
-                if (opcion.equals("A")) {
-                    formURL = baseURL + "tipoDocumentoVenta/grabarTipoDocumentoVenta";
-                }
+                
+                accion = "Adicionar";
+                
+                formURL = baseURL + "tipoDocumentoVenta/grabarTipoDocumentoVenta";
             }
         }
         return "adicionar";
@@ -71,19 +78,21 @@ public class TipoDocumentoVentaAction extends MasterAction implements ModelDrive
     public String modificar() {
         idAccion = 4;
         verifAccionTipoUsuario();
+        
         if (indErrAcc.equals("")) {
             nivBandeja = 1;
-            if (!opcion.trim().equals("A") && !opcion.trim().equals("M")) {
+            if (!opcion.trim().equals("M")) {
                 indErrParm = "error";
             } else {
                 varReturnProcess(1);
-                if (opcion.equals("M")) {
-                    if (getModel().getIdTipDocVen().trim().equalsIgnoreCase("")) {
-                        indErrParm = "error";
-                    } else {
-                        getDatosTipoDocumentoVenta();
-                        formURL = baseURL + "tipoDocumentoVenta/actualizarTipoDocumentoVenta";
-                    }
+                
+                accion = "Modificar";
+                
+                if (getModel().getIdTipDocVen().trim().equalsIgnoreCase("")) {
+                    indErrParm = "error";
+                } else {
+                    getDatosTipoDocumentoVenta();
+                    formURL = baseURL + "tipoDocumentoVenta/actualizarTipoDocumentoVenta";
                 }
             }
         }

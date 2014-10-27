@@ -9,11 +9,16 @@
                           cssClass="element-form" cssStyle="width: 120px;"/>
             </td>
             <td></td>
-            <td></td>
             <td class="">Modelo: </td>
             <td id="td_Modelo">
                 <s:select name="idModMar" id="cbo_Modelo" list="listModelo" listKey="idModMar" listValue="desModMar"
                           cssClass="element-form" cssStyle="width:200px;"/>
+            </td>
+
+            <td class="">Año Fab.: </td>
+            <td class="">
+                <s:select name="numAnoFab" id="numAnoFab_f1" list="listAnios" listKey="idAnio" listValue="idAnio"
+                          cssClass="element-form" cssStyle="width: 70px;"/>
             </td>
         </tr>
     </table>
@@ -25,6 +30,7 @@
         <s:hidden name="idCam" />
         <s:hidden name="idMar" id="idMar_h1" />
         <s:hidden name="idModMar" id="idModMar_h1"/>
+        <s:hidden name="numAnoFab" id="numAnoFab_h1"/>
 
         <s:hidden name="curPagVis" id="curPag_f_pu" />
 
@@ -78,32 +84,37 @@
         /*Paginacion de grilla popup*/
     <s:property value="jsPaginacionPopUp" escape="false" />;
         $('#btn_search_pu').css('display', 'none');
-        
+
         $('#cbo_Marca').change(function() {
             $('#idMar_h1').val($(this).val());
             $('#idModMar_h1').val('');
-            
+
             $.post(
-                "listVersionesCondicionCampania.action",
-                $('#frm_princ_pu').serialize(), 
-                function(resultado) {
-                    $('#DIVversiones').html(resultado);
-                }
+                    "listVersionesCondicionCampania.action",
+                    $('#frm_princ_pu').serialize(),
+                    function(resultado) {
+                        $('#DIVversiones').html(resultado);
+                    }
             );
         });
-        
+
         $('#cbo_Modelo').change(function() {
             $('#idMar_h1').val($('#cbo_Marca').val());
             $('#idModMar_h1').val($(this).val());
-            
+
             $.post(
-                "listVersionesCondicionCampania.action",
-                $('#frm_princ_pu').serialize(), 
-                function(resultado) {
-                    $('#DIVversiones').html(resultado);
-                }
+                    "listVersionesCondicionCampania.action",
+                    $('#frm_princ_pu').serialize(),
+                    function(resultado) {
+                        $('#DIVversiones').html(resultado);
+                    }
             );
         });
+
+        $('#numAnoFab_f1').change(function() {
+            $('#numAnoFab_h1').val($(this).val());
+        });
+
     });
 
 

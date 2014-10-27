@@ -152,9 +152,9 @@ public class TipoUsuarioAction extends MasterAction implements ModelDriven<TipoU
             } else {
                 varReturnProcess(1);
 
-                if (opcion.equals("A")) {
-                    formURL = baseURL + "tipoUsuario/grabarTipoUsuario";
-                }
+                accion = "Adicionar";
+                
+                formURL = baseURL + "tipoUsuario/grabarTipoUsuario";
             }
         }
 
@@ -173,10 +173,10 @@ public class TipoUsuarioAction extends MasterAction implements ModelDriven<TipoU
             } else {
                 varReturnProcess(1);
                 
-                if (opcion.equals("M")) {
-                    getDatosTipoUsuario();
-                    formURL = baseURL + "tipoUsuario/actualizarTipoUsuario";
-                }
+                accion = "Modificar";
+                
+                getDatosTipoUsuario();
+                formURL = baseURL + "tipoUsuario/actualizarTipoUsuario";
             }
         }
 

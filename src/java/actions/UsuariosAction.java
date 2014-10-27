@@ -12,7 +12,6 @@ import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ModelDriven;
 import conexion.helper;
 import entities.Concesionarios;
-import entities.Generos;
 import entities.Locales;
 import entities.TipoUsuario;
 import entities.Usuarios;
@@ -168,46 +167,9 @@ public class UsuariosAction extends MasterAction implements ModelDriven<Usuarios
                 modelo.setDesUsu_f(listVarReturn.get(2).toString().trim());
                 modelo.setIdTipUsu_f(Integer.parseInt(listVarReturn.get(3).toString().trim()));
             }
-            
-            helper conex = null;
-            ResultSet tabla = null;
-            
-            try 
-            {
-                conex = new helper();
-                indError = conex.getErrorSQL();
-                
-                if (!indError.equals("")) {
-                    errores.add(indError);
-                } else {
-                    tabla = conex.executeDataSet("CALL usp_listTipoUsuario()", new Object[]{});
-                    
-                    indError = conex.getErrorSQL();
-                    
-                    if(!indError.equals("")) {
-                        errores.add(indError);
-                    }
-                    else {
-                        TipoUsuario obj;
-                        while(tabla.next()) {
-                            obj = new TipoUsuario();
-                            obj.setIdTipUsu(tabla.getString("idTipUsu"));
-                            obj.setDesTipUsu(tabla.getString("desTipUsu"));
-                            listTipoUsuario.add(obj);
-                        }
-                    }
-                }
-            } catch (Exception e) {
-                indError = "error";
-                errores.add(e.getMessage());
-            } finally {
-                try{
-                   tabla.close();
-                   conex.returnConnect();
-                } catch (Exception e) {
-                }
-            }
 
+            listTipoUsuario();
+            
             cantUsuariosIndex();
             verifPag();
             listUsuariosIndex();
@@ -215,11 +177,52 @@ public class UsuariosAction extends MasterAction implements ModelDriven<Usuarios
 
         return SUCCESS;
     }
+    
+    private void listTipoUsuario() {
+        helper conex = null;
+        ResultSet tabla = null;
+
+        try 
+        {
+            conex = new helper();
+            indError = conex.getErrorSQL();
+
+            if (!indError.equals("")) {
+                errores.add(indError);
+            } else {
+                tabla = conex.executeDataSet("CALL usp_listTipoUsuario()", new Object[]{});
+
+                indError = conex.getErrorSQL();
+
+                if(!indError.equals("")) {
+                    errores.add(indError);
+                }
+                else {
+                    TipoUsuario obj;
+                    while(tabla.next()) {
+                        obj = new TipoUsuario();
+                        obj.setIdTipUsu(tabla.getString("idTipUsu"));
+                        obj.setDesTipUsu(tabla.getString("desTipUsu"));
+                        listTipoUsuario.add(obj);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            indError = "error";
+            errores.add(e.getMessage());
+        } finally {
+            try{
+               tabla.close();
+               conex.returnConnect();
+            } catch (Exception e) {
+            }
+        }
+    }
 
     private void populateForm() {
         helper conex = null;
         ResultSet tabla = null;
-
+        
         try {
             conex = new helper();
             indError = conex.getErrorSQL();
@@ -227,23 +230,6 @@ public class UsuariosAction extends MasterAction implements ModelDriven<Usuarios
             if (!indError.equals("")) {
                 errores.add(indError);
             } else {
-                tabla = null;
-                tabla = conex.executeDataSet("CALL usp_listTipoUsuario()", new Object[]{});
-
-                indError = conex.getErrorSQL();
-
-                if (!indError.equals("")) {
-                    errores.add(indError);
-                } else {
-                    TipoUsuario obj;
-                    while (tabla.next()) {
-                        obj = new TipoUsuario();
-                        obj.setIdTipUsu(tabla.getString("idTipUsu"));
-                        obj.setDesTipUsu(tabla.getString("desTipUsu"));
-                        listTipoUsuario.add(obj);
-                    }
-                }
-                
                 tabla = null;
                 tabla = conex.executeDataSet("CALL usp_listConcesionarios()", new Object[]{});
 
@@ -345,17 +331,18 @@ public class UsuariosAction extends MasterAction implements ModelDriven<Usuarios
         verifAccionTipoUsuario();
 
         if (indErrAcc.equals("")) {
-            if (!opcion.trim().equals("A") && !opcion.trim().equals("M")) {
+            if (!opcion.trim().equals("A")) {
                 indErrParm = "error";
             } else {
                 varReturnProcess(1);
 
-                if (opcion.equals("A")) {
-                    formURL = baseURL + "usuarios/grabarUsuario";
-                }
+                accion = "Adicionar";
+                
+                formURL = baseURL + "usuarios/grabarUsuario";
             }
         }
 
+        listTipoUsuario();
         populateForm();
 
         return "adicionar";
@@ -366,22 +353,23 @@ public class UsuariosAction extends MasterAction implements ModelDriven<Usuarios
         verifAccionTipoUsuario();
 
         if (indErrAcc.equals("")) {
-            if (!opcion.trim().equals("A") && !opcion.trim().equals("M")) {
+            if (!opcion.trim().equals("M")) {
                 indErrParm = "error";
             } else {
                 varReturnProcess(1);
 
-                if (opcion.equals("M")) {
-                    if (modelo.getIdUsu().trim().equals("")) {
-                        indErrParm = "error";
-                    } else {
-                        getDatosUsuario();
-                        formURL = baseURL + "usuarios/actualizarUsuario";
-                    }
+                accion = "Modificar";
+                
+                if (modelo.getIdUsu().trim().equals("")) {
+                    indErrParm = "error";
+                } else {
+                    getDatosUsuario();
+                    formURL = baseURL + "usuarios/actualizarUsuario";
                 }
             }
         }
 
+        listTipoUsuario();
         populateForm();
 
         return "adicionar";

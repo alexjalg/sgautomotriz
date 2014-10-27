@@ -125,14 +125,14 @@ public class TipoTraccionAction extends MasterAction implements ModelDriven<Tipo
         if (indErrAcc.equals("")) {
             nivBandeja = 1;
 
-            if (!opcion.trim().equals("A") && !opcion.trim().equals("M")) {
+            if (!opcion.trim().equals("A")) {
                 indErrParm = "error";
             } else {
                 varReturnProcess(1);
 
-                if (opcion.equals("A")) {
-                    formURL = baseURL + "tipoTraccion/grabarTipoTraccion";
-                }
+                accion = "Adicionar";
+                
+                formURL = baseURL + "tipoTraccion/grabarTipoTraccion";
             }
         }
         return "adicionar";
@@ -143,17 +143,18 @@ public class TipoTraccionAction extends MasterAction implements ModelDriven<Tipo
         verifAccionTipoUsuario();
         if (indErrAcc.equals("")) {
             nivBandeja = 1;
-            if (!opcion.trim().equals("A") && !opcion.trim().equals("M")) {
+            if (!opcion.trim().equals("M")) {
                 indErrParm = "error";
             } else {
                 varReturnProcess(1);
-                if (opcion.equals("M")) {
-                    if (modelo.getIdTipTrac() == 0) {
-                        indErrParm = "error";
-                    } else {
-                        getDatosTipoTraccion();
-                        formURL = baseURL + "tipoTraccion/actualizarTipoTraccion";
-                    }
+                
+                accion = "Modificar";
+                
+                if (modelo.getIdTipTrac() == 0) {
+                    indErrParm = "error";
+                } else {
+                    getDatosTipoTraccion();
+                    formURL = baseURL + "tipoTraccion/actualizarTipoTraccion";
                 }
             }
         }

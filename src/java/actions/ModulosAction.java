@@ -142,14 +142,14 @@ public class ModulosAction extends MasterAction implements ModelDriven<Modulos> 
         verifAccionTipoUsuario();
 
         if (indErrAcc.equals("")) {
-            if ((!opcion.trim().equals("A") && !opcion.trim().equals("M"))) {
+            if (!opcion.trim().equals("A")) {
                 indErrParm = "error";
             } else {
                 varReturnProcess(1);
-
-                if (opcion.equals("A")) {
-                    formURL = baseURL + "modulos/grabarModulo";
-                }
+                
+                accion = "Adicionar";
+                
+                formURL = baseURL + "modulos/grabarModulo";
             }
         }
 
@@ -161,15 +161,15 @@ public class ModulosAction extends MasterAction implements ModelDriven<Modulos> 
         verifAccionTipoUsuario();
 
         if (indErrAcc.equals("")) {
-            if ((!opcion.trim().equals("A") && !opcion.trim().equals("M"))) {
+            if (!opcion.trim().equals("M")) {
                 indErrParm = "error";
             } else {
                 varReturnProcess(1);
                 
-                if (opcion.equals("M")) {
-                    getDatosModulo();
-                    formURL = baseURL + "modulos/actualizarModulo";
-                }
+                accion = "Modificar";
+                
+                getDatosModulo();
+                formURL = baseURL + "modulos/actualizarModulo";
             }
         }
 

@@ -147,14 +147,14 @@ public class OpcionesAction extends MasterAction implements ModelDriven<Opciones
         verifAccionTipoUsuario();
 
         if (indErrAcc.equals("")) {
-            if ((!opcion.trim().equals("A") && !opcion.trim().equals("M"))) {
+            if(!opcion.trim().equals("A")) {
                 indErrParm = "error";
             } else {
                 varReturnProcess(1);
-
-                if (opcion.equals("A")) {
-                    formURL = baseURL + "opciones/grabarOpcion";
-                }
+                
+                accion = "Adicionar";
+                
+                formURL = baseURL + "opciones/grabarOpcion";
             }
         }
 
@@ -166,15 +166,15 @@ public class OpcionesAction extends MasterAction implements ModelDriven<Opciones
         verifAccionTipoUsuario();
 
         if (indErrAcc.equals("")) {
-            if ((!opcion.trim().equals("A") && !opcion.trim().equals("M"))) {
+            if (!opcion.trim().equals("M")) {
                 indErrParm = "error";
             } else {
                 varReturnProcess(1);
 
-                if (opcion.equals("M")) {
-                    getDatosOpcion();
-                    formURL = baseURL + "opciones/actualizarOpcion";
-                }
+                accion = "Modificar";
+                
+                getDatosOpcion();
+                formURL = baseURL + "opciones/actualizarOpcion";
             }
         }
 

@@ -3,13 +3,14 @@
 <div class="d-header">
     <div class="d-title-header">
         <s:property value="tituloOpc" />
-        <div class="d-subtitle-header"></div>
+        <div class="d-subtitle-header">
+            <s:property value="accion" />
+        </div>
     </div>
     <div class="d-subheader">
         <div class="d-back">
             <a href="javascript:void(0)" class="back">Volver</a>
             <form method="POST" id="frm_modelo_back" action="<s:property value="backURL" />">
-                
                 <s:hidden name="varReturn" />
             </form>
         </div>
@@ -65,7 +66,7 @@
                     
 <script type="text/javascript">
     $(document).ready(function(){
-        $('#btn_grabar').button();
+        resizeContForm();
     
         $('#DIVgrabar').dialog({
             autoOpen: false,

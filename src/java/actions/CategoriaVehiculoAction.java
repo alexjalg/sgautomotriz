@@ -19,6 +19,7 @@ public class CategoriaVehiculoAction extends MasterAction implements ModelDriven
     public CategoriaVehiculo getModel() {
         tituloOpc = "Categorias de vehículo";
         idClaseAccion = 21;
+        
         return modelo;
     }
 
@@ -177,14 +178,14 @@ public class CategoriaVehiculoAction extends MasterAction implements ModelDriven
         if (indErrAcc.equals("")) {
             nivBandeja = 1;
 
-            if (!opcion.trim().equals("A") && !opcion.trim().equals("M")) {
+            if (!opcion.trim().equals("A")) {
                 indErrParm = "error";
             } else {
                 varReturnProcess(1);
 
-                if (opcion.equals("A")) {
-                    formURL = baseURL + "categoriaVehiculo/grabarCategoriaVehiculo";
-                }
+                accion = "Adicionar";
+                
+                formURL = baseURL + "categoriaVehiculo/grabarCategoriaVehiculo";
             }
         }
 
@@ -199,18 +200,18 @@ public class CategoriaVehiculoAction extends MasterAction implements ModelDriven
         if (indErrAcc.equals("")) {
             nivBandeja = 1;
 
-            if (!opcion.trim().equals("A") && !opcion.trim().equals("M")) {
+            if (!opcion.trim().equals("M")) {
                 indErrParm = "error";
             } else {
                 varReturnProcess(1);
-
-                if (opcion.equals("M")) {
-                    if (modelo.getIdCatVeh() == 0) {
-                        indErrParm = "error";
-                    } else {
-                        getDatosCategoriaVehiculo();
-                        formURL = baseURL + "categoriaVehiculo/actualizarCategoriaVehiculo";
-                    }
+                
+                accion = "Modificar";
+                
+                if (modelo.getIdCatVeh() == 0) {
+                    indErrParm = "error";
+                } else {
+                    getDatosCategoriaVehiculo();
+                    formURL = baseURL + "categoriaVehiculo/actualizarCategoriaVehiculo";
                 }
             }
         }

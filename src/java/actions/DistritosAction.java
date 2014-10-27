@@ -163,16 +163,15 @@ public class DistritosAction extends MasterAction implements ModelDriven<Distrit
         if (indErrAcc.equals("")) {
             nivBandeja = 3;
 
-            varReturnProcess(1);
-
-            if ((!opcion.trim().equals("A") && !opcion.trim().equals("M")) || (modelo.getIdDep() == 0 || modelo.getIdPrvDep() == 0)) {
+            if (!opcion.trim().equals("A") || (modelo.getIdDep() == 0 || modelo.getIdPrvDep() == 0)) {
                 indErrParm = "error";
             } else {
+                varReturnProcess(1);
+                
+                accion = "Adicionar";
+                
                 getDatosDepartamentoYProvincia();
-
-                if (opcion.equals("A")) {
-                    formURL = baseURL + "distritos/grabarDistrito";
-                }
+                formURL = baseURL + "distritos/grabarDistrito";
             }
         }
 
@@ -187,20 +186,20 @@ public class DistritosAction extends MasterAction implements ModelDriven<Distrit
         if (indErrAcc.equals("")) {
             nivBandeja = 3;
 
-            varReturnProcess(1);
-
-            if ((!opcion.trim().equals("A") && !opcion.trim().equals("M")) || (modelo.getIdDep() == 0 || modelo.getIdPrvDep() == 0)) {
+            if (!opcion.trim().equals("M") || (modelo.getIdDep() == 0 || modelo.getIdPrvDep() == 0)) {
                 indErrParm = "error";
             } else {
+                varReturnProcess(1);
+                
+                accion = "Modificar";
+                
                 getDatosDepartamentoYProvincia();
-
-                if (opcion.equals("M")) {
-                    if (modelo.getIdDep() == 0) {
-                        indErrParm = "error";
-                    } else {
-                        getDatosDistrito();
-                        formURL = baseURL + "distritos/actualizarDistrito";
-                    }
+                
+                if (modelo.getIdDep() == 0) {
+                    indErrParm = "error";
+                } else {
+                    getDatosDistrito();
+                    formURL = baseURL + "distritos/actualizarDistrito";
                 }
             }
         }

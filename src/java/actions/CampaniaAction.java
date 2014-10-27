@@ -188,18 +188,21 @@ public class CampaniaAction extends MasterAction implements ModelDriven<Campania
     public String adicionar() {
         idAccion = 3;
         verifAccionTipoUsuario();
+        
         if (indErrAcc.equals("")) {
             nivBandeja = 1;
 
-            if (!opcion.trim().equals("A") && !opcion.trim().equals("M")) {
+            if (!opcion.trim().equals("A")) {
                 indErrParm = "error";
             } else {
                 varReturnProcess(1);
+                
+                accion = "Adicionar";
+                
                 getDescripcionOrigen();
-                if (opcion.equals("A")) {
-                    modelo.setImpRelCam(".00");
-                    formURL = baseURL + "campania/grabarCampania";
-                }
+                
+                modelo.setImpRelCam("0.00");
+                formURL = baseURL + "campania/grabarCampania";
             }
         }
         return "adicionar";
@@ -208,22 +211,23 @@ public class CampaniaAction extends MasterAction implements ModelDriven<Campania
     public String modificar() {
         idAccion = 4;
         verifAccionTipoUsuario();
+        
         if (indErrAcc.equals("")) {
             nivBandeja = 1;
 
-            if (!opcion.trim().equals("A") && !opcion.trim().equals("M")) {
+            if (!opcion.trim().equals("M")) {
                 indErrParm = "error";
             } else {
                 varReturnProcess(1);
 
-                if (opcion.equals("M")) {
-                    if (modelo.getIdCam() == 0) {
-                        indErrParm = "error";
-                    } else {
-                        getDescripcionOrigen();
-                        getDatosCampania();
-                        formURL = baseURL + "campania/actualizarCampania";
-                    }
+                accion = "Modificar";
+                
+                if (modelo.getIdCam() == 0) {
+                    indErrParm = "error";
+                } else {
+                    getDescripcionOrigen();
+                    getDatosCampania();
+                    formURL = baseURL + "campania/actualizarCampania";
                 }
             }
         }

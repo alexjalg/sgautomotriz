@@ -3,7 +3,9 @@
 <div class="d-header">
     <div class="d-title-header">
         <s:property value="tituloOpc" />
-        <div class="d-subtitle-header"></div>
+        <div class="d-subtitle-header">
+            <s:property value="accion" />
+        </div>
     </div>
     <div class="d-subheader">
         <div class="d-back">
@@ -81,8 +83,7 @@
 <div id="DIVopciones" title="<s:property value="titleDialog" />"></div>
                     
 <script type="text/javascript">
-    $('#btn_grabar').button();
-    $('#btn_opciones').button();
+    resizeContForm();
     
     $(document).ready(function(){
         $('#DIVgrabar').dialog({

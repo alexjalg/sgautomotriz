@@ -157,13 +157,12 @@ public class AdjuntosClienteAction extends MasterAction implements ModelDriven<A
                 indErrParm = "error";
             } else {
                 varReturnProcess(1);
+                
+                accion = "Adicionar";
 
                 getDatosCliente();
-                
-                if (opcion.equals("A")) {
-                    modelo.setIdAdjCli("");
-                    formURL = baseURL + "adjuntosCliente/grabarAdjuntoCliente";
-                }
+                modelo.setIdAdjCli("");
+                formURL = baseURL + "adjuntosCliente/grabarAdjuntoCliente";
             }
         }
 
@@ -182,13 +181,11 @@ public class AdjuntosClienteAction extends MasterAction implements ModelDriven<A
             } else {
                 varReturnProcess(1);
 
-                getDatosCliente();
+                accion = "Modificar";
                 
-                if (opcion.equals("M")) {
-                    getDatosAdjuntoCliente();
-                    formURL = baseURL + "adjuntosCliente/actualizarAdjuntoCliente";
-
-                }
+                getDatosCliente();
+                getDatosAdjuntoCliente();
+                formURL = baseURL + "adjuntosCliente/actualizarAdjuntoCliente";
             }
         }
 

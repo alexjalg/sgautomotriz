@@ -178,10 +178,12 @@ public class ClaseVehiculoAction extends MasterAction implements ModelDriven<Cla
         if (indErrAcc.equals("")) {
             nivBandeja = 1;
 
-            if (!opcion.trim().equals("A") && !opcion.trim().equals("M")) {
+            if (!opcion.trim().equals("A")) {
                 indErrParm = "error";
             } else {
                 varReturnProcess(1);
+                
+                accion = "Adicionar";
 
                 if (opcion.equals("A")) {
                     formURL = baseURL + "claseVehiculo/grabarClaseVehiculo";
@@ -200,18 +202,18 @@ public class ClaseVehiculoAction extends MasterAction implements ModelDriven<Cla
         if (indErrAcc.equals("")) {
             nivBandeja = 1;
 
-            if (!opcion.trim().equals("A") && !opcion.trim().equals("M")) {
+            if (!opcion.trim().equals("M")) {
                 indErrParm = "error";
             } else {
                 varReturnProcess(1);
 
-                if (opcion.equals("M")) {
-                    if (modelo.getIdClaVeh() == 0) {
-                        indErrParm = "error";
-                    } else {
-                        getDatosClaseVehiculo();
-                        formURL = baseURL + "claseVehiculo/actualizarClaseVehiculo";
-                    }
+                accion = "Modificar";
+                
+                if (modelo.getIdClaVeh() == 0) {
+                    indErrParm = "error";
+                } else {
+                    getDatosClaseVehiculo();
+                    formURL = baseURL + "claseVehiculo/actualizarClaseVehiculo";
                 }
             }
         }

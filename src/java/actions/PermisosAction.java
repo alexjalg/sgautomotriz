@@ -192,15 +192,20 @@ public class PermisosAction extends MasterAction implements ModelDriven<Permisos
             tituloOpc = "Permisos - Módulos";
 
             varReturnProcess(1);
+            
+            accion = "Adicionar";
+            
             if (!listVarReturn.isEmpty()) {
                 curPagVis = Integer.parseInt(listVarReturn.get(0).toString().trim());
                 modelo.setIdTipUsu(listVarReturn.get(1).toString().trim());
             }
-
-            if ((!opcion.trim().equals("A") && !opcion.trim().equals("M")) || modelo.getIdTipUsu().equals("")
+            
+            if (!opcion.trim().equals("A") || modelo.getIdTipUsu().equals("")
                     || modelo.getIdTipUsu().equals("0")) {
                 indErrParm = "error";
             } else {
+                accion = "Adicionar";
+                
                 helper conex = null;
                 ResultSet tabla = null;
 
@@ -252,6 +257,9 @@ public class PermisosAction extends MasterAction implements ModelDriven<Permisos
             tituloOpc = "Permisos - Módulos";
 
             varReturnProcess(1);
+            
+            accion = "Modificar";
+            
             if (!listVarReturn.isEmpty()) {
                 curPagVis = Integer.parseInt(listVarReturn.get(0).toString().trim());
                 modelo.setIdTipUsu(listVarReturn.get(1).toString().trim());
@@ -801,6 +809,9 @@ public class PermisosAction extends MasterAction implements ModelDriven<Permisos
 
             varReturn = varReturn.trim();
             varReturnProcess(1);
+            
+            accion = "Adicionar";
+            
             if (!listVarReturn.isEmpty()) {
                 curPagVis = Integer.parseInt(listVarReturn.get(0).toString().trim());
                 modelo.setIdTipUsu(listVarReturn.get(1).toString().trim());
@@ -877,6 +888,9 @@ public class PermisosAction extends MasterAction implements ModelDriven<Permisos
 
             varReturn = varReturn.trim();
             varReturnProcess(1);
+            
+            accion = "Modificar";
+            
             if (!listVarReturn.isEmpty()) {
                 curPagVis = Integer.parseInt(listVarReturn.get(0).toString().trim());
                 modelo.setIdTipUsu(listVarReturn.get(1).toString().trim());
@@ -1477,6 +1491,9 @@ public class PermisosAction extends MasterAction implements ModelDriven<Permisos
             tituloOpc = "Permisos - Sub-Opciones";
 
             varReturnProcess(1);
+            
+            accion = "Adicionar";
+            
             if (!listVarReturn.isEmpty()) {
                 curPagVis = Integer.parseInt(listVarReturn.get(0).toString().trim());
                 modelo.setIdTipUsu(listVarReturn.get(1).toString().trim());
@@ -1566,6 +1583,9 @@ public class PermisosAction extends MasterAction implements ModelDriven<Permisos
             tituloOpc = "Permisos - Sub-Opciones";
 
             varReturnProcess(1);
+            
+            accion = "Modificar";
+            
             if (!listVarReturn.isEmpty()) {
                 curPagVis = Integer.parseInt(listVarReturn.get(0).toString().trim());
                 modelo.setIdTipUsu(listVarReturn.get(1).toString().trim());

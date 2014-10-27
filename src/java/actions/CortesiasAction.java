@@ -305,12 +305,13 @@ public class CortesiasAction extends MasterAction implements ModelDriven<Cortesi
                 indErrParm = "error";
             } else {
                 varReturnProcess(1);
-                if (opcion.equals("A")) {
-                    getModelo().setIdCorMar(0);
-                    getDatosConcesionarioMarcaModelo();
-                    
-                    formURL = baseURL + "cortesias/grabarCortesia";
-                }
+                
+                accion = "Adicionar";
+                
+                getModelo().setIdCorMar(0);
+                getDatosConcesionarioMarcaModelo();
+
+                formURL = baseURL + "cortesias/grabarCortesia";
             }
         }
         
@@ -365,12 +366,13 @@ public class CortesiasAction extends MasterAction implements ModelDriven<Cortesi
                 indErrParm = "error";
             } else {
                 varReturnProcess(1);
-                if (opcion.equals("M")) {
-                    getDatosCortesia();
-                    getDatosConcesionarioMarcaModelo();
-                    
-                    formURL = baseURL + "cortesias/actualizarCortesia";
-                }
+                
+                accion = "Modificar";
+                
+                getDatosCortesia();
+                getDatosConcesionarioMarcaModelo();
+
+                formURL = baseURL + "cortesias/actualizarCortesia";
             }
         }
         

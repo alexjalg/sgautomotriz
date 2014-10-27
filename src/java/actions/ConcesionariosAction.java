@@ -149,14 +149,14 @@ public class ConcesionariosAction extends MasterAction implements ModelDriven<Co
         if (indErrAcc.equals("")) {
             nivBandeja = 1;
 
-            if ((!opcion.trim().equals("A") && !opcion.trim().equals("M"))) {
+            if (!opcion.trim().equals("A")) {
                 indErrParm = "error";
             } else {
                 varReturnProcess(1);
-
-                if (opcion.equals("A")) {
-                    formURL = baseURL + "concesionarios/grabarConcesionario";
-                }
+                
+                accion = "Adicionar";
+                
+                formURL = baseURL + "concesionarios/grabarConcesionario";
             }
         }
 
@@ -171,15 +171,15 @@ public class ConcesionariosAction extends MasterAction implements ModelDriven<Co
         if (indErrAcc.equals("")) {
             nivBandeja = 1;
 
-            if ((!opcion.trim().equals("A") && !opcion.trim().equals("M"))) {
+            if (!opcion.trim().equals("M")) {
                 indErrParm = "error";
             } else {
                 varReturnProcess(1);
                 
-                if (opcion.equals("M")) {
-                    getDatosConcesionario();
-                    formURL = baseURL + "concesionarios/actualizarConcesionario";
-                }
+                accion = "Modificar";
+                
+                getDatosConcesionario();
+                formURL = baseURL + "concesionarios/actualizarConcesionario";
             }
         }
 

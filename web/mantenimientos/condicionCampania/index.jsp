@@ -49,11 +49,14 @@
                     <td style="width: 300px;">
                         Marca
                     </td>
-                    <td style="width: 400px;">
+                    <td style="width: 300px;">
                         Modelo
                     </td>
                     <td style="">
                         Versión
+                    </td>
+                    <td style="width: 100px;">
+                        Año Fabricación
                     </td>
                     <td style="text-align: center; width: 70px;">
                         Estado
@@ -61,8 +64,9 @@
                 </tr>
                 <tr class="tr-head">
                     <td style="width: 300px;"></td>
-                    <td style="width: 400px;"></td>
+                    <td style="width: 300px;"></td>
                     <td style=""></td>
+                    <td style="width: 100px;"></td>
                     <td style="width: 70px;"></td>
                 </tr>
             </table>
@@ -74,17 +78,21 @@
                     <td style="width: 300px;">
                         <s:property value="desMarExt" />
                     </td>
-                    <td style="width: 400px;">
+                    <td style="width: 300px;">
                         <s:property value="desModExt" />
                     </td>
                     <td style="">
                         <s:property value="desVerExt" />
+                    </td>
+                    <td style="width: 100px;">
+                        <s:property value="numAnoFab" />
                     </td>
                     <td style=" text-align: center; width:70px;">
                         <input type="checkbox" id="chk_edocam" <s:if test='%{edoConCam=="A"}'> checked="checked" class="chk_edocam check_grid_on" </s:if><s:else> class="chk_edocam" </s:else> />
                         <input type="hidden" value="<s:property value="idMar" />" />
                         <input type="hidden" value="<s:property value="idModMar" />" />
                         <input type="hidden" value="<s:property value="idVerMod" />" />
+                        <input type="hidden" value="<s:property value="numAnoFab" />" />
                     </td>
                 </tr>
                 </s:iterator>
@@ -112,7 +120,7 @@
     
         $('#DIVversiones').dialog({
             autoOpen: false,
-            width: 650,
+            width: 680,
             height: 580,
             modal: true,
             closeOnEscape: false,
@@ -197,6 +205,7 @@
             var _idmar = $(this).next().val();
             var _idmodmar = $(this).next().next().val();
             var _idvermod = $(this).next().next().next().val();
+            var _numanofab = $(this).next().next().next().next().val();
             
             if($(this).hasClass('check_grid_on'))
                 _edo = 'D';
@@ -214,6 +223,7 @@
                     idMar:_idmar,
                     idModMar:_idmodmar,
                     idVerMod:_idvermod,
+                    numAnoFab:_numanofab,
                     edoConCam:_edo
                 },
                 function(resultado){

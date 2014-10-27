@@ -169,14 +169,14 @@ public class TipoTrasmisionAction extends MasterAction implements ModelDriven<Ti
         if (indErrAcc.equals("")) {
             nivBandeja = 1;
 
-            if (!opcion.trim().equals("A") && !opcion.trim().equals("M")) {
+            if (!opcion.trim().equals("A")) {
                 indErrParm = "error";
             } else {
                 varReturnProcess(1);
-
-                if (opcion.equals("A")) {
-                    formURL = baseURL + "tipoTrasmision/grabarTipoTrasmision";
-                }
+                
+                accion = "Adicionar";
+                
+                formURL = baseURL + "tipoTrasmision/grabarTipoTrasmision";
             }
         }
         return "adicionar";
@@ -188,18 +188,18 @@ public class TipoTrasmisionAction extends MasterAction implements ModelDriven<Ti
         if (indErrAcc.equals("")) {
             nivBandeja = 1;
 
-            if (!opcion.trim().equals("A") && !opcion.trim().equals("M")) {
+            if (!opcion.trim().equals("M")) {
                 indErrParm = "error";
             } else {
                 varReturnProcess(1);
-
-                if (opcion.equals("M")) {
-                    if (modelo.getIdTipTras() == 0) {
-                        indErrParm = "error";
-                    } else {
-                        getDatosTipoTrasmision();
-                        formURL = baseURL + "tipoTrasmision/actualizarTipoTrasmision";
-                    }
+                
+                accion = "Modificar";
+                
+                if (modelo.getIdTipTras() == 0) {
+                    indErrParm = "error";
+                } else {
+                    getDatosTipoTrasmision();
+                    formURL = baseURL + "tipoTrasmision/actualizarTipoTrasmision";
                 }
             }
         }

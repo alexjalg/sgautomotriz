@@ -195,16 +195,15 @@ public class ProvinciasAction extends MasterAction implements ModelDriven<Provin
         if (indErrAcc.equals("")) {
             nivBandeja = 2;
 
-            if ((!opcion.trim().equals("A") && !opcion.trim().equals("M")) || modelo.getIdDep() == 0) {
+            if (!opcion.trim().equals("A") || modelo.getIdDep() == 0) {
                 indErrParm = "error";
             } else {
                 varReturnProcess(1);
+                
+                accion = "Adicionar";
 
                 getDatosDepartamento();
-
-                if (opcion.equals("A")) {
-                    formURL = baseURL + "provincias/grabarProvincia";
-                }
+                formURL = baseURL + "provincias/grabarProvincia";
             }
         }
 
@@ -218,20 +217,20 @@ public class ProvinciasAction extends MasterAction implements ModelDriven<Provin
         if (indErrAcc.equals("")) {
             nivBandeja = 2;
 
-            if ((!opcion.trim().equals("A") && !opcion.trim().equals("M")) || modelo.getIdDep() == 0) {
+            if (!opcion.trim().equals("M") || modelo.getIdDep() == 0) {
                 indErrParm = "error";
             } else {
                 varReturnProcess(1);
+                
+                accion = "Modificar";
 
                 getDatosDepartamento();
-
-                if (opcion.equals("M")) {
-                    if (modelo.getIdDep() == 0) {
-                        indErrParm = "error";
-                    } else {
-                        getDatosProvincia();
-                        formURL = baseURL + "provincias/actualizarProvincia";
-                    }
+                
+                if (modelo.getIdDep() == 0) {
+                    indErrParm = "error";
+                } else {
+                    getDatosProvincia();
+                    formURL = baseURL + "provincias/actualizarProvincia";
                 }
             }
         }

@@ -153,15 +153,15 @@ public class TipoCambioAction extends MasterAction implements ModelDriven<TipoCa
         if (indErrAcc.equals("")) {
             nivBandeja = 1;
 
-            if ((!opcion.trim().equals("A") && !opcion.trim().equals("M"))) {
+            if (!opcion.trim().equals("A")) {
                 indErrParm = "error";
             } else {
                 varReturnProcess(1);
 
-                if (opcion.equals("A")) {
-                    modelo.setFecTipCam(getConvertFecha(getCurDate(), 1));
-                    formURL = baseURL + "tipoCambio/grabarTipoCambio";
-                }
+                accion = "Adicionar";
+                
+                modelo.setFecTipCam(getConvertFecha(getCurDate(), 1));
+                formURL = baseURL + "tipoCambio/grabarTipoCambio";
             }
         }
 
@@ -175,15 +175,15 @@ public class TipoCambioAction extends MasterAction implements ModelDriven<TipoCa
         if (indErrAcc.equals("")) {
             nivBandeja = 1;
 
-            if ((!opcion.trim().equals("A") && !opcion.trim().equals("M"))) {
+            if (!opcion.trim().equals("M")) {
                 indErrParm = "error";
             } else {
                 varReturnProcess(1);
                 
-                if (opcion.equals("M")) {
-                    getDatosTipoCambio();
-                    formURL = baseURL + "tipoCambio/actualizarTipoCambio";
-                }
+                accion = "Modificar";
+                
+                getDatosTipoCambio();
+                formURL = baseURL + "tipoCambio/actualizarTipoCambio";
             }
         }
 

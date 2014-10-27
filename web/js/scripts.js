@@ -279,14 +279,17 @@ function resizeContGrilla(cantReg)
     $('.d-paging').css('width',$('.d-grilla').outerWidth()-18);
 }
 
-function resizeContGrillaPopUp(cantReg)
-{
+function resizeContGrillaPopUp(cantReg) {
     var _cantreggrilla = $('.d-content-grilla-body-popup table tr').size();
-    if(_cantreggrilla < cantReg)
-    {
+    if(_cantreggrilla < cantReg) {
         $('.d-content-grilla-body-popup').css('height',cantReg*23);
         $('.d-content-grilla-body-popup').parent().css('height',24+27+cantReg*23+36);
     }
+}
+
+function resizeContForm() {
+    var _wForm = $('.d-content-form form > table').outerWidth();
+    $('.d-content-form').css('min-width',_wForm);
 }
 
 function displayOverlay(funcion)

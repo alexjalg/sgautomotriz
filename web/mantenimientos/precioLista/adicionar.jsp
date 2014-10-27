@@ -73,7 +73,7 @@
 
 <script type="text/javascript">
     $(document).ready(function() {
-        $('#btn_grabar').button();
+        resizeContForm();
 
         $('#DIVgrabar').dialog({
             autoOpen: false,

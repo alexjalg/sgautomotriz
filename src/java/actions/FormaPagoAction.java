@@ -19,6 +19,7 @@ public class FormaPagoAction extends MasterAction implements ModelDriven<FormaPa
     public FormaPago getModel() {
         tituloOpc = "Formas de pago";
         idClaseAccion = 19;
+        
         return modelo;
     }
 
@@ -31,6 +32,7 @@ public class FormaPagoAction extends MasterAction implements ModelDriven<FormaPa
                 errores.add("No ha seleccionado ningun registro");
             }
         }
+        
         return "vrfSeleccion";
     }
 
@@ -38,6 +40,7 @@ public class FormaPagoAction extends MasterAction implements ModelDriven<FormaPa
     public String execute() {
         idAccion = 2;
         verifAccionTipoUsuario();
+        
         if (indErrAcc.equals("")) {
             nivBandeja = 1;
             urlPaginacion = "formaPago/FormaPago";
@@ -51,7 +54,8 @@ public class FormaPagoAction extends MasterAction implements ModelDriven<FormaPa
             listFormaPagoIndex();
 
         }
-        return "success";
+        
+        return SUCCESS;
     }
 
     private void cantFormaPagoIndex() {
@@ -168,17 +172,18 @@ public class FormaPagoAction extends MasterAction implements ModelDriven<FormaPa
     public String adicionar() {
         idAccion = 3;
         verifAccionTipoUsuario();
+        
         if (indErrAcc.equals("")) {
             nivBandeja = 1;
 
-            if (!opcion.trim().equals("A") && !opcion.trim().equals("M")) {
+            if (!opcion.trim().equals("A")) {
                 indErrParm = "error";
             } else {
                 varReturnProcess(1);
+                
+                accion = "Adicionar";
 
-                if (opcion.equals("A")) {
-                    formURL = baseURL + "formaPago/grabarFormaPago";
-                }
+                formURL = baseURL + "formaPago/grabarFormaPago";
             }
         }
         return "adicionar";
@@ -187,21 +192,22 @@ public class FormaPagoAction extends MasterAction implements ModelDriven<FormaPa
     public String modificar() {
         idAccion = 4;
         verifAccionTipoUsuario();
+        
         if (indErrAcc.equals("")) {
             nivBandeja = 1;
 
-            if (!opcion.trim().equals("A") && !opcion.trim().equals("M")) {
+            if (!opcion.trim().equals("M")) {
                 indErrParm = "error";
             } else {
                 varReturnProcess(1);
 
-                if (opcion.equals("M")) {
-                    if (modelo.getIdForPag() == 0) {
-                        indErrParm = "error";
-                    } else {
-                        getDatosFormaPago();
-                        formURL = baseURL + "formaPago/actualizarFormaPago";
-                    }
+                accion = "Modificar";
+                
+                if (modelo.getIdForPag() == 0) {
+                    indErrParm = "error";
+                } else {
+                    getDatosFormaPago();
+                    formURL = baseURL + "formaPago/actualizarFormaPago";
                 }
             }
         }

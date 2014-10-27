@@ -264,13 +264,13 @@ public class VehiculosAction extends MasterAction implements ModelDriven<Vehicul
             if (!opcion.trim().equals("A")) {
                 indErrParm = "error";
             } else {
+                accion = "Adicionar";
+                
                 vehiculo.setIdVeh("");
                 varReturnProcess(1);
-
-                if (opcion.equals("A")) {
-                    formURL = baseURL + "vehiculos/grabarVehiculo";
-                    populateForm();
-                }
+                
+                formURL = baseURL + "vehiculos/grabarVehiculo";
+                populateForm();
             }
         }
 
@@ -431,13 +431,12 @@ public class VehiculosAction extends MasterAction implements ModelDriven<Vehicul
             } else {
                 varReturnProcess(1);
 
-                if (opcion.equals("M")) {
-                    getDatosVehiculo();
-                    populateForm();
-                    
-                    formURL = baseURL + "vehiculos/actualizarVehiculo";
+                accion = "Adicionar";
+                
+                getDatosVehiculo();
+                populateForm();
 
-                }
+                formURL = baseURL + "vehiculos/actualizarVehiculo";
             }
         }
 
@@ -711,7 +710,7 @@ public class VehiculosAction extends MasterAction implements ModelDriven<Vehicul
                     if (!indError.equals("")) {
                         errores.add(indError);
                     } else {
-                        tabla = conex.executeDataSet("CALL usp_verifIdVehiculo(?)",
+                        tabla = conex.executeDataSet("CALL usp_verifExistVehiculo(?)",
                                 new Object[]{vehiculo.getIdVeh()});
 
                         indError += conex.getErrorSQL();
@@ -1026,9 +1025,9 @@ public class VehiculosAction extends MasterAction implements ModelDriven<Vehicul
             } else {
                 varReturnProcess(1);
 
-                if (opcion.equals("D")) {
-                    getDatosFullVehiculo();
-                }
+                accion = "Detalle";
+                
+                getDatosFullVehiculo();
             } 
         }
         
@@ -1110,6 +1109,45 @@ public class VehiculosAction extends MasterAction implements ModelDriven<Vehicul
             } catch (Exception e) {
             }
         }
+    }
+    
+    public String listadoPropositosVarios() {
+        idAccion = 9;
+        verifAccionTipoUsuario();
+        if (indErrAcc.equals("")) {
+            urlPaginacion = "vehiculos/listadoPropositosVariosVehiculo";
+
+            varReturnProcess(0);
+            if (!listVarReturn.isEmpty()) {
+                curPagVis = Integer.parseInt(listVarReturn.get(0).toString().trim());
+                vehiculo.setIdVeh_f(listVarReturn.get(1).toString().trim());
+                vehiculo.setDesNumCha_f(listVarReturn.get(2).toString().trim());
+                vehiculo.setDesNumMot_f(listVarReturn.get(3).toString().trim());
+                vehiculo.setFecFacPrv_f(listVarReturn.get(4).toString().trim());
+                vehiculo.setDesCli_f(listVarReturn.get(5).toString().trim());
+                vehiculo.setFecEmiDocVen_f(listVarReturn.get(6).toString().trim());
+                vehiculo.setIdTipDocVen_f(listVarReturn.get(7).toString().trim());
+                vehiculo.setDesNumDocVen_f(listVarReturn.get(8).toString().trim());
+                vehiculo.setDesNumPla_f(listVarReturn.get(9).toString().trim());
+                vehiculo.setFecEntCli_f(listVarReturn.get(10).toString().trim());
+            }
+
+            vehiculo.setFecFacPrv_f(getConvertFecha(vehiculo.getFecFacPrv_f(), 2));
+            vehiculo.setFecEmiDocVen_f(getConvertFecha(vehiculo.getFecEmiDocVen_f(), 2));
+            vehiculo.setFecEntCli_f(getConvertFecha(vehiculo.getFecEntCli_f(), 2));
+
+            cantVehiculosIndex();
+            verifPag();
+            listVehiculoIndex();
+
+            vehiculo.setFecFacPrv_f(getConvertFecha(vehiculo.getFecFacPrv_f(), 1));
+            vehiculo.setFecEmiDocVen_f(getConvertFecha(vehiculo.getFecEmiDocVen_f(), 1));
+            vehiculo.setFecEntCli_f(getConvertFecha(vehiculo.getFecEntCli_f(), 1));
+            
+            listTipoDocumentoVenta();
+        }
+
+        return "listadoPropositosVarios";
     }
     
     /**

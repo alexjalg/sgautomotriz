@@ -169,15 +169,15 @@ public class ClientesAction extends MasterAction implements ModelDriven<Clientes
         if (indErrAcc.equals("")) {
             nivBandeja = 1;
 
-            if ((!opcion.trim().equals("A") && !opcion.trim().equals("M"))) {
+            if (!opcion.trim().equals("A")) {
                 indErrParm = "error";
             } else {
                 varReturnProcess(1);
-
-                if (opcion.equals("A")) {
-                    cliente.setIdCli("");
-                    formURL = baseURL + "clientes/grabarCliente";
-                }
+                
+                accion = "Adicionar";
+                
+                cliente.setIdCli("");
+                formURL = baseURL + "clientes/grabarCliente";
             }
         }
         populate();
@@ -191,19 +191,19 @@ public class ClientesAction extends MasterAction implements ModelDriven<Clientes
         if (indErrAcc.equals("")) {
             nivBandeja = 1;
 
-            if ((!opcion.trim().equals("A") && !opcion.trim().equals("M"))) {
+            if (!opcion.trim().equals("M")) {
                 indErrParm = "error";
             } else {
                 varReturnProcess(1);
-
-                if (opcion.equals("M")) {
-                    populate();
-                    getDatosCliente();
-                    populateProv();
-                    populateDist();
-                    formURL = baseURL + "clientes/actualizarCliente";
-
-                }
+                
+                accion = "Modificar";
+                
+                populate();
+                getDatosCliente();
+                populateProv();
+                populateDist();
+                    
+                formURL = baseURL + "clientes/actualizarCliente";
             }
         }
 
@@ -227,7 +227,7 @@ public class ClientesAction extends MasterAction implements ModelDriven<Clientes
         listaSitCli.add(new SituacionCliente("C", "Cobranza Coactiva"));
 
         cliente.setOtrTipCli("N");
-        cliente.setOtrGenCon("M");
+        //cliente.setOtrGenCon("M");
 
         populateTipoDoc();
         populateDep();
@@ -390,9 +390,11 @@ public class ClientesAction extends MasterAction implements ModelDriven<Clientes
                     errores.add(indError);
                 } else {
                     while (tabla.next()) {
+                        
                         cliente.setIdCli(tabla.getString("idCli"));
                         cliente.setIdTipDoc(tabla.getInt("idTipDoc"));
                         cliente.setOtrTipCli(tabla.getString("otrTipCli"));
+                        cliente.setDesTipCli(tabla.getString("desTipCli"));
                         cliente.setDesCli(tabla.getString("desCli"));
                         cliente.setDesApeCon(tabla.getString("desApeCon"));
                         cliente.setDesNomCon(tabla.getString("desNomCon"));

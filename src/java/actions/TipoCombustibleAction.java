@@ -170,14 +170,14 @@ public class TipoCombustibleAction extends MasterAction implements ModelDriven<T
         if (indErrAcc.equals("")) {
             nivBandeja = 1;
 
-            if (!opcion.trim().equals("A") && !opcion.trim().equals("M")) {
+            if (!opcion.trim().equals("A")) {
                 indErrParm = "error";
             } else {
                 varReturnProcess(1);
-
-                if (opcion.equals("A")) {
-                    formURL = baseURL + "tipoCombustible/grabarTipoCombustible";
-                }
+                
+                accion = "Adicionar";
+                
+                formURL = baseURL + "tipoCombustible/grabarTipoCombustible";
             }
         }
         return "adicionar";
@@ -189,18 +189,18 @@ public class TipoCombustibleAction extends MasterAction implements ModelDriven<T
         if (indErrAcc.equals("")) {
             nivBandeja = 1;
 
-            if (!opcion.trim().equals("A") && !opcion.trim().equals("M")) {
+            if (!opcion.trim().equals("M")) {
                 indErrParm = "error";
             } else {
                 varReturnProcess(1);
 
-                if (opcion.equals("M")) {
-                    if (modelo.getIdTipCom() == 0) {
-                        indErrParm = "error";
-                    } else {
-                        getDatosTipoCombustible();
-                        formURL = baseURL + "tipoCombustible/actualizarTipoCombustible";
-                    }
+                accion = "Modificar";
+                
+                if (modelo.getIdTipCom() == 0) {
+                    indErrParm = "error";
+                } else {
+                    getDatosTipoCombustible();
+                    formURL = baseURL + "tipoCombustible/actualizarTipoCombustible";
                 }
             }
         }

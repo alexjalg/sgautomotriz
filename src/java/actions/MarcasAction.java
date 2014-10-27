@@ -145,21 +145,14 @@ public class MarcasAction extends MasterAction implements ModelDriven<Marcas> {
         if (indErrAcc.equals("")) {
             nivBandeja = 1;
 
-            if ((!opcion.trim().equals("A") && !opcion.trim().equals("M"))) {
+            if (!opcion.trim().equals("A")) {
                 indErrParm = "error";
             } else {
                 varReturnProcess(1);
 
-                if (opcion.equals("A")) {
-                    formURL = baseURL + "marcas/grabarMarca";
-                }
-
-                if (opcion.equals("M")) {
-
-                    getDatosMarca();
-                    formURL = baseURL + "marcas/actualizarMarca";
-
-                }
+                accion = "Adicionar";
+                
+                formURL = baseURL + "marcas/grabarMarca";
             }
         }
 
@@ -173,16 +166,15 @@ public class MarcasAction extends MasterAction implements ModelDriven<Marcas> {
         if (indErrAcc.equals("")) {
             nivBandeja = 1;
 
-            if ((!opcion.trim().equals("A") && !opcion.trim().equals("M"))) {
+            if (!opcion.trim().equals("M")) {
                 indErrParm = "error";
             } else {
                 varReturnProcess(1);
-
-                if (opcion.equals("M")) {
-                    getDatosMarca();
-                    formURL = baseURL + "marcas/actualizarMarca";
-
-                }
+                
+                accion = "Modificar";
+                
+                getDatosMarca();
+                formURL = baseURL + "marcas/actualizarMarca";
             }
         }
 

@@ -635,6 +635,10 @@ textarea.element-form
     width: 100%;
 }
 
+.d-content-form .table-form tr {
+    height: 28px;
+}
+
 .d-content-form .d-block-form
 {
     position: relative;

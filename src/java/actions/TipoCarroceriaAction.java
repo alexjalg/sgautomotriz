@@ -124,14 +124,14 @@ public class TipoCarroceriaAction extends MasterAction implements ModelDriven<Ti
         if (indErrAcc.equals("")) {
             nivBandeja = 1;
 
-            if (!opcion.trim().equals("A") && !opcion.trim().equals("M")) {
+            if (!opcion.trim().equals("A")) {
                 indErrParm = "error";
             } else {
                 varReturnProcess(1);
 
-                if (opcion.equals("A")) {
-                    formURL = baseURL + "tipoCarroceria/grabarTipoCarroceria";
-                }
+                accion = "Adicionar";
+                
+                formURL = baseURL + "tipoCarroceria/grabarTipoCarroceria";
             }
         }
         return "adicionar";
@@ -142,17 +142,18 @@ public class TipoCarroceriaAction extends MasterAction implements ModelDriven<Ti
         verifAccionTipoUsuario();
         if (indErrAcc.equals("")) {
             nivBandeja = 1;
-            if (!opcion.trim().equals("A") && !opcion.trim().equals("M")) {
+            if (!opcion.trim().equals("M")) {
                 indErrParm = "error";
             } else {
                 varReturnProcess(1);
-                if (opcion.equals("M")) {
-                    if (modelo.getIdTipCar() == 0) {
-                        indErrParm = "error";
-                    } else {
-                        getDatosTipoCarroceria();
-                        formURL = baseURL + "tipoCarroceria/actualizarTipoCarroceria";
-                    }
+                
+                accion = "Modificar";
+                
+                if (modelo.getIdTipCar() == 0) {
+                    indErrParm = "error";
+                } else {
+                    getDatosTipoCarroceria();
+                    formURL = baseURL + "tipoCarroceria/actualizarTipoCarroceria";
                 }
             }
         }

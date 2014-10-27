@@ -3,7 +3,9 @@
 <div class="d-header">
     <div class="d-title-header">
         <s:property value="tituloOpc" />
-        <div class="d-subtitle-header"></div>
+        <div class="d-subtitle-header">
+            <s:property value="accion" />
+        </div>
     </div>
     <div class="d-subheader">
         <div class="d-back">
@@ -55,7 +57,7 @@
                     
 <script type="text/javascript">
     $(document).ready(function(){
-        $('#btn_grabar').button();
+        resizeContForm();
     
         $('#DIVgrabar').dialog({
             autoOpen: false,

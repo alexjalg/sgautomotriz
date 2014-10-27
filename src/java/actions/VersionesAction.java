@@ -144,39 +144,6 @@ public class VersionesAction extends MasterAction implements ModelDriven<Version
             }
         }
     }
-    
-    /*private void listgetVersionesIndex() {
-        helper conex = null;
-        ResultSet tabla = null;
-        try {
-            conex = new helper();
-            indError += conex.getErrorSQL();
-            if (!indError.equals("")) {
-                errores.add(indError);
-            } else {
-                tabla = conex.executeDataSet("CALL usp_listgetVersionIndex(?,?)",
-                        new Object[]{modelo.getIdMar(), modelo.getIdModMar()});
-                indError += conex.getErrorSQL();
-                if (!indError.equals("")) {
-                    errores.add(indError);
-                } else {
-                    while (tabla.next()) {
-                        modelo.setDesMar(tabla.getString("desMar").trim());                        
-                        modelo.setDesModMar(tabla.getString("desModMar").trim());                        
-                    }
-                }
-            }
-        } catch (Exception e) {
-            indError += "error";
-            errores.add(e.getMessage());
-        } finally {
-            try {
-                tabla.close();
-                conex.returnConnect();
-            } catch (Exception e) {
-            }
-        }
-    }*/
 
     public String adicionar() {
         idAccion = 3;
@@ -188,13 +155,14 @@ public class VersionesAction extends MasterAction implements ModelDriven<Version
                 indErrParm = "error";
             } else {
                 varReturnProcess(1);
-                if (opcion.equals("A")) {
-                    modelo.setIdVerMod("");
-                    getDatosMarcaModelo();
-                    populateForm();
+                
+                accion = "Adicionar";
+                
+                modelo.setIdVerMod("");
+                getDatosMarcaModelo();
+                populateForm();
 
-                    formURL = baseURL + "versiones/grabarVersion";
-                }
+                formURL = baseURL + "versiones/grabarVersion";
             }
         }
         return "adicionar";
@@ -211,17 +179,18 @@ public class VersionesAction extends MasterAction implements ModelDriven<Version
                 indErrParm = "error";
             } else {
                 varReturnProcess(1);
-                if (opcion.equals("M")) {
-                    if (modelo.getIdVerMod().trim().equals("")) {
-                        indErrParm = "error";
-                    } else {
-                        getDatosMarcaModelo();
-                        getDatosVersiones();
+                
+                accion = "Modificar";
+                
+                if (modelo.getIdVerMod().trim().equals("")) {
+                    indErrParm = "error";
+                } else {
+                    getDatosMarcaModelo();
+                    getDatosVersiones();
 
-                        populateForm();
+                    populateForm();
 
-                        formURL = baseURL + "versiones/actualizarVersion";
-                    }
+                    formURL = baseURL + "versiones/actualizarVersion";
                 }
             }
         }

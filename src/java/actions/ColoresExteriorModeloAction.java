@@ -211,17 +211,16 @@ public class ColoresExteriorModeloAction extends MasterAction implements ModelDr
         if (indErrAcc.equals("")) {
             nivBandeja = 3;
 
-            varReturnProcess(1);
-
-            if ((!opcion.trim().equals("A") && !opcion.trim().equals("M")) || modelo.getIdMar().trim().equals("")
+            if (!opcion.trim().equals("A") || modelo.getIdMar().trim().equals("")
                     || modelo.getIdModMar().trim().equals("")) {
                 indErrParm = "error";
             } else {
+                varReturnProcess(1);
+                
+                accion = "Adicionar";
+                
                 getDatosMarcaModelo();
-
-                if (opcion.equals("A")) {
-                    formURL = baseURL + "coloresExtModelo/grabarColorExtModelo";
-                }
+                formURL = baseURL + "coloresExtModelo/grabarColorExtModelo";
             }
         }
 

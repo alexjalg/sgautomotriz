@@ -217,14 +217,13 @@ public class RegistroVentasAction extends MasterAction implements ModelDriven<Re
             } else {
                 varReturnProcess(1);
                 
+                accion = "Adicionar";
+                
                 modelo.setIdTipDocVen("99");
-                //listTiposDocumentoVenta();
                 populateForm();
-
-                if (opcion.equals("A")) {
-                    modelo.setIdNumIntRV("");
-                    formURL = baseURL + "registroVentas/grabarRegistroVenta";
-                }
+                
+                modelo.setIdNumIntRV("");
+                formURL = baseURL + "registroVentas/grabarRegistroVenta";
             }
         }
 
@@ -304,6 +303,8 @@ public class RegistroVentasAction extends MasterAction implements ModelDriven<Re
             } else {
                 varReturnProcess(1);
                 
+                accion = "Modificar";
+                
                 if(modelo.getIdTipDocVen().equals(""))
                     modelo.setIdTipDocVen("99");
                 
@@ -311,10 +312,8 @@ public class RegistroVentasAction extends MasterAction implements ModelDriven<Re
                         
                 listTiposDocumentoVenta();
                 populateForm();
-
-                if (opcion.equals("M")) {
-                    formURL = baseURL + "registroVentas/actualizarRegistroVenta";
-                }
+                
+                formURL = baseURL + "registroVentas/actualizarRegistroVenta";
             }
         }
 
@@ -333,6 +332,8 @@ public class RegistroVentasAction extends MasterAction implements ModelDriven<Re
                 indErrParm = "error";
             } else {
                 varReturnProcess(1);
+                
+                accion = "Detalle";
                 
                 if(modelo.getIdTipDocVen().equals(""))
                     modelo.setIdTipDocVen("99");
@@ -645,9 +646,37 @@ public class RegistroVentasAction extends MasterAction implements ModelDriven<Re
             }
             
             if(!modelo.getIdVeh().equals("")) {
-                if(modelo.getDesVeh_h().equals("")) {
+                helper conex1 = null;
+                ResultSet tabla = null;
+                
+                try {
+                    tabla = conex1.executeDataSet("CALL usp_verifExistVehiculo(?)",
+                            new Object[]{modelo.getIdVeh()});
+
+                    indError += conex1.getErrorSQL();
+
+                    if (!indError.equals("")) {
+                        errores.add(indError);
+                    } else {
+                        int cont = 0;
+                        while (tabla.next()) {
+                            cont = tabla.getInt(1);
+                        }
+                        
+                        if(cont==0) {
+                            indError += "error";
+                            errores.add("Serie de vehículo no válida");
+                        }
+                    }
+                } catch (Exception e) {
                     indError += "error";
-                    errores.add("Serie de vehículo no válida");
+                    errores.add(e.getMessage());
+                } finally {
+                    try {
+                        tabla.close();
+                        conex1.returnConnect();
+                    } catch (Exception e) {
+                    }
                 }
             }
             

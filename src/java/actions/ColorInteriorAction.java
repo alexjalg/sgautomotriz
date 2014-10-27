@@ -177,14 +177,14 @@ public class ColorInteriorAction extends MasterAction implements ModelDriven<Col
         if (indErrAcc.equals("")) {
             nivBandeja = 1;
 
-            if (!opcion.trim().equals("A") && !opcion.trim().equals("M")) {
+            if (!opcion.trim().equals("A")) {
                 indErrParm = "error";
             } else {
                 varReturnProcess(1);
 
-                if (opcion.equals("A")) {
-                    formURL = baseURL + "colorInterior/grabarColorInterior";
-                }
+                accion = "Adicionar";
+                
+                formURL = baseURL + "colorInterior/grabarColorInterior";
             }
         }
 
@@ -199,20 +199,20 @@ public class ColorInteriorAction extends MasterAction implements ModelDriven<Col
         if (indErrAcc.equals("")) {
             nivBandeja = 1;
 
-            if (!opcion.trim().equals("A") && !opcion.trim().equals("M")) {
+            if (!opcion.trim().equals("M")) {
                 indErrParm = "error";
             } else {
                 varReturnProcess(1);
 
-                if (opcion.equals("M")) {
-                    String valorB = "";
-                    if (modelo.getIdColInt().equals(valorB)) {
-                        indErrParm = "error";
-                    } else {
-                        getDatosColorInterior();
+                accion = "Modificar";
+                
+                String valorB = "";
+                if (modelo.getIdColInt().equals(valorB)) {
+                    indErrParm = "error";
+                } else {
+                    getDatosColorInterior();
 
-                        formURL = baseURL + "colorInterior/actualizarColorInterior";
-                    }
+                    formURL = baseURL + "colorInterior/actualizarColorInterior";
                 }
             }
         }

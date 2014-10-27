@@ -19,6 +19,7 @@ public class TipoLocalAction  extends  MasterAction implements ModelDriven<TipoL
     public TipoLocal getModel() {
         tituloOpc = "Tipos de local";
         idClaseAccion = 23;
+        
         return modelo;
     }
 
@@ -38,6 +39,7 @@ public class TipoLocalAction  extends  MasterAction implements ModelDriven<TipoL
     public String execute() {
         idAccion = 2;
         verifAccionTipoUsuario();
+        
         if (indErrAcc.equals("")) {
             nivBandeja = 1;
             urlPaginacion = "tipoLocal/TipoLocal";
@@ -51,7 +53,7 @@ public class TipoLocalAction  extends  MasterAction implements ModelDriven<TipoL
             listTipoLocalIndex();
 
         }
-        return "success";
+        return SUCCESS;
     }
 
     private void cantTipoLocalIndex() {
@@ -166,17 +168,18 @@ public class TipoLocalAction  extends  MasterAction implements ModelDriven<TipoL
     public String adicionar() {
         idAccion = 3;
         verifAccionTipoUsuario();
+        
         if (indErrAcc.equals("")) {
             nivBandeja = 1;
 
-            if (!opcion.trim().equals("A") && !opcion.trim().equals("M")) {
+            if (!opcion.trim().equals("A")) {
                 indErrParm = "error";
             } else {
                 varReturnProcess(1);
-
-                if (opcion.equals("A")) {
-                    formURL = baseURL + "tipoLocal/grabarTipoLocal";
-                }
+                
+                accion = "Adicionar";
+                
+                formURL = baseURL + "tipoLocal/grabarTipoLocal";
             }
         }
         return "adicionar";
@@ -188,18 +191,18 @@ public class TipoLocalAction  extends  MasterAction implements ModelDriven<TipoL
         if (indErrAcc.equals("")) {
             nivBandeja = 1;
 
-            if (!opcion.trim().equals("A") && !opcion.trim().equals("M")) {
+            if (!opcion.trim().equals("M")) {
                 indErrParm = "error";
             } else {
                 varReturnProcess(1);
 
-                if (opcion.equals("M")) {
-                    if (modelo.getIdTipLoc()== 0) {
-                        indErrParm = "error";
-                    } else {
-                        getDatosTipoTrasmision();
-                        formURL = baseURL + "tipoLocal/actualizarTipoLocal";
-                    }
+                accion = "Modificar";
+                
+                if (modelo.getIdTipLoc()== 0) {
+                    indErrParm = "error";
+                } else {
+                    getDatosTipoTrasmision();
+                    formURL = baseURL + "tipoLocal/actualizarTipoLocal";
                 }
             }
         }

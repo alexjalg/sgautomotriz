@@ -94,11 +94,11 @@ public class MasterAction extends ActionSupport implements ServletRequestAware {
     
     /*parametros que se envian al seleccionar una opcion del menú para recuperar los permisos del tipo 
      de usuario en la opción */
-    protected String mtu="0";
-    protected String mmo="0";
-    protected String mop="0";
-    protected String mni="0";
-    protected String mod="0";
+    protected String mtu="0"; //tipo de usuario
+    protected String mmo="0"; //modulo
+    protected String mop="0"; //opcion
+    protected String mni="0"; //nivel
+    protected String mod="0"; //opcion de la que depende
     protected String perm="";
     
     protected String curDate="";
