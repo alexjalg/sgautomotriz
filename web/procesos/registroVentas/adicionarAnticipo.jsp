@@ -121,39 +121,29 @@
                     </table>
                 </td>
             </tr>
-            <tr>
-                <td>
-                    <table border="0" cellpadding="0" cellspacing="0" class="table-form">
-                        <tr>
-                            <td style="width: 118px;">
-                                Vehículo<span class="required">*</span>
-                            </td>
-                            <td>
-                                <s:textfield name="idVeh" id="idVeh" cssClass="element-form" cssStyle="width: 90px;"
-                                             maxLength="10" onkeypress="return idCharacterNumberKeyWithIntro(event)" />
-                                <input type="hidden" id="indIdVeh" value="" />
-                                <s:textfield name="desVeh" id="desVeh" cssClass="element-form" cssStyle="width: 350px;" disabled="true" />
-                                <s:hidden name="desVeh_h" id="desVeh_hf" />
-                            </td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
         </table>
         <table border="0" cellpadding="0" cellspacing="0" style="margin-top: 10px;">
             <tr>
                 <td style="vertical-align: top;">
                     <div class="d-block-form" style="margin-right: 50px;">
-                        <div class="text-block">Importes de anticipo</div>
+                        <div class="text-block">Importes en soles</div>
                         <table border="0" cellpadding="0" cellspacing="0" class="table-form">
                             <tr>
                                 <td style="width: 118px;">
                                     Importe venta
                                 </td>
                                 <td>
-                                    <s:textfield name="impMOAntVen" id="impMOAntVen" cssClass="element-form" cssStyle="width: 90px; text-align: right;"
+                                    <s:textfield name="impMonLocVen" id="impMonLocVen" cssClass="element-form" cssStyle="width: 90px; text-align: right;"
                                                  onkeypress="return isNumberKey(event)" disabled="true" />
-                                    <s:hidden name="impMOAntVen" id="impMOAntVen_h" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 118px;">
+                                    Importe descuento
+                                </td>
+                                <td>
+                                    <s:textfield name="impMonLocDes" id="impMonLocDes" cssClass="element-form" cssStyle="width: 90px; text-align: right;"
+                                                 onkeypress="return isNumberKey(event)" disabled="true" />
                                 </td>
                             </tr>
                             <tr>
@@ -161,9 +151,8 @@
                                     Importe impuestos
                                 </td>
                                 <td>
-                                    <s:textfield name="impMOAntImp" id="impMOAntImp" cssClass="element-form" cssStyle="width: 90px; text-align: right;"
+                                    <s:textfield name="impMonLocImp" id="impMonLocImp" cssClass="element-form" cssStyle="width: 90px; text-align: right;"
                                                  onkeypress="return isNumberKey(event)" disabled="true" />
-                                    <s:hidden name="impMOAntImp" id="impMOAntImp_h" />
                                 </td>
                             </tr>
                             <tr>
@@ -171,140 +160,50 @@
                                     Importe total
                                 </td>
                                 <td>
-                                    <s:textfield name="impMOAntTot" id="impMOAntTot" cssClass="element-form" cssStyle="width: 90px; text-align: right;"
-                                                 onkeypress="return isNumberKey(event)" disabled="true" />
-                                    <s:hidden name="impMOAntTot" id="impMOAntTot_h" />
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                </td>
-                <td style="vertical-align: top;">
-                    <div class="d-block-form" style="margin-right: 50px;">
-                        <div class="text-block">Importes en soles</div>
-                        <table border="0" cellpadding="0" cellspacing="0" class="table-form">
-                            <tr>
-                                <td style="width: 124px;">
-                                    Venta
-                                </td>
-                                <td>
-                                    <s:textfield name="impMonLocVen" id="impMonLocVen" cssClass="element-form" cssStyle="width: 90px; text-align: right;"
-                                                 onkeypress="return isNumberKey(event)" disabled="true" />
-                                    <s:hidden name="impMonLocVen" id="impMonLocVen_h" />
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="width: 124px;">
-                                    Descuento campañas
-                                </td>
-                                <td>
-                                    <s:textfield name="impMonLocDesCam" id="impMonLocDesCam" cssClass="element-form" cssStyle="width: 90px; text-align: right;"
-                                                 onkeypress="return isNumberKey(event)" disabled="true" />
-                                    <s:hidden name="impMonLocDesCam" id="impMonLocDesCam_h" />
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="width: 124px;">
-                                    Descuento
-                                </td>
-                                <td>
-                                    <s:textfield name="impMonLocDes" id="impMonLocDes" cssClass="element-form" cssStyle="width: 90px; text-align: right;"
-                                                 onkeypress="return isNumberKey(event)" disabled="true" />
-                                    <s:hidden name="impMonLocDes" id="impMonLocDes_h" />
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="width: 124px;">
-                                    Impuestos
-                                </td>
-                                <td>
-                                    <s:textfield name="impMonLocImp" id="impMonLocImp" cssClass="element-form" cssStyle="width: 90px; text-align: right;"
-                                                 onkeypress="return isNumberKey(event)" disabled="true" />
-                                    <s:hidden name="impMonLocImp" id="impMonLocImp_h" />
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="width: 124px;">
-                                    Total
-                                </td>
-                                <td>
                                     <s:textfield name="impMonLocTot" id="impMonLocTot" cssClass="element-form" cssStyle="width: 90px; text-align: right;"
                                                  onkeypress="return isNumberKey(event)" disabled="true" />
-                                    <s:hidden name="impMonLocTot" id="impMonLocTot_h" />
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="width: 124px; border-top: 2px solid #476285;">
-                                    Total a pagar
-                                </td>
-                                <td style="border-top: 2px solid #476285;">
-                                    <s:textfield name="impMonLocTotPag" id="impMonLocTotPag" cssClass="element-form" cssStyle="width: 90px; text-align: right;"
-                                                 onkeypress="return isNumberKey(event)" disabled="true" />
                                 </td>
                             </tr>
                         </table>
                     </div>
                 </td>
                 <td style="vertical-align: top;">
-                    <div class="d-block-form" style="margin-right: 50px;">
+                    <div class="d-block-form" style="">
                         <div class="text-block">Importes en dólares</div>
                         <table border="0" cellpadding="0" cellspacing="0" class="table-form">
                             <tr>
-                                <td style="width: 124px;">
-                                    Venta
+                                <td style="width: 118px;">
+                                    Importe venta
                                 </td>
                                 <td>
                                     <s:textfield name="impMonExtVen" id="impMonExtVen" cssClass="element-form" cssStyle="width: 90px; text-align: right;"
                                                  onkeypress="return isNumberKey(event)" disabled="true" />
-                                    <s:hidden name="impMonExtVen" id="impMonExtVen_h" />
                                 </td>
                             </tr>
                             <tr>
                                 <td style="width: 118px;">
-                                    Descuento campañas
-                                </td>
-                                <td>
-                                    <s:textfield name="impMonExtDesCam" id="impMonExtDesCam" cssClass="element-form" cssStyle="width: 90px; text-align: right;"
-                                                 onkeypress="return isNumberKey(event)" disabled="true" />
-                                    <s:hidden name="impMonExtDesCam" id="impMonExtDesCam_h" />
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="width: 118px;">
-                                    Descuento
+                                    Importe descuento
                                 </td>
                                 <td>
                                     <s:textfield name="impMonExtDes" id="impMonExtDes" cssClass="element-form" cssStyle="width: 90px; text-align: right;"
                                                  onkeypress="return isNumberKey(event)" disabled="true" />
-                                    <s:hidden name="impMonExtDes" id="impMonExtDes_h" />
                                 </td>
                             </tr>
                             <tr>
                                 <td style="width: 118px;">
-                                    Impuestos
+                                    Importe impuestos
                                 </td>
                                 <td>
                                     <s:textfield name="impMonExtImp" id="impMonExtImp" cssClass="element-form" cssStyle="width: 90px; text-align: right;"
                                                  onkeypress="return isNumberKey(event)" disabled="true" />
-                                    <s:hidden name="impMonExtImp" id="impMonExtImp_h" />
                                 </td>
                             </tr>
                             <tr>
                                 <td style="width: 118px;">
-                                    Total
+                                    Importe total
                                 </td>
                                 <td>
                                     <s:textfield name="impMonExtTot" id="impMonExtTot" cssClass="element-form" cssStyle="width: 90px; text-align: right;"
-                                                 onkeypress="return isNumberKey(event)" disabled="true" />
-                                    <s:hidden name="impMonExtTot" id="impMonExtTot_h" />
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="width: 118px; border-top: 2px solid #476285;">
-                                    Total a pagar
-                                </td>
-                                <td style="border-top: 2px solid #476285;">
-                                    <s:textfield name="impMonExtTotPag" id="impMonExtTotPag" cssClass="element-form" cssStyle="width: 90px; text-align: right;"
                                                  onkeypress="return isNumberKey(event)" disabled="true" />
                                 </td>
                             </tr>
@@ -344,7 +243,6 @@
         </table>
         <table border="0" cellpadding="0" cellspacing="0" class="table-form">
             <tr>
-                
                 <td style="padding-top: 10px;">
                     <button id="btn_grabar">
                         Grabar
@@ -366,7 +264,7 @@
         $('#DIVgrabar').dialog({
             autoOpen: false,
             width: 400,
-            height: 270,
+            height: 240,
             modal: true,
             closeOnEscape: false,
             buttons:
@@ -419,19 +317,6 @@
                                     $('#desCli').val($.trim($('.select_rec:checked').parent().next().next().text()));
                                     $('#desCli_hf').val($.trim($('.select_rec:checked').parent().next().next().text()));
                                     $('#DIVclientes').dialog("close");
-                                    
-                                    if($('#codMonDocVen').val()!=0 && $('#desCli_hf').val()!='') {
-                                        alCambiarClienteOTipoMoneda();
-                                        
-                                        if($('#desVeh_hf').val()!="") {
-                                            vehiculoIntroOrBlur();
-                                        }
-                                    } else {
-                                        $('#impMOAntVen').val("0.00");
-                                        $('#impMOAntImp').val("0.00");
-                                        $('#impMOAntTot').val("0.00");
-                                    }
-                                    
                                     if($('#idCli').val()!='') {
                                         alCambiarCliente();
                                     }
@@ -454,17 +339,20 @@
         
         function alCambiarCliente() {
             $.post(
-                '<s:property value="baseURL" /><s:url namespace="registroVentas" includeContext="false" action="getTiposDocumentoVentaClienteRegistroVenta" />',
+                '<s:property value="baseURL" /><s:url namespace="registroVentas" includeContext="false" action="getTiposDocumentoVentaClienteAnticipoRegistroVenta" />',
                 {
                     idCli:$('#idCli').val()
                 },
                 function(resultado){
                     resultado = $.trim(resultado);
                     var _error = resultado.indexOf("error");
-                    if(_error != -1) {
+                    if(_error != -1)
+                    {
                         $('#DIVerroresGen').html(resultado);
                         $('#DIVerroresGen').dialog('open');
-                    } else {
+                    }
+                    else
+                    {
                         $('#td_tipodocventa').html(resultado);
                     }
                 }
@@ -504,134 +392,100 @@
                     var objc=eval("("+resultado+")");
                     $('#desCli').val(objc.desCli);
                     $('#desCli_hf').val(objc.desCli);
-                    
-                    if($('#codMonDocVen').val()!=0 && $('#desCli_hf').val()!='') {
-                        alCambiarClienteOTipoMoneda();
-                    } else {
-                        $('#impMOAntVen').val("0.00");
-                        $('#impMOAntVen_h').val("0.00");
-                        $('#impMOAntImp').val("0.00");
-                        $('#impMOAntImp_h').val("0.00");
-                        $('#impMOAntTot').val("0.00");
-                        $('#impMOAntTot_h').val("0.00");
-                    }
-                    
-                    if($('#codMonDocVen').val()!=0 && $('#desCli_hf').val()!='' && $('#desVeh_hf').val()!="") {
-                        vehiculoIntroOrBlur();
-                    }
                 }
             );
         }
         
         $('#codMonDocVen').change(function(){
-            if($(this).val()!=0 && $('#desCli_hf').val()!='') {
-                alCambiarClienteOTipoMoneda();
-                if($('#desVeh_hf').val()!="") {
-                    vehiculoIntroOrBlur();
-                }
+            if($(this).val() == 1) {
+                $('#impMonLocTot').removeAttr('disabled');
+                $('#impMonExtTot').attr('disabled',true);
+            } else if($(this).val() == 2) {
+                $('#impMonExtTot').removeAttr('disabled');
+                $('#impMonLocTot').attr('disabled',true);
             } else {
-                $('#impMOAntVen').val("0.00");
-                $('#impMOAntVen_h').val("0.00");
-                $('#impMOAntImp').val("0.00");
-                $('#impMOAntImp_h').val("0.00");
-                $('#impMOAntTot').val("0.00");
-                $('#impMOAntTot_h').val("0.00");
+                $('#impMonLocTot').attr('disabled',true);
+                $('#impMonExtTot').attr('disabled',true);
             }
         });
         
-        function alCambiarClienteOTipoMoneda(){
+        $('#impMonLocTot').keypress(function(evt){
+            var charCode = (evt.which) ? evt.which : window.event.keyCode;
+    
+            if(charCode==13) {
+                montoSolesIntroOrBlur();
+            }
+        });
+        
+        $('#impMonLocTot').blur(function(){
+            montoSolesIntroOrBlur();
+        });
+        
+        function montoSolesIntroOrBlur(){
             $.post(
-                '<s:property value="baseURL" /><s:url namespace="registroVentas" includeContext="false" action="getTotalAnticiposRegistroVenta" />',
+                '<s:property value="baseURL" /><s:url namespace="registroVentas" includeContext="false" action="getMontosAnticipoRegistroVenta" />',
                 {
-                    idCli:$('#idCli').val(),
-                    codMonDocVen:$('#codMonDocVen').val()
+                    codMonDocVen:$('#codMonDocVen').val(),
+                    impMonLocTot:$('#impMonLocTot').val()
                 },
                 function(resultado) {
                     resultado = resultado.substring(resultado.indexOf('{'),resultado.indexOf('}')+1);
                     var objc=eval("("+resultado+")");
-                    $('#impMOAntVen').val(objc.impMOAntVen);
-                    $('#impMOAntVen_h').val(objc.impMOAntVen);
-                    $('#impMOAntImp').val(objc.impMOAntImp);
-                    $('#impMOAntImp_h').val(objc.impMOAntImp);
-                    $('#impMOAntTot').val(objc.impMOAntTot);
-                    $('#impMOAntTot_h').val(objc.impMOAntTot);
+                    $('#impMonLocVen').val(objc.impMonLocVen);
+                    $('#impMonLocImp').val(objc.impMonLocImp);
+                    $('#impMonLocTot').val(objc.impMonLocTot);
+                    $('#impMonExtVen').val(objc.impMonExtVen);
+                    $('#impMonExtImp').val(objc.impMonExtImp);
+                    $('#impMonExtTot').val(objc.impMonExtTot);
                 }
             );
         }
         
-        $('#idVeh').change(function(){
-            $('#indIdVeh').val('C');
-        });
-        
-        $('#idVeh').keypress(function(evt){
+        $('#impMonExtTot').keypress(function(evt){
             var charCode = (evt.which) ? evt.which : window.event.keyCode;
     
             if(charCode==13) {
-                vehiculoIntroOrBlur();
-                $('#indIdVeh').val('');
+                montoDolaresIntroOrBlur();
             }
         });
         
-        $('#idVeh').blur(function(){
-            if($('#indIdVeh').val()!='') {
-                vehiculoIntroOrBlur();
-                $('#indIdVeh').val('');
-            }
+        $('#impMonExtTot').blur(function(){
+            montoDolaresIntroOrBlur();
         });
         
-        function vehiculoIntroOrBlur(){
+        function montoDolaresIntroOrBlur(){
             $.post(
-                '<s:property value="baseURL" /><s:url namespace="registroVentas" includeContext="false" action="getDatosVehiculoRegistroVenta" />',
+                '<s:property value="baseURL" /><s:url namespace="registroVentas" includeContext="false" action="getMontosAnticipoRegistroVenta" />',
                 {
-                    idVeh:$('#idVeh').val(),
-                    idCli:$('#idCli').val(),
-                    codMonDocVen:$('#codMonDocVen').val()
+                    codMonDocVen:$('#codMonDocVen').val(),
+                    impMonExtTot:$('#impMonExtTot').val()
                 },
                 function(resultado) {
                     resultado = resultado.substring(resultado.indexOf('{'),resultado.indexOf('}')+1);
                     var objc=eval("("+resultado+")");
-                    $('#desVeh').val(objc.desVeh);
-                    $('#desVeh_hf').val(objc.desVeh);
-                    $('#impMonLocVen').val(objc.impMonLocVen);
-                    $('#impMonLocVen_h').val(objc.impMonLocVen);
-                    $('#impMonLocDesCam').val(objc.impMonLocDesCam);
-                    $('#impMonLocDesCam_h').val(objc.impMonLocDesCam);
-                    $('#impMonLocDes').val(objc.impMonLocDes);
-                    $('#impMonLocDes_h').val(objc.impMonLocDes);
-                    $('#impMonLocImp').val(objc.impMonLocImp);
-                    $('#impMonLocImp_h').val(objc.impMonLocImp);
-                    $('#impMonLocTot').val(objc.impMonLocTot);
-                    $('#impMonLocTot_h').val(objc.impMonLocTot);
-                    $('#impMonLocTotPag').val(objc.impMonLocTotPag);
                     $('#impMonExtVen').val(objc.impMonExtVen);
-                    $('#impMonExtVen_h').val(objc.impMonExtVen);
-                    $('#impMonExtDesCam').val(objc.impMonExtDesCam);
-                    $('#impMonExtDesCam_h').val(objc.impMonExtDesCam);
-                    $('#impMonExtDes').val(objc.impMonExtDes);
-                    $('#impMonExtDes_h').val(objc.impMonExtDes);
                     $('#impMonExtImp').val(objc.impMonExtImp);
-                    $('#impMonExtImp_h').val(objc.impMonExtImp);
                     $('#impMonExtTot').val(objc.impMonExtTot);
-                    $('#impMonExtTot_h').val(objc.impMonExtTot);
-                    $('#impMonExtTotPag').val(objc.impMonExtTotPag);
+                    $('#impMonLocVen').val(objc.impMonLocVen);
+                    $('#impMonLocImp').val(objc.impMonLocImp);
+                    $('#impMonLocTot').val(objc.impMonLocTot);
                 }
             );
         }
         
         $('#btn_grabar').click(function(){
+            $('#btn_grabar').attr('disabled',true);
             post(
                 '<s:property value="formURL" />',
                 $('#frm_registroVenta').serialize(),
                 function(resultado){
                     resultado = $.trim(resultado);
                     var _error = resultado.indexOf("error");
-                    if(_error != -1)
-                    {
+                    if(_error != -1) {
                         $('#DIVgrabar').html(resultado);
                         $('#DIVgrabar').dialog('open');
-                    }
-                    else
-                    {
+                        $('#btn_grabar').removeAttr('disabled');
+                    } else {
                         $('#frm_back').submit();
                     }
                 },

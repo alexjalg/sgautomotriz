@@ -235,7 +235,7 @@ public class ProvinciasAction extends MasterAction implements ModelDriven<Provin
             }
         }
 
-        return "modificar";
+        return "adicionar";
     }
 
     private void getDatosProvincia() {

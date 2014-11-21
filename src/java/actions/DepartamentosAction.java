@@ -192,7 +192,7 @@ public class DepartamentosAction extends MasterAction implements ModelDriven<Dep
             }
         }
 
-        return "modificar";
+        return "adicionar";
     }
 
     private void getDatosDepartamento() {

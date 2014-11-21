@@ -149,7 +149,7 @@
                         var _varret = $('#nivBandeja_f').val()+'%'+href+'%'+$('#mtu_h1').val()+'%'+$('#mmo_h1').val()+'%'+$('#mop_h1').val()+'%'+$('#mni_h1').val()+'%'+$('#mod_h1').val()+'%'+$('#curPag_f').val()+'%'+$('#idDep_h1').val()+'%'+$('#desProv_f').val()+'|';
                         $('#varReturn_f').val($('#varReturn_f').val()+_varret);
                         
-                        $('#frm_princ').attr('action','<s:property value="baseURL" /><s:url namespace="provincias" includeContext="false" action="adicionarProvincia" />');
+                        $('#frm_princ').attr('action','<s:property value="baseURL" /><s:url namespace="provincias" includeContext="false" action="modificarProvincia" />');
                         $('#frm_princ').submit();
                     }
                 },

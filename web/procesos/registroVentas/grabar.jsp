@@ -1,5 +1,5 @@
 <%@taglib uri="/struts-tags" prefix="s" %>
-<s:if test='%{indError!=""}'>
+<s:if test='%{indErrorTot!=""}'>
     <!--Si en la respuesta del ajax se encuntra la cadena 'error' se visualiza el div conteniendo los errores,
     ademas no se ocultara el div overlay de carga -->
     <div class="ui-state-error ui-corner-all" style="padding: 0 .7em;">

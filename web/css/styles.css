@@ -639,29 +639,28 @@ textarea.element-form
     height: 28px;
 }
 
+
+
 .d-content-form .d-block-form
 {
+    border: 1px solid #476285;
+    border-radius: 3px;
     position: relative;
-    font-size: 13px;
-    color: #476285;
-    font-weight: bold;
-    padding-bottom: 3px;
-    height: 20px;
-
-}
-
-.d-content-form .d-block-form div
-{
-
+    padding: 12px 10px 4px 10px;
+    margin-top: 10px;
 }
 
 .d-content-form .d-block-form div.text-block
 {
+    color: #476285;
+    font-weight: bold;
+    padding: 0px 3px 0px 3px;
     position: absolute;
-    left: 0px;
-    padding-right: 5px;
+    top: -8px;
+    left: 10px;
+    
     background-color: #E8F0F8;
-    z-index: 10;
+    z-index: 1;
 }
 
 .d-content-form .d-block-form div.line-text-block {
@@ -670,7 +669,7 @@ textarea.element-form
     height: 8px;
     width: 100%;
     border-bottom: 1px solid #476285; 
-    z-index: 9;
+    z-index: 0;
 }
 
 .d-content-form .table-form tr td:first-child {

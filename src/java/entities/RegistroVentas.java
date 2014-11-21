@@ -26,12 +26,16 @@ public class RegistroVentas {
     private String impMOAntTot="";
     private String impMonLocVen="";
     private String impMonLocDes="";
+    private String impMonLocDesCam="";
     private String impMonLocImp="";
     private String impMonLocTot="";
+    private String impMonLocTotPag="";
     private String impMonExtVen="";
     private String impMonExtDes="";
+    private String impMonExtDesCam="";
     private String impMonExtImp="";
     private String impMonExtTot="";
+    private String impMonExtTotPag="";
     private int idForPag=0;
     private String desForPag="";
     private String desObsDoc="";
@@ -46,8 +50,11 @@ public class RegistroVentas {
     private int idCon=0;
     private int idLocCon=0;
     private String codOpeRegVen="";
-    private String indVeh="";
-    private String edoVeh="";
+    private String otrOpeAfeImp="";
+    private String desDocRef1="";
+    private String desDocRef2="";
+    private String indDoc="";
+    private String edoDoc="";
     private String fecReg="";
     private String fecReg_f="";
     private String idUsu="";
@@ -464,28 +471,28 @@ public class RegistroVentas {
         this.codOpeRegVen = codOpeRegVen;
     }
 
-    public String getIndVeh() {
-        indVeh = indVeh.trim();
+    public String getIndDoc() {
+        indDoc = indDoc.trim();
         
-        return indVeh;
+        return indDoc;
     }
 
-    public void setIndVeh(String indVeh) {
-        indVeh = indVeh.trim();
+    public void setIndDoc(String indDoc) {
+        indDoc = indDoc.trim();
         
-        this.indVeh = indVeh;
+        this.indDoc = indDoc;
     }
 
-    public String getEdoVeh() {
-        edoVeh = edoVeh.trim();
+    public String getEdoDoc() {
+        edoDoc = edoDoc.trim();
         
-        return edoVeh;
+        return edoDoc;
     }
 
-    public void setEdoVeh(String edoVeh) {
-        edoVeh = edoVeh.trim();
+    public void setEdoDoc(String edoDoc) {
+        edoDoc = edoDoc.trim();
         
-        this.edoVeh = edoVeh;
+        this.edoDoc = edoDoc;
     }
 
     public String getFecReg() {
@@ -648,5 +655,121 @@ public class RegistroVentas {
         desForPag = desForPag.trim();
         
         this.desForPag = desForPag;
+    }
+
+    public String getOtrOpeAfeImp() {
+        otrOpeAfeImp = otrOpeAfeImp.trim();
+        
+        return otrOpeAfeImp;
+    }
+
+    public void setOtrOpeAfeImp(String otrOpeAfeImp) {
+        otrOpeAfeImp = otrOpeAfeImp.trim();
+        
+        this.otrOpeAfeImp = otrOpeAfeImp;
+    }
+
+    public String getDesDocRef1() {
+        desDocRef1 = desDocRef1.trim();
+        
+        return desDocRef1;
+    }
+
+    public void setDesDocRef1(String desDocRef1) {
+        desDocRef1 = desDocRef1.trim();
+        
+        this.desDocRef1 = desDocRef1;
+    }
+
+    public String getDesDocRef2() {
+        desDocRef2 = desDocRef2.trim();
+        
+        return desDocRef2;
+    }
+
+    public void setDesDocRef2(String desDocRef2) {
+        desDocRef2 = desDocRef2.trim();
+        
+        this.desDocRef2 = desDocRef2;
+    }
+
+    public String getImpMonLocTotPag() {
+        impMonLocTotPag = impMonLocTotPag.trim();
+        
+        if(impMonLocTotPag.equals("")) {
+            impMonLocTotPag = "0.00";
+        }
+        
+        return impMonLocTotPag;
+    }
+
+    public void setImpMonLocTotPag(String impMonLocTotPag) {
+        impMonLocTotPag = impMonLocTotPag.trim();
+        
+        if(impMonLocTotPag.equals("")) {
+            impMonLocTotPag = "0.00";
+        }
+        
+        this.impMonLocTotPag = impMonLocTotPag;
+    }
+
+    public String getImpMonExtTotPag() {
+        impMonExtTotPag = impMonExtTotPag.trim();
+        
+        if(impMonExtTotPag.equals("")) {
+            impMonExtTotPag = "0.00";
+        }
+        
+        return impMonExtTotPag;
+    }
+
+    public void setImpMonExtTotPag(String impMonExtTotPag) {
+        impMonExtTotPag = impMonExtTotPag.trim();
+        
+        if(impMonExtTotPag.equals("")) {
+            impMonExtTotPag = "0.00";
+        }
+        
+        this.impMonExtTotPag = impMonExtTotPag;
+    }
+
+    public String getImpMonLocDesCam() {
+        impMonLocDesCam = impMonLocDesCam.trim();
+        
+        if(impMonLocDesCam.equals("")) {
+            impMonLocDesCam = "0.00";
+        }
+        
+        return impMonLocDesCam;
+    }
+
+    public void setImpMonLocDesCam(String impMonLocDesCam) {
+        impMonLocDesCam = impMonLocDesCam.trim();
+        
+        if(impMonLocDesCam.equals("")) {
+            impMonLocDesCam = "0.00";
+        }
+        
+        this.impMonLocDesCam = impMonLocDesCam;
+    }
+
+    public String getImpMonExtDesCam() {
+        impMonExtDesCam = impMonExtDesCam.trim();
+        
+        if(impMonExtDesCam.equals("")) {
+            impMonExtDesCam = "0.00";
+        }
+        
+        return impMonExtDesCam;
+    }
+
+    public void setImpMonExtDesCam(String impMonExtDesCam) {
+        impMonExtDesCam = impMonExtDesCam.trim();
+        
+        if(impMonExtDesCam.equals("")) {
+            impMonExtDesCam = "0.00";
+        }
+        
+        this.impMonExtDesCam = impMonExtDesCam;
     }
 }

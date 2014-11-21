@@ -86,7 +86,9 @@
     <script type="text/javascript">
         <s:if test='%{indErrAcc!=""}'>
             setTimeout(function(){ history.back(-10); },4000);
-        </s:if>  
+        </s:if>
+            
+        $('.d-paging').css('width',$('.d-grilla').outerWidth()-18);
             
         $('button').button();
             

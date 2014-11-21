@@ -176,11 +176,12 @@ public class ClientesAction extends MasterAction implements ModelDriven<Clientes
                 
                 accion = "Adicionar";
                 
+                populate();
                 cliente.setIdCli("");
                 formURL = baseURL + "clientes/grabarCliente";
             }
         }
-        populate();
+        
         return "adicionar";
     }
 

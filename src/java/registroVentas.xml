@@ -12,15 +12,19 @@
         <action name="*RegistroVenta" method="{1}" class="actions.RegistroVentasAction">
             <result name="success" type="tiles">mant-registroVentas-index</result>
             <result name="adicionar" type="tiles">mant-registroVentas-adicionar</result>
+            <result name="adicionarAnticipo" type="tiles">mant-registroVentas-adicionarAnticipo</result>
             <result name="detalle" type="tiles">mant-registroVentas-detalle</result>
             <result name="getTiposDocumentoVentaCliente" type="tiles">mant-registroVentas-getTipoDocVentaCliente</result>
             <result name="getDatosCliente" type="tiles">mant-registroVentas-getDatosCliente</result>
             <result name="getDatosVehiculo" type="tiles">mant-registroVentas-getDatosVehiculo</result>
             <result name="listClientes" type="tiles">mant-registroVentas-listClientes</result>
             <result name="grabar" type="tiles">mant-registroVentas-grabar</result>
+            <result name="grabarAnticipo" type="tiles">mant-registroVentas-grabar</result>
             <result name="actualizar" type="tiles">mant-registroVentas-grabar</result>
             <result name="vrfSeleccion" type="tiles">mant-registroVentas-grabar</result>
             <result name="eliminar" type="tiles">mant-registroVentas-eliminar</result>
+            <result name="getMontosAnticipo" type="tiles">mant-registroVentas-getMontosAnticipo</result>
+            <result name="getTotalAnticipos" type="tiles">mant-registroVentas-getTotalAnticiposRegVenta</result>
         </action>
     </package>
 </struts>

@@ -43,6 +43,7 @@ public class MasterAction extends ActionSupport implements ServletRequestAware {
     
     //variable que se usara para indicar si existe algun error en el proceso
     protected String indError = "";
+    protected String indErrorTot = "";
     //Arreglo donde se guardaran los errores capturados
     protected ArrayList<String> errores = new ArrayList<String>();
     
@@ -276,6 +277,10 @@ public class MasterAction extends ActionSupport implements ServletRequestAware {
         } catch (NumberFormatException nfe) {
             return false;
         }
+    }
+    
+    protected Double redondear(Double numero, int decimales) {   
+        return Math.round(numero*Math.pow(10,decimales))/Math.pow(10,decimales);
     }
 
     protected boolean isEmail(String correo) {
@@ -1148,5 +1153,23 @@ public class MasterAction extends ActionSupport implements ServletRequestAware {
         }
         
         return listAnios;
+    }
+
+    public String getIndErrorTot() {
+        return indErrorTot;
+    }
+
+    public void setIndErrorTot(String indErrorTot) {
+        this.indErrorTot = indErrorTot;
+    }
+    
+    
+    //Calcula el importe de venta a partir del importe total
+    public Double calculaImporteVenta(Double importeTotal,Double igv) {
+        Double resp = 0.00;
+        
+        resp = (100.00*importeTotal)/(100.00+igv);
+        
+        return resp;
     }
 }

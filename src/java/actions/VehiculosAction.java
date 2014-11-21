@@ -121,27 +121,17 @@ public class VehiculosAction extends MasterAction implements ModelDriven<Vehicul
                 errores.add(indError);
             } else {
                 tabla = conex.executeDataSet("CALL usp_cantVehiculoIndex(?,?,?,?,?,?,?,?,?,?)",
-                        new Object[]{vehiculo.getIdVeh_f(),
-                    vehiculo.getDesNumCha_f(),
-                    vehiculo.getDesNumMot_f(),
-                    vehiculo.getFecFacPrv_f(),
-                    vehiculo.getDesCli_f(),
-                    vehiculo.getFecEmiDocVen_f(),
-                    vehiculo.getIdTipDocVen_f(),
-                    vehiculo.getDesNumDocVen_f(),
-                    vehiculo.getDesNumPla_f(),
-                    vehiculo.getFecEntCli_f()
-                });
+                        new Object[]{ vehiculo.getIdVeh_f(),vehiculo.getDesNumCha_f(),vehiculo.getDesNumMot_f(),
+                            vehiculo.getFecFacPrv_f(),vehiculo.getDesCli_f(),vehiculo.getFecEmiDocVen_f(),
+                            vehiculo.getIdTipDocVen_f(),vehiculo.getDesNumDocVen_f(),vehiculo.getDesNumPla_f(),
+                            vehiculo.getFecEntCli_f() });
                 indError = conex.getErrorSQL();
                 if (!indError.equals("")) {
                     errores.add(indError);
                 } else {
                     while (tabla.next()) {
                         cantReg = tabla.getInt(1);
-
                     }
-
-
                 }
             }
         } catch (Exception e) {
@@ -169,18 +159,11 @@ public class VehiculosAction extends MasterAction implements ModelDriven<Vehicul
                 errores.add(indError);
             } else {
                 tabla = conex.executeDataSet("CALL usp_listVehiculoIndex(?,?,?,?,?,?,?,?,?,?,?,?)",
-                        new Object[]{vehiculo.getIdVeh_f(),
-                    vehiculo.getDesNumCha_f(),
-                    vehiculo.getDesNumMot_f(),
-                    vehiculo.getFecFacPrv_f(),
-                    vehiculo.getDesCli_f(),
-                    vehiculo.getFecEmiDocVen_f(),
-                    vehiculo.getIdTipDocVen_f(),
-                    vehiculo.getDesNumDocVen_f(),
-                    vehiculo.getDesNumPla_f(),
-                    vehiculo.getFecEntCli_f(),
-                    getCurPag() * getRegPag(),
-                    getRegPag()});
+                        new Object[]{ vehiculo.getIdVeh_f(),vehiculo.getDesNumCha_f(),vehiculo.getDesNumMot_f(),
+                            vehiculo.getFecFacPrv_f(),vehiculo.getDesCli_f(),vehiculo.getFecEmiDocVen_f(),
+                            vehiculo.getIdTipDocVen_f(),vehiculo.getDesNumDocVen_f(),vehiculo.getDesNumPla_f(),
+                            vehiculo.getFecEntCli_f(),getCurPag()*getRegPag(),getRegPag() });
+                
                 indError = conex.getErrorSQL().trim();
                 if (!indError.equals("")) {
                     errores.add(indError);
@@ -727,21 +710,26 @@ public class VehiculosAction extends MasterAction implements ModelDriven<Vehicul
                                 indError += "error";
                                 errores.add("Ya existe un vehículo con el serie ingresada");
                             } else {
-                                if (vehiculo.getCodMonFacPrv().equals("1")) {
-                                    if (!vehiculo.getImpTipCamFP().equals("0.00")) {
-                                        Double impTC = Double.parseDouble(vehiculo.getImpTipCamFP());
-                                        Double impML = Double.parseDouble(vehiculo.getImpMonLoc());
-                                        vehiculo.setImpMonExt(String.valueOf(impML / impTC));
-                                    } else {
-                                        vehiculo.setImpMonExt("0.00");
-                                    }
-                                } else if (vehiculo.getCodMonFacPrv().equals("2")) {
-                                    if (!vehiculo.getImpTipCamFP().equals("0.00")) {
-                                        Double impTC = Double.parseDouble(vehiculo.getImpTipCamFP());
-                                        Double impME = Double.parseDouble(vehiculo.getImpMonExt());
-                                        vehiculo.setImpMonExt(String.valueOf(impME * impTC));
-                                    } else {
-                                        vehiculo.setImpMonLoc("0.00");
+                                if(!isDouble(vehiculo.getImpTipCamFP())) {
+                                    indError += "error";
+                                    errores.add("Tipo de cambio no válido");
+                                } else {
+                                    if (vehiculo.getCodMonFacPrv().equals("1")) {
+                                        if (Double.parseDouble(vehiculo.getImpTipCamFP())>0) {
+                                            Double impTC = Double.parseDouble(vehiculo.getImpTipCamFP());
+                                            Double impML = Double.parseDouble(vehiculo.getImpMonLoc());
+                                            vehiculo.setImpMonExt(String.valueOf(impML / impTC));
+                                        } else {
+                                            vehiculo.setImpMonExt("0.00");
+                                        }
+                                    } else if (vehiculo.getCodMonFacPrv().equals("2")) {
+                                        if (Double.parseDouble(vehiculo.getImpTipCamFP())>0) {
+                                            Double impTC = Double.parseDouble(vehiculo.getImpTipCamFP());
+                                            Double impME = Double.parseDouble(vehiculo.getImpMonExt());
+                                            vehiculo.setImpMonExt(String.valueOf(impME * impTC));
+                                        } else {
+                                            vehiculo.setImpMonLoc("0.00");
+                                        }
                                     }
                                 }
                                 

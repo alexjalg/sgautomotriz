@@ -46,10 +46,10 @@ public class LoginAction extends MasterAction implements ModelDriven<Usuarios> {
     {
         if (getUsuario().getIdUsu().trim().equals("") || getUsuario().getOtrClaUsu().trim().equals("")) 
         {
-            indError = "";
+            indError += "error";
         }
 
-        if (errores.isEmpty())
+        if (indError.equals(""))
         {
             String pwd = "", edo = "", clave = "";
             int ind=0;
@@ -71,7 +71,7 @@ public class LoginAction extends MasterAction implements ModelDriven<Usuarios> {
 
                 if (!conex.getErrorSQL().trim().equals(""))
                 {
-                    indError = conex.getErrorSQL().trim();
+                    indError += conex.getErrorSQL().trim();
                     errores.add(conex.getErrorSQL());
                 }
                 else
@@ -81,7 +81,7 @@ public class LoginAction extends MasterAction implements ModelDriven<Usuarios> {
 
                     if (!conex.getErrorSQL().trim().equals(""))
                     {
-                        indError = conex.getErrorSQL();
+                        indError += conex.getErrorSQL();
                         errores.add(conex.getErrorSQL());
                     }
                     else
@@ -99,23 +99,44 @@ public class LoginAction extends MasterAction implements ModelDriven<Usuarios> {
                             tabla = conex.executeDataSet("CALL usp_getDatosUsuLogin(?)",
                                     new Object[]{ usuario.getIdUsu().trim() });
                             
-                            while(tabla.next())
-                            {
-                                sesion_sga.put("ses_idusu",tabla.getString("idUsu"));
-                                sesion_sga.put("ses_desusu",tabla.getString("desUsu"));
-                                sesion_sga.put("ses_idtipusu", tabla.getInt("idTipUsu"));
-                                sesion_sga.put("ses_destipusu", tabla.getString("desTipUsu"));
-                                sesion_sga.put("ses_idcon", tabla.getInt("idCon"));
-                                sesion_sga.put("ses_descon", tabla.getString("desCon"));
-                                sesion_sga.put("ses_idloccon", tabla.getString("idLocCon"));
-                                sesion_sga.put("ses_desloccon", tabla.getString("desLocCon"));
-                                sesion_sga.put("ses_indclares", tabla.getString("indClaRes"));
-                                sesion_sga.put("ses_indmencad", tabla.getString("indMenCadCla"));
-                                sesion_sga.put("ses_candiacad", tabla.getInt("diasCadCla"));
-                                sesion_sga.put("ses_tipcam", tabla.getString("tipoCambio"));
+                            indError += conex.getErrorSQL();
+                            
+                            if(!indError.equals("")) {
+                                errores.add(conex.getErrorSQL());
+                            } else {
+                                while(tabla.next())
+                                {
+                                    sesion_sga.put("ses_idusu",tabla.getString("idUsu"));
+                                    sesion_sga.put("ses_desusu",tabla.getString("desUsu"));
+                                    sesion_sga.put("ses_idtipusu", tabla.getInt("idTipUsu"));
+                                    sesion_sga.put("ses_destipusu", tabla.getString("desTipUsu"));
+                                    sesion_sga.put("ses_idcon", tabla.getInt("idCon"));
+                                    sesion_sga.put("ses_descon", tabla.getString("desCon"));
+                                    sesion_sga.put("ses_idloccon", tabla.getString("idLocCon"));
+                                    sesion_sga.put("ses_desloccon", tabla.getString("desLocCon"));
+                                    sesion_sga.put("ses_indclares", tabla.getString("indClaRes"));
+                                    sesion_sga.put("ses_indmencad", tabla.getString("indMenCadCla"));
+                                    sesion_sga.put("ses_candiacad", tabla.getInt("diasCadCla"));
+                                    sesion_sga.put("ses_tipcam", tabla.getString("tipoCambio"));
 
-                                getModuOpcPerfil();
-                                sesion_sga.put("ses_listmodumaster", listModuMaster);
+                                    getModuOpcPerfil();
+                                    sesion_sga.put("ses_listmodumaster", listModuMaster);
+                                }
+
+                                tabla = null;
+
+                                tabla = conex.executeDataSet("CALL usp_getDatosConfSistema()", new Object[]{});
+                                
+                                indError += conex.getErrorSQL();
+                                
+                                if(!indError.equals("")) {
+                                    errores.add(conex.getErrorSQL());
+                                } else {
+                                    while(tabla.next()) {
+                                        sesion_sga.put("ses_igv", tabla.getInt("numPorImp"));
+                                        sesion_sga.put("ses_afecimp", tabla.getString("otrVenAfeImp"));
+                                    }
+                                }
                             }
                         }
                         else 

@@ -343,13 +343,13 @@
     
         $('#d_rbt_tipcli,#d_rbt_gencon').buttonset();
         //<----- DatePicker's  ------>
-        $('#fecNacCon').datepicker({
-            monthNames: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
+        $('#fecNacCon').datepicker();
+        
+        /*monthNames: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
             monthNamesShort: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"],
             dayNamesMin: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"],
             firstDay: 1,
-            dateFormat: "yy-mm-dd"
-        });
+            dateFormat: "yy-mm-dd"*/
 
         $('#btn_grabar').button();
 

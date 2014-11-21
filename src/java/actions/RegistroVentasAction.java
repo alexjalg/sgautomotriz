@@ -1,3 +1,5 @@
+package actions;
+
 /*
  * Action: Registro de ventas
  * Creado por: Angelo Ccoicca
@@ -6,11 +8,12 @@
  * - 
  * -
  */
-package actions;
 
+import actions.MasterAction;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ModelDriven;
 import conexion.helper;
+import entities.AnticiposRegistroVentas;
 import entities.Clientes;
 import entities.FormaPago;
 import entities.RegistroVentas;
@@ -28,6 +31,7 @@ public class RegistroVentasAction extends MasterAction implements ModelDriven<Re
     private ArrayList<FormaPago> listFormasPago = new ArrayList<FormaPago>();
     private Clientes cliente = new Clientes();
     private ArrayList<Clientes> listClientes = new ArrayList<Clientes>();
+    private AnticiposRegistroVentas anticipoRegistroVentas = new AnticiposRegistroVentas();
     
     public RegistroVentas getModel() {
         tituloOpc = "Registros de venta";
@@ -520,6 +524,8 @@ public class RegistroVentasAction extends MasterAction implements ModelDriven<Re
     public String getDatosVehiculo() {
         helper conex = null;
         ResultSet tabla = null;
+        ResultSet tabla2 = null;
+        ResultSet tabla3 = null;
 
         try {
             conex = new helper();
@@ -537,11 +543,132 @@ public class RegistroVentasAction extends MasterAction implements ModelDriven<Re
                 } else {
                     while(tabla.next()) {
                         modelo.setDesVeh(tabla.getString("desVeh"));
+                        Double precAsigDol = Double.parseDouble(tabla.getString("impPreVenAsi"));
+                        Double precAsigSol = precAsigDol*Double.parseDouble(sesion_sga.get("ses_tipcam").toString());
+                        
+                        //Descuentos por campañas
+                        Double impDesCamDol = 0.00;
+                        Double impDesCamSol = 0.00;
+                        
+                        tabla3 = conex.executeDataSet("CALL usp_getTotalImpCampaniaVehiculo(?,?)", 
+                                new Object[]{ modelo.getIdVeh(),Double.parseDouble(sesion_sga.get("ses_tipcam").toString()) });
+                        
+                        indError = conex.getErrorSQL();
+                        
+                        if(!indError.equals("")) {
+                            errores.add(indError);
+                        } else {
+                            while(tabla3.next()) {
+                                impDesCamDol += tabla3.getDouble("impRelCam");
+                            }
+                            
+                            impDesCamSol = redondear(impDesCamDol*Double.parseDouble(sesion_sga.get("ses_tipcam").toString()), 2);
+                        }
+                        
+                        impDesCamDol = redondear(calculaImporteVenta(impDesCamDol, Double.parseDouble(sesion_sga.get("ses_igv").toString())),2);
+                        impDesCamSol = redondear(calculaImporteVenta(impDesCamSol, Double.parseDouble(sesion_sga.get("ses_igv").toString())),2);
+                        
+                        modelo.setImpMonExtDesCam(String.valueOf(impDesCamDol));
+                        modelo.setImpMonLocDesCam(String.valueOf(impDesCamSol));
+                        
+                        //Si las ventas estan afectas a impuestos
+                        if(sesion_sga.get("ses_afecimp").toString().equals("S")) {
+                            Double monVenDol = redondear(calculaImporteVenta(precAsigDol,Double.parseDouble(sesion_sga.get("ses_igv").toString())),2);
+                            modelo.setImpMonExtVen(String.valueOf(monVenDol));
+                            monVenDol = monVenDol-impDesCamDol;
+                            Double monImpDol = redondear(monVenDol*Double.parseDouble(sesion_sga.get("ses_igv").toString())/100.00,2);
+                            precAsigDol = redondear(monVenDol+monImpDol,2); 
+                            
+                            modelo.setImpMonExtImp(String.valueOf(monImpDol));
+                            modelo.setImpMonExtTot(String.valueOf(precAsigDol));
+                            
+                            Double monVenSol = redondear(calculaImporteVenta(precAsigSol,Double.parseDouble(sesion_sga.get("ses_igv").toString())),2);
+                            modelo.setImpMonLocVen(String.valueOf(monVenSol));
+                            monVenSol = monVenSol-impDesCamSol;
+                            Double monImpSol = redondear(monVenSol*Double.parseDouble(sesion_sga.get("ses_igv").toString())/100.00,2);
+                            precAsigSol = redondear(monVenSol+monImpSol,2);
+                            
+                            modelo.setImpMonLocImp(String.valueOf(monImpSol));
+                            modelo.setImpMonLocTot(String.valueOf(precAsigSol));
+                        } else {
+                            modelo.setImpMonExtVen(String.valueOf(precAsigDol));
+                            precAsigDol = redondear(precAsigDol-impDesCamDol,2);
+                            modelo.setImpMonExtTot(String.valueOf(precAsigDol));
+                            
+                            modelo.setImpMonLocVen(String.valueOf(precAsigSol));
+                            precAsigSol = redondear(precAsigSol-impDesCamSol,2);
+                            modelo.setImpMonLocTot(String.valueOf(precAsigSol));
+                        }
+                        
+                        if(!modelo.getIdCli().equals("") && modelo.getCodMonDocVen()!=0) {
+                            tabla2 = conex.executeDataSet("CALL usp_getTotalAnticiposRegVentasCliente(?)", 
+                                    new Object[]{ modelo.getIdCli() });
+                            indError = conex.getErrorSQL();
+
+                            if(!indError.equals("")) {
+                                errores.add(conex.getErrorSQL());
+                            } else {
+                                while(tabla2.next()) {
+                                    Double monTotPagDol = Double.parseDouble(modelo.getImpMonExtTot()) - Double.parseDouble(tabla2.getString("impDisMonExtTot"));
+                                    monTotPagDol= redondear(monTotPagDol, 2);
+                                    modelo.setImpMonExtTotPag(String.valueOf(monTotPagDol));
+
+                                    Double monTotPagSol = Double.parseDouble(modelo.getImpMonLocTot()) - Double.parseDouble(tabla2.getString("impDisMonLocTot"));
+                                    monTotPagSol= redondear(monTotPagSol, 2);
+                                    modelo.setImpMonLocTotPag(String.valueOf(monTotPagSol));
+                                }
+                            } 
+                        } else {
+                            modelo.setImpMonExtTotPag(modelo.getImpMonExtTot());
+                            modelo.setImpMonLocTotPag(modelo.getImpMonLocTot());
+                        }
                     }
                 }
             }
         } catch (Exception e) {
-            indError = "errro";
+            indError = "error";
+            errores.add(e.getMessage());
+        } finally {
+            try {
+                tabla.close();
+                tabla2.close();
+                conex.returnConnect();
+            } catch (Exception e) {
+            }
+        }
+        
+        return "getDatosVehiculo";
+    }
+    
+    public String getTotalAnticipos() {
+        helper conex = null;
+        ResultSet tabla = null;
+        
+        try {
+            conex = new helper();
+            indError += conex.getErrorSQL();
+            if(!indError.equals("")) {
+                errores.add(indError);
+            } else {
+                tabla = conex.executeDataSet("CALL usp_getTotalAnticiposRegVentasCliente(?)", 
+                        new Object[]{ modelo.getIdCli() });
+                indError += conex.getErrorSQL();
+                
+                if(!indError.equals("")) {
+                    errores.add(conex.getErrorSQL());
+                } else {
+                    while(tabla.next()) {
+                        anticipoRegistroVentas.setImpDisMonLocVen(tabla.getString("impDisMonLocVen"));
+                        anticipoRegistroVentas.setImpDisMonLocImp(tabla.getString("impDisMonLocImp"));
+                        anticipoRegistroVentas.setImpDisMonLocTot(tabla.getString("impDisMonLocTot"));
+                        anticipoRegistroVentas.setImpDisMonExtVen(tabla.getString("impDisMonExtVen"));
+                        anticipoRegistroVentas.setImpDisMonExtImp(tabla.getString("impDisMonExtImp"));
+                        anticipoRegistroVentas.setImpDisMonExtTot(tabla.getString("impDisMonExtTot"));
+                    }
+                }
+            }
+        } catch (Exception e) {
+            indError += "error";
             errores.add(e.getMessage());
         } finally {
             try {
@@ -551,7 +678,7 @@ public class RegistroVentasAction extends MasterAction implements ModelDriven<Re
             }
         }
         
-        return "getDatosVehiculo";
+        return "getTotalAnticipos";
     }
     
     private void populateForm() {
@@ -611,65 +738,65 @@ public class RegistroVentasAction extends MasterAction implements ModelDriven<Re
 
         if (indErrAcc.equals("")) {
             if(modelo.getIdCli().equals("")) {
-                indError += "error";
                 errores.add("Ingrese o seleccione un cliente");
             } else {
                 if(modelo.getDesCli_h().equals("")) {
-                    indError += "error";
                     errores.add("Cliente no válido");
                 }
             }
             
             if(modelo.getIdTipDocVen().equals("9")) {
-                indError += "error";
                 errores.add("Seleccione el tipo de documento");
             }
             
             if(modelo.getDesNumDocVen().equals("")) {
-                indError += "error";
                 errores.add("Ingrese el número del documento");
             }
             
             if(modelo.getFecEmiDocVen().equals("")) {
-                indError += "error";
                 errores.add("Ingrese la fecha de emisión");
             } else {
                 if(!isDate(modelo.getFecEmiDocVen(), 2)) {
-                    indError += "error";
                     errores.add("Fecha de emisión no válida");
                 }
             }
             
             if(modelo.getCodMonDocVen()==0) {
-                indError += "error";
                 errores.add("Seleccione el tipo de moneda del documento");
             }
             
-            if(!modelo.getIdVeh().equals("")) {
+            if(modelo.getIdVeh().equals("")) {
+                errores.add("Debe ingresar los datos de un vehículo");
+            } else {
                 helper conex1 = null;
                 ResultSet tabla = null;
                 
                 try {
-                    tabla = conex1.executeDataSet("CALL usp_verifExistVehiculo(?)",
-                            new Object[]{modelo.getIdVeh()});
-
-                    indError += conex1.getErrorSQL();
-
-                    if (!indError.equals("")) {
+                    conex1 = new helper();
+                    indError = conex1.getErrorSQL();
+                    
+                    if(!indError.equals("")) {
                         errores.add(indError);
                     } else {
-                        int cont = 0;
-                        while (tabla.next()) {
-                            cont = tabla.getInt(1);
-                        }
-                        
-                        if(cont==0) {
-                            indError += "error";
-                            errores.add("Serie de vehículo no válida");
+                        tabla = conex1.executeDataSet("CALL usp_verifExistVehiculo(?)",
+                                new Object[]{modelo.getIdVeh()});
+
+                        indError = conex1.getErrorSQL();
+
+                        if (!indError.equals("")) {
+                            errores.add(indError);
+                        } else {
+                            int cont = 0;
+                            while (tabla.next()) {
+                                cont = tabla.getInt(1);
+                            }
+
+                            if(cont==0) {
+                                errores.add("Serie de vehículo no válida");
+                            }
                         }
                     }
                 } catch (Exception e) {
-                    indError += "error";
                     errores.add(e.getMessage());
                 } finally {
                     try {
@@ -681,11 +808,10 @@ public class RegistroVentasAction extends MasterAction implements ModelDriven<Re
             }
             
             if(modelo.getIdForPag()==0) {
-                indError += "error";
                 errores.add("Seleccione la forma de pago");
             }
             
-            if(indError.equals("")) {
+            if(errores.isEmpty()) {
                 helper conex = null;
                 
                 try {
@@ -699,13 +825,244 @@ public class RegistroVentasAction extends MasterAction implements ModelDriven<Re
                         if(modelo.getDesObsDoc().length()>100)
                             modelo.setDesObsDoc(modelo.getDesObsDoc().substring(0, 100));
                         
-                        indError = conex.executeNonQuery("CALL usp_insRegistroVenta(?,?,?,?,?,?,?,?,?,?,?,?)", 
-                                new Object[]{ modelo.getIdTipDocVen(),modelo.getDesNumDocVen(),modelo.getFecEmiDocVen(),
-                                    modelo.getCodMonDocVen(),modelo.getImpTipCamVen(),modelo.getIdForPag(),modelo.getDesObsDoc(),
-                                    modelo.getIdCli(),modelo.getIdVeh(),sesion_sga.get("ses_idcon"),sesion_sga.get("ses_idloccon"),
-                                    sesion_sga.get("ses_idusu") });
+                        indError = conex.executeNonQuery("CALL usp_insRegistroVenta(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", 
+                                new Object[]{ modelo.getIdTipDocVen(),modelo.getDesNumDocVen(),modelo.getFecEmiDocVen(),modelo.getCodMonDocVen(),
+                                    modelo.getImpTipCamVen(),modelo.getImpMOAntVen(),modelo.getImpMOAntImp(),modelo.getImpMOAntTot(),
+                                    modelo.getImpMonLocVen(),modelo.getImpMonLocDes(),modelo.getImpMonLocImp(),modelo.getImpMonLocTot(),
+                                    modelo.getImpMonExtVen(),modelo.getImpMonExtDes(),modelo.getImpMonExtImp(),modelo.getImpMonExtTot(),
+                                    modelo.getIdForPag(),modelo.getDesObsDoc(),modelo.getIdCli(),modelo.getIdVeh(),sesion_sga.get("ses_idcon"),
+                                    sesion_sga.get("ses_idloccon"),sesion_sga.get("ses_idusu") });
                         
-                        if(indError.equals("")) {
+                        if(!indError.equals("")) {
+                            errores.add(indError);
+                        } else {
+                            indError = conex.executeNonQuery("CALL usp_updAnticipoRegistroVenta(?)", 
+                                    new Object[]{ modelo.getIdCli() });
+                        }
+                    }
+                } catch (Exception e) {
+                    indError = "error";
+                    errores.add(e.getMessage());
+                } finally {
+                    conex.returnConnect();
+                }
+            }
+            
+            if(!errores.isEmpty()) {
+                indErrorTot = "error";
+            }
+        } 
+        
+        return "grabar";
+    }
+    
+    public String adicionarAnticipo() {
+        idAccion = 8;
+
+        verifAccionTipoUsuario();
+
+        if (indErrAcc.equals("")) {
+            nivBandeja = 1;
+
+            if (!opcion.trim().equals("A")) {
+                indErrParm = "error";
+            } else {
+                varReturnProcess(1);
+                
+                accion = "Adicionar anticipo";
+                
+                modelo.setIdTipDocVen("99");
+                populateForm();
+                
+                modelo.setIdNumIntRV("");
+                formURL = baseURL + "registroVentas/grabarAnticipoRegistroVenta";
+            }
+        }
+        
+        return "adicionarAnticipo";
+    }
+    
+    public String getTiposDocumentoVentaClienteAnticipo() {
+        helper conex = null;
+        ResultSet tabla = null;
+
+        try {
+            conex = new helper();
+            indError = conex.getErrorSQL();
+
+            if(!indError.equals("")) {
+                errores.add(indError);
+            } else {
+                tabla = conex.executeDataSet("CALL usp_listTipoDocVentaCliente(?)", 
+                        new Object[]{ modelo.getIdCli() });
+                indError += conex.getErrorSQL();
+
+                if(!indError.equals("")) {
+                    errores.add(indError);
+                } else {
+                    TipoDocumentoVenta obj;
+                    while(tabla.next()) {
+                        if(tabla.getString("idTipDocVen").equals("BV") || tabla.getString("idTipDocVen").equals("FA")) {
+                            obj = new TipoDocumentoVenta();
+                            obj.setIdTipDocVen(tabla.getString("idTipDocVen"));
+                            obj.setDesTipDocVen(tabla.getString("desTipDocVen"));
+                            listTiposDocumentoVenta.add(obj);
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            indError = "error";
+            errores.add(e.getMessage());
+        } finally {
+            try {
+                tabla.close();
+                conex.returnConnect();
+            } catch (Exception e) {
+            }
+        }
+        
+        return "getTiposDocumentoVentaCliente";
+    }
+    
+    public String getMontosAnticipo() {
+        try {
+            if(modelo.getCodMonDocVen()==1) {
+                if(isDouble(modelo.getImpMonLocTot())) {
+                    //Montos en soles
+                    Double monTotSol = redondear(Double.parseDouble(modelo.getImpMonLocTot()), 2);
+                    Double monVenSol = redondear(calculaImporteVenta(monTotSol, Double.parseDouble(sesion_sga.get("ses_igv").toString())),2);
+                    Double monImpSol = redondear(monVenSol*Double.parseDouble(sesion_sga.get("ses_igv").toString()),2);
+                    
+                    modelo.setImpMonLocTot(String.valueOf(monTotSol));
+                    modelo.setImpMonLocVen(String.valueOf(monVenSol));
+                    modelo.setImpMonLocImp(String.valueOf(monImpSol));
+
+                    //Montos en dolares
+                    Double monTotDol = redondear(monTotSol/Double.parseDouble(sesion_sga.get("ses_tipcam").toString()),2);
+                    Double monVenDol = redondear(calculaImporteVenta(monTotDol,Double.parseDouble(sesion_sga.get("ses_igv").toString())),2);
+                    Double monImpDol = redondear(monVenDol*Double.parseDouble(sesion_sga.get("ses_igv").toString()),2);
+                    
+                    
+                    modelo.setImpMonExtTot(String.valueOf(monTotDol));
+                    modelo.setImpMonExtVen(String.valueOf(monVenDol));
+                    modelo.setImpMonExtImp(String.valueOf(monImpDol));
+                }
+            } else if(modelo.getCodMonDocVen()==2) {
+                if(isDouble(modelo.getImpMonExtTot())) {
+                    //Montos en dolares
+                    Double monTotDol = redondear(Double.parseDouble(modelo.getImpMonExtTot()), 2);
+                    Double monVenDol = redondear(calculaImporteVenta(monTotDol, Double.parseDouble(sesion_sga.get("ses_igv").toString())),2);
+                    Double monImpDol = redondear(monVenDol*Double.parseDouble(sesion_sga.get("ses_igv").toString()),2);
+                    
+                    modelo.setImpMonExtTot(String.valueOf(monTotDol));
+                    modelo.setImpMonExtVen(String.valueOf(monVenDol));
+                    modelo.setImpMonExtImp(String.valueOf(monImpDol));
+
+                    //Montos en soles
+                    Double monTotSol = redondear(monTotDol*Double.parseDouble(sesion_sga.get("ses_tipcam").toString()),2);
+                    Double monVenSol = redondear(calculaImporteVenta(monTotSol, Double.parseDouble(sesion_sga.get("ses_igv").toString())),2);
+                    Double monImpSol = redondear(monVenSol*Double.parseDouble(sesion_sga.get("ses_igv").toString()),2);
+                    
+                    
+                    modelo.setImpMonLocTot(String.valueOf(monTotSol));
+                    modelo.setImpMonLocVen(String.valueOf(monVenSol));
+                    modelo.setImpMonLocImp(String.valueOf(monImpSol));
+                }
+            }
+        } catch(Exception ex) {
+            indError += "error";
+            errores.add(ex.getMessage());
+        }
+        
+        return "getMontosAnticipo";
+    }
+    
+    public String grabarAnticipo() {
+        idAccion = 9;
+
+        verifAccionTipoUsuario();
+
+        if (indErrAcc.equals("")) {
+            if(modelo.getIdCli().equals("")) {
+                errores.add("Ingrese o seleccione un cliente");
+            } else {
+                if(modelo.getDesCli_h().equals("")) {
+                    errores.add("Cliente no válido");
+                }
+            }
+            
+            if(modelo.getIdTipDocVen().equals("9")) {
+                errores.add("Seleccione el tipo de documento");
+            }
+            
+            if(modelo.getDesNumDocVen().equals("")) {
+                errores.add("Ingrese el número del documento");
+            }
+            
+            if(modelo.getFecEmiDocVen().equals("")) {
+                errores.add("Ingrese la fecha de emisión");
+            } else {
+                if(!isDate(modelo.getFecEmiDocVen(), 2)) {
+                    errores.add("Fecha de emisión no válida");
+                }
+            }
+            
+            if(modelo.getCodMonDocVen()==0) {
+                errores.add("Seleccione el tipo de moneda del documento");
+            }
+            
+            if(modelo.getCodMonDocVen()!=0) {
+                if(modelo.getCodMonDocVen()==1) {
+                    if(modelo.getImpMonLocTot().equals("")) {
+                        errores.add("Ingrese el importe de venta en soles");
+                    } else if(!isDouble(modelo.getImpMonLocTot())) {
+                        errores.add("Importe de venta en soles no válido");
+                    } else if(Double.parseDouble(modelo.getImpMonLocTot())<=0) {
+                        errores.add("Importe de venta en soles debe ser mayor a cero");
+                    }
+                }
+                
+                if(modelo.getCodMonDocVen()==2) {
+                    if(modelo.getImpMonExtTot().equals("")) {
+                        errores.add("Ingrese el importe de venta en dólares");
+                    } else if(!isDouble(modelo.getImpMonExtTot())) {
+                        errores.add("Importe de venta en dólares no válido");
+                    } else if(Double.parseDouble(modelo.getImpMonExtTot())<=0) {
+                        errores.add("Importe de venta en dólares debe ser mayor a cero");
+                    }
+                }
+            }
+            
+            if(modelo.getIdForPag()==0) {
+                errores.add("Seleccione la forma de pago");
+            }
+            
+            if(errores.isEmpty()) {
+                helper conex = null;
+                
+                try {
+                    conex = new helper();
+                    indError = conex.getErrorSQL();
+
+                    if(!indError.equals("")) {
+                        errores.add(indError);
+                    } else {
+                        getMontosAnticipo();
+                        
+                        modelo.setFecEmiDocVen(getConvertFecha(modelo.getFecEmiDocVen(), 2));
+                        
+                        if(modelo.getDesObsDoc().length()>100)
+                            modelo.setDesObsDoc(modelo.getDesObsDoc().substring(0, 100));
+                        
+                        indError = conex.executeNonQuery("CALL usp_insRegistroVentaAnticipo(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", 
+                                new Object[]{ modelo.getIdTipDocVen(),modelo.getDesNumDocVen(),modelo.getFecEmiDocVen(),
+                                    modelo.getCodMonDocVen(),modelo.getImpTipCamVen(),modelo.getImpMonLocVen(),modelo.getImpMonLocImp(),
+                                    modelo.getImpMonLocTot(),modelo.getImpMonExtVen(),modelo.getImpMonExtImp(),modelo.getImpMonExtTot(),
+                                    modelo.getIdForPag(),modelo.getDesObsDoc(),modelo.getIdCli(),sesion_sga.get("ses_idcon"),
+                                    sesion_sga.get("ses_idloccon"),sesion_sga.get("ses_idusu") });
+                        
+                        if(!indError.equals("")) {
                             errores.add(indError);
                         }
                     }
@@ -715,6 +1072,10 @@ public class RegistroVentasAction extends MasterAction implements ModelDriven<Re
                 } finally {
                     conex.returnConnect();
                 }
+            }
+            
+            if(!errores.isEmpty()) {
+                indErrorTot = "error";
             }
         } 
         
@@ -751,6 +1112,14 @@ public class RegistroVentasAction extends MasterAction implements ModelDriven<Re
 
     public void setCliente(Clientes cliente) {
         this.cliente = cliente;
+    }
+
+    public AnticiposRegistroVentas getAnticipoRegistroVentas() {
+        return anticipoRegistroVentas;
+    }
+
+    public void setAnticipoRegistroVentas(AnticiposRegistroVentas anticipoRegistroVentas) {
+        this.anticipoRegistroVentas = anticipoRegistroVentas;
     }
     
     

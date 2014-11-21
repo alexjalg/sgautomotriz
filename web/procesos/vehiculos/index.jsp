@@ -91,7 +91,7 @@
                     </td>
                     <td style="width: 140px;text-align: center;<s:if test='%{idTipDocVen_f!="0"}'> background-color: #B5CCED; </s:if>">
                         <s:select name="idTipDocVen_f" id="idTipDocVen_f" list="listTipoDocVenta" listKey="idTipDocVen" listValue="desTipDocVen" 
-                                  headerKey="0" headerValue="Seleccione" cssClass="element-form-grid" cssStyle="" />
+                                  headerKey="0" headerValue="-Seleccione-" cssClass="element-form-grid" cssStyle="" />
                     </td>
                     <td style="width: 110px;text-align: center;<s:if test='%{desNumDocVen_f!=""}'> background-color: #B5CCED; </s:if>">
                         <s:textfield name="desNumDocVen_f" id="desNumDocVen_f" cssClass="element-form-grid" cssStyle="width: 70px;" maxLength="10" />

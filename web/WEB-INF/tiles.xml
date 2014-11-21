@@ -570,6 +570,9 @@
     <definition name="mant-registroVentas-adicionar" extends="baseLayout">
         <put-attribute name="body" value="/procesos/registroVentas/adicionar.jsp" />
     </definition>
+    <definition name="mant-registroVentas-adicionarAnticipo" extends="baseLayout">
+        <put-attribute name="body" value="/procesos/registroVentas/adicionarAnticipo.jsp" />
+    </definition>
     <definition name="mant-registroVentas-detalle" extends="baseLayout">
         <put-attribute name="body" value="/procesos/registroVentas/detalle.jsp" />
     </definition>
@@ -590,6 +593,12 @@
     </definition>
     <definition name="mant-registroVentas-listClientes" extends="baseLayoutPopUp">
         <put-attribute name="body" value="/procesos/registroVentas/listClientes.jsp" />
+    </definition>
+    <definition name="mant-registroVentas-getMontosAnticipo" extends="baseLayoutPopUp">
+        <put-attribute name="body" value="/procesos/registroVentas/getMontosAnticipo.jsp" />
+    </definition>
+    <definition name="mant-registroVentas-getTotalAnticiposRegVenta" extends="baseLayoutPopUp">
+        <put-attribute name="body" value="/procesos/registroVentas/getTotalAnticiposRegVenta.jsp" />
     </definition>
     
     <!-- MODALIDAD DE VENTA -->    

@@ -125,129 +125,114 @@
         </table>
         <table border="0" cellpadding="0" cellspacing="0" style="margin-top: 10px;">
             <tr>
-                <td style="vertical-align: top; width:300px;">
-                    <table border="0" cellpadding="0" cellspacing="0" class="table-form">
-                        <tr>
-                            <td colspan="2" style="height: 26px; padding-right: 65px;">
-                                <div class="d-block-form">
-                                    <div class="text-block">Importes de anticipo</div>
-                                    <div class="line-text-block"></div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="width: 118px;">Importe venta</td>
-                            <td>
-                                <span style="font-weight: bold;">
-                                    <s:property value="impMOAntVen" />
-                                </span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="width: 118px;">Importe impuestos</td>
-                            <td>
-                                <span style="font-weight: bold;">
-                                    <s:property value="impMOAntImp" />
-                                </span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="width: 118px;">Importe total</td>
-                            <td>
-                                <span style="font-weight: bold;">
-                                    <s:property value="impMOAntTot" />
-                                </span>
-                            </td>
-                        </tr>
-                    </table>
+                <td style="vertical-align: top;">
+                    <div class="d-block-form" style="margin-right: 50px;">
+                        <div class="text-block">Importes de anticipo</div>
+                        <table border="0" cellpadding="0" cellspacing="0" class="table-form">
+                            <tr>
+                                <td style="width: 118px;">Importe venta</td>
+                                <td>
+                                    <span style="font-weight: bold;">
+                                        <s:property value="impMOAntVen" />
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 118px;">Importe impuestos</td>
+                                <td>
+                                    <span style="font-weight: bold;">
+                                        <s:property value="impMOAntImp" />
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 118px;">Importe total</td>
+                                <td>
+                                    <span style="font-weight: bold;">
+                                        <s:property value="impMOAntTot" />
+                                    </span>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
                 </td>
-                <td style="vertical-align: top; width:300px;">
-                    <table border="0" cellpadding="0" cellspacing="0" class="table-form">
-                        <tr>
-                            <td colspan="2" style="height: 26px; padding-right: 65px;">
-                                <div class="d-block-form">
-                                    <div class="text-block">Importes en soles</div>
-                                    <div class="line-text-block"></div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="width: 118px;">Importe venta</td>
-                            <td>
-                                <span style="font-weight: bold;">
-                                    <s:property value="impMonLocVen" />
-                                </span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="width: 118px;">Importe descuento</td>
-                            <td>
-                                <span style="font-weight: bold;">
-                                    <s:property value="impMonLocDes" />
-                                </span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="width: 118px;">Importe impuestos</td>
-                            <td>
-                                <span style="font-weight: bold;">
-                                    <s:property value="impMonLocImp" />
-                                </span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="width: 118px;">Importe total</td>
-                            <td>
-                                <span style="font-weight: bold;">
-                                    <s:property value="impMonLocTot" />
-                                </span>
-                            </td>
-                        </tr>
-                    </table>
+                <td style="vertical-align: top;">
+                    <div class="d-block-form" style="margin-right: 50px;">
+                        <div class="text-block">Importes en soles</div>
+                        <table border="0" cellpadding="0" cellspacing="0" class="table-form">
+                            <tr>
+                                <td style="width: 118px;">Importe venta</td>
+                                <td>
+                                    <span style="font-weight: bold;">
+                                        <s:property value="impMonLocVen" />
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 118px;">Importe descuento</td>
+                                <td>
+                                    <span style="font-weight: bold;">
+                                        <s:property value="impMonLocDes" />
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 118px;">Importe impuestos</td>
+                                <td>
+                                    <span style="font-weight: bold;">
+                                        <s:property value="impMonLocImp" />
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 118px;">Importe total</td>
+                                <td>
+                                    <span style="font-weight: bold;">
+                                        <s:property value="impMonLocTot" />
+                                    </span>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
                 </td>
-                <td style="vertical-align: top; width:300px;">
-                    <table border="0" cellpadding="0" cellspacing="0" class="table-form">
-                        <tr>
-                            <td colspan="2" style="height: 26px; padding-right: 65px;">
-                                <div class="d-block-form">
-                                    <div class="text-block">Importes en dólares</div>
-                                    <div class="line-text-block"></div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="width: 118px;">Importe venta</td>
-                            <td>
-                                <span style="font-weight: bold;">
-                                    <s:property value="impMonExtVen" />
-                                </span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="width: 118px;">Importe descuento</td>
-                            <td>
-                                <span style="font-weight: bold;">
-                                    <s:property value="impMonExtDes" />
-                                </span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="width: 118px;">Importe impuestos</td>
-                            <td>
-                                <span style="font-weight: bold;">
-                                    <s:property value="impMonExtImp" />
-                                </span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="width: 118px;">Importe total</td>
-                            <td>
-                                <span style="font-weight: bold;">
-                                    <s:property value="impMonExtTot" />
-                                </span>
-                            </td>
-                        </tr>
-                    </table>
+                <td style="vertical-align: top;">
+                    <div class="d-block-form">
+                        <div class="text-block">Importes en dólares</div>
+                        <table border="0" cellpadding="0" cellspacing="0" class="table-form">
+                            <tr>
+                                <td style="width: 118px;">Importe venta</td>
+                                <td>
+                                    <span style="font-weight: bold;">
+                                        <s:property value="impMonExtVen" />
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 118px;">Importe descuento</td>
+                                <td>
+                                    <span style="font-weight: bold;">
+                                        <s:property value="impMonExtDes" />
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 118px;">Importe impuestos</td>
+                                <td>
+                                    <span style="font-weight: bold;">
+                                        <s:property value="impMonExtImp" />
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 118px;">Importe total</td>
+                                <td>
+                                    <span style="font-weight: bold;">
+                                        <s:property value="impMonExtTot" />
+                                    </span>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
                 </td>
             </tr>
         </table>

@@ -24,6 +24,9 @@
     <button id="btn-delete">
         Eliminar
     </button>
+    <button id="btn-anticipo">
+        Anticipo
+    </button>
     </s:if>
 </s:if>
 </div>
@@ -308,17 +311,23 @@
             );
         });
         
+        $('#btn-anticipo').click(function(){
+            $('#opcion_h1').val('A');
+            var href = $(location).attr('href');
+            
+            var _varret = $('#nivBandeja_f').val()+'%'+href+'%'+$('#mtu_h1').val()+'%'+$('#mmo_h1').val()+'%'+$('#mop_h1').val()+'%'+$('#mni_h1').val()+'%'+$('#mod_h1').val()+'%'+$('#curPag_f').val()+'%'+$('#idNumIntRV_f').val()+'%'+$('#idTipDocVen_f').val()+'%'+$('#desNumDocVen_f').val()+'%'+$('#fecEmiDocVen_f').val()+'%'+$('#idCli_f').val()+'%'+$('#desCli_f').val()+'|';
+            $('#varReturn_f').val($('#varReturn_f').val()+_varret);
+            
+            $('#frm_princ').attr('action','<s:property value="baseURL" /><s:url namespace="registroVentas" includeContext="false" action="adicionarAnticipoRegistroVenta" />');
+            $('#frm_princ').submit();
+        });
+        
         $('.d-back a').click(function(){
             $('#frm_back').submit();
         });
     });
     
+    
     //Redimensionar el alto del contenedor de grilla si fuese necesario
     resizeContGrilla(<s:property value="regPag" />);    
-
-    function hideOptGrilla()
-    {
-        $('.boton-bandeja-click').removeClass('boton-bandeja-click');
-        $('#d-filtros-float').css('display', 'none');
-    }
 </script>
