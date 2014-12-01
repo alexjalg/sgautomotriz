@@ -1,6 +1,5 @@
 package actions;
 
-import com.ibm.db2.jcc.DBTimestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -82,6 +81,7 @@ public class MasterAction extends ActionSupport implements ServletRequestAware {
     protected String jsPaginacionPopUp = "";
     protected String datosOblig = "";
     protected String divPopUp = "";
+    protected String sufijoPopUp="";
     
     /*variable para recuperar filtros y otros al cambiar de paginas*/
     private String strParamsReturn="";
@@ -109,6 +109,9 @@ public class MasterAction extends ActionSupport implements ServletRequestAware {
     
     private ArrayList<Meses> listMeses = new ArrayList<Meses>();
     private ArrayList<Anios> listAnios = new ArrayList<Anios>();
+    
+    protected int indModificar = 0;
+    protected int indDetalle = 0;
 
     public void setServletRequest(HttpServletRequest request) {
         this.servletRequest = request;
@@ -575,9 +578,9 @@ public class MasterAction extends ActionSupport implements ServletRequestAware {
         paginacionPopUp += "";
         
         if(curPagVis==1 || curPagVis==0)
-            paginacionPopUp += "<button type=\"button\" id=\"prev_pag_pu\" style=\"cursor: default;\"><span class=\"ui-icon ui-icon-carat-1-w\"></span></button>";
+            paginacionPopUp += "<button type=\"button\" id=\"prev_pag_pu"+sufijoPopUp+"\" style=\"cursor: default;\"><span class=\"ui-icon ui-icon-carat-1-w\"></span></button>";
         else
-            paginacionPopUp += "<button type=\"button\" id=\"prev_pag_pu\" style=\"cursor: default;\"><span class=\"ui-icon ui-icon-carat-1-w\"></span></button>";
+            paginacionPopUp += "<button type=\"button\" id=\"prev_pag_pu"+sufijoPopUp+"\" style=\"cursor: default;\"><span class=\"ui-icon ui-icon-carat-1-w\"></span></button>";
         
         paginacionPopUp += "<div class=\"text_pag\">Pag. "+curPagVis+" de "+getUltPag()+" ("+cantReg;
         
@@ -593,11 +596,11 @@ public class MasterAction extends ActionSupport implements ServletRequestAware {
         paginacionPopUp += "<input type=\"hidden\" name=\"ultPag\" id=\"ultPag\" value=\""+getUltPag()+"\" />";
         
         if(curPagVis==0 || curPagVis==getUltPag())
-            paginacionPopUp += "<button type=\"button\" id=\"next_pag_pu\" style=\"cursor: default;\"><span class=\"ui-icon ui-icon-carat-1-e\"></span></button>";
+            paginacionPopUp += "<button type=\"button\" id=\"next_pag_pu"+sufijoPopUp+"\" style=\"cursor: default;\"><span class=\"ui-icon ui-icon-carat-1-e\"></span></button>";
         else
-            paginacionPopUp += "<button type=\"button\" id=\"next_pag_pu\" style=\"cursor: default;\"><span class=\"ui-icon ui-icon-carat-1-e\"></span></button>";
+            paginacionPopUp += "<button type=\"button\" id=\"next_pag_pu"+sufijoPopUp+"\" style=\"cursor: default;\"><span class=\"ui-icon ui-icon-carat-1-e\"></span></button>";
         
-        paginacionPopUp += "<button type=\"button\" type=\"submit\" id=\"btn_search_pu\" style=\"margin-left: 20px;\"><span class=\"ui-icon ui-icon-search\" style=\"display: inline-block; height: 13px;\"></span> Buscar</button>";
+        paginacionPopUp += "<button type=\"button\" type=\"submit\" id=\"btn_search_pu"+sufijoPopUp+"\" style=\"margin-left: 20px;\"><span class=\"ui-icon ui-icon-search\" style=\"display: inline-block; height: 13px;\"></span> Buscar</button>";
         
         return paginacionPopUp;
     }
@@ -636,22 +639,22 @@ public class MasterAction extends ActionSupport implements ServletRequestAware {
      * @return the jsPaginacion
      */
     public String getJsPaginacionPopUp() {
-        jsPaginacionPopUp += " $('#prev_pag_pu').button(); ";
-        jsPaginacionPopUp += " $('#next_pag_pu').button(); ";
-        jsPaginacionPopUp += " $('#btn_search_pu').button(); ";
+        jsPaginacionPopUp += " $('#prev_pag_pu"+sufijoPopUp+"').button(); ";
+        jsPaginacionPopUp += " $('#next_pag_pu"+sufijoPopUp+"').button(); ";
+        jsPaginacionPopUp += " $('#btn_search_pu"+sufijoPopUp+"').button(); ";
         
         if(curPagVis==1 || curPagVis==0)
-            jsPaginacionPopUp += " $('#prev_pag_pu').button('disable'); ";
+            jsPaginacionPopUp += " $('#prev_pag_pu"+sufijoPopUp+"').button('disable'); ";
             
         if(curPagVis==0 || curPagVis==getUltPag())
-            jsPaginacionPopUp += " $('#next_pag_pu').button('disable'); ";
+            jsPaginacionPopUp += " $('#next_pag_pu"+sufijoPopUp+"').button('disable'); ";
         
-        jsPaginacionPopUp += " $('#prev_pag_pu').click(function(){ $('#curPag_f_pu').val("+ (curPagVis-1) +"); $('#frm_princ_pu').attr('action','"+baseURL+urlPaginacion+"'); "
-                + " $.post( '"+baseURL+urlPaginacion+"', $('#frm_princ_pu').serialize(), function(resultado){ $('#"+divPopUp+"').html(resultado);  } ); }); ";
-        jsPaginacionPopUp += " $('#next_pag_pu').click(function(){ $('#curPag_f_pu').val("+ (curPagVis+1) +"); $('#frm_princ_pu').attr('action','"+baseURL+urlPaginacion+"'); "
-                + " $.post( '"+baseURL+urlPaginacion+"', $('#frm_princ_pu').serialize(), function(resultado){ $('#"+divPopUp+"').html(resultado);  } ); }); ";
-        jsPaginacionPopUp += " $('#btn_search_pu').click(function(){ $('#curPag_f_pu').val(1); $('#frm_princ_pu').attr('action','"+baseURL+urlPaginacion+"'); "
-                + " $.post( '"+baseURL+urlPaginacion+"', $('#frm_princ_pu').serialize(), function(resultado){ $('#"+divPopUp+"').html(resultado);  } ); }); ";
+        jsPaginacionPopUp += " $('#prev_pag_pu"+sufijoPopUp+"').click(function(){ $('#curPag_f_pu"+sufijoPopUp+"').val("+ (curPagVis-1) +"); $('#frm_princ_pu"+sufijoPopUp+"').attr('action','"+baseURL+urlPaginacion+"'); "
+                + " $.post( '"+baseURL+urlPaginacion+"', $('#frm_princ_pu"+sufijoPopUp+"').serialize(), function(resultado){ $('#"+divPopUp+"').html(resultado);  } ); }); ";
+        jsPaginacionPopUp += " $('#next_pag_pu"+sufijoPopUp+"').click(function(){ $('#curPag_f_pu"+sufijoPopUp+"').val("+ (curPagVis+1) +"); $('#frm_princ_pu"+sufijoPopUp+"').attr('action','"+baseURL+urlPaginacion+"'); "
+                + " $.post( '"+baseURL+urlPaginacion+"', $('#frm_princ_pu"+sufijoPopUp+"').serialize(), function(resultado){ $('#"+divPopUp+"').html(resultado);  } ); }); ";
+        jsPaginacionPopUp += " $('#btn_search_pu"+sufijoPopUp+"').click(function(){ $('#curPag_f_pu"+sufijoPopUp+"').val(1); $('#frm_princ_pu"+sufijoPopUp+"').attr('action','"+baseURL+urlPaginacion+"'); "
+                + " $.post( '"+baseURL+urlPaginacion+"', $('#frm_princ_pu"+sufijoPopUp+"').serialize(), function(resultado){ $('#"+divPopUp+"').html(resultado);  } ); }); ";
         
         return jsPaginacionPopUp;
     }
@@ -1171,5 +1174,25 @@ public class MasterAction extends ActionSupport implements ServletRequestAware {
         resp = (100.00*importeTotal)/(100.00+igv);
         
         return resp;
+    }
+
+    public int getIndModificar() {
+        return indModificar;
+    }
+
+    public void setIndModificar(int indModificar) {
+        this.indModificar = indModificar;
+    }
+
+    public int getIndDetalle() {
+        return indDetalle;
+    }
+
+    public void setIndDetalle(int indDetalle) {
+        this.indDetalle = indDetalle;
+    }
+
+    public String getSufijoPopUp() {
+        return sufijoPopUp;
     }
 }

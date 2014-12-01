@@ -238,7 +238,7 @@
             <td colspan="2" style="vertical-align: top; padding-top: 20px;">
                 <table border="0" cellpadding="0" cellspacing="0" >
                     <tr>
-                        <td style="width: 710px;">
+                        <td style="width: 660px;">
                             <div class="d-block-form">
                                 <div class="text-block">Datos de venta y entrega</div>
                                 <table border="0" cellpadding="0" cellspacing="0" style="width: 100%">
@@ -246,7 +246,7 @@
                                         <td>
                                             <table border="0" cellpadding="0" cellspacing="0" class="table-form">
                                                 <tr>
-                                                    <td style="width: 130px;">Situación de venta:</td>
+                                                    <td style="width: 87px;">Situación:</td>
                                                     <td>
                                                         <span style="font-weight: bold;">
                                                             <s:property value="desSitVen" />
@@ -254,7 +254,7 @@
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td>Fec. situación de venta:</td>
+                                                    <td>Fec. situación:</td>
                                                     <td>
                                                         <span style="font-weight: bold;">
                                                             <s:property value="fecSitVen" />
@@ -344,53 +344,6 @@
             </td>
         </tr>
     </table>
-                                                        
-    <div class="d-content-grilla" style="min-width: 660px; margin-top: 30px; border-bottom: none;">
-        <div class="d-grilla" style="overflow: hidden;">
-            <div class="d-content-grilla-head" style="">
-                <table border="0" cellpadding="0" cellspacing="0" style="width: 100%">
-                    <tr class="tr-head">
-                        <td style="">
-                            Campaña
-                        </td>
-                        <td style="width: 140px; text-align: center;">
-                            Importe
-                        </td>
-                        <td style="width: 70px; text-align: center;">
-                            Activo
-                        </td>
-                    </tr>
-                    <tr class="tr-head">
-                        <td style=""></td>
-                        <td style=""></td>
-                        <td style=""></td>
-                    </tr>
-                </table>
-            </div>
-            <div class="d-content-grilla-body" style="background-color: #FFF;">
-                <table border="0" cellpadding="0" cellspacing="0" style="width: 100%">
-                    <s:iterator value="listCampanias">
-                    <tr>
-                        <td style=""  >
-                         <s:property value="desCam" />
-                        </td>
-                        <td style="width: 140px; text-align: center">
-                            <s:property value="impRelCam" />
-                        </td>
-                        <td style="width: 70px; text-align: center;">
-                            <s:if test='%{indCamVeh=="A"}'>
-                                Si
-                            </s:if>
-                            <s:else>
-                                No
-                            </s:else>
-                        </td>
-                    </tr>
-                    </s:iterator>
-                </table>
-            </div>
-        </div>
-    </div>
     <ul>
     <s:iterator value="errores">
         <li><s:property /></li>

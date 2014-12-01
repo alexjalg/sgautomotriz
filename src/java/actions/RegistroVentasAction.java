@@ -1,5 +1,3 @@
-package actions;
-
 /*
  * Action: Registro de ventas
  * Creado por: Angelo Ccoicca
@@ -8,6 +6,8 @@ package actions;
  * - 
  * -
  */
+
+package actions;
 
 import actions.MasterAction;
 import com.opensymphony.xwork2.ActionContext;

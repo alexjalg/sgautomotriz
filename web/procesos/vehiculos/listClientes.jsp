@@ -9,16 +9,16 @@
             <table border="0" cellpadding="0" cellspacing="0" style="">
                 <tr class="tr-head">
                     <td style="width: 24px;"></td>
-                    <td style="width: 100px; text-align: center;">Código</td>
-                    <td style="<s:if test='%{cliente.desCli_f!=""}'> background-color: #B5CCED; </s:if>">
+                    <td style="width: 90px; text-align: center;">Cod.</td>
+                    <td style="<s:if test='%{desCli_f!=""}'> background-color: #B5CCED; </s:if>">
                         Cliente
                     </td>
                 </tr>
                 <tr class="tr-head">
                     <td></td>
                     <td></td>
-                    <td style="<s:if test='%{cliente.desCli_f!=""}'> background-color: #B5CCED; </s:if>">
-                        <s:textfield name="cliente.desCli_f" cssClass="element-form-grid" cssStyle="width: 300px;" maxLength="60" />
+                    <td style="<s:if test='%{desCli_f!=""}'> background-color: #B5CCED; </s:if>">
+                        <s:textfield name="desCli_f" cssClass="element-form-grid" cssStyle="width: 200px;" maxLength="50" />
                     </td>
                 </tr>
             </table>
@@ -30,7 +30,7 @@
                     <td style="width: 24px;">
                         <input type="radio" name="idCli" id="rbt_idCli" value="<s:property value="idCli" />" class="select_rec" />
                     </td>
-                    <td style="width: 100px; text-align: center;">
+                    <td style="width: 90px; text-align: center;">
                         <s:property value="idCli" />
                     </td>
                     <td style="">

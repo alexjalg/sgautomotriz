@@ -182,7 +182,7 @@
                 <td style="padding-left: 60px; vertical-align: top;">
                     <div class="d-block-form">
                         <div class="text-block">Datos del proveedor</div>
-                        <table border="0" cellpadding="0" cellspacing="0" class="table-form" >
+                        <table border="0" cellpadding="0" cellspacing="0" class="table-form">
                             <tr>
                                 <td>Poliza de importación</td>
                                 <td>

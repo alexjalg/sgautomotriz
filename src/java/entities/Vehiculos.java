@@ -14,6 +14,8 @@ public class Vehiculos {
     private String desModMar = "";
     private String idVerMod = "";
     private String desVerMod = "";
+    private String desVeh = "";
+    private String desVeh_f = "";
     private String idColExt = "";
     private String desColExt = "";
     private String idColInt = "";
@@ -40,10 +42,12 @@ public class Vehiculos {
     private String desUbiAmb = "";
     private String numKimAct = "";
     private String codSitVeh = "";
+    private String codSitVeh_f = "";
     private String desSitVeh = "";
     private String fecSitVeh = "";
     private String idUsuSitVeh = "";
     private String codSitVen = "";
+    private String codSitVen_f = "";
     private String desSitVen = "";
     private String fecSitVen = "";
     private int idModVen;
@@ -1305,5 +1309,53 @@ public class Vehiculos {
         desSitVen = desSitVen.trim();
         
         this.desSitVen = desSitVen;
+    }
+
+    public String getDesVeh() {
+        desVeh = desVeh.trim();
+        
+        return desVeh;
+    }
+
+    public void setDesVeh(String desVeh) {
+        desVeh = desVeh.trim();
+        
+        this.desVeh = desVeh;
+    }
+
+    public String getDesVeh_f() {
+        desVeh_f = desVeh_f.trim();
+        
+        return desVeh_f;
+    }
+
+    public void setDesVeh_f(String desVeh_f) {
+        desVeh_f = desVeh_f.trim();
+        
+        this.desVeh_f = desVeh_f;
+    }
+
+    public String getCodSitVeh_f() {
+        codSitVeh_f = codSitVeh_f.trim();
+        
+        return codSitVeh_f;
+    }
+
+    public void setCodSitVeh_f(String codSitVeh_f) {
+        codSitVeh_f = codSitVeh_f.trim();
+        
+        this.codSitVeh_f = codSitVeh_f;
+    }
+
+    public String getCodSitVen_f() {
+        codSitVen_f = codSitVen_f.trim();
+        
+        return codSitVen_f;
+    }
+
+    public void setCodSitVen_f(String codSitVen_f) {
+        codSitVen_f = codSitVen_f.trim();
+        
+        this.codSitVen_f = codSitVen_f;
     }
 }

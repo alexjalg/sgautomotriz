@@ -57,5 +57,5 @@
     });
     
     //Redimensionar el alto del contenedor de grilla si fuese necesario
-    resizeContGrillaPopUp(<s:property value="regPag" />);    
+    resizeContGrillaPopUp(<s:property value="regPag" />,'');    
 </script>

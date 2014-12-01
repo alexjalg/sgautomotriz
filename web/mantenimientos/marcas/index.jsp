@@ -82,11 +82,6 @@
     $(document).ready(function() {
         /*Paginacion de grilla*/
         <s:property value="jsPaginacion" escape="false" />
-                
-        $('#btn-add').button();
-        $('#btn-edit').button();
-        $('#btn-delete').button();
-        $('#btn-modelos').button();
         
         $('#btn_search').css('visibility','hidden');
     

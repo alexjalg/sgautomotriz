@@ -94,7 +94,7 @@
             
         $('#DIVverif').dialog({
             autoOpen: false,
-            width: 340,
+            width: 380,
             height: 180,
             modal: true,
             closeOnEscape: false,

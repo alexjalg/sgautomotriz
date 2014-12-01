@@ -13,10 +13,14 @@ public class Campania {
     private int idOriCam = 0;
     private String desOriCam="";
     private int idCam = 0;
+    private String idCamStr = "";
+    private String[] listIdCamStr = null;
     private String desCam = "";
     private String desCamImp = "";
     private String impRelCam = "";
     private int codMonCam = 0;
+    private String desMonCam = "";
+    private String indCamVeh = "";
 
     /**
      * @return the idCam
@@ -114,5 +118,37 @@ public class Campania {
      */
     public void setDesOriCam(String desOriCam) {
         this.desOriCam = desOriCam;
+    }
+
+    public String getDesMonCam() {
+        return desMonCam;
+    }
+
+    public void setDesMonCam(String desMonCam) {
+        this.desMonCam = desMonCam;
+    }
+
+    public String getIdCamStr() {
+        return idCamStr;
+    }
+
+    public void setIdCamStr(String idCamStr) {
+        this.idCamStr = idCamStr;
+    }
+
+    public String getIndCamVeh() {
+        return indCamVeh;
+    }
+
+    public void setIndCamVeh(String indCamVeh) {
+        this.indCamVeh = indCamVeh;
+    }
+
+    public String[] getListIdCamStr() {
+        return listIdCamStr;
+    }
+
+    public void setListIdCamStr(String[] listIdCamStr) {
+        this.listIdCamStr = listIdCamStr;
     }
 }

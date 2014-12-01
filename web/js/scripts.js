@@ -221,7 +221,7 @@ $(document).ready(function() {
         );
     });
     
-    $('.d-content').css('height',$('.d-main').outerHeight()-115);
+    $('.d-content').css('min-height',$('.d-main').outerHeight()-115);
     
     
     $.datepicker.regional['es'] = {
@@ -294,11 +294,11 @@ function resizeContGrilla(cantReg)
     }
 }
 
-function resizeContGrillaPopUp(cantReg) {
-    var _cantreggrilla = $('.d-content-grilla-body-popup table tr').size();
+function resizeContGrillaPopUp(cantReg,sufijo) {
+    var _cantreggrilla = $('.d-content-grilla-body-popup'+sufijo+' table tr').size();
     if(_cantreggrilla < cantReg) {
-        $('.d-content-grilla-body-popup').css('height',cantReg*23);
-        $('.d-content-grilla-body-popup').parent().css('height',24+27+cantReg*23+36);
+        $('.d-content-grilla-body-popup'+sufijo).css('height',cantReg*23);
+        $('.d-content-grilla-body-popup'+sufijo).parent().css('height',24+27+cantReg*23+36);
     }
 }
 

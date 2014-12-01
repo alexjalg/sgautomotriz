@@ -19,13 +19,24 @@
             <result name="vrfSeleccion" type="tiles">mant-vehiculo-grabar</result>
             <result name="eliminar" type="tiles">mant-vehiculo-eliminar</result>  
             
-            <result name="listadoPropositosVarios" type="tiles">mant-vehiculos-listadoPropositosVarios</result>
+            <result name="bandejaAdmin" type="tiles">mant-vehiculos-bandejaAdmin</result>
+            <result name="modificar3" type="tiles">mant-vehiculo-modificar3</result>
+            <result name="updEstadoCampania" type="tiles">mant-vehiculo-grabar</result>
+            <result name="activar" type="tiles">mant-vehiculo-activar</result>
+            
+            <result name="bandejaVentas" type="tiles">mant-vehiculos-bandejaVentas</result>
+            <result name="modificar2" type="tiles">mant-vehiculo-modificar2</result>
+            <result name="listClientes" type="tiles">mant-vehiculo-listClientes</result>
+            <result name="listCampaniasVersion" type="tiles">mant-vehiculo-listCampaniasVersion</result>  
+            <result name="actualizar2" type="tiles">mant-vehiculo-grabar</result>
             
             <result name="modelos" >/procesos/vehiculos/listaModelos.jsp</result>
             <result name="versiones" >/procesos/vehiculos/listaVersiones.jsp</result>
             <result name="coloresext" >/procesos/vehiculos/listColoresExt.jsp</result>
             <result name="ubicaciones">/procesos/vehiculos/listaUbicaciones.jsp</result>
             <result name="precventasi">/procesos/vehiculos/obtPrecVentAsi.jsp</result>
+            
+            <result name="verificaSituacion" type="tiles">mant-vehiculo-grabar</result>
         </action>
     </package>
 </struts>

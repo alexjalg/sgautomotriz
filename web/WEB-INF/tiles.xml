@@ -628,9 +628,6 @@
     <definition name="mant-vehiculos-index" extends="baseLayout">
         <put-attribute name="body" value="/procesos/vehiculos/index.jsp" />
     </definition>  
-    <definition name="mant-vehiculos-listadoPropositosVarios" extends="baseLayout">
-        <put-attribute name="body" value="/procesos/vehiculos/listadoPropositosVarios.jsp" />
-    </definition>
     <definition name="mant-vehiculo-adicionar" extends="baseLayout">
         <put-attribute name="body" value="/procesos/vehiculos/adicionar.jsp" />
     </definition>
@@ -643,7 +640,27 @@
     <definition name="mant-vehiculo-eliminar" extends="baseLayoutPopUp">
         <put-attribute name="body" value="/procesos/vehiculos/eliminar.jsp" />
     </definition> 
-    
+    <definition name="mant-vehiculos-bandejaAdmin" extends="baseLayout">
+        <put-attribute name="body" value="/procesos/vehiculos/bandejaAdmin.jsp" />
+    </definition>
+    <definition name="mant-vehiculo-modificar3" extends="baseLayout">
+        <put-attribute name="body" value="/procesos/vehiculos/modificar3.jsp" />
+    </definition>
+    <definition name="mant-vehiculo-activar" extends="baseLayoutPopUp">
+        <put-attribute name="body" value="/procesos/vehiculos/activar.jsp" />
+    </definition>
+    <definition name="mant-vehiculos-bandejaVentas" extends="baseLayout">
+        <put-attribute name="body" value="/procesos/vehiculos/bandejaVentas.jsp" />
+    </definition>
+    <definition name="mant-vehiculo-modificar2" extends="baseLayout">
+        <put-attribute name="body" value="/procesos/vehiculos/modificar2.jsp" />
+    </definition>
+    <definition name="mant-vehiculo-listClientes" extends="baseLayoutPopUp">
+        <put-attribute name="body" value="/procesos/vehiculos/listClientes.jsp" />
+    </definition>
+    <definition name="mant-vehiculo-listCampaniasVersion" extends="baseLayoutPopUp">
+        <put-attribute name="body" value="/procesos/vehiculos/listCampaniasVersion.jsp" />
+    </definition>
     
     <!-- CARGA DATOS DE CLIENTES -->
     <definition name="imp-cargaDatosClientes-index" extends="baseLayout">
