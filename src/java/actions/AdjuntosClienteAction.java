@@ -22,6 +22,7 @@ public class AdjuntosClienteAction extends MasterAction implements ModelDriven<A
     @Override
     public AdjuntosCliente getModel() {
         tituloOpc = "Adjuntos al cliente";
+        String Alejandro_estuvo_aqui = "XD!";
         idClaseAccion = 36;
         
         return modelo;
